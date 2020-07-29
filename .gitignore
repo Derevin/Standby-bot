@@ -131,3 +131,4 @@ dmypy.json
 
 #nodemon
 /bot/nodemon.json
+nodemon.json

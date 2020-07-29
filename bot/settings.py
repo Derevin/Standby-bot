@@ -6,7 +6,7 @@ if DEBUG:
   print ("debug")
   from pathlib import Path
   from dotenv import load_dotenv
-  env_path = Path("..") / ".env.debug"
+  env_path = Path(".") / ".env.debug"
   load_dotenv(dotenv_path=env_path)
   from settings_files.dev import *
 else:
