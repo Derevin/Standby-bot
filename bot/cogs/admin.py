@@ -28,7 +28,8 @@ class Admin(commands.Cog):
       txt += " "
       txt += s
     await ctx.send(txt)
-    
+  
+  @commands.command()  
   async def repeatMessage(self, ctx):
     await ctx.send(ctx.message)
   
