@@ -11,4 +11,4 @@ class Regex(commands.Cog):
       ctx.send("Polo!")
       
 def setup(bot):
-  bot.add_cog(Admin(bot))
+  bot.add_cog(Regex(bot))
