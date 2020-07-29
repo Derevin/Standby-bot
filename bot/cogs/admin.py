@@ -31,7 +31,7 @@ class Admin(commands.Cog):
   
   @commands.command()  
   async def repeatMessage(self, ctx):
-    await ctx.send(ctx.message)
+    await ctx.send(ctx.message.content)
   
   
 def setup(bot):
