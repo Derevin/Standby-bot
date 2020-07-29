@@ -25,8 +25,12 @@ class Admin(commands.Cog):
   async def repeat(self, ctx, *args):
     txt = ""
     for s in args:
+      txt += " "
       txt += s
     await ctx.send(txt)
+    
+  async def repeatMessage(self, ctx):
+    await ctx.send(ctx.message)
   
   
 def setup(bot):
