@@ -26,7 +26,7 @@ class Admin(commands.Cog):
   async def repeat(*args):
 	txt = ""
 	for s in args:
-		txt += s
+    txt += s
 	
 	await ctx.send(s)
   
