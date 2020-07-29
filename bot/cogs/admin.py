@@ -19,17 +19,14 @@ class Admin(commands.Cog):
 
   @commands.command()
   async def ping(self, ctx):
-    await ctx.send("Ponguu!")    
-
-  
+    await ctx.send("Ponguu!") 
+    
   @commands.command()
   async def repeat(*args):
-	txt = ""
-	for s in args:
-    txt += s
-	
-	await ctx.send(s)
-  
+    txt = ""
+    for s in args:
+      txt += s
+    await ctx.send(txt)
   
   
 def setup(bot):
