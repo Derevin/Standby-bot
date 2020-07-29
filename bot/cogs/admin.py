@@ -17,5 +17,9 @@ class Admin(commands.Cog):
     embed.add_field(name="# Text channels",value=n_text, inline=False)
     await ctx.send(embed=embed)
 
+  @commands.command()
+  async def ping(self, ctx):
+    await ctx.send("Pong!")    
+
 def setup(bot):
   bot.add_cog(Admin(bot))
