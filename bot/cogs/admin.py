@@ -22,7 +22,7 @@ class Admin(commands.Cog):
     await ctx.send("Ponguu!") 
     
   @commands.command()
-  async def repeat(*args):
+  async def repeat(self, ctx, *args):
     txt = ""
     for s in args:
       txt += s
