@@ -19,7 +19,7 @@ class Admin(commands.Cog):
 
   @commands.command()
   async def ping(self, ctx):
-    await ctx.send("Pong!")    
+    await ctx.send("Ponguu!")    
 
 def setup(bot):
   bot.add_cog(Admin(bot))
