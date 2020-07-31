@@ -10,13 +10,15 @@ async def regex_handler(message: discord.Message):
       await resp(message)
 
 
-
+############ ayaya regex
 
 async def ayaya_resp(message: discord.Message):
   await message.channel.send("Ayaya!")
 
 com_tuple = ('^ayaya$',ayaya_resp,re.M|re.I)
 regex_commands.append(com_tuple)
+
+############ test regex
 
 async def test_resp(message: discord.Message):
   await message.channel.send("Ayaaaaaaaaaaaa!")
