@@ -14,7 +14,6 @@ async def regex_handler(message: discord.Message):
 
 async def ayaya_resp(message: discord.Message):
   await message.channel.send("Ayaya!")
-  await message.channel.send(message.guild.id)
   await message.add_reaction(':Ayy:610479153937907733')
   await message.add_reaction(':Ayy2:470743166207787010')
 

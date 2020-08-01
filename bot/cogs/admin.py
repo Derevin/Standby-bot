@@ -13,6 +13,7 @@ class Admin(commands.Cog):
     n_text = len(guild.text_channels)
     embed = discord.Embed()
     embed.add_field(name="Server Name",value=guild.name, inline=False)
+    embed.add_field(name="Server ID",value = guild.id)
     embed.add_field(name="# Voice channels",value=n_voice, inline=False)
     embed.add_field(name="# Text channels",value=n_text, inline=False)
     await ctx.send(embed=embed)
