@@ -2,8 +2,11 @@ import discord
 from discord.ext import commands
 import re
 from settings import *
+from .regex_songs import *
+
 
 regex_commands = []
+regex_commands.extend(regex_songs_commands)
 
 async def regex_handler(message: discord.Message):  
   for trig, resp,flags in regex_commands:    

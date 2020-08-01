@@ -129,6 +129,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-#nodemon
+#nodemon, bat file to start locally
 /bot/nodemon.json
 nodemon.json
+stbot.bat
