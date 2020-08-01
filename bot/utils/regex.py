@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import re
+from settings import *
 
 regex_commands = []
 
@@ -14,7 +15,7 @@ async def regex_handler(message: discord.Message):
 
 async def ayaya_resp(message: discord.Message):
   await message.channel.send("Ayaya!")
-  if message.guild.id == 315247766739615745:
+  if message.guild.id == GUILD_ID:
     await message.add_reaction(':Ayy:610479153937907733')
     await message.add_reaction(':Ayy2:470743166207787010')
 
