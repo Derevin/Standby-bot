@@ -3,10 +3,12 @@ from discord.ext import commands
 import re
 from settings import *
 from .regex_songs import *
+from .regex_responses import *
 
 
 regex_commands = []
 regex_commands.extend(regex_songs_commands)
+regex_commands.extend(regex_responses_commands)
 
 async def regex_handler(message: discord.Message):  
   for trig, resp,flags in regex_commands:    
