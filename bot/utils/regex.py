@@ -2,13 +2,13 @@ import discord
 import re
 from settings import *
 from .regex_songs import *
-from .regex_responses import *
+from .regex_uncategorized import *
 from .regex_w_emoji import *
 
 
 regex_commands = []
 regex_commands.extend(regex_songs_commands)
-regex_commands.extend(regex_responses_commands)
+regex_commands.extend(regex_uncategorized_commands)
 
 
 async def regex_handler(message: discord.Message):
