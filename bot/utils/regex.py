@@ -3,6 +3,7 @@ import re
 from settings import *
 from .regex_songs import *
 from .regex_responses import *
+from .regex_w_emoji import *
 
 
 regex_commands = []
@@ -14,6 +15,11 @@ async def regex_handler(message: discord.Message):
   for trig, resp, flags in regex_commands:
     if re.search(trig, message.content, flags) is not None:
       await resp(message)
+  if message.guild.id == GUILD_ID:
+    for trig, resp, flags in regex_w_emoji_commands:
+      if re.search(trig, message.content, flags) is not None:
+        await resp(message)
+      
 
 
 ############ ayaya regex
