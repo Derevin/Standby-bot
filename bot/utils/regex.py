@@ -1,14 +1,14 @@
 import discord
 import re
 from settings import *
-from .regex_songs import *
-from .regex_uncategorized import *
-from .regex_w_emoji import *
+from utils import regex_songs
+from utils import regex_uncategorized
+from utils import regex_w_emoji
 
 
 regex_commands = []
-regex_commands.extend(regex_songs_commands)
-regex_commands.extend(regex_uncategorized_commands)
+regex_commands.extend(regex_songs.regex_songs_commands)
+regex_commands.extend(regex_uncategorized.regex_uncategorized_commands)
 
 
 async def regex_handler(message: discord.Message):
@@ -16,7 +16,7 @@ async def regex_handler(message: discord.Message):
         if re.search(trig, message.content, flags) is not None:
             await resp(message)
     if message.guild.id == GUILD_ID:
-        for trig, resp, flags in regex_w_emoji_commands:
+        for trig, resp, flags in regex_w_emoji.regex_w_emoji_commands:
             if re.search(trig, message.content, flags) is not None:
                 await resp(message)
 

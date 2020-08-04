@@ -1,6 +1,7 @@
 import discord
 import re
 import random
+from settings import *
 
 regex_uncategorized_commands = []
 
@@ -49,7 +50,7 @@ regex_uncategorized_commands.append(("nephew", nephew_resp, re.M | re.I))
 async def dad_resp(message: discord.Message):
     msg = re.split("m\\W+", message.content, 1)
     if len(re.findall(" ", msg[-1])) < 6:
-        await message.channel.send("Hi " + msg[-1] + ", I'm <@738113308787343462>.")
+        await message.channel.send("Hi " + msg[-1] + f", I'm <@{BOT_ID}>.")
 
 
 regex_uncategorized_commands.append(
