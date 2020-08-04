@@ -53,9 +53,6 @@ regex_vftv_commands.append(
     )
 )
 
-
-<<<<<<< HEAD
-<<<<<<< HEAD
 ### Pedestal
 
 async def pedestal_resp(message: discord.Message):
@@ -79,9 +76,7 @@ async def wood_resp(message discord.Message):
 regex_vftv_commands.append(
     ("wood", wood_resp, re.M | re.I)
 )    
-=======
-=======
->>>>>>> 21c714aaa3fbfde5cd325729df7e96f7e23a7bfe
+
 ### stradavar
 
 
@@ -97,8 +92,3 @@ regex_vftv_commands.append(
         re.M | re.I,
     )
 )
-
-<<<<<<< HEAD
->>>>>>> 21c714aaa3fbfde5cd325729df7e96f7e23a7bfe
-=======
->>>>>>> 21c714aaa3fbfde5cd325729df7e96f7e23a7bfe
