@@ -33,7 +33,7 @@ regex_vftv_commands.append(
     (
         """^(<:BlobWave:382606234148143115> ?(<:BlobCoffee:456004868990173198>)?|
         <:BlobCoffee:456004868990173198> ?(<:BlobWave:382606234148143115>)?)$""",
-        pingsock_resp,
+        wave_resp,
         re.M | re.I,
     )
 )
