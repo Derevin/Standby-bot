@@ -91,7 +91,6 @@ regex_vftv_commands.append(
         re.M | re.I,
     )
 )
-<<<<<<< HEAD
 
 ### Keto
 
@@ -177,5 +176,3 @@ async def offers_resp(message: discord.Message):
 
 regex_vftv_commands.append((".*", offers_resp, re.M | re.I))
 
-=======
->>>>>>> 0c0d67e4a85536ebe205f751eaa85c8cb0326791

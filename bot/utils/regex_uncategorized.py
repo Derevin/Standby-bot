@@ -99,7 +99,6 @@ async def bell_resp(message: discord.Message):
 
 regex_uncategorized_commands.append(("ringing my bell", bell_resp, re.M | re.I))
 
-<<<<<<< HEAD
 
 async def no_u_resp(message: discord.Message):
     await message.channel.send(
@@ -216,5 +215,3 @@ regex_uncategorized_commands.append(
     ("do[ ]?n[ ']?t @ me", dont_at_me_resp, re.M | re.I)
 )
 
-=======
->>>>>>> 0c0d67e4a85536ebe205f751eaa85c8cb0326791
