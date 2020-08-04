@@ -26,7 +26,6 @@ regex_vftv_commands.append(
 
 async def wave_resp(message: discord.Message):
     if message.author.id == 235055132843180032:
-        await message.channel.send("i see you")
         reactions = [
             ":BlobWave:382606234148143115",
             "🇭",
@@ -55,11 +54,12 @@ regex_vftv_commands.append(
 
 ### Pedestal
 
+
 async def pedestal_resp(message: discord.Message):
     await message.add_reaction("👏")
     await message.channel.send("Quickly, master <@235055132843180032>, quickly!")
-    
-    
+
+
 regex_vftv_commands.append(
     ("(\\[Pedestal Prime\\])|(:PedestalPrime:)", pedestal_resp, re.M | re.I)
 )
@@ -67,15 +67,14 @@ regex_vftv_commands.append(
 
 ### Kross Wood
 
+
 async def wood_resp(message: discord.Message):
     if message.author.id == 255653858095661057:
         await message.add_reaction(":Chainsaw:621096339207618565")
         await message.add_reaction("🌲")
 
 
-regex_vftv_commands.append(
-    ("wood", wood_resp, re.M | re.I)
-)    
+regex_vftv_commands.append(("wood", wood_resp, re.M | re.I))
 
 ### stradavar
 
