@@ -128,3 +128,13 @@ async def egeis_resp(message: discord.Message):
 
 
 regex_fun_phrases_commands.append(("^.*egeis[^\\?]*$", egeis_resp, re.M | re.I))
+
+
+### fuck me
+
+
+async def fme_resp(message: discord.Message):
+    await message.channel.send("Don't mind if I do 👍")
+
+
+regex_fun_phrases_commands.append(("^.{0,2}fuck me\\W{0,4}$", fme_resp, re.M | re.I))
