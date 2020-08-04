@@ -215,3 +215,12 @@ regex_uncategorized_commands.append(
     ("do[ ]?n[ ']?t @ me", dont_at_me_resp, re.M | re.I)
 )
 
+
+async def america_resp(message: discord.Message):
+    await message.channel.send("Fuck yeah!")
+
+
+regex_uncategorized_commands.append(
+    ("^\\W*a?'?m(e|u)rica\\W*$", america_resp, re.M | re.I)
+)
+
