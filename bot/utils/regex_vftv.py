@@ -25,7 +25,22 @@ regex_vftv_commands.append(
 
 
 async def wave_resp(message: discord.Message):
-    if random.randint(0, 99) < 100:
+    if message.author.id == 235055132843180032:
+        await message.channel.send("i see you")
+        reactions = [
+            ":BlobWave:382606234148143115",
+            "🇭",
+            "🇮",
+            ":BlobGuns:388081474760605706",
+            "🇸",
+            "🇱",
+            "🇦",
+            "🇻",
+            "🇪",
+        ]
+        for x in reactions:
+            await message.add_reaction(x)
+    elif random.randint(0, 99) < 45:
         await message.add_reaction(":BlobWave:382606234148143115")
 
 
