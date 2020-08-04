@@ -15,8 +15,8 @@ regex_uncategorized_commands.append(("\\**(cough *){2,}\\**", cough_resp, re.M |
 
 
 async def ping_resp(message: discord.Message):
-    emoji = discord.utils.get(message.guild.emojis, name = "Pingsock")
-    if emoji != None:
+    emoji = discord.utils.get(message.guild.emojis, name="Pingsock")
+    if emoji is not None:
         await message.channel.send(emoji)
     await message.channel.send(f"{message.author.mention}")
 
@@ -69,34 +69,149 @@ async def kenobi_resp(message: discord.Message):
         await message.channel.send("General " + message.author.mention)
     else:
         await message.channel.send(
-            """https://cdn.discordapp.com/attachments/355732809224028161/
-            628285103902294026/71829918_2663294270370835_6829001011412074496_n.png"""
+            "https://cdn.discordapp.com/attachments/355732809224028161/"
+            "628285103902294026/71829918_2663294270370835_6829001011412074496_n.png"
         )
 
 
-regex_uncategorized_commands.append(
-    ("hello there", kenobi_resp, re.M | re.I)
-)
+regex_uncategorized_commands.append(("hello there", kenobi_resp, re.M | re.I))
 
 
 async def spoiler_resp(message: discord.Message):
     if message.content == "||nephew||":
         return
-    ignored_channels = ['wf-shitpost', 'netflix-and-read', 'vie-for-the-vault']
+    ignored_channels = ["wf-shitpost", "netflix-and-read", "vie-for-the-vault"]
     responses = ["Hey, what's the big secret?", "What are we whispering about?"]
-    if not message.channel.name in ignored_channels:
-        await message.channel.send(responses[random.randint(0,len(responses)-1)])
-   
-   
+    if message.channel.name not in ignored_channels:
+        await message.channel.send(responses[random.randint(0, len(responses) - 1)])
+
+
 regex_uncategorized_commands.append(
     ("^(\\|\\|([^\\|]*(\\|[^\\|]+)+|[^\\|]*)\\|\\| *)+$", spoiler_resp, re.M | re.I)
 )
 
 
 async def bell_resp(message: discord.Message):
-    await message.channel.send("https://tenor.com/view/hell-hellsbells-acdc-wow-bell-gif-10835118")
-   
-    
+    await message.channel.send(
+        "https://tenor.com/view/hell-hellsbells-acdc-wow-bell-gif-10835118"
+    )
+
+
+regex_uncategorized_commands.append(("ringing my bell", bell_resp, re.M | re.I))
+
+
+async def no_u_resp(message: discord.Message):
+    await message.channel.send(
+        "https://cdn.discordapp.com/attachments/731953366015541288/740259703623516170/0vp1zvhnugu21.png"
+    )
+
+
+regex_uncategorized_commands.append(("^no u$", no_u_resp, re.M | re.I))
+
+
+async def one_of_us_resp(message: discord.Message):
+    await message.channel.send("One of us!")
+
+
 regex_uncategorized_commands.append(
-    ("ringing my bell", bell_resp, re.M | re.I)
+    ("^\\**(one of us(!| |,)*)+\\**$", one_of_us_resp, re.M | re.I)
 )
+
+
+async def society_resp(message: discord.Message):
+    await message.channel.send("Bottom Text")
+
+
+regex_uncategorized_commands.append(
+    ("^.{0,5}We live in a society.{0,5}$", society_resp, re.M | re.I)
+)
+
+
+async def deep_one_resp(message: discord.Message):
+    await message.channel.send(
+        "blub blub blub blub blub blub blub blub blub blub blub blub blub blub blub"
+    )
+
+
+regex_uncategorized_commands.append(
+    ("^if I (were|was) a deep one", deep_one_resp, re.M | re.I)
+)
+
+
+async def sixtynine_resp(message: discord.Message):
+    await message.add_reaction("🇳")
+    await message.add_reaction("🇮")
+    await message.add_reaction("🇨")
+    await message.add_reaction("🇪")
+
+
+regex_uncategorized_commands.append(
+    ("^[^\\/<]*69(([^1][^1]).*|[^1].|.[^1]|.?)$", sixtynine_resp, re.M | re.I)
+)
+
+
+async def woop_resp(message: discord.Message):
+    await message.channel.send("That's the sound of da police!")
+
+
+regex_uncategorized_commands.append(("^woop woop[\\.!]*$", woop_resp, re.M | re.I))
+
+
+async def paragon_resp(message: discord.Message):
+    await message.channel.send("Fuck Epic!")
+
+
+regex_uncategorized_commands.append(("paragon", paragon_resp, re.M | re.I))
+
+
+async def bruh_resp(message: discord.Message):
+    bruh = await message.channel.send(
+        "https://cdn.discordapp.com/attachments/"
+        "367037496455856128/654732909718274061/"
+        "74661755_2772995016045496_4416748817345413120_n.jpg"
+    )
+    await bruh.add_reaction("🅱️")
+    await bruh.add_reaction("🇷")
+    await bruh.add_reaction("🇺")
+    await bruh.add_reaction("🇭")
+
+
+regex_uncategorized_commands.append(("^\\W*bruh\\W*$", bruh_resp, re.M | re.I))
+
+
+async def dad_reclaim_resp(message: discord.Message):
+    await message.channel.send("Oi, that's my job!")
+
+
+regex_uncategorized_commands.append(
+    ("^Hi\\W+.*I(m|'m| am).{0,20}$", dad_reclaim_resp, re.M | re.I)
+)
+
+
+async def hans_resp(message: discord.Message):
+    await message.channel.send("Get ze flammenwerfer!")
+
+
+regex_uncategorized_commands.append(("^hans\\W*$", hans_resp, re.M | re.I))
+
+
+async def loli_resp(message: discord.Message):
+    glare = discord.utils.get(message.guild.emojis, name="BlobGlare")
+    if glare is not None:
+        await message.channel.send(glare)
+    await message.channel.send(
+        "https://cdn.discordapp.com/attachments/413861431906402334/731636158223614113/image0-27.jpg"
+    )
+
+
+regex_uncategorized_commands.append(("loli", loli_resp, re.M | re.I))
+
+
+async def dont_at_me_resp(message: discord.Message):
+    await message.channel.send(f"{message.author.mention}")
+
+
+regex_uncategorized_commands.append(
+    ("do[ ]?n[ ']?t @ me", dont_at_me_resp, re.M | re.I)
+)
+
