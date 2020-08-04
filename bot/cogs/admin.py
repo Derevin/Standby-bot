@@ -40,6 +40,7 @@ class Admin(commands.Cog):
     @commands.command()
     @commands.has_any_role("Moderator", "Guides of the Void")
     async def say(self, ctx, *args):
+        await ctx.message.delete()
         guild = ctx.guild
         channel = discord.utils.get(guild.text_channels, name=args[0])
         msg = " ".join(args[1:])
