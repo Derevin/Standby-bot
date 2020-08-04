@@ -26,7 +26,6 @@ regex_vftv_commands.append(
 
 async def wave_resp(message: discord.Message):
     if message.author.id == 235055132843180032:
-        await message.channel.send("i see you")
         reactions = [
             ":BlobWave:382606234148143115",
             "🇭",
@@ -92,6 +91,7 @@ regex_vftv_commands.append(
         re.M | re.I,
     )
 )
+<<<<<<< HEAD
 
 ### Keto
 
@@ -177,3 +177,5 @@ async def offers_resp(message: discord.Message):
 
 regex_vftv_commands.append((".*", offers_resp, re.M | re.I))
 
+=======
+>>>>>>> 0c0d67e4a85536ebe205f751eaa85c8cb0326791
