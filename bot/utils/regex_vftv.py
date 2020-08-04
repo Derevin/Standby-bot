@@ -25,14 +25,14 @@ regex_vftv_commands.append(
 
 
 async def wave_resp(message: discord.Message):
-    if random.randomint(0, 99) < 99:
+    if random.randomint(0, 99) < 100:
         await message.add_reaction(":BlobWave:382606234148143115")
 
 
 regex_vftv_commands.append(
     (
-        """^^(<:BlobWave:382606234148143115> ?(<:BlobCoffee:456004868990173198>)?|
-        <:BlobCoffee:456004868990173198> ?(<:BlobWave:382606234148143115>)?)$$""",
+        """^(<:BlobWave:382606234148143115> ?(<:BlobCoffee:456004868990173198>)?|
+        <:BlobCoffee:456004868990173198> ?(<:BlobWave:382606234148143115>)?)$""",
         pingsock_resp,
         re.M | re.I,
     )
