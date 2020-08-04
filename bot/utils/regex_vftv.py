@@ -52,3 +52,21 @@ regex_vftv_commands.append(
         re.M | re.I,
     )
 )
+
+
+### stradavar
+
+
+async def stradavar_resp(message: discord.Message):
+    await message.channel.send("Quickly, <@168350377824092160>, quickly!")
+    await message.add_reaction("👏")
+
+
+regex_vftv_commands.append(
+    (
+        "^.*((\\[Stradavar Prime\\])|(:StradavarPrime.{0,4}:)).*$",
+        stradavar_resp,
+        re.M | re.I,
+    )
+)
+
