@@ -1,12 +1,14 @@
 import discord
 import re
 from settings import *
+from utils.regex_fun_phrases import regex_fun_phrases_commands
 from utils.regex_songs import regex_songs_commands
 from utils.regex_uncategorized import regex_uncategorized_commands
 from utils.regex_vftv import regex_vftv_commands
 
 
 regex_commands = []
+regex_commands.extend(regex_fun_phrases_commands)
 regex_commands.extend(regex_songs_commands)
 regex_commands.extend(regex_uncategorized_commands)
 

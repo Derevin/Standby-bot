@@ -52,3 +52,53 @@ regex_vftv_commands.append(
         re.M | re.I,
     )
 )
+
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+### Pedestal
+
+async def pedestal_resp(message: discord.Message):
+    await message.add_reaction("👏")
+    await message.channel.send("Quickly, master <@235055132843180032>, quickly!")
+    
+    
+regex_vftv_commands.append(
+    ("(\\[Pedestal Prime\\])|(:PedestalPrime:)", pedestal_resp, re.M | re.I)
+)
+
+
+### Kross Wood
+
+async def wood_resp(message discord.Message):
+    if message.author.id == 255653858095661057:
+        await message.add_reaction(":Chainsaw:621096339207618565")
+        await message.add_reaction("🌲")
+
+
+regex_vftv_commands.append(
+    ("wood", wood_resp, re.M | re.I)
+)    
+=======
+=======
+>>>>>>> 21c714aaa3fbfde5cd325729df7e96f7e23a7bfe
+### stradavar
+
+
+async def stradavar_resp(message: discord.Message):
+    await message.channel.send("Quickly, <@168350377824092160>, quickly!")
+    await message.add_reaction("👏")
+
+
+regex_vftv_commands.append(
+    (
+        "^.*((\\[Stradavar Prime\\])|(:StradavarPrime.{0,4}:)).*$",
+        stradavar_resp,
+        re.M | re.I,
+    )
+)
+
+<<<<<<< HEAD
+>>>>>>> 21c714aaa3fbfde5cd325729df7e96f7e23a7bfe
+=======
+>>>>>>> 21c714aaa3fbfde5cd325729df7e96f7e23a7bfe

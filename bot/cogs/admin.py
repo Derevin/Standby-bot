@@ -34,6 +34,15 @@ class Admin(commands.Cog):
     @commands.command()
     async def repeatMessage(self, ctx):
         await ctx.send(ctx.message.content)
+        
+    @commands.command()
+    @commands.has_any_role("Moderator", "Guides of the Void")
+    async def say(self, ctx, *args):
+        guild = ctx.guild
+        channel = discord.utils.get(guild.text_channels, name = args[0])
+        msg = ' '.join(args[1:])
+        if channel != None:
+            await channel.send(msg)
 
 
 def setup(bot):

@@ -15,10 +15,13 @@ regex_uncategorized_commands.append(("\\**(cough *){2,}\\**", cough_resp, re.M |
 
 
 async def ping_resp(message: discord.Message):
-    await message.channel.send("<:Pingsock:739930335420088411>")
+    emoji = discord.utils.get(message.guild.emojis, name = "Pingsock")
+    if emoji != None:
+        await message.channel.send(emoji)
+    await message.channel.send(f"{message.author.mention}")
 
 
-regex_uncategorized_commands.append(("738113308787343462", ping_resp, re.M | re.I))
+regex_uncategorized_commands.append((f"{BOT_ID}", ping_resp, re.M | re.I))
 
 
 async def uwu_resp(message: discord.Message):
@@ -41,10 +44,13 @@ regex_uncategorized_commands.append(
 
 
 async def nephew_resp(message: discord.Message):
-    await message.channel.send("delet this")
+    if message.content == "||nephew||":
+        await message.channel.send("||delet this||")
+    else:
+        await message.channel.send("delet this")
 
 
-regex_uncategorized_commands.append(("nephew", nephew_resp, re.M | re.I))
+regex_uncategorized_commands.append(("^\\|*nephew\\|*$", nephew_resp, re.M | re.I))
 
 
 async def dad_resp(message: discord.Message):
@@ -68,4 +74,29 @@ async def kenobi_resp(message: discord.Message):
         )
 
 
-regex_uncategorized_commands.append(("hello there", kenobi_resp, re.M | re.I))
+regex_uncategorized_commands.append(
+    ("hello there", kenobi_resp, re.M | re.I)
+)
+
+
+async def spoiler_resp(message: discord.Message):
+    if message.content == "||nephew||":
+        return
+    ignored_channels = ['wf-shitpost', 'netflix-and-read', 'vie-for-the-vault']
+    responses = ["Hey, what's the big secret?", "What are we whispering about?"]
+    if not message.channel.name in ignored_channels:
+        await message.channel.send(responses[random.randint(0,len(responses)-1)])
+   
+   
+regex_uncategorized_commands.append(
+    ("^(\\|\\|([^\\|]*(\\|[^\\|]+)+|[^\\|]*)\\|\\| *)+$", spoiler_resp, re.M | re.I)
+)
+
+
+async def bell_resp(message: discord.Message):
+    await message.channel.send("https://tenor.com/view/hell-hellsbells-acdc-wow-bell-gif-10835118")
+   
+    
+regex_uncategorized_commands.append(
+    ("ringing my bell", bell_resp, re.M | re.I)
+)
