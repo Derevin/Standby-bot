@@ -25,7 +25,7 @@ regex_vftv_commands.append(
 
 
 async def wave_resp(message: discord.Message):
-    if random.randomint(0, 99) < 100:
+    if random.randint(0, 99) < 100:
         await message.add_reaction(":BlobWave:382606234148143115")
 
 
