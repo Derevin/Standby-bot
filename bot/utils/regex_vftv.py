@@ -67,7 +67,7 @@ regex_vftv_commands.append(
 
 ### Kross Wood
 
-async def wood_resp(message discord.Message):
+async def wood_resp(message: discord.Message):
     if message.author.id == 255653858095661057:
         await message.add_reaction(":Chainsaw:621096339207618565")
         await message.add_reaction("🌲")
