@@ -178,10 +178,14 @@ regex_vftv_commands.append((".*", offers_resp, re.M | re.I))
 
 
 async def pp_resp(message: discord.Message):
-    await message.channel.send("Just like <@235055132843180032>'s pp")
+    await message.channel.send("Just like <@168350377824092160>'s pp")
 
 
 regex_vftv_commands.append(
-    ("(pretty small|it[ 'i]*s (so )?tiny)", pp_resp, re.M | re.I)
+    (
+        "(so|really|very|pretty|it[ 'i]*s) (tiny|small|smol|puny)\\W*$",
+        pp_resp,
+        re.M | re.I,
+    )
 )
 
