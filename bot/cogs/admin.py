@@ -95,6 +95,12 @@ class Admin(commands.Cog):
             "https://cdn.discordapp.com/attachments/355732809224028161/709500701134422137/anime_violation.png"
         )
 
+    @commands.command()
+    @commands.has_any_role("Moderator", "Guides of the Void")
+    async def react(self, ctx, msg_id, emoji):
+        msg = await ctx.fetch_message(msg_id)
+        await msg.add_reaction(emoji)
+
 
 def setup(bot):
     bot.add_cog(Admin(bot))
