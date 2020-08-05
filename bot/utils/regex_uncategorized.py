@@ -202,11 +202,11 @@ async def loli_resp(message: discord.Message):
     await message.channel.send(
         "https://cdn.discordapp.com/attachments/413861431906402334/731636158223614113/image0-27.jpg"
     )
-    if re.search("loIi", message.content) is not None:
+    if re.search("loli", message.content, re.I) is None:
         await message.channel.send(f"Fuck off, {message.author.mention}")
 
 
-regex_uncategorized_commands.append(("lo[lI]i", loli_resp, re.M | re.I))
+regex_uncategorized_commands.append(("[lI]o[lI]i", loli_resp, re.M | re.I))
 
 
 async def dont_at_me_resp(message: discord.Message):

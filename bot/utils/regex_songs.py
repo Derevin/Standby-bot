@@ -133,6 +133,15 @@ async def somebody_resp(message: discord.Message):
 
 regex_songs_commands.append(("^(some|.*\\Wsome\\W*)$", somebody_resp, re.M | re.I))
 
+
+async def roll_me_resp(message: discord.Message):
+    await message.channel.send("**I AIN'T THE SHARPEST TOOL IN THE SHED**")
+
+
+regex_songs_commands.append(
+    ("\\W*the world is gonna roll me\\W*", roll_me_resp, re.M | re.I)
+)
+
 #### hard rock
 
 
