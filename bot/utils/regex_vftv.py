@@ -127,7 +127,8 @@ async def siegeQ_resp(message: discord.Message):
         "⏰",
         "2️⃣",
         ":GlobCatGun:621700315376517122",
-        "🇸" "🇹",
+        "🇸",
+        "🇹",
         "🇷",
         "🇴",
         "🇳",
@@ -166,9 +167,8 @@ async def offers_resp(message: discord.Message):
         and len(message.attachments) == 0
     ):
         await message.delete()
-        bot_spam = discord.utils.get(message.guild.text_channels, name="bot-spam")
-        await bot_spam.send(
-            f"{message.author.mention} We're trying to streamline {message.channel.mention} - please update"
+        await message.author.send(
+            f"Hi {message.author.mention}! We're trying to streamline {message.channel.mention} - please update "
             "your post to contain a link, an image, or a specific reference to a game store and re-post it. "
             "If you've received this message in error, please contact your favorite mod."
         )
