@@ -17,6 +17,14 @@ class ErrorHandler(commands.Cog):
     ) -> None:
         if isinstance(e, commands.errors.UserInputError):
             await self.handle_user_input_error(ctx, e)
+        elif isinstance(e, commands.errors.CommandNotFound):
+            await self._sleep_and_delete(
+                await ctx.channel.send(
+                    embed=self._get_error_embed(
+                        title="Command not found", body=ctx.message.content
+                    )
+                )
+            )
         else:
             if ctx.guild.id == GUILD_ID:
                 channel = discord.utils.get(
@@ -39,6 +47,10 @@ class ErrorHandler(commands.Cog):
         credits: https://github.com/python-discord
         """
         return discord.Embed(title=title, colour=SOFT_RED, description=body)
+
+    async def _sleep_and_delete(self, msg):
+        await asyncio.sleep(15)
+        await msg.delete()
 
     @staticmethod
     def get_help_command(ctx: commands.Context):
