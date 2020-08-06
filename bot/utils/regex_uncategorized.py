@@ -54,7 +54,7 @@ regex_uncategorized_commands.append(("^\\|*nephew\\|*$", nephew_resp, re.M | re.
 
 
 async def dad_resp(message: discord.Message):
-    msg = re.split("m\\W+", message.content, 1)
+    msg = re.split("m ", message.content, 1)
     if len(re.findall(" ", msg[-1])) < 6:
         await message.channel.send("Hi " + msg[-1] + f", I'm <@{BOT_ID}>.")
 
@@ -184,7 +184,7 @@ async def dad_reclaim_resp(message: discord.Message):
 
 
 regex_uncategorized_commands.append(
-    ("^Hi\\W+.*I(m|'m| am).{0,20}$", dad_reclaim_resp, re.M | re.I)
+    ("^Hi\\W+.*I(m|'m| am) .{0,30}$", dad_reclaim_resp, re.M | re.I)
 )
 
 
