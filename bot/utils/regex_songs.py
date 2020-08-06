@@ -90,7 +90,7 @@ regex_songs_commands.append(("^testing.{0,4}$", testing_emn_resp, re.M | re.I))
 
 
 async def spaghetti_resp(message: discord.Message):
-    await message.channel.send("*♬ mom's spaghetti ♬*")
+    await message.channel.send("*mom's spaghetti*")
 
 
 regex_songs_commands.append(("^.{18,30}already\\W{0,4}$", spaghetti_resp, re.M | re.I))

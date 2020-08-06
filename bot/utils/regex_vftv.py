@@ -31,11 +31,15 @@ async def wave_resp(message: discord.Message):
             "🇭",
             "🇮",
             ":BlobGuns:388081474760605706",
-            "🇸",
-            "🇱",
-            "🇦",
-            "🇻",
+            "🇫",
             "🇪",
+            "🇱",
+            "〰️",
+            "🇨",
+            "🇭",
+            "🇦",
+            "🇳",
+            ":BlobAww:380182813300752395",
         ]
         for x in reactions:
             await message.add_reaction(x)
