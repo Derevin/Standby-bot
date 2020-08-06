@@ -12,7 +12,8 @@ class MessageHandler(commands.Cog):
     async def on_message(self, message: discord.Message):
         if message.author.bot:
             return
-        await regex_handler(message)
+        if message.channel.type == "group":
+            await regex_handler(message)
 
 
 def setup(bot):
