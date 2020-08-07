@@ -12,7 +12,7 @@ class MessageHandler(commands.Cog):
     async def on_message(self, message: discord.Message):
         if message.author.bot:
             return
-        if message.channel.type == "group":
+        if str(message.channel.type) == "text":
             await regex_handler(message)
 
 

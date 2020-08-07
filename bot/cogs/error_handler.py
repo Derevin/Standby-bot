@@ -3,9 +3,6 @@ from discord.ext import commands
 import asyncio
 from settings import *
 
-ERROR_CHANNEL_NAME = "maintenance-channel"
-SOFT_RED = 0xCD6D6D
-
 
 class ErrorHandler(commands.Cog):
     def __init__(self, bot):
@@ -15,6 +12,7 @@ class ErrorHandler(commands.Cog):
     async def on_command_error(
         self, ctx: commands.Context, e: commands.errors.CommandError
     ) -> None:
+        print(e)
         if isinstance(e, commands.errors.UserInputError):
             await self.handle_user_input_error(ctx, e)
         elif isinstance(e, commands.errors.CommandNotFound):
