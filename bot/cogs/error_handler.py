@@ -4,6 +4,24 @@ import asyncio
 from settings import *
 
 
+def get_help_command(ctx: commands.Context):
+    """
+    Return a prepared `help` command invocation coroutine.
+    credits: https://github.com/python-discord
+    """
+    if ctx.command:
+        return ctx.send_help(ctx.command)
+    return ctx.send_help()
+
+
+def unhandled_error_embed(cont, chan, e) -> discord.Embed:
+    embed = discord.Embed(colour=SOFT_RED)
+    embed.add_field(name="Message", value=f"```{cont}```", inline=False)
+    embed.add_field(name="Trigger channel", value=chan, inline=False)
+    embed.add_field(name="Error", value=str(e), inline=False)
+    return embed
+
+
 class ErrorHandler(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -28,15 +46,9 @@ class ErrorHandler(commands.Cog):
                     ctx.guild.text_channels, name=ERROR_CHANNEL_NAME
                 )
                 if channel is not None:
-                    await channel.send(embed=self._unhandled_error_embed(ctx, e))
-
-    def _unhandled_error_embed(self, ctx, e) -> discord.Embed:
-        embed = discord.Embed(colour=SOFT_RED)
-        embed.add_field(
-            name="Message", value=f"```{ctx.message.content}```", inline=False
-        )
-        embed.add_field(name="Error", value=str(e), inline=False)
-        return embed
+                    await channel.send(
+                        embed=unhandled_error_embed(ctx.message.content, ctx.channel, e)
+                    )
 
     def _get_error_embed(self, title: str, body: str) -> discord.Embed:
         """
@@ -48,17 +60,6 @@ class ErrorHandler(commands.Cog):
     async def _sleep_and_delete(self, msg):
         await asyncio.sleep(20)
         await msg.delete()
-
-    @staticmethod
-    def get_help_command(ctx: commands.Context):
-        """
-        Return a prepared `help` command invocation coroutine.
-        credits: https://github.com/python-discord
-        """
-        if ctx.command:
-            return ctx.send_help(ctx.command)
-
-        return ctx.send_help()
 
     async def handle_user_input_error(
         self, ctx: commands.Context, e: commands.errors.UserInputError
