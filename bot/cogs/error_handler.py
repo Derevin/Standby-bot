@@ -12,7 +12,6 @@ class ErrorHandler(commands.Cog):
     async def on_command_error(
         self, ctx: commands.Context, e: commands.errors.CommandError
     ) -> None:
-        print(e)
         if isinstance(e, commands.errors.UserInputError):
             await self.handle_user_input_error(ctx, e)
         elif isinstance(e, commands.errors.CommandNotFound):
@@ -47,7 +46,7 @@ class ErrorHandler(commands.Cog):
         return discord.Embed(title=title, colour=SOFT_RED, description=body)
 
     async def _sleep_and_delete(self, msg):
-        await asyncio.sleep(15)
+        await asyncio.sleep(20)
         await msg.delete()
 
     @staticmethod
