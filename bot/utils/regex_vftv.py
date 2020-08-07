@@ -2,6 +2,7 @@ import discord
 import re
 import random
 import asyncio
+from settings import *
 
 regex_vftv_commands = []
 
@@ -25,7 +26,7 @@ regex_vftv_commands.append(
 
 
 async def wave_resp(message: discord.Message):
-    if message.author.id == 235055132843180032:
+    if message.author.id == FEL_ID:
         reactions = [
             ":BlobWave:382606234148143115",
             "🇭",
