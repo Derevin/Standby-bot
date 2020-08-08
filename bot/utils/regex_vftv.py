@@ -35,11 +35,6 @@ async def wave_resp(message: discord.Message):
             "🇫",
             "🇪",
             "🇱",
-            "〰️",
-            "🇨",
-            "🇭",
-            "🇦",
-            "🇳",
             ":BlobAww:380182813300752395",
         ]
         for x in reactions:
