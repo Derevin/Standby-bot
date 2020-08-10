@@ -16,5 +16,5 @@ for filename in os.listdir("bot/cogs"):
     if filename.endswith(".py") and filename != "__init__.py":
         bot.load_extension(f"cogs.{filename[:-3]}")
 
-bot.loop.run_until_complete(init_db_connection(bot))
+# bot.loop.run_until_complete(init_db_connection(bot))
 bot.run(BOT_TOKEN)
