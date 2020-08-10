@@ -2,9 +2,9 @@ import asyncpg
 
 CREATE_USER = """
 CREATE TABLE IF NOT EXISTS "user" (
-    "user_id" integer NOT NULL,
+    "user_id" BIGINT NOT NULL,
     "thanks" integer NOT NULL DEFAULT '0',
-    "guild_id" integer NOT NULL DEFAULT '0',
+    "guild_id" BIGINT NOT NULL,
     CONSTRAINT "user_pk" PRIMARY KEY ("user_id")
 ) WITH (
   OIDS=FALSE
@@ -12,8 +12,8 @@ CREATE TABLE IF NOT EXISTS "user" (
 """
 
 CREATE_STARBOARD = """CREATE TABLE IF NOT EXISTS "starboard" (
-    "msg_id" integer NOT NULL,
-    "user_id" integer NOT NULL,
+    "msg_id" BIGINT NOT NULL,
+    "user_id" BIGINT NOT NULL,
     "stars" integer NOT NULL DEFAULT '0',
     CONSTRAINT "starboard_pk" PRIMARY KEY ("msg_id")
 ) WITH (
@@ -23,7 +23,7 @@ CREATE_STARBOARD = """CREATE TABLE IF NOT EXISTS "starboard" (
 
 CREATE_GUILD = """
 CREATE TABLE IF NOT EXISTS "guild" (
-    "guild_id" integer NOT NULL,
+    "guild_id" BIGINT NOT NULL,
     CONSTRAINT "guild_pk" PRIMARY KEY ("guild_id")
 ) WITH (
   OIDS=FALSE
@@ -45,4 +45,4 @@ async def create_tables(con):
         await con.execute(ALTER_USER)
         await con.execute(ALTER_STARBOARD)
     except Exception as e:
-        print(e)
+        print("expected exception:", e)
