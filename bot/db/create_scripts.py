@@ -1,10 +1,7 @@
 import asyncpg
 
-
-async def create_tables(pool):
-    await pool.execute(
-        """
-        CREATE TABLE IF NOT EXISTS "user" (
+CREATE_USER = """
+CREATE TABLE IF NOT EXISTS "user" (
     "user_id" integer NOT NULL,
     "thanks" integer NOT NULL DEFAULT '0',
     "guild_id" integer NOT NULL DEFAULT '0',
@@ -12,8 +9,9 @@ async def create_tables(pool):
 ) WITH (
   OIDS=FALSE
 );
+"""
 
-CREATE TABLE IF NOT EXISTS "starboard" (
+CREATE_STARBOARD = """CREATE TABLE IF NOT EXISTS "starboard" (
     "msg_id" integer NOT NULL,
     "user_id" integer NOT NULL,
     "stars" integer NOT NULL DEFAULT '0',
@@ -21,17 +19,30 @@ CREATE TABLE IF NOT EXISTS "starboard" (
 ) WITH (
   OIDS=FALSE
 );
+"""
 
+CREATE_GUILD = """
 CREATE TABLE IF NOT EXISTS "guild" (
     "guild_id" integer NOT NULL,
     CONSTRAINT "guild_pk" PRIMARY KEY ("guild_id")
 ) WITH (
   OIDS=FALSE
 );
+"""
 
+ALTER_USER = 'ALTER TABLE "user" ADD CONSTRAINT "user_fk0" FOREIGN KEY ("guild_id") REFERENCES "guild"("guild_id");'
 
-ALTER TABLE "user" ADD CONSTRAINT "user_fk0" FOREIGN KEY ("guild_id") REFERENCES "guild"("guild_id");
-
+ALTER_STARBOARD = """
 ALTER TABLE "starboard" ADD CONSTRAINT "starboard_fk0" FOREIGN KEY ("user_id") REFERENCES "user"("user_id");
-    """
-    )
+"""
+
+
+async def create_tables(con):
+    try:
+        await con.execute(CREATE_USER)
+        await con.execute(CREATE_STARBOARD)
+        await con.execute(CREATE_GUILD)
+        await con.execute(ALTER_USER)
+        await con.execute(ALTER_STARBOARD)
+    except Exception as e:
+        print(e)
