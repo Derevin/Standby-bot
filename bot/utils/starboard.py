@@ -43,7 +43,6 @@ async def edit_stars(message, stars):
 
 
 async def starboard_handler(bot, payload):
-    print(payload)
     if isinstance(payload, discord.RawReactionActionEvent):
         if payload.emoji.name == "⭐":
             chnl = bot.get_channel(payload.channel_id)
@@ -97,5 +96,3 @@ async def starboard_handler(bot, payload):
                 await bot.pg_pool.execute(
                     f"DELETE FROM starboard WHERE msg_id = {payload.message_id};"
                 )
-    else:
-        raise ("unkown payload type:", payload)
