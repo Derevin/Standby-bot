@@ -198,3 +198,35 @@ async def darkness_resp(message: discord.Message):
 
 
 regex_vftv_commands.append(("^what( i|')?s", darkness_resp, re.M | re.I))
+
+
+## GOOD/BAD bot
+
+
+async def good_bot_resp(message: discord.Message):
+    await message.add_reaction(":BlobAww:380182813300752395")
+
+
+regex_vftv_commands.append(
+    (
+        r"^(.{0,20} |)(good|thanks?( (yo)?u)?|love( (yo)?u)?) (bot|<..736265509951242403>)\W{0,2}$",
+        good_bot_resp,
+        re.M | re.I,
+    )
+)
+
+
+async def bad_bot_resp(message: discord.Message):
+    await message.add_reaction(":BlobBan:438000257385889792")
+
+
+regex_vftv_commands.append(
+    (
+        r"^(.{0,20} |)"
+        r"((bad)|(stupid)|(f((uc)?k)? off)|(fuck)|(hate ((yo)?u|this))|(shut up)|(stfu)|(f((uc)?k)? ?(yo)?u)) "
+        r"(bot|<..736265509951242403>).{0,2}$",
+        bad_bot_resp,
+        re.M | re.I,
+    )
+)
+
