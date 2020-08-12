@@ -26,7 +26,7 @@ async def mario_resp(message: discord.Message):
 
 
 regex_fun_phrases_commands.append(
-    ("(^| )it(s|'s|s a|'s a|sa) me\\W{0,4}$", mario_resp, re.M | re.I)
+    (r"(^| )it(s|'s|s a|'s a|sa) me\W{0,4}$", mario_resp, re.M | re.I)
 )
 
 
