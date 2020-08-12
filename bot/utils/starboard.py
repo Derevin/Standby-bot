@@ -45,9 +45,9 @@ async def starboard_handler(bot, payload):
     print(payload)
     if isinstance(payload, discord.RawReactionActionEvent):
         if payload.emoji.name == "⭐":
-            await ensure_usr_existence(bot, payload.user_id, payload.guild_id)
             chnl = bot.get_channel(payload.channel_id)
             msg = await chnl.fetch_message(payload.message_id)
+            await ensure_usr_existence(bot, msg.author.id, payload.guild_id)
             stars = 0
             sb_channel = bot.get_channel(STARBOARD_ID)
             for emoji in msg.reactions:
