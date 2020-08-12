@@ -197,4 +197,4 @@ async def darkness_resp(message: discord.Message):
         )
 
 
-regex_vftv_commands.append(("^what( i|')*s", darkness_resp, re.M | re.I))
+regex_vftv_commands.append(("^what( i|')?s", darkness_resp, re.M | re.I))
