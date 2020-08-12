@@ -87,6 +87,16 @@ regex_fun_phrases_commands.append(
     ("^.{0,4}It is wednesday\\W{0,4}$", wednesday_resp, re.M | re.I)
 )
 
+
+async def mittwoch_resp(message: discord.Message):
+    await message.channel.send("meine Kerle")
+    await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
+
+
+regex_fun_phrases_commands.append(
+    ("^.{0,4}Es ist Mittwoch\\W{0,4}$", mittwoch_resp, re.M | re.I)
+)
+
 ### tuesday
 
 
