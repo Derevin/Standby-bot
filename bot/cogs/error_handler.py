@@ -74,31 +74,26 @@ class ErrorHandler(commands.Cog):
         * Other: send an error message and the help command
         credits: https://github.com/python-discord
         """
-        prepared_help_command = self.get_help_command(ctx)
+        prepared_help_command = get_help_command(ctx)
 
         if isinstance(e, commands.errors.MissingRequiredArgument):
             embed = self._get_error_embed("Missing required argument", e.param.name)
             await ctx.send(embed=embed)
             await prepared_help_command
-            self.bot.stats.incr("errors.missing_required_argument")
         elif isinstance(e, commands.errors.TooManyArguments):
             embed = self._get_error_embed("Too many arguments", str(e))
             await ctx.send(embed=embed)
             await prepared_help_command
-            self.bot.stats.incr("errors.too_many_arguments")
         elif isinstance(e, commands.errors.BadArgument):
             embed = self._get_error_embed("Bad argument", str(e))
             await ctx.send(embed=embed)
             await prepared_help_command
-            self.bot.stats.incr("errors.bad_argument")
         elif isinstance(e, commands.errors.BadUnionArgument):
             embed = self._get_error_embed("Bad argument", f"{e}\n{e.errors[-1]}")
             await ctx.send(embed=embed)
-            self.bot.stats.incr("errors.bad_union_argument")
         elif isinstance(e, commands.errors.ArgumentParsingError):
             embed = self._get_error_embed("Argument parsing error", str(e))
             await ctx.send(embed=embed)
-            self.bot.stats.incr("errors.argument_parsing_error")
         else:
             embed = self._get_error_embed(
                 "Input error",
@@ -106,7 +101,6 @@ class ErrorHandler(commands.Cog):
             )
             await ctx.send(embed=embed)
             await prepared_help_command
-            self.bot.stats.incr("errors.other_user_input_error")
 
 
 def setup(bot):

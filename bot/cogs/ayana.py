@@ -1,6 +1,7 @@
 from discord.ext import commands
 import discord
 from settings import *
+from inspect import Parameter
 
 
 class Ayana(commands.Cog):
@@ -15,6 +16,17 @@ class Ayana(commands.Cog):
             )
             if channel is not None:
                 await channel.send(f"{member} has been noscoped succesfully.")
+
+    @commands.command()
+    async def sayd(self, ctx, *args):
+        if not args:
+            raise commands.errors.MissingRequiredArgument(
+                Parameter("args", Parameter.VAR_POSITIONAL)
+            )
+        str = " ".join(args)
+        msg = await ctx.channel.send((str + " "))
+        await ctx.message.delete()
+        await msg.edit(content=str)
 
 
 def setup(bot):
