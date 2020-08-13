@@ -148,3 +148,15 @@ async def fme_resp(message: discord.Message):
 
 
 regex_fun_phrases_commands.append(("^.{0,2}fuck me\\W{0,4}$", fme_resp, re.M | re.I))
+
+############ ayaya regex
+
+
+async def ayaya_resp(message: discord.Message):
+    await message.channel.send("Ayaya!")
+    if message.guild.id == GUILD_ID:
+        await message.add_reaction(":Ayy:610479153937907733")
+        await message.add_reaction(":Ayy2:470743166207787010")
+
+
+regex_fun_phrases_commands.append(("^ayaya\\W{0,4}$", ayaya_resp, re.M | re.I))

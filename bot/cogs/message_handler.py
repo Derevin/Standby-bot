@@ -16,7 +16,7 @@ class MessageHandler(commands.Cog):
             return
         if str(message.channel.type) == "text":
             try:
-                await regex_handler(message)
+                await regex_handler(self.bot, message)
             except Exception as e:
                 if message.guild.id == GUILD_ID:
                     channel = discord.utils.get(
