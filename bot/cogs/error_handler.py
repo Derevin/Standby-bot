@@ -4,16 +4,6 @@ import asyncio
 from settings import *
 
 
-def get_help_command(ctx: commands.Context):
-    """
-    Return a prepared `help` command invocation coroutine.
-    credits: https://github.com/python-discord
-    """
-    if ctx.command:
-        return ctx.send_help(ctx.command)
-    return ctx.send_help()
-
-
 def unhandled_error_embed(cont, chan, e) -> discord.Embed:
     embed = discord.Embed(colour=SOFT_RED)
     embed.add_field(name="Message", value=f"```{cont}```", inline=False)
@@ -25,6 +15,12 @@ def unhandled_error_embed(cont, chan, e) -> discord.Embed:
 class ErrorHandler(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+
+    async def send_help_command(self, ctx: commands.Context):
+        if ctx.command:
+            await ctx.send_help(ctx.command)
+        else:
+            await ctx.send_help()
 
     @commands.Cog.listener()
     async def on_command_error(
@@ -74,20 +70,19 @@ class ErrorHandler(commands.Cog):
         * Other: send an error message and the help command
         credits: https://github.com/python-discord
         """
-        prepared_help_command = get_help_command(ctx)
 
         if isinstance(e, commands.errors.MissingRequiredArgument):
             embed = self._get_error_embed("Missing required argument", e.param.name)
             await ctx.send(embed=embed)
-            await prepared_help_command
+            await self.send_help_command(ctx)
         elif isinstance(e, commands.errors.TooManyArguments):
             embed = self._get_error_embed("Too many arguments", str(e))
             await ctx.send(embed=embed)
-            await prepared_help_command
+            await self.send_help_command(ctx)
         elif isinstance(e, commands.errors.BadArgument):
             embed = self._get_error_embed("Bad argument", str(e))
             await ctx.send(embed=embed)
-            await prepared_help_command
+            await self.send_help_command(ctx)
         elif isinstance(e, commands.errors.BadUnionArgument):
             embed = self._get_error_embed("Bad argument", f"{e}\n{e.errors[-1]}")
             await ctx.send(embed=embed)
@@ -103,7 +98,7 @@ class ErrorHandler(commands.Cog):
             )
             await ctx.send(embed=embed)
             if str(e) == "":
-                await prepared_help_command
+                await self.send_help_command(ctx)
 
 
 def setup(bot):

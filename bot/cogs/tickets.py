@@ -110,13 +110,20 @@ class Tickets(commands.Cog):
             await self.create_claimable(open_ticket_cat)
 
     @commands.command()
-    async def treopen(self, ctx, *args):
-        print("reopen")
+    async def tresolve(self, ctx, *args):
+        if ctx.channel.category.name != ACTIVE_TICKETS_CAT_NAME:
+            raise commands.errors.UserInputError(
+                "This command can be used only in an active channel"
+            )
+        print("resolve")
 
     @commands.command()
-    async def tresolve(self, ctx, *args):
-        print("resolve")
-        pass
+    async def treopen(self, ctx, *args):
+        if ctx.channel.category.name != RESOLVED_TICKETS_CAT_NAME:
+            raise commands.errors.UserInputError(
+                "This command can be used only in a resolved channel"
+            )
+        print("reopen")
 
 
 def setup(bot):
