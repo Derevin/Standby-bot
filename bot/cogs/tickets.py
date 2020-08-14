@@ -7,20 +7,21 @@ class Tickets(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.Cog.listener()
-    async def on_member_remove(self, member: discord.Member):
+    @commands.command()
+    @commands.has_any_role("Moderator", "Guides of the Void")
+    async def tinit(self, ctx, *args):
         pass
 
     @commands.command()
-    async def open(self, ctx, *args):
+    async def topen(self, ctx, *args):
         pass
 
     @commands.command()
-    async def reopen(self, ctx, *args):
+    async def treopen(self, ctx, *args):
         pass
 
     @commands.command()
-    async def resolve(self, ctx, *args):
+    async def tresolve(self, ctx, *args):
         pass
 
 
