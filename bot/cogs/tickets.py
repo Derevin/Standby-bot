@@ -94,9 +94,7 @@ class Tickets(commands.Cog):
             category=active_ticket_cat,
             overwrites=overwrites,
         )
-        await ctx.message.channel.set_permissions(
-            ctx.message.author, read_messages=True
-        )
+        await ctx.channel.set_permissions(ctx.message.author, read_messages=True)
         for x in MOD_ROLES_NAMES:
             role = discord.utils.get(ctx.guild.roles, name=x)
             if role is not None:
