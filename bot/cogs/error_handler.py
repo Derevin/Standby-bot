@@ -97,10 +97,13 @@ class ErrorHandler(commands.Cog):
         else:
             embed = self._get_error_embed(
                 "Input error",
-                "Something about your input seems off. Check the arguments and try again.",
+                "Something about your input seems off. Check the arguments and try again."
+                if str(e) == ""
+                else str(e),
             )
             await ctx.send(embed=embed)
-            await prepared_help_command
+            if str(e) == "":
+                await prepared_help_command
 
 
 def setup(bot):
