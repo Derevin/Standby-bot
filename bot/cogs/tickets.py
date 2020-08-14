@@ -10,7 +10,7 @@ ACTIVE_TICKETS_CAT_NAME = "Active tickets"
 RESOLVED_TICKETS_CAT_NAME = "Resolved tickets"
 CLAIMABLE_CHANNEL_MESSAGE = (
     "If you want to talk to the mod team, this is the place!\n"
-    "Claim this channel by typing: ```+topen```"
+    "Claim this channel by typing: ```+tclaim```"
     " and then this channel will be restricted for your and mod-team eyes only.\n"
     "Disclamer: It is recommended to mute this channel's category,"
     " otherwise you will get an unread message notification "
@@ -73,13 +73,19 @@ class Tickets(commands.Cog):
         num = 0
         for x in active_ticket_cat.channels:
             lst = x.name.split("-")
-            if int(lst[-1]) > num:
-                num = int(lst[-1])
+            try:
+                if int(lst[-1]) > num:
+                    num = int(lst[-1])
+            except Exception:
+                print(lst, "has no number")
 
         for x in resolved_ticket_cat.channels:
             lst = x.name.split("-")
-            if int(lst[-1]) > num:
-                num = int(lst[-1])
+            try:
+                if int(lst[-1]) > num:
+                    num = int(lst[-1])
+            except Exception:
+                print(lst, "has no number")
 
         return num
 
@@ -89,6 +95,8 @@ class Tickets(commands.Cog):
         open_ticket_cat = await self.get_or_create_open_cat(ctx)
         if not open_ticket_cat.channels:
             await self.create_claimable(open_ticket_cat)
+        await self.get_or_create_active_cat
+        await self.get_or_create_resolved_cat
 
     @commands.command(aliases=["tclaim"])
     async def topen(self, ctx, *args):
@@ -96,6 +104,7 @@ class Tickets(commands.Cog):
             raise commands.errors.UserInputError(
                 "This command can be used only in a claimable channel"
             )
+
         issue_num = await self.get_highest_num(ctx) + 1
         print(issue_num)
 
@@ -115,7 +124,9 @@ class Tickets(commands.Cog):
             raise commands.errors.UserInputError(
                 "This command can be used only in an active channel"
             )
-        print("resolve")
+
+        resolved_ticket_cat = await self.get_or_create_resolved_cat(ctx)
+        await ctx.channel.edit(category=resolved_ticket_cat)
 
     @commands.command()
     async def treopen(self, ctx, *args):
@@ -123,7 +134,9 @@ class Tickets(commands.Cog):
             raise commands.errors.UserInputError(
                 "This command can be used only in a resolved channel"
             )
-        print("reopen")
+
+        active_ticket_cat = await self.get_or_create_active_cat(ctx)
+        await ctx.channel.edit(category=active_ticket_cat)
 
 
 def setup(bot):
