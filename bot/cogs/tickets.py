@@ -158,7 +158,7 @@ class Tickets(commands.Cog):
                 content_msg += " [Message too long to be logged]"
         embed.set_thumbnail(url=message.author.avatar_url)
         embed.title = message.author.name
-        embed.description = f"[{content_msg}]({message.jump_url})"
+        embed.description = content_msg
         embed.add_field(name="Channel", value=message.channel.name)
         embed.add_field(name="Date", value=message.created_at)
         return embed
