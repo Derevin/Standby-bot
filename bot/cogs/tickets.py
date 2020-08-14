@@ -13,7 +13,7 @@ CLAIMABLE_CHANNEL_MESSAGE = (
     "If you want to talk to the mod team, this is the place!\n"
     "Claim this channel by typing: ```+tclaim```"
     " and then this channel will be restricted for your and mod-team eyes only.\n"
-    "Disclamer: It is recommended to mute this channel's category,"
+    "Disclaimer: It is recommended to mute this channel's category,"
     " otherwise you will get an unread message notification "
     "everytime this channel gets recreated."
 )
@@ -21,13 +21,14 @@ CLAIMED_MESSAGE = (
     "This channel has been claimed, please type what is it that you want to discuss.\n"
     "You can make sure you're talking only to the mod team by looking "
     "at current member list of the channel (right side of discord).\n"
-    "Once this issue has been resolved, type: ```+tresolved```"
+    "Once this issue has been resolved, type: ```+tresolve```"
 )
 
 RESOLVED_MESSAGE = (
     "This issue has been marked as resolved."
-    " If this was a mistake, type: ```+treopen``` otherwise open a new issue."
-    "This issue can be scrapped with ```+tscrap``` by moderators."
+    " If this was a mistake, type: ```+treopen``` otherwise open a new issue.\n"
+    "This issue can be scrapped with ```+tscrap``` by moderators.\n"
+    "Scrapping takes a while to complete."
 )
 
 REOPENED_MESSAGE = (
