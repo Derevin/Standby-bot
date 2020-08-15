@@ -10,7 +10,7 @@ ACTIVE_TICKETS_CAT_NAME = "Active tickets"
 RESOLVED_TICKETS_CAT_NAME = "Resolved tickets"
 TICKETS_LOG_CHANNEL_NAME = "tickets-log"
 CLAIMABLE_CHANNEL_MESSAGE = (
-    "If you want to talk to the mod team, this is the place!\n"
+    "If you have an issue and want to talk to the mod team, this is the place!\n"
     "Claim this channel by typing: ```+tclaim```"
     " and then this channel will be restricted for your and mod-team eyes only.\n"
     "Disclaimer: It is recommended to mute this channel's category,"
