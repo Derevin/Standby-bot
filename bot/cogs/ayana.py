@@ -83,10 +83,10 @@ class Ayana(commands.Cog):
     #                 await ctx.send("not found")
 
     @commands.command()
-    async def obit(self, ctx, arg):
+    async def obit(self, ctx, channel_name):
         await ctx.message.delete()
-        channel = discord.utils.get(ctx.guild.text_channels, name=arg)
-        if channel is not None:
+        channel = discord.utils.get(ctx.guild.text_channels, name=channel_name)
+        if channel:
             async for msg in ctx.channel.history(limit=5):
                 if msg.author.id == BOT_ID and msg.embeds:
                     await channel.send(embed=msg.embeds[0])
@@ -98,7 +98,7 @@ async def kia_message(bot, payload):
         channel = discord.utils.get(
             payload.guild.text_channels, name=ERROR_CHANNEL_NAME
         )
-        if channel is not None:
+        if channel:
             name = payload.name
             time = datetime.datetime.now()
             time = time.strftime("%b %d, %H:%M")

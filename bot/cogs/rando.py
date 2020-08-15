@@ -9,13 +9,13 @@ class Rando(commands.Cog):
 
     @commands.command(brief="RPG format dice roller")
     async def roll(self, ctx, *args):
-        args = "".join(args)
-        rolls = re.split(r"\+", args)
+        dice = "".join(args)
+        rolls = re.split(r"\+", dice)
         results = []
-        if re.search(r"^\d+d\d+(\+\d+d\d+)*$", args) is None:
+        if re.search(r"^\d+d\d+(\+\d+d\d+)*$", dice) is None:
             raise commands.errors.BadArgument(message="Improper dice format")
         else:
-            output = "Rolling " + re.sub(r"\+", r" \+ ", args) + " = "
+            output = "Rolling " + re.sub(r"\+", r" \+ ", dice) + " = "
             for roll in rolls:
                 num, die = [int(x) for x in re.split("d", roll)]
                 res = [random.randint(1, die) for i in range(num)]
