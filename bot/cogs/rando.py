@@ -13,7 +13,7 @@ class Rando(commands.Cog):
         rolls = re.split(r"\+", args)
         results = []
         if re.search(r"^\d+d\d+(\+\d+d\d+)*$", args) is None:
-            await ctx.send("Improper dice format: " + args)
+            raise commands.errors.BadArgument(message="Improper dice format")
         else:
             output = "Rolling " + re.sub(r"\+", r" \+ ", args) + " = "
             for roll in rolls:
