@@ -87,9 +87,8 @@ class Ayana(commands.Cog):
         await ctx.message.delete()
         channel = discord.utils.get(ctx.guild.text_channels, name=arg)
         if channel is not None:
-            async for msg in ctx.history(limit=5):
+            async for msg in ctx.channel.history(limit=5):
                 if msg.author.id == BOT_ID and msg.embeds:
-                    await channel.send(BOT_ID)
                     await channel.send(embed=msg.embeds[0])
                     return
 
