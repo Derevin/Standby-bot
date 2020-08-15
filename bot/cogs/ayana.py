@@ -94,8 +94,7 @@ class Ayana(commands.Cog):
 
 
 async def kia_message(bot, payload):
-    # if payload.guild.id == GUILD_ID:
-    if True:
+    if payload.guild.id == GUILD_ID:
         channel = discord.utils.get(
             payload.guild.text_channels, name=ERROR_CHANNEL_NAME
         )
