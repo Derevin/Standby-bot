@@ -1,5 +1,6 @@
 import os
 
+NODB = os.getenv("NODB", False)
 BOT_TOKEN = str(os.getenv("BOT_TOKEN", False))
 BOT_ID = int(os.getenv("BOT_ID", False))
 DATABASE_URL = str(os.getenv("DATABASE_URL", False))
