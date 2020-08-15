@@ -2,6 +2,7 @@ from discord.ext import commands
 import discord
 import asyncio
 import random
+import re
 
 
 class Admin(commands.Cog):
@@ -26,23 +27,10 @@ class Admin(commands.Cog):
         await ctx.send("Ponguu!")
 
     @commands.command()
-    async def repeat(self, ctx, *args):
-        txt = ""
-        for s in args:
-            txt += " "
-            txt += s
-        await ctx.send(txt)
-
-    @commands.command()
-    async def repeatMessage(self, ctx):
-        await ctx.send(ctx.message.content)
-
-    @commands.command()
     @commands.has_any_role("Moderator", "Guides of the Void")
     async def say(self, ctx, *args):
         await ctx.message.delete()
-        guild = ctx.guild
-        channel = discord.utils.get(guild.text_channels, name=args[0])
+        channel = discord.utils.get(ctx.guild.text_channels, name=args[0])
         msg = " ".join(args[1:])
         if channel is not None:
             await channel.send(msg)

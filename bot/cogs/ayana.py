@@ -3,20 +3,14 @@ import discord
 from settings import *
 from inspect import Parameter
 import re
+import aiohttp
+import random
+import datetime
 
 
 class Ayana(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
-    @commands.Cog.listener()
-    async def on_member_remove(self, member: discord.Member):
-        if member.guild.id == GUILD_ID:
-            channel = discord.utils.get(
-                ctx.guild.text_channels, name=ERROR_CHANNEL_NAME
-            )
-            if channel is not None:
-                await channel.send(f"{member} has been noscoped succesfully.")
 
     @commands.command()
     async def sayd(self, ctx, *args):
@@ -42,11 +36,11 @@ class Ayana(commands.Cog):
             user = discord.utils.get(ctx.guild.members, id=id)
 
         elif re.search(r".*#\d{4}$", args_joined):
-            name, tag = re.split("#", args_joined)
+            name, tag = re.split(" ?#", args_joined)
             user = discord.utils.get(ctx.guild.members, name=name, discriminator=tag)
 
         else:
-            name = " ".join(args)
+            name = args_joined
             users = [
                 user
                 for user in ctx.guild.members
@@ -62,6 +56,80 @@ class Ayana(commands.Cog):
             raise commands.errors.BadArgument(
                 message="Enter a unique identifier - mention, nickname or username with tag - or leave empty"
             )
+
+    # needs more work when the API works properly
+    # @commands.command()
+    # async def urban(self, ctx, arg):
+    #     async with aiohttp.ClientSession() as cs:
+    #         async with cs.get(
+    #             "http://api.urbandictionary.com/v0/define?term=" + arg
+    #         ) as r:
+    #             data = await r.json()
+    #             if data["error"]:
+    #                 await ctx.send("error")
+    #             if len(data["list"]) > 0:
+    #                 entry = data["list"][0]
+    #                 embed = discord.Embed(color=DARK_ORANGE)
+    #                 embed.add_field(name="Word", value=arg, inline=False)
+    #                 embed.add_field(
+    #                     name="Definition", value=entry["definition"], inline=False,
+    #                 )
+    #                 embed.add_field(
+    #                     name="Example", value=entry["example"], inline=False
+    #                 )
+    #                 embed.add_field(name="Author", value=entry["author"], inline=False)
+    #                 await ctx.send(embed=embed)
+    #             else:
+    #                 await ctx.send("not found")
+
+    @commands.command()
+    async def obit(self, ctx, arg):
+        await ctx.message.delete()
+        channel = discord.utils.get(ctx.guild.text_channels, name=arg)
+        if channel is not None:
+            async for msg in ctx.history(limit=5):
+                if msg.author.id == BOT_ID and msg.embeds:
+                    await channel.send(BOT_ID)
+                    await channel.send(embed=msg.embeds[0])
+                    return
+
+
+async def kia_message(bot, payload):
+    # if payload.guild.id == GUILD_ID:
+    if True:
+        channel = discord.utils.get(
+            payload.guild.text_channels, name=ERROR_CHANNEL_NAME
+        )
+        if channel is not None:
+            name = payload.name
+            time = datetime.datetime.now()
+            time = time.strftime("%b %d, %H:%M")
+            embed = discord.Embed(color=GREY)
+            embed.title = "The void grows smaller..."
+            embed.set_thumbnail(
+                url="https://cdn.discordapp.com/attachments/744224801429782679/744225144536563712/pngguru.com.png"
+            )
+            embed.description = f":rocket: {name} has left the void :rocket:"
+            causes = [
+                "ded",
+                "Couldn't find their socks fast enough",
+                "Yeeted themselves off a very high chair",
+                "Forgot how to breathe",
+                "Stickbugged one time too many",
+                "Disrespected the pedestal",
+                "Terminal case of being horny",
+                "Sacrificed at the altar of Tzeentch",
+                "Critical paper cut",
+                "Executed by the ICC for their numerous war crimes in Albania",
+            ]
+            animu = discord.utils.get(payload.guild.text_channels, name="animu")
+            if animu:
+                causes.append(f"Too much time spent in {animu.mention}")
+            embed.add_field(name="Time of death", value=time)
+            embed.add_field(
+                name="Cause of death", value=causes[random.randint(1, len(causes)) - 1]
+            )
+            await channel.send(embed=embed)
 
 
 def avatar_embed(user: discord.User) -> discord.Embed:
