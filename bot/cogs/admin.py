@@ -94,9 +94,21 @@ class Admin(commands.Cog):
 
     @commands.command()
     @commands.has_any_role("Moderator", "Guides of the Void")
-    async def react(self, ctx, msg_id, emoji):
-        msg = await ctx.fetch_message(msg_id)
+    async def react(self, ctx, channel_name, msg_id, emoji):
+        channel = discord.utils.get(ctx.guild.text_channels, name=channel_name)
+        if channel:
+            try:
+                msg = await channel.fetch_message(msg_id)
+            except Exception:
+                raise commands.errors.BadArgument("No message found with that ID")
+
+        else:
+            raise commands.errors.BadArgument(
+                "Please enter a valid channel, no leading #"
+            )
+
         await msg.add_reaction(emoji)
+        await ctx.message.delete()
 
     @commands.command()
     async def cringe(self, ctx):
