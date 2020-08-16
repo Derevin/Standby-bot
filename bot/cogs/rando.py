@@ -12,15 +12,21 @@ class Rando(commands.Cog):
         dice = "".join(args)
         rolls = re.split(r"\+", dice)
         results = []
-        if re.search(r"^\d+d\d+(\+\d+d\d+)*$", dice) is None:
+        bonus = []
+        if re.search(r"^(\d*d\d+|\d+)(\+(\d*d\d+|\d+))*$", dice) is None:
             raise commands.errors.BadArgument(message="Improper dice format")
         else:
             output = "Rolling " + re.sub(r"\+", r" \+ ", dice) + " = "
             for roll in rolls:
-                num, die = [int(x) for x in re.split("d", roll)]
-                res = [random.randint(1, die) for i in range(num)]
-                results.append(res)
-            total = sum([sum(res) for res in results])
+                if re.search(r"^\d+$", roll):
+                    bonus.append(int(roll))
+                else:
+                    if re.search("^d", roll):
+                        roll = "1" + roll
+                    num, die = [int(x) for x in re.split("d", roll)]
+                    res = [random.randint(1, die) for i in range(num)]
+                    results.append(res)
+            total = sum([sum(res) for res in results]) + sum(bonus)
             output += str(total) + "\nRolls: "
             output += str(results)[1:-1]
             output = re.sub(r"\[", "(", output)
