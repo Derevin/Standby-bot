@@ -168,8 +168,7 @@ regex_uncategorized_commands.append(("paragon", paragon_resp, re.M | re.I))
 async def bruh_resp(message: discord.Message):
     bruh = await message.channel.send(
         "https://cdn.discordapp.com/attachments/"
-        "367037496455856128/654732909718274061/"
-        "74661755_2772995016045496_4416748817345413120_n.jpg"
+        "376031149371162635/746081315270426704/unknown.png"
     )
     await bruh.add_reaction("🅱️")
     await bruh.add_reaction("🇷")
