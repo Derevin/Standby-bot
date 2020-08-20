@@ -10,7 +10,7 @@ bot = commands.Bot(command_prefix="+")
 
 @bot.event
 async def on_ready():
-    await bot.change_presence(activity=discord.Game(name="PING DEREVIN IF BROKEN"))
+    await bot.change_presence(activity=discord.Game(name="Have a nice day!"))
 
 
 for filename in os.listdir("bot/cogs"):
