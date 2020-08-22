@@ -228,26 +228,3 @@ regex_uncategorized_commands.append(
     ("^\\W*a?'?m(e|u)rica\\W*$", america_resp, re.M | re.I)
 )
 
-### Under construction
-# async def reddit_resp(message: discord.Message):
-#     match = re.search("http.*reddit\\.com\\/r\\/.*\\/comments\\/.*\\/", message.content)
-#     link = match.group() + ".json"
-#     async with aiohttp.ClientSession() as cs:
-#         async with cs.get(link) as r:
-#             data = await r.json()
-#             if (
-#                 data[0]["data"]["children"][0]["data"]["media"] is None
-#                 or "reddit_video" not in data[0]["data"]["children"][0]["data"]["media"]
-#             ):
-#                 return
-#             media = data[0]["data"]["children"][0]["data"]["media"]["reddit_video"][
-#                 "fallback_url"
-#             ]
-#             media = re.sub("\\?source=fallback", "", media)
-#             await message.channel.send(media)
-
-
-# regex_uncategorized_commands.append(
-#     ("http.*reddit\\.com\\/r\\/.*\\/comments\\/.*\\/", reddit_resp, re.M | re.I)
-# )
-

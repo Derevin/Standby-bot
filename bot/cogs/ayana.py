@@ -57,30 +57,40 @@ class Ayana(commands.Cog):
                 message="Enter a unique identifier - mention, nickname or username with tag - or leave empty"
             )
 
-    # needs more work when the API works properly
-    # @commands.command()
-    # async def urban(self, ctx, arg):
-    #     async with aiohttp.ClientSession() as cs:
-    #         async with cs.get(
-    #             "http://api.urbandictionary.com/v0/define?term=" + arg
-    #         ) as r:
-    #             data = await r.json()
-    #             if data["error"]:
-    #                 await ctx.send("error")
-    #             if len(data["list"]) > 0:
-    #                 entry = data["list"][0]
-    #                 embed = discord.Embed(color=DARK_ORANGE)
-    #                 embed.add_field(name="Word", value=arg, inline=False)
-    #                 embed.add_field(
-    #                     name="Definition", value=entry["definition"], inline=False,
-    #                 )
-    #                 embed.add_field(
-    #                     name="Example", value=entry["example"], inline=False
-    #                 )
-    #                 embed.add_field(name="Author", value=entry["author"], inline=False)
-    #                 await ctx.send(embed=embed)
-    #             else:
-    #                 await ctx.send("not found")
+    @commands.command()
+    async def urban(self, ctx, arg):
+        async with aiohttp.ClientSession() as cs:
+            async with cs.get(
+                "http://api.urbandictionary.com/v0/define?term=" + arg
+            ) as r:
+                data = await r.json()
+                if "error" in data:
+                    await ctx.send("Server is not responding, please try again later.")
+                    return
+                if len(data["list"]) > 0:
+                    entry = data["list"][0]
+                    embed = discord.Embed(color=DARK_ORANGE)
+                    embed.add_field(name="Word", value=entry["word"], inline=False)
+                    embed.add_field(
+                        name="Definition", value=entry["definition"], inline=False,
+                    )
+                    embed.add_field(
+                        name="Example", value=entry["example"], inline=False
+                    )
+                    embed.add_field(name="Author", value=entry["author"], inline=False)
+                    embed.add_field(
+                        name="Rating",
+                        value=(
+                            str(entry["thumbs_up"])
+                            + " :thumbsup: / "
+                            + str(entry["thumbs_down"])
+                            + " :thumbsdown:"
+                        ),
+                        inline=False,
+                    )
+                    await ctx.send(embed=embed)
+                else:
+                    await ctx.send("No definition found.")
 
     @commands.command()
     async def obit(self, ctx, channel_name):
