@@ -196,6 +196,8 @@ regex_uncategorized_commands.append(("^hans\\W*$", hans_resp, re.M | re.I))
 
 
 async def loli_resp(message: discord.Message):
+    if message.author.id == JORM_ID:
+        return
     glare = discord.utils.get(message.guild.emojis, name="BlobGlare")
     if glare is not None:
         await message.channel.send(glare)
