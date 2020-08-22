@@ -9,6 +9,15 @@ STARBOARD_ID = int(os.getenv("STARBOARD_ID", False))
 
 
 ERROR_CHANNEL_NAME = "maintenance-channel"
+NO_RESPONSE_CHANNELS = [
+    "mod-chat",
+    "rules",
+    "giveaways",
+    "alliance-mod-chat",
+    "starboard",
+    "events",
+    "event-submission",
+]
 MOD_ROLES_NAMES = ["Moderator", "Guides of the Void"]
 SOFT_RED = 0xCD6D6D
 STARBOARD_COLOUR = 0xFFAC33

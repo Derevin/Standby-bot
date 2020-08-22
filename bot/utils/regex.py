@@ -15,6 +15,9 @@ regex_commands.extend(regex_uncategorized_commands)
 
 
 async def regex_handler(bot, message: discord.Message):
+    for c in NO_RESPONSE_CHANNELS:
+        if message.channel.name == c:
+            return
     for trig, resp, flags in regex_commands:
         if re.search(trig, message.content, flags) is not None:
             await resp(message)
