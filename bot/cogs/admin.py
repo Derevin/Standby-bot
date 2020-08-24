@@ -3,6 +3,8 @@ import discord
 import asyncio
 import random
 import re
+import datetime
+from settings import *
 
 
 class Admin(commands.Cog):
@@ -73,26 +75,6 @@ class Admin(commands.Cog):
                 await asyncio.sleep(2)
 
     @commands.command()
-    async def horny(self, ctx):
-        links = [
-            "https://cdn.discordapp.com/attachments/267554564838785024/667115013412225054/image0.jpg",
-            "https://i.kym-cdn.com/entries/icons/original/000/033/758/Screen_Shot_2020-04-28_at_12.21.48_PM.png",
-            "https://cdn.discordapp.com/attachments/267554564838785024/701271178790305852/horny.jpg",
-            "https://cdn.discordapp.com/attachments/267554564838785024/708425147064909944/x3x53kej4jr31.png",
-            "https://cdn.discordapp.com/attachments/258941607238172673/717436181901475990/anti_horny.jpg",
-            "https://cdn.discordapp.com/attachments/620408411393228809/724613520318267422/ubil7fxr99551.png",
-        ]
-        await ctx.message.delete()
-        await ctx.channel.send(links[random.randint(0, len(links) - 1)])
-
-    @commands.command()
-    async def anime(self, ctx):
-        await ctx.message.delete()
-        await ctx.channel.send(
-            "https://cdn.discordapp.com/attachments/355732809224028161/709500701134422137/anime_violation.png"
-        )
-
-    @commands.command()
     @commands.has_any_role("Moderator", "Guides of the Void")
     async def react(self, ctx, channel_name, msg_id, emoji):
         channel = discord.utils.get(ctx.guild.text_channels, name=channel_name)
@@ -110,12 +92,6 @@ class Admin(commands.Cog):
         await msg.add_reaction(emoji)
         await ctx.message.delete()
 
-    @commands.command()
-    async def cringe(self, ctx):
-        await ctx.send(
-            "https://cdn.discordapp.com/attachments/441286267548729345/709160523907989524/EVACI9dUcAQp2Mb.png"
-        )
-
     @commands.command(aliases=["clean"])
     @commands.has_any_role("Moderator", "Guides of the Void")
     async def clear(self, ctx, amount):
@@ -131,6 +107,47 @@ class Admin(commands.Cog):
         )
         await asyncio.sleep(3)
         await reply.delete()
+
+    @commands.command()
+    @commands.has_any_role("Moderator", "Guides of the Void")
+    async def move(self, ctx, msg_id, to_channel, from_channel=None):
+
+        await ctx.message.delete()
+
+        if not from_channel:
+            from_channel = ctx.channel
+        else:
+            from_channel = discord.utils.get(ctx.guild.text_channels, name=from_channel)
+
+        to_channel = discord.utils.get(ctx.guild.text_channels, name=to_channel)
+
+        if not (to_channel and from_channel):
+            raise commands.errors.BadArgument(
+                "Please enter valid channel names, no leading #"
+            )
+        else:
+            try:
+                msg = await from_channel.fetch_message(int(msg_id))
+            except Exception:
+                raise commands.errors.BadArgument("No message found with that ID")
+
+            embed = discord.Embed(color=PALE_BLUE)
+            embed.title = "Moved message"
+            embed.set_thumbnail(url=msg.author.avatar_url)
+            embed.description = msg.content
+            embed.add_field(
+                name="Original poster", value=msg.author.mention, inline=True
+            )
+            embed.add_field(name="Channel", value=msg.channel.mention, inline=True)
+            timestamp = msg.created_at + datetime.timedelta(hours=2)
+            timestamp = timestamp.strftime("%b %d, %H:%M")
+            embed.add_field(name="Sent at", value=timestamp, inline=True)
+            if msg.attachments:
+                embed.set_image(url=msg.attachments[0].url)
+            elif re.search(r"^https:.*\.(jpe?g|png|gif)$", msg.content):
+                embed.set_image(url=msg.content)
+            await to_channel.send(embed=embed)
+            await msg.delete()
 
 
 def setup(bot):
