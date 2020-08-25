@@ -217,7 +217,7 @@ async def dont_at_me_resp(message: discord.Message):
 
 
 regex_uncategorized_commands.append(
-    ("do[ ]?n[ ']?t @ me", dont_at_me_resp, re.M | re.I)
+    ("do[ ]?n[o ']?t @ me", dont_at_me_resp, re.M | re.I)
 )
 
 

@@ -12,7 +12,7 @@ class Ayana(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(brief="Has the bot repeat a message")
     async def sayd(self, ctx, *args):
         if not args:
             raise commands.errors.MissingRequiredArgument(
@@ -23,7 +23,10 @@ class Ayana(commands.Cog):
         await ctx.message.delete()
         await msg.edit(content=str)
 
-    @commands.command(aliases=["pfp"])
+    @commands.command(
+        aliases=["pfp"],
+        brief="Displays the profile picture of a user. Also works as +pfp",
+    )
     async def avatar(self, ctx, *args):
 
         args_joined = " ".join(args)
@@ -57,11 +60,13 @@ class Ayana(commands.Cog):
                 message="Enter a unique identifier - mention, nickname or username with tag - or leave empty"
             )
 
-    @commands.command()
-    async def urban(self, ctx, arg):
+    @commands.command(brief="Returns the Urban Dictionary definition of a word")
+    async def urban(self, ctx, *query):
+        if not query:
+            raise commands.errors.MissingRequiredArgument("Please enter a valid query.")
         async with aiohttp.ClientSession() as cs:
             async with cs.get(
-                "http://api.urbandictionary.com/v0/define?term=" + arg
+                "http://api.urbandictionary.com/v0/define?term=" + " ".join(query)
             ) as r:
                 data = await r.json()
                 if "error" in data:
@@ -92,15 +97,19 @@ class Ayana(commands.Cog):
                 else:
                     await ctx.send("No definition found.")
 
-    @commands.command()
+    @commands.command(brief="Reposts the last 'user left' message to a channel")
     async def obit(self, ctx, channel_name):
-        await ctx.message.delete()
         channel = discord.utils.get(ctx.guild.text_channels, name=channel_name)
         if channel:
             async for msg in ctx.channel.history(limit=5):
-                if msg.author.id == BOT_ID and msg.embeds:
+                if (
+                    msg.author.id == BOT_ID
+                    and msg.embeds
+                    and msg.embeds[0].title == "The void grows smaller..."
+                ):
                     await channel.send(embed=msg.embeds[0])
                     return
+        await ctx.message.delete()
 
 
 async def kia_message(bot, payload):

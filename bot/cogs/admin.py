@@ -11,7 +11,7 @@ class Admin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(brief="Displays basic server stats")
     async def status(self, ctx, *args):
         guild = ctx.guild
 
@@ -24,11 +24,11 @@ class Admin(commands.Cog):
         embed.add_field(name="# Text channels", value=n_text, inline=False)
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=["pong"])
+    @commands.command(aliases=["pong"], brief="Pong!")
     async def ping(self, ctx):
         await ctx.send("Ponguu!")
 
-    @commands.command()
+    @commands.command(brief="Sends a message through the bot to a chosen channel")
     @commands.has_any_role("Moderator", "Guides of the Void")
     async def say(self, ctx, channel_name, *message):
         await ctx.message.delete()
@@ -44,7 +44,7 @@ class Admin(commands.Cog):
                 "Please enter a valid channel, no leading #"
             )
 
-    @commands.command()
+    @commands.command(brief="Leaves several ghost pings for a user")
     @commands.has_any_role("Moderator", "Guides of the Void")
     async def punish(self, ctx, user_mention):
         await ctx.message.delete()
@@ -74,7 +74,7 @@ class Admin(commands.Cog):
                 await ping.delete()
                 await asyncio.sleep(2)
 
-    @commands.command()
+    @commands.command(brief="Adds a reaction to a post")
     @commands.has_any_role("Moderator", "Guides of the Void")
     async def react(self, ctx, channel_name, msg_id, emoji):
         channel = discord.utils.get(ctx.guild.text_channels, name=channel_name)
@@ -92,7 +92,10 @@ class Admin(commands.Cog):
         await msg.add_reaction(emoji)
         await ctx.message.delete()
 
-    @commands.command(aliases=["clean"])
+    @commands.command(
+        aliases=["clean"],
+        brief="Clears the last X messages sent in the channel (max 20)",
+    )
     @commands.has_any_role("Moderator", "Guides of the Void")
     async def clear(self, ctx, amount):
         await ctx.message.delete()
@@ -108,7 +111,7 @@ class Admin(commands.Cog):
         await asyncio.sleep(3)
         await reply.delete()
 
-    @commands.command(aliases=["copy"])
+    @commands.command(brief="Moves a post from one channel to another",)
     @commands.has_any_role("Moderator", "Guides of the Void")
     async def move(self, ctx, msg_id, to_channel, from_channel=None):
 
@@ -137,6 +140,16 @@ class Admin(commands.Cog):
         await to_channel.send(embed=embed)
         if cmd == "move":
             await msg.delete()
+
+    @commands.command(brief="Copies a post from one channel to another")
+    @commands.has_any_role("Moderator", "Guides of the Void")
+    async def copy(self, ctx, msg_id, to_channel, from_channel=None):
+        await ctx.invoke(
+            self.bot.get_command("move"),
+            msg_id=msg_id,
+            to_channel=to_channel,
+            from_channel=from_channel,
+        )
 
 
 def message_embed(msg, cmd, trigger_author) -> discord.Embed:

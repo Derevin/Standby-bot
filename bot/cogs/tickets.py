@@ -66,7 +66,9 @@ class Tickets(commands.Cog):
                             )
                         )
 
-    @commands.command()
+    @commands.command(
+        brief="Initiates ticket system - creates categories, channels etc"
+    )
     @commands.has_any_role("Moderator", "Guides of the Void")
     async def tinit(self, ctx, *args):
         open_ticket_cat = await self.get_or_create_open_cat(ctx)
@@ -76,8 +78,8 @@ class Tickets(commands.Cog):
         await self.get_or_create_resolved_cat(ctx)
         await self.get_or_create_tickets_log(ctx)
 
-    @commands.command(aliases=["tclaim"])
-    async def topen(self, ctx, *args):
+    @commands.command(aliases=["topen"], brief="Claims the ticket channel")
+    async def tclaim(self, ctx, *args):
         if ctx.channel.name != CLAIMABLE_CHANNEL_NAME:
             raise commands.errors.UserInputError(
                 "This command can be used only in a claimable channel"
@@ -106,7 +108,7 @@ class Tickets(commands.Cog):
         if not open_ticket_cat.channels:
             await self.create_claimable(open_ticket_cat)
 
-    @commands.command()
+    @commands.command(brief="Marks your ticket as resolved")
     async def tresolve(self, ctx, *args):
         if ctx.channel.category.name != ACTIVE_TICKETS_CAT_NAME:
             raise commands.errors.UserInputError(
@@ -118,7 +120,7 @@ class Tickets(commands.Cog):
 
         await ctx.channel.send(RESOLVED_MESSAGE)
 
-    @commands.command()
+    @commands.command(brief="Reopens a resolved ticket")
     async def treopen(self, ctx, *args):
         if ctx.channel.category.name != RESOLVED_TICKETS_CAT_NAME:
             raise commands.errors.UserInputError(
@@ -130,7 +132,9 @@ class Tickets(commands.Cog):
 
         await ctx.channel.send(REOPENED_MESSAGE)
 
-    @commands.command()
+    @commands.command(
+        brief="Scraps a resolved ticket, logs the messages and deletes the channel"
+    )
     @commands.has_any_role("Moderator", "Guides of the Void")
     async def tscrap(self, ctx, *args):
         if ctx.channel.category.name != RESOLVED_TICKETS_CAT_NAME:

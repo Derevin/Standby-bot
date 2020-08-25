@@ -8,7 +8,7 @@ class Images(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(brief="Random cat")
+    @commands.command(brief="Posts a random cat image")
     async def cat(self, ctx):
         async with ctx.channel.typing():
             async with aiohttp.ClientSession() as cs:
@@ -23,7 +23,7 @@ class Images(commands.Cog):
 
                     await ctx.send(embed=embed)
 
-    @commands.command(brief="Random dog")
+    @commands.command(brief="Posts a random dog image")
     async def dog(self, ctx):
         async with ctx.channel.typing():
             async with aiohttp.ClientSession() as cs:
@@ -36,7 +36,7 @@ class Images(commands.Cog):
 
                     await ctx.send(embed=embed)
 
-    @commands.command(brief="Random fox")
+    @commands.command(brief="Posts a random fox image")
     async def fox(self, ctx):
         async with ctx.channel.typing():
             async with aiohttp.ClientSession() as cs:
@@ -49,7 +49,7 @@ class Images(commands.Cog):
 
                     await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(brief="Posts a random 'horny' warning")
     async def horny(self, ctx):
         links = [
             "https://cdn.discordapp.com/attachments/267554564838785024/667115013412225054/image0.jpg",
@@ -62,14 +62,14 @@ class Images(commands.Cog):
         await ctx.message.delete()
         await ctx.channel.send(links[random.randint(0, len(links) - 1)])
 
-    @commands.command()
+    @commands.command(brief="Posts an 'anime' warning")
     async def anime(self, ctx):
         await ctx.message.delete()
         await ctx.channel.send(
             "https://cdn.discordapp.com/attachments/355732809224028161/709500701134422137/anime_violation.png"
         )
 
-    @commands.command()
+    @commands.command(brief="Posts a 'cringe' warning")
     async def cringe(self, ctx):
         await ctx.message.delete()
         await ctx.send(
