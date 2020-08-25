@@ -124,7 +124,7 @@ async def kia_message(bot, payload):
             embed = discord.Embed(color=GREY)
             embed.title = "The void grows smaller..."
             embed.set_thumbnail(
-                url="https://cdn.discordapp.com/attachments/744224801429782679/744225144536563712/pngguru.com.png"
+                url="https://cdn.discordapp.com/attachments/744224801429782679/747945281248559184/grave.png"
             )
             embed.description = f":rocket: {name} has left the void :rocket:"
             causes = [
