@@ -174,7 +174,7 @@ def message_embed(msg, cmd, trigger_author) -> discord.Embed:
     timestamp = msg.created_at + datetime.timedelta(hours=2)
     timestamp = timestamp.strftime("%b %d, %H:%M")
     embed.add_field(name="Sent at", value=timestamp)
-    embed.add_field(name="\u200b", value="\u200b")
+    embed.add_field(name=EMPTY, value=EMPTY)
     embed.add_field(name="Original poster", value=msg.author.mention)
 
     embed.add_field(name=trigger_field_titles[cmd], value=trigger_author.mention)
@@ -184,8 +184,10 @@ def message_embed(msg, cmd, trigger_author) -> discord.Embed:
 
     if msg.attachments:
         embed.set_image(url=msg.attachments[0].url)
-    elif re.search(r"^https:.*\.(jpe?g|png|gif)$", msg.content):
-        embed.set_image(url=msg.content)
+    else:
+        link = re.search(r"(https:.*\.(jpe?g|png|gif))", msg.content)
+        if link:
+            embed.set_image(url=link.group(1))
 
     return embed
 
