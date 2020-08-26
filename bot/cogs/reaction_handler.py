@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from utils.starboard import starboard_handler
+from cogs.giveaways import giveaway_handler
 
 
 class ReactionHandler(commands.Cog):
@@ -10,6 +11,7 @@ class ReactionHandler(commands.Cog):
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
         await starboard_handler(self.bot, payload)
+        await giveaway_handler(self.bot, payload)
 
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload):
