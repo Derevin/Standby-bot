@@ -113,6 +113,8 @@ regex_fun_phrases_commands.append(
 
 async def yeboi_resp(message: discord.Message):
     rsp = "BO" + "I" * (len(message.content) - 1)
+    if len(rsp) > 2000:
+        rsp = rsp[:1999]
     await message.channel.send(rsp)
 
 
