@@ -112,6 +112,21 @@ class Ayana(commands.Cog):
         await ctx.message.delete()
 
 
+async def welcome_message(bot, payload):
+    if payload.guild.id == GUILD_ID:
+        general = discord.utils.get(payload.guild.text_channels, name="general")
+        rules_ch = discord.utils.get(payload.guild.text_channels, name="rules")
+        rules_text = rules_ch.mention if rules_ch else "rules"
+        if general:
+            message = (
+                f"Welcome {payload.mention}!\n"
+                "Wondering why the server seems so void of channels?\n"
+                f"Please read the {rules_text} to unlock the full server!\n"
+                "https://www.youtube.com/watch?v=67h8GyNgEmA"
+            )
+            await general.send(message)
+
+
 async def kia_message(bot, payload):
     if payload.guild.id == GUILD_ID:
         channel = discord.utils.get(
