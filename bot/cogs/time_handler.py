@@ -15,7 +15,7 @@ class TimeHandler(commands.Cog):
     def cog_unload(self):
         self.check_giveaways.cancel()
 
-    @tasks.loop(seconds=5)
+    @tasks.loop(seconds=60)
     async def check_giveaways(self):
         guild = None
 
