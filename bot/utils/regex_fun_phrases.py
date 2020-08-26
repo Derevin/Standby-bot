@@ -116,7 +116,7 @@ async def yeboi_resp(message: discord.Message):
     await message.channel.send(rsp)
 
 
-regex_fun_phrases_commands.append(("^ye{3,50}$", yeboi_resp, re.M | re.I))
+regex_fun_phrases_commands.append(("^ye{3,}$", yeboi_resp, re.M | re.I))
 
 ### cough bless
 
