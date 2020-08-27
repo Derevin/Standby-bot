@@ -20,6 +20,9 @@ prio_commands.extend(regex_prio_commands)
 
 async def regex_handler(bot, message: discord.Message):
 
+    if message.content.startswith(PREFIX):
+        return
+
     for trig, resp, flags in prio_commands:
         if re.search(trig, message.content, flags) is not None:
             await resp(message)

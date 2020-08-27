@@ -11,7 +11,7 @@ class Giveaways(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(brief="Starts a giveaway")
+    @commands.command(brief="Starts a giveaway in the #giveaways channel")
     @commands.has_any_role("Moderator", "Guides of the Void")
     async def gstart(self, ctx, time, winners, *title):
 

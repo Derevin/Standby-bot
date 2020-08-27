@@ -5,7 +5,7 @@ from settings import *
 
 from db.db_main import init_db_connection
 
-bot = commands.Bot(command_prefix="+")
+bot = commands.Bot(command_prefix=PREFIX)
 
 
 @bot.event

@@ -7,6 +7,7 @@ import datetime
 import aiohttp
 from io import BytesIO
 from settings import *
+from settings_files.rules_contents import *
 
 
 class Rules(commands.Cog):
@@ -27,39 +28,12 @@ class Rules(commands.Cog):
         await asyncio.sleep(delay)
         rules_embed = discord.Embed(color=VIE_PURPLE)
         rules_embed.title = r"__RULES__"
-        # rules_embed.add_field(name=EMPTY, value=EMPTY, inline=False)
-        bot_spam = get_channel(vie, "bot-spam")
-        rules_list = [
-            "1. Respect all other members.",
-            "2. Keep conversations friendly and calm.",
-            "3. No impersonating a moderator, or any others.",
-            "4. No inappropriate names or avatars.",
-            "5. No hate speech or slurs of any kind.",
-            "6. No advertising or spam.",
-            "7. No links to or posting NSFW content, including pornography, gore and sexualised lolis.",
-            "8. Listen to moderators.",
-            "9. Appeals placeholder",
-            "10. No attacking race, religion, sexual orientation, gender identity or nationality.",
-            f"11. Keep bot commands in {bot_spam.mention} unless it's relevant to the current conversation.",
-            "12. Don't ping clan roles, @here or @everyone",
-        ]
-
-        rules_embed.description = f"\n{EMPTY}\n".join(rules_list)
-
+        rules_embed.description = f"\n{EMPTY}\n".join(RULES_LIST)
         rules_embed.description
         await rules_ch.send(embed=rules_embed)
         info_embed = discord.Embed(color=VIE_PURPLE)
         info_embed.title = r"__GENERAL INFO__"
-        giveaways = get_channel(vie, GIVEAWAY_CHANNEL_NAME)
-        info_embed.description = f"""Talking in the server awards XP - you need Level 3 to access {giveaways.mention}.
-
-        Enforcement of the rules is always at the moderators' discretion.
-
-        Repeated infractions within a 30 day period lead to automatic action:
-        2 Warns = Muted for a day
-        3 Warns = Muted for 3 days
-        4 Warns = Banned for 7 days
-        5 Warns = Permanent ban"""
+        info_embed.description = GENERAL_INFO
         await rules_ch.send(embed=info_embed)
         await asyncio.sleep(delay)
 
@@ -76,53 +50,25 @@ class Rules(commands.Cog):
         await asyncio.sleep(delay)
 
         clan_embed = discord.Embed(color=VIE_PURPLE)
-        clans = {
-            "Vie for the Void": "VftV",
-            "Turian Sixth Fleet": "Turian",
-            "Ripoffchurch": "⛪",
-            "Mighty Midgets": "Ⓜ️",
-            "Steel and Magic": "🔥",
-            "Absolutely Nobody": "👽",
-            "Druzina": "👨‍👨‍👦‍👦",
-            "Deadly Enigma": "❓",
-            "Silver Cyborgs": "🤖",
-            "Aurum Vulpes": "AurumVulpes",
-        }
 
         clan_embed.title = "Step 2 - If you're part of the Warframe alliance, react to this post with your clan's emoji"
         clan_desc = ""
-        for clan in clans:
-            clan_desc += (
-                f"React {get_emoji(vie,clans[clan])} for {mention_role(vie,clan)}\n"
-            )
+        for clan in CLANS_PART_1:
+            clan_desc += f"React {get_emoji(vie,CLANS_PART_1[clan])} for {mention_role(vie,clan)}\n"
         clan_embed.description = clan_desc
         clan_msg = await rules_ch.send(embed=clan_embed)
-        for clan in clans:
-            await clan_msg.add_reaction(get_emoji(vie, clans[clan]))
+        for clan in CLANS_PART_1:
+            await clan_msg.add_reaction(get_emoji(vie, CLANS_PART_1[clan]))
 
         clan_embed = discord.Embed(color=VIE_PURPLE)
-        clans = {
-            "Clouds of Seasons": "🙃",
-            "DRILL Battalion": "drill",
-            "The Salt Within": "🦉",
-            "White Tiger Cove": "🐯",
-            "SleepNot": "💤",
-            "City of Fidelity": "♥",
-            "Pixie Stick Protectors": "🧚",
-            "Halls of Azure": "💎",
-            "New Yugoslavia Republic": "🇲🇪",
-            "Space Colony": "🍣",
-        }
 
         clan_desc = ""
-        for clan in clans:
-            clan_desc += (
-                f"React {get_emoji(vie,clans[clan])} for {mention_role(vie,clan)}\n"
-            )
+        for clan in CLANS_PART_2:
+            clan_desc += f"React {get_emoji(vie,CLANS_PART_2[clan])} for {mention_role(vie,clan)}\n"
         clan_embed.description = clan_desc
         clan_msg = await rules_ch.send(embed=clan_embed)
-        for clan in clans:
-            await clan_msg.add_reaction(get_emoji(vie, clans[clan]))
+        for clan in CLANS_PART_2:
+            await clan_msg.add_reaction(get_emoji(vie, CLANS_PART_2[clan]))
 
         await asyncio.sleep(delay)
 
@@ -139,21 +85,14 @@ class Rules(commands.Cog):
             f"React 💰 for {mention_role(vie,'Offers')} for news about free or"
             f" discounted games in {offers_channel.mention}\n{EMPTY}\n"
         )
-        opt_roles = {
-            "Heroes of the Storm": "🖱️",
-            "R6: Siege": "BlobCatGun",
-            "Starbase": "Starbase",
-            "Div2": "BlobSweatFire",
-            "DnD": "d20",
-            "Pokemon Go": "SurprisedPikachu",
-        }
-        for opt_role in opt_roles:
-            opt_embed.description += f"React {get_emoji(vie, opt_roles[opt_role])} for {mention_role(vie, opt_role)}\n"
+
+        for role in OPT_IN_ROLES:
+            opt_embed.description += f"React {get_emoji(vie, OPT_IN_ROLES[role])} for {mention_role(vie, role)}\n"
         opt_msg = await rules_ch.send(embed=opt_embed)
         await opt_msg.add_reaction("⬆️")
         await opt_msg.add_reaction("💰")
-        for opt_role in opt_roles:
-            await opt_msg.add_reaction(get_emoji(vie, opt_roles[opt_role]))
+        for role in OPT_IN_ROLES:
+            await opt_msg.add_reaction(get_emoji(vie, OPT_IN_ROLES[role]))
         await asyncio.sleep(delay)
 
         general = get_channel(vie, "general")
@@ -196,7 +135,7 @@ class Rules(commands.Cog):
                 await reaction.clear()
         await message.edit(embed=embed)
 
-    @commands.command("Adds a new rule to the post")
+    @commands.command(brief="Adds a new rule to the post")
     @commands.has_role("Moderator")
     async def addrule(self, ctx, *text):
         rules_ch = get_channel(ctx.guild, RULES_CHANNEL_NAME)
@@ -220,7 +159,7 @@ class Rules(commands.Cog):
         embed.description = f"\n{EMPTY}\n".join(rules)
         await rules_msg.edit(embed=embed)
 
-    @commands.command("Removes a rule from the post")
+    @commands.command(brief="Removes a rule from the post")
     @commands.has_role("Moderator")
     async def removerule(self, ctx, number):
         try:
@@ -239,6 +178,32 @@ class Rules(commands.Cog):
         rules.pop(number - 1)
         rules = [str(rules.index(rule) + 1) + ". " + rule for rule in rules]
         embed.description = f"\n{EMPTY}\n".join(rules)
+        await rules_msg.edit(embed=embed)
+
+    @commands.command(brief="Edits a rule")
+    @commands.has_role("Moderator")
+    async def editrule(self, ctx, number, *text):
+        try:
+            number = int(number)
+        except Exception:
+            raise commands.errors.BadArgument("Please enter a rule number to remove.")
+
+        if not text:
+            raise commands.errors.UserInputError("Please enter the rule text")
+
+        text = " ".join(text)
+
+        rules_ch = get_channel(ctx.guild, RULES_CHANNEL_NAME)
+        rules_msg = await rules_ch.fetch_message(RULES_MESSAGE_ID)
+        embed = rules_msg.embeds[0]
+        rules = re.split(rf"\n{EMPTY}\n", embed.description)
+
+        if number > len(rules) or number < 1:
+            raise commands.errors.BadArgument("No rule with that number.")
+
+        rules[number - 1] = f"{number}. {text}"
+        embed.description = f"\n{EMPTY}\n".join(rules)
+
         await rules_msg.edit(embed=embed)
 
 
