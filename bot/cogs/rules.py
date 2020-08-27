@@ -114,6 +114,7 @@ class Rules(commands.Cog):
         embed.description += "\n" + new_text
         await message.edit(embed=embed)
         await message.add_reaction(emoji)
+        await ctx.message.delete()
 
     @commands.command(brief="Removes a role from a post")
     @commands.has_role("Moderator")
@@ -134,6 +135,7 @@ class Rules(commands.Cog):
             if str(reaction.emoji) == emoji:
                 await reaction.clear()
         await message.edit(embed=embed)
+        await ctx.message.delete()
 
     @commands.command(brief="Adds a new rule to the post")
     @commands.has_role("Moderator")
@@ -158,6 +160,7 @@ class Rules(commands.Cog):
         rules = [str(rules.index(rule) + 1) + ". " + rule for rule in rules]
         embed.description = f"\n{EMPTY}\n".join(rules)
         await rules_msg.edit(embed=embed)
+        await ctx.message.delete()
 
     @commands.command(brief="Removes a rule from the post")
     @commands.has_role("Moderator")
@@ -179,6 +182,7 @@ class Rules(commands.Cog):
         rules = [str(rules.index(rule) + 1) + ". " + rule for rule in rules]
         embed.description = f"\n{EMPTY}\n".join(rules)
         await rules_msg.edit(embed=embed)
+        await ctx.message.delete()
 
     @commands.command(brief="Edits a rule")
     @commands.has_role("Moderator")
@@ -205,6 +209,7 @@ class Rules(commands.Cog):
         embed.description = f"\n{EMPTY}\n".join(rules)
 
         await rules_msg.edit(embed=embed)
+        await ctx.message.delete()
 
 
 async def role_handler(bot, payload):
