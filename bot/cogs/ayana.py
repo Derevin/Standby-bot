@@ -64,38 +64,15 @@ class Ayana(commands.Cog):
     async def urban(self, ctx, *query):
         if not query:
             raise commands.errors.MissingRequiredArgument("Please enter a valid query.")
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get(
-                "http://api.urbandictionary.com/v0/define?term=" + " ".join(query)
-            ) as r:
-                data = await r.json()
-                if "error" in data:
-                    await ctx.send("Server is not responding, please try again later.")
-                    return
-                if len(data["list"]) > 0:
-                    entry = data["list"][0]
-                    embed = discord.Embed(color=DARK_ORANGE)
-                    embed.add_field(name="Word", value=entry["word"], inline=False)
-                    embed.add_field(
-                        name="Definition", value=entry["definition"], inline=False,
-                    )
-                    embed.add_field(
-                        name="Example", value=entry["example"], inline=False
-                    )
-                    embed.add_field(name="Author", value=entry["author"], inline=False)
-                    embed.add_field(
-                        name="Rating",
-                        value=(
-                            str(entry["thumbs_up"])
-                            + " :thumbsup: / "
-                            + str(entry["thumbs_down"])
-                            + " :thumbsdown:"
-                        ),
-                        inline=False,
-                    )
-                    await ctx.send(embed=embed)
-                else:
-                    await ctx.send("No definition found.")
+        query = " ".join(query)
+        response = await urban_embed(query, 1)
+        if isinstance(response, discord.Embed):
+            message = await ctx.send(embed=response)
+            await message.add_reaction("⬅️")
+            await message.add_reaction("➡️")
+            await message.add_reaction("🇽")
+        elif isinstance(response, str):
+            await ctx.send(response)
 
     @commands.command(brief="Reposts the last 'user left' message to a channel")
     async def obit(self, ctx, channel_name):
@@ -164,6 +141,36 @@ async def kia_message(bot, payload):
             await channel.send(embed=embed)
 
 
+async def urban_handler(bot, payload):
+    if isinstance(payload, discord.RawReactionActionEvent):
+        channel = bot.get_channel(payload.channel_id)
+        message = await channel.fetch_message(payload.message_id)
+        if (
+            payload.user_id != BOT_ID
+            and message.embeds
+            and message.embeds[0].title.startswith("Page")
+            and payload.emoji.name in ["⬅️", "➡️", "🇽"]
+        ):
+            if payload.emoji.name == "🇽":
+                await message.clear_reaction("⬅️")
+                await message.clear_reaction("➡️")
+                await message.clear_reaction("🇽")
+            else:
+                embed = message.embeds[0]
+                title = embed.title
+                match = re.search(r"Page (\d+)\/(\d+)", title)
+                page, pages = int(match.group(1)), int(match.group(2))
+                query = re.search(r"\[(.*)\]", embed.fields[0].value).group(1)
+                user = message.guild.get_member(payload.user_id)
+                if payload.emoji.name == "⬅️" and page != 1:
+                    embed = await urban_embed(query, page - 1)
+                elif payload.emoji.name == "➡️" and page != pages:
+                    embed = await urban_embed(query, page + 1)
+
+                await message.remove_reaction(payload.emoji, user)
+                await message.edit(embed=embed)
+
+
 def avatar_embed(user: discord.User) -> discord.Embed:
     embed = discord.Embed(color=PALE_GREEN)
     link = user.avatar_url
@@ -172,6 +179,46 @@ def avatar_embed(user: discord.User) -> discord.Embed:
     text = "Direct Link"
     embed.description = f"[{text}]({link})"
     return embed
+
+
+async def urban_embed(query, page):
+
+    async with aiohttp.ClientSession() as cs:
+        api_link = f"https://api.urbandictionary.com/v0/define?term={query}"
+        web_link = f"https://www.urbandictionary.com/define.php?term={query}"
+        async with cs.get(api_link) as r:
+            data = await r.json()
+            if "error" in data:
+                return "Server is not responding, please try again later."
+            if len(data["list"]) > 0:
+                entries = data["list"]
+                pages = len(entries)
+                entry = entries[page - 1]
+                embed = discord.Embed(color=DARK_ORANGE)
+                embed.title = f"Page {page}/{pages}"
+                embed.add_field(
+                    name="Word", value=f"[{entry['word']}]({web_link})", inline=False
+                )
+                embed.add_field(
+                    name="Definition",
+                    value=entry["definition"][:1018] + " [...]",
+                    inline=False,
+                )
+                embed.add_field(name="Example", value=entry["example"], inline=False)
+                embed.add_field(name="Author", value=entry["author"], inline=False)
+                embed.add_field(
+                    name="Rating",
+                    value=(
+                        str(entry["thumbs_up"])
+                        + " :thumbsup: / "
+                        + str(entry["thumbs_down"])
+                        + " :thumbsdown:"
+                    ),
+                    inline=False,
+                )
+                return embed
+            else:
+                return "No definition found."
 
 
 def setup(bot):
