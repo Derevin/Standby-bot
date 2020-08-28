@@ -1,4 +1,4 @@
-from discord.ext import commands
+from discord.ext import commands, tasks
 import discord
 import asyncio
 import random
@@ -6,10 +6,16 @@ import re
 import datetime
 from settings import *
 
+giveaway_lock = asyncio.Lock()
+
 
 class Giveaways(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.check_giveaways.start()
+
+    def cog_unload(self):
+        self.check_giveaways.cancel()
 
     @commands.command(brief="Starts a giveaway in the #giveaways channel")
     @commands.has_any_role("Moderator", "Guides of the Void")
@@ -19,7 +25,7 @@ class Giveaways(commands.Cog):
 
         if not re.search(r"(\d+[dhms])+", time):
             raise commands.errors.BadArgument("Invalid time format")
-        if not re.search(r"^([1-9]\d*)w$", winners):
+        if not re.search(r"^([1-9]\d*)w?$", winners):
             raise commands.errors.BadArgument("Invalid winner format")
 
         days = re.search(r"(\d+)d", time)
@@ -33,7 +39,7 @@ class Giveaways(commands.Cog):
         if days + hours + minutes + seconds == 0:
             raise commands.errors.BadArgument("Invalid time format")
 
-        num_winners = int(re.search(r"^(\d+)w$", winners).group(1))
+        num_winners = int(re.search(r"^(\d+)w?$", winners).group(1))
 
         title = " ".join(title)
 
@@ -173,6 +179,25 @@ class Giveaways(commands.Cog):
             embed.set_footer(text=text)
             await giveaway.edit(embed=embed)
 
+    @tasks.loop(seconds=15)
+    async def check_giveaways(self):
+        guild = None
+
+        try:
+            guild = await self.bot.fetch_guild(GUILD_ID)
+        except Exception:
+            pass
+        if guild:
+            channels = await guild.fetch_channels()
+            giveaway_channel = discord.utils.get(channels, name=GIVEAWAY_CHANNEL_NAME)
+            async for message in giveaway_channel.history():
+                if (
+                    message.embeds
+                    and len(message.embeds[0].fields) >= 3
+                    and message.embeds[0].fields[2].name == "Time remaining"
+                ):
+                    await update_giveaway(message)
+
 
 async def who_reacted(message, emoji):
     reactions = message.reactions
@@ -200,54 +225,56 @@ async def giveaway_handler(bot, payload):
 
 async def update_giveaway(giveaway):
 
-    embed = giveaway.embeds[0]
-    end_time = embed.timestamp
-    now = datetime.datetime.utcnow()
-    delta = end_time - now
-    if delta == datetime.timedelta(seconds=0) or delta.days < 0:
-        await finish_giveaway(giveaway)
-    else:
+    async with giveaway_lock:
+        embed = giveaway.embeds[0]
+        end_time = embed.timestamp
+        now = datetime.datetime.utcnow()
+        delta = end_time - now
+        if delta == datetime.timedelta(seconds=0) or delta.days < 0:
+            await finish_giveaway(giveaway)
+        else:
 
-        embed.set_field_at(2, name="Time remaining", value=delta_to_text(delta))
-        await giveaway.edit(embed=embed)
+            embed.set_field_at(2, name="Time remaining", value=delta_to_text(delta))
+            await giveaway.edit(embed=embed)
 
 
 async def finish_giveaway(giveaway):
 
-    embed = giveaway.embeds[0]
-    embed.description = EMPTY + "\nThe giveaway has finished!\n" + EMPTY
-    embed.set_field_at(1, name=EMPTY, value=EMPTY)
-    embed.set_field_at(2, name=EMPTY, value=EMPTY)
-    embed.set_footer(text=re.sub("Ends", "Ended", embed.footer.text))
-    embed.timestamp = datetime.datetime.utcnow()
+    async with giveaway_lock:
+        embed = giveaway.embeds[0]
+        embed.description = EMPTY + "\nThe giveaway has finished!\n" + EMPTY
+        embed.set_field_at(1, name=EMPTY, value=EMPTY)
+        embed.set_field_at(2, name=EMPTY, value=EMPTY)
+        embed.set_footer(text=re.sub("Ends", "Ended", embed.footer.text))
+        embed.timestamp = datetime.datetime.utcnow()
 
-    num_winners = int(re.search("^(.+) winner", embed.footer.text).group(1))
-    message = f"{giveaway.jump_url}\n"
-    users = await who_reacted(giveaway, TADA)
-    if len(users) == 0:
-        message += "No winner could be determined."
-    else:
-        message += "Congratulations"
-        if len(users) >= num_winners:
-            winners = random.sample(users, num_winners)
+        num_winners = int(re.search("^(.+) winner", embed.footer.text).group(1))
+        message = f"{giveaway.jump_url}\n"
+        users = await who_reacted(giveaway, TADA)
+        if len(users) == 0:
+            message += "No winner could be determined."
         else:
-            winners = users
-            random.shuffle(winners)
-        for winner in winners:
-            embed.add_field(
-                name=f"Winner #{winners.index(winner)+1}", value=winner.mention
+            message += "Congratulations"
+            if len(users) >= num_winners:
+                winners = random.sample(users, num_winners)
+            else:
+                winners = users
+                random.shuffle(winners)
+            for winner in winners:
+                embed.add_field(
+                    name=f"Winner #{winners.index(winner)+1}", value=winner.mention
+                )
+                message += f" {winner.mention}"
+            for i in range(len(users), num_winners):
+                embed.add_field(name=f"Winner #{i+1}", value="None")
+            message += (
+                f"!\nYou have won the {embed.title[8:-8].lower().strip()}!"
+                + f"\nContact {embed.fields[0].value} for your prize."
             )
-            message += f" {winner.mention}"
-        for i in range(len(users), num_winners):
-            embed.add_field(name=f"Winner #{i+1}", value="None")
-        message += (
-            f"!\nYou have won the {embed.title[8:-8].lower().strip()}!"
-            + f"\nContact {embed.fields[0].value} for your prize."
-        )
 
-    await giveaway.edit(embed=embed)
-    await asyncio.sleep(2)
-    await giveaway.channel.send(message)
+        await giveaway.edit(embed=embed)
+        await asyncio.sleep(2)
+        await giveaway.channel.send(message)
 
 
 def is_active_giveaway(message):
