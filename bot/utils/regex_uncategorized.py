@@ -151,6 +151,20 @@ regex_uncategorized_commands.append(
 )
 
 
+async def fourtwenty_resp(message: discord.Message):
+    await message.add_reaction("🔥")
+    await message.add_reaction("🇧")
+    await message.add_reaction("🇱")
+    await message.add_reaction("🇦")
+    await message.add_reaction("🇿")
+    await message.add_reaction("🇪")
+    await message.add_reaction("🇮")
+    await message.add_reaction("🇹")
+
+
+regex_uncategorized_commands.append(("^[^\\/<]*420", fourtwenty_resp, re.M | re.I))
+
+
 async def woop_resp(message: discord.Message):
     await message.channel.send("That's the sound of da police!")
 
