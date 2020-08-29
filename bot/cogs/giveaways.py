@@ -75,10 +75,14 @@ class Giveaways(commands.Cog):
                 )
 
         else:
-            async for message in channel.history():
-                if is_active_giveaway(message):
-                    await finish_giveaway(message)
-                    return
+            await giveaway_lock.acquire()
+            try:
+                async for message in channel.history(limit=50):
+                    if is_active_giveaway(message):
+                        await finish_giveaway(message)
+                        return
+            finally:
+                giveaway_lock.release()
 
     @commands.command(brief="Draw a new winner for a giveaway", aliases=["greroll"])
     @commands.has_any_role("Moderator", "Guides of the Void")
@@ -179,7 +183,7 @@ class Giveaways(commands.Cog):
             embed.set_footer(text=text)
             await giveaway.edit(embed=embed)
 
-    @tasks.loop(seconds=5)
+    @tasks.loop(seconds=10)
     async def check_giveaways(self):
         guild = None
 
@@ -190,14 +194,17 @@ class Giveaways(commands.Cog):
         if guild:
             channels = await guild.fetch_channels()
             giveaway_channel = discord.utils.get(channels, name=GIVEAWAY_CHANNEL_NAME)
-            async for message in giveaway_channel.history(limit=50):
-                async with giveaway_lock:
+            await giveaway_lock.acquire()
+            try:
+                async for message in giveaway_channel.history(limit=25):
                     if (
                         message.embeds
                         and len(message.embeds[0].fields) >= 3
                         and message.embeds[0].fields[2].name == "Time remaining"
                     ):
                         await update_giveaway(message)
+            finally:
+                giveaway_lock.release()
 
 
 async def who_reacted(message, emoji):
@@ -232,7 +239,6 @@ async def update_giveaway(giveaway):
     if delta == datetime.timedelta(seconds=0) or delta.days < 0:
         await finish_giveaway(giveaway)
     else:
-
         embed.set_field_at(2, name="Time remaining", value=delta_to_text(delta))
         await giveaway.edit(embed=embed)
 
@@ -271,7 +277,6 @@ async def finish_giveaway(giveaway):
         )
 
     await giveaway.edit(embed=embed)
-    await asyncio.sleep(2)
     await giveaway.channel.send(message)
 
 
