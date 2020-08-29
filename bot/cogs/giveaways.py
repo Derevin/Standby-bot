@@ -190,13 +190,14 @@ class Giveaways(commands.Cog):
         if guild:
             channels = await guild.fetch_channels()
             giveaway_channel = discord.utils.get(channels, name=GIVEAWAY_CHANNEL_NAME)
-            async for message in giveaway_channel.history():
-                if (
-                    message.embeds
-                    and len(message.embeds[0].fields) >= 3
-                    and message.embeds[0].fields[2].name == "Time remaining"
-                ):
-                    await update_giveaway(message)
+            async with giveaway_lock:
+                async for message in giveaway_channel.history():
+                    if (
+                        message.embeds
+                        and len(message.embeds[0].fields) >= 3
+                        and message.embeds[0].fields[2].name == "Time remaining"
+                    ):
+                        await update_giveaway(message)
 
 
 async def who_reacted(message, emoji):
@@ -224,18 +225,16 @@ async def giveaway_handler(bot, payload):
 
 
 async def update_giveaway(giveaway):
+    embed = giveaway.embeds[0]
+    end_time = embed.timestamp
+    now = datetime.datetime.utcnow()
+    delta = end_time - now
+    if delta == datetime.timedelta(seconds=0) or delta.days < 0:
+        await finish_giveaway(giveaway)
+    else:
 
-    async with giveaway_lock:
-        embed = giveaway.embeds[0]
-        end_time = embed.timestamp
-        now = datetime.datetime.utcnow()
-        delta = end_time - now
-        if delta == datetime.timedelta(seconds=0) or delta.days < 0:
-            await finish_giveaway(giveaway)
-        else:
-
-            embed.set_field_at(2, name="Time remaining", value=delta_to_text(delta))
-            await giveaway.edit(embed=embed)
+        embed.set_field_at(2, name="Time remaining", value=delta_to_text(delta))
+        await giveaway.edit(embed=embed)
 
 
 async def finish_giveaway(giveaway):
