@@ -197,7 +197,9 @@ async def urban_embed(query, page):
                 embed = discord.Embed(color=DARK_ORANGE)
                 embed.title = f"Page {page}/{pages}"
                 embed.add_field(
-                    name="Word", value=f"[{entry['word']}]({web_link})", inline=False
+                    name="Word",
+                    value=f"[{entry['word']}]({re.sub(' ','%20', web_link)})",
+                    inline=False,
                 )
                 embed.add_field(
                     name="Definition",
