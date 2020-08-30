@@ -21,7 +21,7 @@ NO_RESPONSE_CHANNELS = [
     "events",
     "event-submission",
 ]
-GIVEAWAY_CHANNEL_NAME = "maintenance-channel"
+GIVEAWAY_CHANNEL_NAME = "giveaways"
 MOD_ROLES_NAMES = ["Moderator", "Guides of the Void"]
 SOFT_RED = 0xCD6D6D
 STARBOARD_COLOUR = 0xFFAC33

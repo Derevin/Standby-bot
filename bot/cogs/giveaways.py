@@ -18,7 +18,7 @@ class Giveaways(commands.Cog):
         self.check_giveaways.cancel()
 
     @commands.command(brief="Starts a giveaway in the #giveaways channel")
-    @commands.has_any_role("Moderator", "Guides of the Void")
+    @commands.has_any_role("Moderator", "Guides of the Void", "Giveaways")
     async def gstart(self, ctx, time, winners, *title):
 
         await ctx.message.delete()
