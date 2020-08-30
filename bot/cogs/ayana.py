@@ -185,7 +185,6 @@ async def urban_embed(query, page):
 
     async with aiohttp.ClientSession() as cs:
         api_link = f"https://api.urbandictionary.com/v0/define?term={query}"
-        web_link = f"https://www.urbandictionary.com/define.php?term={query}"
         async with cs.get(api_link) as r:
             data = await r.json()
             if "error" in data:
@@ -196,10 +195,11 @@ async def urban_embed(query, page):
                 entry = entries[page - 1]
                 embed = discord.Embed(color=DARK_ORANGE)
                 embed.title = f"Page {page}/{pages}"
+                word = entry["word"]
+                web_link = f"https://www.urbandictionary.com/define.php?term={word}"
+                web_link = re.sub(" ", "%20", web_link)
                 embed.add_field(
-                    name="Word",
-                    value=f"[{entry['word']}]({re.sub(' ','%20', web_link)})",
-                    inline=False,
+                    name="Word", value=f"[{word}]({web_link})", inline=False,
                 )
                 embed.add_field(
                     name="Definition",
