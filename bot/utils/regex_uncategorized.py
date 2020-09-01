@@ -222,7 +222,7 @@ async def loli_resp(message: discord.Message):
         await message.channel.send(f"Fuck off, {message.author.mention}")
 
 
-regex_uncategorized_commands.append(("[lI]o[lI]i", loli_resp, re.M | re.I))
+regex_uncategorized_commands.append(("^[^\\/]*[lI]o[lI]i", loli_resp, re.M | re.I))
 
 
 async def dont_at_me_resp(message: discord.Message):
