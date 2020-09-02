@@ -60,7 +60,7 @@ class Ayana(commands.Cog):
 
         else:
             raise commands.errors.BadArgument(
-                message="Enter a unique identifier - mention, nickname or username with tag - or leave empty"
+                message="Enter a unique identifier - mention, nickname or username (tag optional) - or leave empty"
             )
 
     @commands.command(brief="Returns the Urban Dictionary definition of a word")
