@@ -47,7 +47,10 @@ class Ayana(commands.Cog):
             users = [
                 user
                 for user in ctx.guild.members
-                if re.search(name, user.display_name, re.I)
+                if (
+                    re.search(name, user.display_name, re.I)
+                    or re.search(name, user.name, re.I)
+                )
             ]
             user = users[0] if len(users) == 1 else None
 
