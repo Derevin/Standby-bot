@@ -78,6 +78,7 @@ class Ayana(commands.Cog):
             await ctx.send(response)
 
     @commands.command(brief="Reposts the last 'user left' message to a channel")
+    @commands.has_any_role("Moderator", "Guides of the Void")
     async def obit(self, ctx, channel_name):
         channel = discord.utils.get(ctx.guild.text_channels, name=channel_name)
         if channel:
