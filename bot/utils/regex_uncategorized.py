@@ -27,7 +27,7 @@ regex_uncategorized_commands.append((f"{BOT_ID}", ping_resp, re.M | re.I))
 
 async def uwu_resp(message: discord.Message):
     msg = message.content
-    if re.search(":[^ ]*(o|u|0|O|U)[wvWV](o|u|0|O|U)[^ ]*:", msg) is not None:
+    if re.search(r":[^ ]*(o|u|0|O|U)[wvWV](o|u|0|O|U)[^ ]*:", msg) is not None:
         return
 
     n = len(re.findall("[rRlL]", msg))
@@ -39,9 +39,7 @@ async def uwu_resp(message: discord.Message):
     await message.channel.send(txt)
 
 
-regex_uncategorized_commands.append(
-    ("^[^\\/]*(o|u|0)[wv](o|u|0).*$", uwu_resp, re.M | re.I)
-)
+regex_uncategorized_commands.append((r"^[^\/]*(o|u|0)[wv]\1.*$", uwu_resp, re.M | re.I))
 
 
 async def nephew_resp(message: discord.Message):
