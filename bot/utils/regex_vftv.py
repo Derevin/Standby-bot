@@ -224,7 +224,7 @@ regex_vftv_commands.append(
     (
         r"^(.{0,20} |)"
         r"((bad)|(stupid)|(f((uc)?k)? off)|(fuck)|(hate ((yo)?u|this))|(shut up)|(stfu)|(f((uc)?k)? ?(yo)?u)) "
-        r"(bot|<..736265509951242403>).{0,2}$",
+        r"((void )?bot|<..736265509951242403>).*$",
         bad_bot_resp,
         re.M | re.I,
     )
