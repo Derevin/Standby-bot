@@ -190,13 +190,6 @@ regex_vftv_commands.append(
 )
 
 
-async def darkness_resp(message: discord.Message):
-    if message.author.id == 238021076406370304:
-        await message.channel.send(
-            "https://lmgtfy.com/?q=" + re.sub(" ", "+", message.content)
-        )
-
-
 regex_vftv_commands.append(("^what( i|')?s", darkness_resp, re.M | re.I))
 
 
