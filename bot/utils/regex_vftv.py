@@ -190,9 +190,6 @@ regex_vftv_commands.append(
 )
 
 
-regex_vftv_commands.append(("^what( i|')?s", darkness_resp, re.M | re.I))
-
-
 ## GOOD/BAD bot
 
 
