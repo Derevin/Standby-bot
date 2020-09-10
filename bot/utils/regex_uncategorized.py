@@ -201,7 +201,7 @@ regex_uncategorized_commands.append(
 
 
 async def hans_resp(message: discord.Message):
-    await message.channel.send("Get ze flammenwerfer!")
+    await message.channel.send("Get ze Flammenwerfer!")
 
 
 regex_uncategorized_commands.append(("^hans\\W*$", hans_resp, re.M | re.I))
