@@ -8,6 +8,7 @@ import aiohttp
 from io import BytesIO
 from settings import *
 from settings_files.rules_contents import *
+from cogs.tickets import CLAIMABLE_CHANNEL_NAME
 
 
 class Rules(commands.Cog):
@@ -19,7 +20,7 @@ class Rules(commands.Cog):
     async def create(self, ctx):
 
         await ctx.message.delete()
-        delay = 0.1
+        delay = 480
         vie = ctx.guild
         rules_ch = get_channel(vie, RULES_CHANNEL_NAME)
         await rules_ch.send(
@@ -186,7 +187,7 @@ class Rules(commands.Cog):
 
     @commands.command(brief="Edits a rule")
     @commands.has_role("Moderator")
-    async def editrule(self, ctx, number, *text):
+    async def editrule(self, ctx, number, *, text):
         try:
             number = int(number)
         except Exception:
@@ -194,8 +195,6 @@ class Rules(commands.Cog):
 
         if not text:
             raise commands.errors.UserInputError("Please enter the rule text")
-
-        text = " ".join(text)
 
         rules_ch = get_channel(ctx.guild, RULES_CHANNEL_NAME)
         rules_msg = await rules_ch.fetch_message(RULES_MESSAGE_ID)
@@ -209,19 +208,25 @@ class Rules(commands.Cog):
         embed.description = f"\n{EMPTY}\n".join(rules)
 
         await rules_msg.edit(embed=embed)
-        await ctx.message.delete()
+        if not ctx.message.embeds:
+            await ctx.message.delete()
 
-    @commands.command(
-        brief="Gives the 'Giveaways' role to all who currently have the 'Level 3' role"
-    )
-    @commands.has_role("Moderator")
-    async def handout(self, ctx):
-        vie = ctx.guild
-        giveaways = get_role(vie, "Giveaways")
-        lv3 = get_role(vie, "Level 3")
-        for member in vie.members:
-            if lv3 in member.roles:
-                await member.add_roles(giveaways)
+    @commands.Cog.listener()
+    async def on_guild_channel_create(self, channel):
+        if channel.name != CLAIMABLE_CHANNEL_NAME:
+            return
+        rules = get_channel(channel.guild, RULES_CHANNEL_NAME)
+        message = await rules.fetch_message(RULES_MESSAGE_ID)
+        match = re.search(r"\n(\d+)\. (.*ticket.*)", message.embeds[0].description)
+        if match:
+            rule_number = match.group(1)
+            rule_text = match.group(2)
+            ctx = await self.bot.get_context(message)
+            await ctx.invoke(
+                self.bot.get_command("editrule"),
+                number=rule_number,
+                text=re.sub(r"<#\d+>", channel.mention, rule_text),
+            )
 
 
 async def role_handler(bot, payload):
