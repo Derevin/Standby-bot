@@ -9,6 +9,7 @@ from io import BytesIO
 from settings import *
 from settings_files.rules_contents import *
 from cogs.tickets import CLAIMABLE_CHANNEL_NAME
+from utils.util_functions import *
 
 
 class Rules(commands.Cog):
@@ -17,10 +18,9 @@ class Rules(commands.Cog):
 
     @commands.command(brief="Adds all posts to the rules channel")
     @commands.has_role("Moderator")
-    async def create(self, ctx):
+    async def create(self, ctx, delay=0.1):
 
         await ctx.message.delete()
-        delay = 480
         vie = ctx.guild
         rules_ch = get_channel(vie, RULES_CHANNEL_NAME)
         await rules_ch.send(
@@ -281,38 +281,6 @@ async def level3_handler(before, after):
     if lv3 not in before.roles and lv3 in after.roles and alliance in after.roles:
         giveaways = get_role(after.guild, "Giveaways")
         await after.add_roles(giveaways)
-
-
-def get_emoji(guild, name):
-    emoji = discord.utils.get(guild.emojis, name=name)
-    if emoji:
-        return emoji
-    else:
-        return name
-
-
-def get_role(guild, name):
-    role = discord.utils.get(guild.roles, name=name)
-    if role:
-        return role
-    else:
-        return None
-
-
-def mention_role(guild, name):
-    role = get_role(guild, name)
-    if role:
-        return role.mention
-    else:
-        return "@" + name
-
-
-def get_channel(guild, name):
-    channel = discord.utils.get(guild.text_channels, name=name)
-    if channel:
-        return channel
-    else:
-        return None
 
 
 def setup(bot):
