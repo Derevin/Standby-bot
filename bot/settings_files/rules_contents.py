@@ -1,7 +1,8 @@
 RULES_CHANNEL_NAME = "rules2"
 BOT_SPAM_ID = 343465942199828481
 GIVEAWAYS_ID = 366906148500275200
-ROLE_MESSAGE_IDS = [748622020626874510, 748622037651554356, 748622055687061632]
+TICKET_CHANNEL_ID = 746029789000892466
+ROLE_MESSAGE_IDS = [748673220223303760, 748622037651554356, 748622055687061632]
 UNLOCK_MESSAGE_ID = 748622016310935603
 RULES_MESSAGE_ID = 748622014553522397
 
@@ -14,7 +15,7 @@ RULES_LIST = [
     "6. No advertising or spam.",
     "7. No links to or posting NSFW content, including pornography, gore and sexualised lolis.",
     "8. Listen to moderators.",
-    "9. Appeals placeholder",
+    f"9. Do not appeal mod decisions in public channels - open a ticket in <#{TICKET_CHANNEL_ID}>.",
     "10. No attacking race, religion, sexual orientation, gender identity or nationality.",
     f"11. Keep bot commands in <#{BOT_SPAM_ID}> unless it's relevant to the current conversation.",
     "12. Don't ping clan roles, @here or @everyone",
@@ -45,7 +46,7 @@ CLANS_PART_2 = {
     "Clouds of Seasons": "🙃",
     "DRILL Battalion": "drill",
     "The Salt Within": "🦉",
-    "White Tiger Cove": "🐯",
+    "White tiger cove": "🐯",
     "SleepNot": "💤",
     "City of Fidelity": "♥",
     "Pixie Stick Protectors": "🧚",

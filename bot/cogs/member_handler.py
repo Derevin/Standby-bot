@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from cogs.ayana import kia_message, welcome_message
+from cogs.rules import level3_handler
 
 
 class MemberHandler(commands.Cog):
@@ -14,6 +15,10 @@ class MemberHandler(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, payload):
         await welcome_message(self, payload)
+
+    @commands.Cog.listener()
+    async def on_member_update(self, before, after):
+        await level3_handler(before, after)
 
 
 def setup(bot):

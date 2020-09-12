@@ -17,8 +17,8 @@ class Rules(commands.Cog):
     @commands.command(brief="Adds all posts to the rules channel")
     @commands.has_role("Moderator")
     async def create(self, ctx):
-        await ctx.invoke(self.bot.get_command("clear"), amount=15)
 
+        await ctx.message.delete()
         delay = 0.1
         vie = ctx.guild
         rules_ch = get_channel(vie, RULES_CHANNEL_NAME)
@@ -40,13 +40,13 @@ class Rules(commands.Cog):
         alli_embed = discord.Embed(color=VIE_PURPLE)
         alli_embed.title = "Step 1 - React to this post"
         alli_embed.description = f"""If you're part of a clan in the Warframe alliance, react with {get_emoji(vie,'Alli')}.
-        If you're coming from anywhere else, react with 🤠."""
+        If you're coming from anywhere else, react with {get_emoji(vie,'BlobWave')}."""
         alli_msg = await rules_ch.send(
             "__***Please carefully read the posts below or you will not gain full access to the server***__",
             embed=alli_embed,
         )
         await alli_msg.add_reaction(get_emoji(vie, "Alli"))
-        await alli_msg.add_reaction("🤠")
+        await alli_msg.add_reaction(get_emoji(vie, "BlobWave"))
         await asyncio.sleep(delay)
 
         clan_embed = discord.Embed(color=VIE_PURPLE)
@@ -211,6 +211,18 @@ class Rules(commands.Cog):
         await rules_msg.edit(embed=embed)
         await ctx.message.delete()
 
+    @commands.command(
+        brief="Gives the 'Giveaways' role to all who currently have the 'Level 3' role"
+    )
+    @commands.has_role("Moderator")
+    async def handout(self, ctx):
+        vie = ctx.guild
+        giveaways = get_role(vie, "Giveaways")
+        lv3 = get_role(vie, "Level 3")
+        for member in vie.members:
+            if lv3 in member.roles:
+                await member.add_roles(giveaways)
+
 
 async def role_handler(bot, payload):
     if payload.user_id != BOT_ID and isinstance(
@@ -219,10 +231,11 @@ async def role_handler(bot, payload):
 
         channel = bot.get_channel(payload.channel_id)
         message = await channel.fetch_message(payload.message_id)
-        embed = message.embeds[0]
         user = message.guild.get_member(payload.user_id)
 
         if payload.message_id in ROLE_MESSAGE_IDS:
+
+            embed = message.embeds[0]
 
             match = re.search(
                 rf"React <?:?{payload.emoji.name}:?\d*>? for <@&(\d*)>",
@@ -238,9 +251,9 @@ async def role_handler(bot, payload):
             if payload.emoji.name == "Alli":
                 alliance = get_role(message.guild, "Alliance")
                 await toggle_role(user, alliance, payload.event_type)
-            elif payload.emoji.name == "🤠":
-                guest = get_role(message.guild, "Guest")
-                await toggle_role(user, guest, payload.event_type)
+            elif payload.emoji.name == "BlobWave":
+                community = get_role(message.guild, "Community")
+                await toggle_role(user, community, payload.event_type)
             else:
                 await message.remove_reaction(payload.emoji, user)
 
@@ -250,6 +263,19 @@ async def toggle_role(member, role, event_type):
         await member.add_roles(role)
     elif event_type == "REACTION_REMOVE":
         await member.remove_roles(role)
+
+
+async def level3_handler(before, after):
+
+    if len(after.roles) - len(before.roles) != 1:
+        return
+
+    lv3 = get_role(after.guild, "Level 3")
+    alliance = get_role(after.guild, "Alliance")
+
+    if lv3 not in before.roles and lv3 in after.roles and alliance in after.roles:
+        giveaways = get_role(after.guild, "Giveaways")
+        await after.add_roles(giveaways)
 
 
 def get_emoji(guild, name):
