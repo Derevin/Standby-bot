@@ -16,6 +16,7 @@ regex_commands.extend(regex_uncategorized_commands)
 
 prio_commands = []
 prio_commands.extend(regex_prio_commands)
+prio_commands.extend(regex_reputation_command)
 
 
 async def regex_handler(bot, message: discord.Message):
@@ -33,10 +34,6 @@ async def regex_handler(bot, message: discord.Message):
     for trig, resp, flags in regex_commands:
         if re.search(trig, message.content, flags) is not None:
             await resp(message)
-
-    for trig, resp, flags in regex_reputation_command:
-        if re.search(trig, message.content, flags) is not None:
-            await resp(bot, message)
 
     if message.guild.id == GUILD_ID:
         for trig, resp, flags in regex_vftv_commands:
