@@ -12,6 +12,7 @@ class Admin(commands.Cog):
         self.bot = bot
 
     @commands.command(brief="Displays basic server stats")
+    @commands.has_any_role("Moderator, Guides of the Void")
     async def status(self, ctx, *args):
         guild = ctx.guild
 
@@ -25,6 +26,7 @@ class Admin(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(aliases=["pong"], brief="Pong!")
+    @commands.has_any_role("Moderator", "Guides of the Void")
     async def ping(self, ctx):
         await ctx.send("Ponguu!")
 
@@ -151,6 +153,27 @@ class Admin(commands.Cog):
             from_channel=from_channel,
         )
 
+    @commands.command(brief="Reposts the last 'user left' message to a channel")
+    @commands.has_any_role("Moderator", "Guides of the Void")
+    async def obit(self, ctx, channel_name, *msg_id):
+        channel = discord.utils.get(ctx.guild.text_channels, name=channel_name)
+        if channel:
+            if msg_id:
+                msg_id = int(msg_id[0])
+                try:
+                    msg = await ctx.channel.fetch_message(msg_id)
+                    if isLeaveMessage(msg):
+                        await channel.send(embed=msg.embeds[0])
+                except Exception:
+                    raise commands.errors.BadArgument("No message found with that ID")
+
+            else:
+                async for msg in ctx.channel.history(limit=6):
+                    if isLeaveMessage(msg):
+                        await channel.send(embed=msg.embeds[0])
+                        break
+        await ctx.message.delete()
+
 
 def message_embed(msg, cmd, trigger_author) -> discord.Embed:
 
@@ -190,6 +213,14 @@ def message_embed(msg, cmd, trigger_author) -> discord.Embed:
             embed.set_image(url=link.group(1))
 
     return embed
+
+
+def isLeaveMessage(message):
+    return (
+        message.author.id == BOT_ID
+        and message.embeds
+        and message.embeds[0].title == "The void grows smaller..."
+    )
 
 
 def setup(bot):

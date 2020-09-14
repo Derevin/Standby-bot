@@ -12,7 +12,7 @@ class Ayana(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(brief="Has the bot repeat a message")
+    @commands.command(brief="Makes the bot repeat a message")
     async def sayd(self, ctx, *args):
         if not args:
             raise commands.errors.MissingRequiredArgument(
@@ -77,72 +77,32 @@ class Ayana(commands.Cog):
         elif isinstance(response, str):
             await ctx.send(response)
 
-    @commands.command(brief="Reposts the last 'user left' message to a channel")
-    @commands.has_any_role("Moderator", "Guides of the Void")
-    async def obit(self, ctx, channel_name):
-        channel = discord.utils.get(ctx.guild.text_channels, name=channel_name)
-        if channel:
-            async for msg in ctx.channel.history(limit=5):
-                if (
-                    msg.author.id == BOT_ID
-                    and msg.embeds
-                    and msg.embeds[0].title == "The void grows smaller..."
-                ):
-                    await channel.send(embed=msg.embeds[0])
-                    return
+    @commands.command(brief="Posts a random 'horny' warning")
+    async def horny(self, ctx):
+        links = [
+            "https://cdn.discordapp.com/attachments/267554564838785024/667115013412225054/image0.jpg",
+            "https://i.kym-cdn.com/entries/icons/original/000/033/758/Screen_Shot_2020-04-28_at_12.21.48_PM.png",
+            "https://cdn.discordapp.com/attachments/267554564838785024/701271178790305852/horny.jpg",
+            "https://cdn.discordapp.com/attachments/267554564838785024/708425147064909944/x3x53kej4jr31.png",
+            "https://cdn.discordapp.com/attachments/258941607238172673/717436181901475990/anti_horny.jpg",
+            "https://cdn.discordapp.com/attachments/620408411393228809/724613520318267422/ubil7fxr99551.png",
+        ]
         await ctx.message.delete()
+        await ctx.channel.send(links[random.randint(0, len(links) - 1)])
 
-
-async def welcome_message(bot, payload):
-    if payload.guild.id == GUILD_ID:
-        general = discord.utils.get(payload.guild.text_channels, name="general")
-        rules_ch = discord.utils.get(payload.guild.text_channels, name="rules")
-        rules_text = rules_ch.mention if rules_ch else "rules"
-        if general:
-            message = (
-                f"Welcome {payload.mention}!\n"
-                "Wondering why the server seems so void of channels?\n"
-                f"Please read the {rules_text} to unlock the full server!\n"
-                "https://www.youtube.com/watch?v=67h8GyNgEmA"
-            )
-            await general.send(message)
-
-
-async def kia_message(bot, payload):
-    if payload.guild.id == GUILD_ID:
-        channel = discord.utils.get(
-            payload.guild.text_channels, name=ERROR_CHANNEL_NAME
+    @commands.command(brief="Posts an 'anime' warning")
+    async def anime(self, ctx):
+        await ctx.message.delete()
+        await ctx.channel.send(
+            "https://cdn.discordapp.com/attachments/355732809224028161/709500701134422137/anime_violation.png"
         )
-        if channel:
-            name = payload.name
-            time = datetime.datetime.now()
-            time = time.strftime("%b %d, %H:%M")
-            embed = discord.Embed(color=GREY)
-            embed.title = "The void grows smaller..."
-            embed.set_thumbnail(
-                url="https://cdn.discordapp.com/attachments/744224801429782679/747945281248559184/grave.png"
-            )
-            embed.description = f":rocket: {name} has left the void :rocket:"
-            causes = [
-                "ded",
-                "Couldn't find their socks fast enough",
-                "Yeeted themselves off a very high chair",
-                "Forgot how to breathe",
-                "Stickbugged one time too many",
-                "Disrespected the pedestal",
-                "Terminal case of being horny",
-                "Sacrificed at the altar of Tzeentch",
-                "Critical paper cut",
-                "Executed by the ICC for their numerous war crimes in Albania",
-            ]
-            animu = discord.utils.get(payload.guild.text_channels, name="animu")
-            if animu:
-                causes.append(f"Too much time spent in {animu.mention}")
-            embed.add_field(name="Time of death", value=time)
-            embed.add_field(
-                name="Cause of death", value=causes[random.randint(1, len(causes)) - 1]
-            )
-            await channel.send(embed=embed)
+
+    @commands.command(brief="Posts a 'cringe' warning")
+    async def cringe(self, ctx):
+        await ctx.message.delete()
+        await ctx.send(
+            "https://cdn.discordapp.com/attachments/441286267548729345/709160523907989524/EVACI9dUcAQp2Mb.png"
+        )
 
 
 async def urban_handler(bot, payload):

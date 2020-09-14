@@ -229,6 +229,58 @@ class Rules(commands.Cog):
             )
 
 
+async def welcome_message(bot, payload):
+    if payload.guild.id == GUILD_ID:
+        general = discord.utils.get(payload.guild.text_channels, name="general")
+        rules_ch = discord.utils.get(payload.guild.text_channels, name="rules")
+        rules_text = rules_ch.mention if rules_ch else "rules"
+        if general:
+            message = (
+                f"Welcome {payload.mention}!\n"
+                "Wondering why the server seems so void of channels?\n"
+                f"Please read the {rules_text} to unlock the full server!\n"
+                "https://www.youtube.com/watch?v=67h8GyNgEmA"
+            )
+            await general.send(message)
+
+
+async def leave_message(bot, payload):
+    if payload.guild.id == GUILD_ID:
+        channel = discord.utils.get(
+            payload.guild.text_channels, name=ERROR_CHANNEL_NAME
+        )
+        if channel:
+            name = payload.name
+            time = datetime.datetime.now()
+            time = time.strftime("%b %d, %H:%M")
+            embed = discord.Embed(color=GREY)
+            embed.title = "The void grows smaller..."
+            embed.set_thumbnail(
+                url="https://cdn.discordapp.com/attachments/744224801429782679/747945281248559184/grave.png"
+            )
+            embed.description = f":rocket: {name} has left the void :rocket:"
+            causes = [
+                "ded",
+                "Couldn't find their socks fast enough",
+                "Yeeted themselves off a very high chair",
+                "Forgot how to breathe",
+                "Stickbugged one time too many",
+                "Disrespected the pedestal",
+                "Terminal case of being horny",
+                "Sacrificed at the altar of Tzeentch",
+                "Critical paper cut",
+                "Executed by the ICC for their numerous war crimes in Albania",
+            ]
+            animu = discord.utils.get(payload.guild.text_channels, name="animu")
+            if animu:
+                causes.append(f"Too much time spent in {animu.mention}")
+            embed.add_field(name="Time of death", value=time)
+            embed.add_field(
+                name="Cause of death", value=causes[random.randint(1, len(causes)) - 1]
+            )
+            await channel.send(embed=embed)
+
+
 async def role_handler(bot, payload):
     if payload.user_id != BOT_ID and isinstance(
         payload, discord.RawReactionActionEvent
