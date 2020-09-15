@@ -1,4 +1,4 @@
-from discord.ext import commands
+from discord.ext import commands, tasks
 import discord
 import asyncio
 import random
@@ -15,6 +15,10 @@ from utils.util_functions import *
 class Rules(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.kick_inactives.start()
+
+    def cog_unload(self):
+        self.kick_inactives.cancel()
 
     @commands.command(brief="Adds all posts to the rules channel")
     @commands.has_role("Moderator")
@@ -228,29 +232,62 @@ class Rules(commands.Cog):
                 text=re.sub(r"<#\d+>", channel.mention, rule_text),
             )
 
+    @tasks.loop(seconds=15)
+    async def kick_inactives(self):
+        guild = None
 
-async def welcome_message(bot, payload):
-    if payload.guild.id == GUILD_ID:
-        general = discord.utils.get(payload.guild.text_channels, name="general")
-        rules_ch = discord.utils.get(payload.guild.text_channels, name="rules")
+        try:
+            guild = await self.bot.fetch_guild(GUILD_ID)
+        except Exception:
+            pass
+
+        if guild:
+            async for member in guild.fetch_members():
+                if (
+                    get_role(member.guild, "Alliance") not in member.roles
+                    and get_role(member.guild, "Community") not in member.roles
+                ):
+                    time = datetime.datetime.utcnow() - member.joined_at
+                    if time.days >= 30:
+                        await member.send(
+                            "Hi! You have been automatically kicked from the Vie for the Void Discord "
+                            f"as you have failed to read our rules and unlock the full server within 30 days. If this "
+                            f"was an accident, please feel free to join us again!\n{EMPTY}\n{INVITE_LINK}"
+                        )
+                        await member.kick()
+
+
+async def welcome_message(bot, member):
+    if member.guild.id == GUILD_ID:
+        general = discord.utils.get(member.guild.text_channels, name="general")
+        rules_ch = discord.utils.get(member.guild.text_channels, name="rules")
         rules_text = rules_ch.mention if rules_ch else "rules"
         if general:
             message = (
-                f"Welcome {payload.mention}!\n"
+                f"Welcome {member.mention}!\n"
                 "Wondering why the server seems so void of channels?\n"
                 f"Please read the {rules_text} to unlock the full server!\n"
                 "https://www.youtube.com/watch?v=67h8GyNgEmA"
             )
             await general.send(message)
+            await asyncio.sleep(30 * 60)
+            if (
+                member.guild.get_member(member.id)
+                and get_role(member.guild, "Alliance") not in member.roles
+                and get_role(member.guild, "Community") not in member.roles
+            ):
+                await general.send(
+                    f"Hey {member.mention} - I see you still haven't unlocked the full server. "
+                    f"Make sure you read {rules_ch.mention} and react to the post so you can "
+                    "access all of our channels!"
+                )
 
 
-async def leave_message(bot, payload):
-    if payload.guild.id == GUILD_ID:
-        channel = discord.utils.get(
-            payload.guild.text_channels, name=ERROR_CHANNEL_NAME
-        )
+async def leave_message(bot, member):
+    if member.guild.id == GUILD_ID:
+        channel = discord.utils.get(member.guild.text_channels, name=ERROR_CHANNEL_NAME)
         if channel:
-            name = payload.name
+            name = member.name
             time = datetime.datetime.now()
             time = time.strftime("%b %d, %H:%M")
             embed = discord.Embed(color=GREY)
@@ -271,7 +308,7 @@ async def leave_message(bot, payload):
                 "Critical paper cut",
                 "Executed by the ICC for their numerous war crimes in Albania",
             ]
-            animu = discord.utils.get(payload.guild.text_channels, name="animu")
+            animu = discord.utils.get(member.guild.text_channels, name="animu")
             if animu:
                 causes.append(f"Too much time spent in {animu.mention}")
             embed.add_field(name="Time of death", value=time)
