@@ -232,7 +232,7 @@ class Rules(commands.Cog):
                 text=re.sub(r"<#\d+>", channel.mention, rule_text),
             )
 
-    @tasks.loop(seconds=15)
+    @tasks.loop(hours=8)
     async def kick_inactives(self):
         guild = None
 
