@@ -232,7 +232,7 @@ class Rules(commands.Cog):
                 text=re.sub(r"<#\d+>", channel.mention, rule_text),
             )
 
-    @tasks.loop(hours=8)
+    @tasks.loop(seconds=30, count=2)
     async def kick_inactives(self):
         guild = None
 
@@ -244,7 +244,8 @@ class Rules(commands.Cog):
         if guild:
             async for member in guild.fetch_members():
                 if (
-                    get_role(member.guild, "Alliance") not in member.roles
+                    not member.bot
+                    and get_role(member.guild, "Alliance") not in member.roles
                     and get_role(member.guild, "Community") not in member.roles
                 ):
                     time = datetime.datetime.utcnow() - member.joined_at
