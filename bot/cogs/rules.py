@@ -232,7 +232,7 @@ class Rules(commands.Cog):
                 text=re.sub(r"<#\d+>", channel.mention, rule_text),
             )
 
-    @tasks.loop(seconds=30, count=2)
+    @tasks.loop(hours=8)
     async def kick_inactives(self):
         guild = None
 
@@ -289,7 +289,7 @@ async def leave_message(bot, member):
         channel = discord.utils.get(member.guild.text_channels, name=ERROR_CHANNEL_NAME)
         if channel:
             name = member.name
-            time = datetime.datetime.now()
+            time = datetime.datetime.utcnow()
             time = time.strftime("%b %d, %H:%M")
             embed = discord.Embed(color=GREY)
             embed.title = "The void grows smaller..."
