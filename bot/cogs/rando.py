@@ -49,7 +49,7 @@ class Rando(commands.Cog):
             raise commands.errors.MissingRequiredArgument(
                 "Please enter at least one option"
             )
-        options = re.split("[ ,]+", " ".join(args))
+        options = re.split(", ?", " ".join(args))
         if len(options) == 1:
             await ctx.send(
                 f"Such a tough decision. I guess I'll have to go with {options[0]}"
