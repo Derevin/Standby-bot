@@ -38,14 +38,14 @@ async def regex_handler(bot, message: discord.Message):
     if message.content.startswith(PREFIX):
         return
 
-    handle_simple_commands(message, prio_commands)
-    handle_db_commands(bot, message, prio_db_commands)
+    await handle_simple_commands(message, prio_commands)
+    await handle_db_commands(bot, message, prio_db_commands)
 
     if message.channel.name in NO_RESPONSE_CHANNELS:
         return
 
-    handle_simple_commands(message, regex_commands)
+    await handle_simple_commands(message, regex_commands)
 
     if message.guild.id == GUILD_ID:
-        handle_simple_commands(message, regex_vftv_commands)
+        await handle_simple_commands(message, regex_vftv_commands)
 
