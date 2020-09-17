@@ -23,7 +23,11 @@ async def link_resp(message: discord.Message):
         return
 
     embed = message_embed(source_message, "link", message.author)
+    if not source_message.content and source_message.embeds:
+        embed.description = "[See attached embed]"
     await message.channel.send(embed=embed)
+    if not source_message.content and source_message.embeds:
+        await message.channel.send(embed=source_message.embeds[0])
 
 
 regex_prio_commands.append(
