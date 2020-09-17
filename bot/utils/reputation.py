@@ -8,7 +8,7 @@ THANK_TYPE = "Void"
 
 
 async def reputation_resp(bot, message: discord.Message):
-    if message.mentions:
+    if message and message.mentions:
         for x in message.mentions:
             if message.author.id == x.id:
                 await message.channel.send("Thanking yourself gives no reputation.")
