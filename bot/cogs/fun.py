@@ -26,6 +26,12 @@ class Fun(commands.Cog):
         #        await ctx.message.delete() #not sure if wanted?
         await ctx.channel.send(TOUCAN_PRAISE)
 
+    @commands.command(brief="Praise screenshot")
+    async def praisepic(self, ctx):
+        await ctx.channel.send(
+            "https://cdn.discordapp.com/attachments/743071403447943269/756976250605797466/unknown.png"
+        )
+
 
 def setup(bot):
     bot.add_cog(Fun(bot))
