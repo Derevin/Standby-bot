@@ -29,7 +29,7 @@ class Fun(commands.Cog):
     @commands.command(brief="Praise screenshot")
     async def praisepic(self, ctx):
         await ctx.channel.send(
-            "https://cdn.discordapp.com/attachments/743071403447943269/756976250605797466/unknown.png"
+            "https://cdn.discordapp.com/attachments/743071403447943269/756976939591270431/unknown.png"
         )
 
 
