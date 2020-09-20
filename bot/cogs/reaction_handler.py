@@ -3,7 +3,7 @@ from discord.ext import commands
 from utils.starboard import starboard_handler
 from cogs.giveaways import giveaway_handler
 from cogs.rules import role_handler
-from cogs.ayana import urban_handler
+from cogs.services import urban_handler
 
 
 class ReactionHandler(commands.Cog):
