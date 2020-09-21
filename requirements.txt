@@ -21,3 +21,5 @@ toml==0.10.1
 typed-ast==1.4.1
 websockets==8.1
 yarl==1.4.2
+numpy==1.19.2
+gekko==0.2.8
