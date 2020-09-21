@@ -23,3 +23,4 @@ websockets==8.1
 yarl==1.4.2
 numpy==1.19.2
 gekko==0.2.8
+requests==2.24.0
