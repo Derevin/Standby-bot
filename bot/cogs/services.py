@@ -48,9 +48,6 @@ class Services(commands.Cog):
 
     @commands.command(brief="Returns the Urban Dictionary definition of a word")
     async def urban(self, ctx, *, query):
-        # if not query:
-        #     raise commands.errors.MissingRequiredArgument("Please enter a valid query.")
-        # query = " ".join(query)
         response = await urban_embed(query, 1)
         if isinstance(response, discord.Embed):
             message = await ctx.send(embed=response)
