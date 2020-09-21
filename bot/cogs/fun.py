@@ -1,6 +1,7 @@
 from discord.ext import commands
 import discord
 import random
+from utils.util_functions import *
 
 
 TOUCAN_PRAISE = """
@@ -55,6 +56,27 @@ class Fun(commands.Cog):
         await ctx.send(
             "https://cdn.discordapp.com/attachments/441286267548729345/709160523907989524/EVACI9dUcAQp2Mb.png"
         )
+
+    @commands.command(brief="Gives a user a hug")
+    async def hug(self, ctx, *, user):
+
+        if ctx.message.mentions:
+            user = ctx.message.mentions[0]
+        else:
+            user = get_user(ctx.guild, user)
+
+        if user:
+            if user == ctx.author:
+                await ctx.send(
+                    "https://cdn.discordapp.com/attachments/744224801429782679/757549246533599292/selfhug.png"
+                )
+            else:
+                await ctx.channel.send(
+                    f"{user.mention}, {ctx.author.mention} sent you a hug!"
+                )
+                hug = get_emoji(ctx.guild, "BlobReachAndHug")
+                if hug:
+                    await ctx.channel.send(hug)
 
 
 def setup(bot):
