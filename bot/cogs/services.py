@@ -1,6 +1,7 @@
 from discord.ext import commands
 import discord
 from settings import *
+from utils.util_functions import *
 from inspect import Parameter
 import re
 import aiohttp
@@ -13,46 +14,28 @@ class Services(commands.Cog):
         self.bot = bot
 
     @commands.command(brief="Makes the bot repeat a message")
-    async def sayd(self, ctx, *args):
-        if not args:
-            raise commands.errors.MissingRequiredArgument(
-                Parameter("args", Parameter.VAR_POSITIONAL)
-            )
-        str = " ".join(args)
-        msg = await ctx.channel.send((str + " "))
+    async def sayd(self, ctx, *, message):
+
+        msg = await ctx.channel.send((message + " "))
         await ctx.message.delete()
-        await msg.edit(content=str)
+        await msg.edit(content=message)
 
     @commands.command(
         aliases=["pfp"],
         brief="Displays the profile picture of a user. Also works as +pfp",
     )
-    async def avatar(self, ctx, *args):
+    async def avatar(self, ctx, *user):
 
-        args_joined = " ".join(args)
+        query = " ".join(user)
 
-        if not args:
+        if not user:
             user = ctx.author
 
-        elif re.search(r"<@!?\d+>", args[0]):
-            id = int(re.search(r"\d+", args[0]).group())
-            user = discord.utils.get(ctx.guild.members, id=id)
-
-        elif re.search(r".*#\d{4}$", args_joined):
-            name, tag = re.split(" ?#", args_joined)
-            user = discord.utils.get(ctx.guild.members, name=name, discriminator=tag)
+        elif ctx.message.mentions:
+            user = ctx.message.mentions[0]
 
         else:
-            name = args_joined
-            users = [
-                user
-                for user in ctx.guild.members
-                if (
-                    re.search(name, user.display_name, re.I)
-                    or re.search(name, user.name, re.I)
-                )
-            ]
-            user = users[0] if len(users) == 1 else None
+            user = get_user(ctx.guild, query)
 
         if user:
             embed = avatar_embed(user)
@@ -64,10 +47,10 @@ class Services(commands.Cog):
             )
 
     @commands.command(brief="Returns the Urban Dictionary definition of a word")
-    async def urban(self, ctx, *query):
-        if not query:
-            raise commands.errors.MissingRequiredArgument("Please enter a valid query.")
-        query = " ".join(query)
+    async def urban(self, ctx, *, query):
+        # if not query:
+        #     raise commands.errors.MissingRequiredArgument("Please enter a valid query.")
+        # query = " ".join(query)
         response = await urban_embed(query, 1)
         if isinstance(response, discord.Embed):
             message = await ctx.send(embed=response)

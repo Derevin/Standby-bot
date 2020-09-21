@@ -8,8 +8,8 @@ class Rando(commands.Cog):
         self.bot = bot
 
     @commands.command(brief="RPG format dice roller")
-    async def roll(self, ctx, *args):
-        dice = "".join(args)
+    async def roll(self, ctx, *, dice_roll):
+        dice = re.sub(" ", "", dice_roll)
         rolls = re.split(r"\+", dice)
         results = []
         bonus = []
@@ -44,12 +44,9 @@ class Rando(commands.Cog):
         await ctx.send("Heads" if n == 1 else "Tails")
 
     @commands.command(aliases=["pick"], brief="Chooses from among the given options")
-    async def choose(self, ctx, *args):
-        if not args:
-            raise commands.errors.MissingRequiredArgument(
-                "Please enter at least one option"
-            )
-        options = re.split(", ?", " ".join(args))
+    async def choose(self, ctx, *, choices):
+
+        options = re.split(", ?", choices)
         if len(options) == 1:
             await ctx.send(
                 f"Such a tough decision. I guess I'll have to go with {options[0]}"
