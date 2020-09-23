@@ -48,7 +48,7 @@ class Fun(commands.Cog):
     @commands.command(brief="Posts an 'anime' warning")
     async def anime(self, ctx):
         await ctx.channel.send(
-            "https://cdn.discordapp.com/attachments/355732809224028161/709500701134422137/anime_violation.png"
+            "https://cdn.discordapp.com/attachments/744224801429782679/758417628544106546/4fmrlk.png"
         )
 
     @commands.command(brief="Posts a 'cringe' warning")
