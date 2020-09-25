@@ -86,15 +86,32 @@ class Giveaways(commands.Cog):
 
     @commands.command(brief="Draw a new winner for a giveaway", aliases=["greroll"])
     @commands.has_any_role("Moderator", "Guides of the Void")
-    async def gredraw(self, ctx, *id):
+    async def gredraw(self, ctx, number=1, id="last"):
 
         await ctx.message.delete()
+
+        number = int(number)
+        if number > 1000:
+            if id == "last":
+                id = number
+                number = 1
+            else:
+                number, id = int(id), number
 
         channel = discord.utils.get(ctx.guild.text_channels, name=GIVEAWAY_CHANNEL_NAME)
         giveaway = None
 
-        if id:
-            id = "".join(id)
+        if id == "last":
+            async for message in channel.history():
+                if (
+                    message.embeds
+                    and len(message.embeds[0].fields) >= 4
+                    and message.embeds[0].fields[3].name == "Winner #1"
+                ):
+                    giveaway = message
+                    break
+        else:
+            id = int(id)
             try:
                 message = await channel.fetch_message(id)
                 if (
@@ -110,35 +127,43 @@ class Giveaways(commands.Cog):
             except Exception:
                 raise commands.errors.BadArgument("No message found with that ID")
 
-        else:
-            async for message in channel.history():
-                if (
-                    message.embeds
-                    and len(message.embeds[0].fields) >= 4
-                    and message.embeds[0].fields[3].name == "Winner #1"
-                ):
-                    giveaway = message
-                    break
-
-        winners = []
         if giveaway is not None:
+
+            winners = []
             for field in giveaway.embeds[0].fields:
                 if field.name.startswith("Winner") and field.value != "None":
                     winners.append(field.value)
             users = await who_reacted(giveaway, TADA)
 
-            if len(users) == len(winners):
+            eligible = [user.mention for user in users if user.mention not in winners]
+
+            if len(eligible) == 0:
                 await giveaway.channel.send(
                     "All who entered the giveaway won a prize - there are no more names to draw from."
                 )
                 return
+            else:
+                if number > len(eligible):
+                    if len(eligible) == 1:
+                        await giveaway.channel.send(
+                            "There is only 1 entrant left to draw from."
+                        )
+                    else:
+                        await giveaway.channel.send(
+                            f"There are only {len(eligible)} entrants left to draw from."
+                        )
+                    number = len(eligible)
 
-            new_winner = winners[0]
-            while new_winner in winners:
-                new_winner = random.choice(users).mention
-            await giveaway.channel.send(
-                f"{TADA} The new winner is {new_winner}! Congratulations!"
-            )
+                new_winners = random.sample(eligible, number)
+
+            if len(new_winners) == 1:
+                await giveaway.channel.send(
+                    f"{TADA} The new winner is {new_winners[0]}! Congratulations!"
+                )
+            else:
+                await giveaway.channel.send(
+                    f"{TADA} The new winners are {', '.join(new_winners[:-1])} and {new_winners[-1]}! Congratulations!"
+                )
 
     @commands.command(brief="Edits the number of winners for a giveaway")
     @commands.has_any_role("Moderator", "Guides of the Void")
