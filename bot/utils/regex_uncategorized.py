@@ -76,18 +76,18 @@ async def kenobi_resp(message: discord.Message):
 regex_uncategorized_commands.append(("hello there", kenobi_resp, re.M | re.I))
 
 
-async def spoiler_resp(message: discord.Message):
-    if message.content == "||nephew||":
-        return
-    ignored_channels = ["wf-shitpost", "netflix-and-read", "vie-for-the-vault"]
-    responses = ["Hey, what's the big secret?", "What are we whispering about?"]
-    if message.channel.name not in ignored_channels:
-        await message.channel.send(responses[random.randint(0, len(responses) - 1)])
+# async def spoiler_resp(message: discord.Message):
+#     if message.content == "||nephew||":
+#         return
+#     ignored_channels = ["wf-shitpost", "netflix-and-read", "vie-for-the-vault"]
+#     responses = ["Hey, what's the big secret?", "What are we whispering about?"]
+#     if message.channel.name not in ignored_channels:
+#         await message.channel.send(responses[random.randint(0, len(responses) - 1)])
 
 
-regex_uncategorized_commands.append(
-    ("^(\\|\\|([^\\|]*(\\|[^\\|]+)+|[^\\|]*)\\|\\| *)+$", spoiler_resp, re.M | re.I)
-)
+# regex_uncategorized_commands.append(
+#     ("^(\\|\\|([^\\|]*(\\|[^\\|]+)+|[^\\|]*)\\|\\| *)+$", spoiler_resp, re.M | re.I)
+# )
 
 
 async def bell_resp(message: discord.Message):
