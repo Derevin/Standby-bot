@@ -110,15 +110,20 @@ class Mod:
         self.critical_chance = 0
         self.critical_damage = 0
         self.element = 0
+        self.status_chance = 0
+        self.fire_rate = 0
+        self.reload_speed = 0
+        self.magazine_capacity = 0
         self.impact = 0
         self.puncture = 0
         self.slash = 0
-        self.fire_rate = 0
-        self.magazine_capacity = 0
-        self.reload_speed = 0
 
     def __bool__(self):
         return self.stats() != [0] * len(self.stats())
+
+    def scale(self, num):
+        for stat in list(self.__dict__.keys())[3:]:
+            self.__setattr__(stat, self.__getattribute__(stat) * num)
 
     def __lt__(self, other):
 
@@ -126,6 +131,12 @@ class Mod:
         right = other
 
         # Exceptions for sorting
+
+        if self.name == "Riven":
+            return True
+        if other.name == "Riven":
+            return False
+
         if self.name == "Blaze":
             left = Mod()
             left.damage = 0.6
@@ -240,25 +251,38 @@ class Modlist:
     def matrix(self):
         return [self.mods[i].stats() for i in range(len(self))]
 
-    def index(self, name):
-        if self[name]:
-            return self.mods.index(self[name])
+    def index(self, query):
+
+        if query == "Elements":
+            indices = [i for i in range(len(self)) if self.mods[i].element > 0]
+            return indices
+
+        elif query == "Status":
+            indices = [i for i in range(len(self)) if self.mods[i].status_chance > 0]
+            return indices
+
+        elif query == "Vigilante":
+            indices = [
+                i for i in range(len(self)) if self.mods[i].name.startswith("Vigilante")
+            ]
+            return indices
+
+        elif query == "Conditionals":
+            indices = [i for i in range(len(self)) if self.mods[i].conditional]
+            return indices
+
+        elif query == "Physical":
+            indices = [
+                i
+                for i in range(len(self))
+                if self.mods[i].impact + self.mods[i].puncture + self.mods[i].slash > 0
+            ]
+            return indices
+
+        elif self[query]:
+            return self.mods.index(self[query])
         else:
             return []
-
-    def element_indices(self):
-        indices = [i for i in range(len(self)) if self.mods[i].element > 0]
-        return indices
-
-    def vigilante_indices(self):
-        indices = [
-            i for i in range(len(self)) if self.mods[i].name.startswith("Vigilante")
-        ]
-        return indices
-
-    def conditional_indices(self):
-        indices = [i for i in range(len(self)) if self.mods[i].conditional]
-        return indices
 
     def names(self):
         return "\n".join(["[" + mod.name + "]" for mod in self.mods])
@@ -285,7 +309,44 @@ elements = [
 
 stat_group = "(" + "|".join(names + elements)
 stat_group = re.sub("_", " ", stat_group).title()
-stat_regex = r"([\+-]\d+)% (<.*>)?" + stat_group + r")(.*)"
+stat_regex = r"([\+-]?\d+(\.\d+)?)% (<.*>)?" + stat_group + r")(.*)"
+
+
+def parse_stats(line):
+
+    match = re.search(stat_regex, line)
+
+    if not match:  # Skip mods that aren't relevant for DPS
+        return None, None, None
+
+    conditional = False
+    if match.group(5):  # There is text after the stat increase
+
+        if match.group(5) in [
+            " to Grineer",
+            " to Corpus",
+            " to Infested",
+            " to Corrupted",
+            " on first shot in Magazine",
+            " Radius",
+        ]:  # Skip faction mods, charged/primed chamber, blast radius
+            return None, None, None
+
+        conditional = ":" in line  # Covers "On kill:" and similar
+
+    # Get the stat to increase
+    stat = match.group(4)
+    stat = re.sub(" ", "_", stat).lower()
+
+    # All elements go into the same stat
+    if stat.title() in elements:
+        stat = "element"
+
+    # Get the amount
+    amount = float(match.group(1)) / 100
+
+    return stat, amount, conditional
+
 
 all_mods = Modlist()
 
@@ -310,42 +371,14 @@ for mod in mod_data:
     ):
         continue
 
-    conditional = False
-
     m = Mod(mod["name"])  # Create mod
 
     for line in mod["levelStats"][-1]["stats"]:  # Max rank stats
 
-        match = re.search(stat_regex, line)
+        stat, amount, conditional = parse_stats(line)
 
-        if not match:  # Skip mods that aren't relevant for DPS
+        if stat is None:
             continue
-
-        if match.group(4):  # There is text after the stat increase
-
-            if ":" in line:  # Covers "On kill:" and similar
-                conditional = True
-
-            if match.group(4) in [
-                " to Grineer",
-                " to Corpus",
-                " to Infested",
-                " to Corrupted",
-                " on first shot in Magazine",
-                " Radius",
-            ]:  # Skip faction mods, charged/primed chamber, blast radius
-                continue
-
-        # Get the stat to increase
-        stat = match.group(3)
-        stat = re.sub(" ", "_", stat).lower()
-
-        # All elements go into the same stat
-        if stat.title() in elements:
-            stat = "element"
-
-        # Get the amount
-        amount = float(match.group(1)) / 100
 
         # Add stat
         m.increase(stat, amount)
