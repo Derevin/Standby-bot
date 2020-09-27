@@ -32,7 +32,7 @@ RESOLVED_MESSAGE = (
 )
 
 REOPENED_MESSAGE = (
-    "This issue has been reopened. Once the issue is resolved, type: ```+tresolved```"
+    "This issue has been reopened. Once the issue is resolved, type: ```+tresolve```"
 )
 
 
