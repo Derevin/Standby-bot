@@ -51,7 +51,7 @@ class Warframe(commands.Cog):
                 else:
                     reqs.append(item)
 
-            if riven:
+            if riven.has_dps_stats():
                 modlist.add(riven)
 
             # Initialize model

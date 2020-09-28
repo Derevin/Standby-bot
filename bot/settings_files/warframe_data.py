@@ -119,7 +119,7 @@ class Mod:
         self.puncture = 0
         self.slash = 0
 
-    def __bool__(self):
+    def has_dps_stats(self):
         return self.stats() != [0] * len(self.stats())
 
     def scale(self, num):
@@ -387,7 +387,7 @@ for mod in mod_data:
     if "wikiaThumbnail" in mod:
         m.image = mod["wikiaThumbnail"]
 
-    if m:  # The mod has at least one non-zero stat
+    if m.has_dps_stats():  # The mod has at least one non-zero stat
         dps_mods.add(m)
     all_mods.add(m)
 
