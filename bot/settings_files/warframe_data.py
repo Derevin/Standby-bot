@@ -105,6 +105,7 @@ class Mod:
         self.name = name
         self.compat = "NONE"
         self.conditional = False
+        self.image = None
         self.damage = 0
         self.multishot = 0
         self.critical_chance = 0
@@ -122,7 +123,7 @@ class Mod:
         return self.stats() != [0] * len(self.stats())
 
     def scale(self, num):
-        for stat in list(self.__dict__.keys())[3:]:
+        for stat in list(self.__dict__.keys())[4:]:
             self.__setattr__(stat, self.__getattribute__(stat) * num)
 
     def __lt__(self, other):
@@ -171,11 +172,11 @@ class Mod:
 
     # DPS relevant stat names
     def stat_names(self):
-        return list(self.__dict__.keys())[3:]
+        return list(self.__dict__.keys())[4:]
 
     # DPS relevant stat values
     def stats(self):
-        return list(self.__dict__.values())[3:]
+        return list(self.__dict__.values())[4:]
 
     # Increase stat by keyword
     def increase(self, stat, amount):
@@ -348,6 +349,7 @@ def parse_stats(line):
     return stat, amount, conditional
 
 
+dps_mods = Modlist()
 all_mods = Modlist()
 
 for mod in mod_data:
@@ -356,18 +358,10 @@ for mod in mod_data:
 
     if (
         "compatName" not in mod
-        or mod["type"]
-        not in [
-            "Primary",
-            "Rifle",
-            "Secondary",
-            "Secondary Mod",
-            "Shotgun",
-            "Shotgun Mod",
-        ]
+        or "levelStats" not in mod
         or mod["uniqueName"].endswith("Beginner")  # Beginner mods
         or mod["name"].endswith("Riven Mod")  # Some kind of placeholder
-        or "PvPMods" in mod["uniqueName"]  # Conclave mods
+        # or "PvPMods" in mod["uniqueName"]  # Conclave mods
     ):
         continue
 
@@ -380,23 +374,27 @@ for mod in mod_data:
         if stat is None:
             continue
 
+        if conditional is True:
+            m.conditional = True
+
         # Add stat
         m.increase(stat, amount)
 
+    m.compat = mod["compatName"]
+
+    m.name = re.sub("'S", "'s", m.name)  # Typo in the API
+
+    if "wikiaThumbnail" in mod:
+        m.image = mod["wikiaThumbnail"]
+
     if m:  # The mod has at least one non-zero stat
-
-        m.conditional = conditional
-        m.compat = mod["compatName"]
-
-        if m.name == "Hell'S Chamber":  # Typo in the API
-            m.name = "Hell's Chamber"
-
-        all_mods.add(m)
+        dps_mods.add(m)
+    all_mods.add(m)
 
 
 # Remove non-unique amalgam mods and mods that have a primed version
-for mod in all_mods.mods[:]:
-    if (mod.name.startswith("Amalgam") and all_mods[mod.name[8:]]) or (
-        all_mods["Primed " + mod.name]
+for mod in dps_mods.mods[:]:
+    if (mod.name.startswith("Amalgam") and dps_mods[mod.name[8:]]) or (
+        dps_mods["Primed " + mod.name]
     ):
-        all_mods.remove(mod)
+        dps_mods.remove(mod)

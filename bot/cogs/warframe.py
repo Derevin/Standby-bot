@@ -35,7 +35,7 @@ class Warframe(commands.Cog):
                 raise commands.errors.BadArgument(
                     "The weapon does not exist or has not yet been added."
                 )
-            modlist = wf.all_mods.get(weapon)
+            modlist = wf.dps_mods.get(weapon)
 
             args = args[index:]  # Remove weapon name
             arg_text = " ".join(args).title()

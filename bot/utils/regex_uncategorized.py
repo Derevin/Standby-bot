@@ -3,6 +3,7 @@ import re
 import random
 import aiohttp
 from settings import *
+from settings_files.warframe_data import all_mods
 
 regex_uncategorized_commands = []
 
@@ -239,4 +240,14 @@ async def america_resp(message: discord.Message):
 regex_uncategorized_commands.append(
     ("^\\W*a?'?m(e|u)rica\\W*$", america_resp, re.M | re.I)
 )
+
+
+async def mod_resp(message: discord.Message):
+    mod_names = re.findall(r"(?<=\[).+(?=\])", message.content)
+    for mod_name in mod_names:
+        if all_mods[mod_name.title()]:
+            await message.channel.send(all_mods[mod_name.title()].image)
+
+
+regex_uncategorized_commands.append((r"\[.*\]", mod_resp, re.M | re.I))
 
