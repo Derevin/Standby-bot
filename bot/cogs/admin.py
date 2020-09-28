@@ -12,7 +12,7 @@ class Admin(commands.Cog):
         self.bot = bot
 
     @commands.command(brief="Displays basic server stats")
-    @commands.has_any_role("Moderator, Guides of the Void")
+    @commands.has_any_role("Moderator", "Guides of the Void")
     async def status(self, ctx, *args):
         guild = ctx.guild
 
