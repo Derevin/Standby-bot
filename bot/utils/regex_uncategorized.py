@@ -243,7 +243,8 @@ regex_uncategorized_commands.append(
 
 
 async def mod_resp(message: discord.Message):
-    mod_names = re.findall(r"(?<=\[).+(?=\])", message.content)
+    mod_names = re.findall(r"(?<=\[)[a-zA-Z ']+(?=\])", message.content)
+    print(mod_names)
     for mod_name in mod_names:
         if all_mods[mod_name.title()]:
             await message.channel.send(all_mods[mod_name.title()].image)
