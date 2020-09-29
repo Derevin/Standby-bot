@@ -110,7 +110,7 @@ async def edited_embed(bot, payload):
         avatar_url = author.avatar_url
         attachment_url = message.attachments[0].url if message.attachments else None
 
-    embed = discord.Embed(color=PALE_YELLOW)
+    embed = discord.Embed(color=LIGHT_BLUE)
     embed.title = "Message edited"
     embed.add_field(name="Before", value=before_message, inline=False)
     embed.add_field(name="After", value=after_message, inline=False)
