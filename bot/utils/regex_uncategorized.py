@@ -252,3 +252,12 @@ async def mod_resp(message: discord.Message):
 
 regex_uncategorized_commands.append((r"\[.*\]", mod_resp, re.M | re.I))
 
+
+async def x_is_x_resp(message: discord.Message):
+    await message.channel.send(
+        "https://cdn.discordapp.com/attachments/744224801429782679/760882040492523530/X_is_X.png"
+    )
+
+
+regex_uncategorized_commands.append((r"(.+) (is|are) \1", x_is_x_resp, re.M | re.I))
+
