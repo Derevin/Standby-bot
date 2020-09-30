@@ -12,6 +12,8 @@ class Logs(commands.Cog):
     @commands.Cog.listener()
     async def on_raw_message_delete(self, payload):
         channel = self.bot.get_channel(payload.channel_id)
+        if channel.name == LOGS_CHANNEL_NAME:
+            return
         embed = await deleted_embed(payload, channel)
         if embed:
             guild = channel.guild
