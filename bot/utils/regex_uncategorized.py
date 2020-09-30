@@ -259,5 +259,7 @@ async def x_is_x_resp(message: discord.Message):
     )
 
 
-regex_uncategorized_commands.append((r"(.+) (is|are) \1", x_is_x_resp, re.M | re.I))
+regex_uncategorized_commands.append(
+    (r"^(.* )?(\w+) (is|are) \2(\W.{0,5})?$", x_is_x_resp, re.M | re.I)
+)
 
