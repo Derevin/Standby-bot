@@ -49,7 +49,7 @@ async def deleted_embed(payload, channel):
     embed.title = "Message deleted"
     if payload.cached_message is not None:
         message = payload.cached_message
-        if str(message.type) == "MessageType.pins_add":
+        if message.author.bot or str(message.type) == "MessageType.pins_add":
             return None
         embed.description = message.content
         embed.set_thumbnail(url=message.author.avatar_url)
