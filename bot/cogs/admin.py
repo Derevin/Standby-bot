@@ -195,7 +195,10 @@ def message_embed(msg, cmd, trigger_author) -> discord.Embed:
     embed.description = msg.content
     embed.add_field(name="Channel", value=msg.channel.mention)
     timestamp = msg.created_at + datetime.timedelta(hours=2)
-    timestamp = timestamp.strftime("%b %d, %H:%M")
+    if (datetime.datetime.now() - timestamp).days > 11 * 30:
+        timestamp = timestamp.strftime("%b %d, %Y")
+    else:
+        timestamp = timestamp.strftime("%b %d, %H:%M")
     embed.add_field(name="Sent at", value=timestamp)
     embed.add_field(name=EMPTY, value=EMPTY)
     embed.add_field(name="Original poster", value=msg.author.mention)
