@@ -12,6 +12,7 @@ STARBOARD_ID = int(os.getenv("STARBOARD_ID", False))
 
 
 ERROR_CHANNEL_NAME = "maintenance-channel"
+ERROR_CHANNEL_ID = 376031149371162635
 NO_RESPONSE_CHANNELS = [
     "mod-chat",
     "rules",
