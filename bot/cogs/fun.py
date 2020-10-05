@@ -78,7 +78,7 @@ class Fun(commands.Cog):
                 if hug:
                     await ctx.channel.send(hug)
 
-    @commands.command(brief="Pay your respects")
+    @commands.command(brief="Pay your respects", aliases=["F"])
     async def f(self, ctx, *, target):
         embed = discord.Embed()
         embed.description = (
