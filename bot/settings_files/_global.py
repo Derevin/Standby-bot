@@ -23,7 +23,7 @@ NO_RESPONSE_CHANNELS = [
     "event-submission",
 ]
 GIVEAWAY_CHANNEL_NAME = "giveaways"
-LOGS_CHANNEL_NAME = "mod-logs-test"
+LOGS_CHANNEL_NAME = "mod-logs"
 INVITE_LINK = "https://discord.gg/xW9TxMw"
 MOD_ROLES_NAMES = ["Moderator", "Guides of the Void"]
 SOFT_RED = 0xCD6D6D
