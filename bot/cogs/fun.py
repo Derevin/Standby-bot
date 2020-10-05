@@ -78,6 +78,15 @@ class Fun(commands.Cog):
                 if hug:
                     await ctx.channel.send(hug)
 
+    @commands.command(brief="Pay your respects")
+    async def f(self, ctx, *, target):
+        embed = discord.Embed()
+        embed.description = (
+            f"**{ctx.author.name}** has paid their respects to **{target}**."
+        )
+        rip = await ctx.channel.send(embed=embed)
+        await rip.add_reaction("🇫")
+
 
 def setup(bot):
     bot.add_cog(Fun(bot))
