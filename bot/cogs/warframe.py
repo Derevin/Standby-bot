@@ -99,6 +99,8 @@ class Warframe(commands.Cog):
             no_heavy_cal = re.search("no heavy cal(iber)?", reqs, re.I) is not None
             no_magnum = re.search("no magnum( force)?", reqs, re.I) is not None
             use_ips = re.search("ips ok", reqs, re.I) is not None
+            use_status = re.search(r"(\d) status", reqs, re.I)
+            min_elements = re.search(r"(\d) elements", reqs, re.I)
 
             # Set conditions (Don't use strict inequalities)
             m.Equation(m.sum(x) <= 8)  # 8 Mod Capacity
@@ -108,6 +110,12 @@ class Warframe(commands.Cog):
 
             if not use_ips:
                 m.Equation(m.sum(x[phy]) == 0)
+
+            if use_status:
+                m.Equation(m.sum(x[stc]) == int(use_status.group(1)))
+
+            if min_elements:
+                m.Equation(m.sum(x[ele]) == int(min_elements.group(1)))
 
             # Weapon class specific conditions
             if weapon.compat == "PISTOL":
