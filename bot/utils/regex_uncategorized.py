@@ -53,15 +53,15 @@ async def nephew_resp(message: discord.Message):
 regex_uncategorized_commands.append(("^\\|*nephew\\|*$", nephew_resp, re.M | re.I))
 
 
-async def dad_resp(message: discord.Message):
-    msg = re.split("m ", message.content, 1)
-    if len(re.findall(" ", msg[-1])) < 6:
-        await message.channel.send("Hi " + msg[-1] + f", I'm <@{BOT_ID}>.")
+# async def dad_resp(message: discord.Message):
+#     msg = re.split("m ", message.content, 1)
+#     if len(re.findall(" ", msg[-1])) < 6:
+#         await message.channel.send("Hi " + msg[-1] + f", I'm <@{BOT_ID}>.")
 
 
-regex_uncategorized_commands.append(
-    ("^\\.*(i['`´.]?m|i\\.? ?a\\.?m)\\**[ .]{1,4}", dad_resp, re.M | re.I)
-)
+# regex_uncategorized_commands.append(
+#     ("^\\.*(i['`´.]?m|i\\.? ?a\\.?m)\\**[ .]{1,4}", dad_resp, re.M | re.I)
+# )
 
 
 async def kenobi_resp(message: discord.Message):
@@ -194,6 +194,7 @@ regex_uncategorized_commands.append(("^\\W*bruh\\W*$", bruh_resp, re.M | re.I))
 
 async def dad_reclaim_resp(message: discord.Message):
     await message.channel.send("Oi, that's my job!")
+    await message.channel.send("Well, it used to be, at least...")
 
 
 regex_uncategorized_commands.append(
