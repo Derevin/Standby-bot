@@ -386,6 +386,9 @@ for mod in mod_data:
 
     if "wikiaThumbnail" in mod:
         m.image = mod["wikiaThumbnail"]
+    else:
+        if m.name == "Cunning Drift":
+            m.image = "https://vignette.wikia.nocookie.net/warframe/images/9/9c/Cunning_drift.png/revision/latest"
 
     if m.has_dps_stats():  # The mod has at least one non-zero stat
         dps_mods.add(m)
