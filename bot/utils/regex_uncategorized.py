@@ -264,3 +264,10 @@ regex_uncategorized_commands.append(
     (r"^(.* )?(\w+) (is|are) \2(\W.{0,5})?$", x_is_x_resp, re.M | re.I)
 )
 
+
+async def tree_fiddy_resp(message: discord.Message):
+    await message.add_reaction("🐍")
+
+
+regex_uncategorized_commands.append(("tree fiddy", tree_fiddy_resp, re.M | re.I))
+
