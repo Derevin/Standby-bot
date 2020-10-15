@@ -28,8 +28,11 @@ regex_uncategorized_commands.append((f"{BOT_ID}", ping_resp, re.M | re.I))
 
 async def uwu_resp(message: discord.Message):
     msg = message.content
-    if re.search(r":[^ ]*(o|u|0|O|U)[wvWV](o|u|0|O|U)[^ ]*:", msg) is not None:
-        return
+    whitelist = [r":[^ ]*(o|u|0|O|U)[wvWV](o|u|0|O|U)[^ ]*:", "lenovo", "coworker"]
+
+    for word in whitelist:
+        if re.search(word, msg, re.I) is not None:
+            return
 
     n = len(re.findall("[rRlL]", msg))
     txt = "https://www.youtube.com/watch?v=rrD3jp34BFg"
