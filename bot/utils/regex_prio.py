@@ -31,5 +31,9 @@ async def link_resp(message: discord.Message):
 
 
 regex_prio_commands.append(
-    (r"https:\/\/discord(app)?\.com\/channels\/\d+\/\d+\/\d+", link_resp, re.M | re.I)
+    (
+        r"https:\/\/(\w+\.)?discord(app)?\.com\/channels\/\d+\/\d+\/\d+",
+        link_resp,
+        re.M | re.I,
+    )
 )
