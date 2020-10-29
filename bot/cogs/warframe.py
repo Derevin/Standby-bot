@@ -18,6 +18,13 @@ class Warframe(commands.Cog):
 
             # Load weapon and mod data
 
+            try:
+                wf.arsenal
+            except AttributeError:
+                raise commands.errors.CommandError(
+                    "This service is currently unavailable."
+                )
+
             args = [weapon]  # This is ugly but I want the +help text to look right
             if riven is not None:
                 args = [weapon, riven]
@@ -35,6 +42,7 @@ class Warframe(commands.Cog):
                 raise commands.errors.BadArgument(
                     "The weapon does not exist or has not yet been added."
                 )
+
             modlist = wf.dps_mods.get(weapon)
 
             args = args[index:]  # Remove weapon name

@@ -44,58 +44,64 @@ class Weapon:
 WEAPONS_URL = "https://wf.snekw.com/weapons-wiki"
 r = requests.get(url=WEAPONS_URL)
 weapon_data = r.json()
-weapon_data = weapon_data["data"]["Weapons"]
 
-arsenal = {}
+if "data" in weapon_data:
 
-for item in weapon_data:
-    weapon = weapon_data[item]
+    weapon_data = weapon_data["data"]["Weapons"]
 
-    # TODO: Archguns
-    if weapon["Type"] in ["Primary", "Secondary"]:
+    arsenal = {}
 
-        # TODO: Bows and other charged weapons
-        if "Trigger" in weapon and weapon["Trigger"] in ["Charge", "Burst / Charge"]:
-            continue
+    for item in weapon_data:
+        weapon = weapon_data[item]
 
-        # Fill in missing values
+        # TODO: Archguns
+        if weapon["Type"] in ["Primary", "Secondary"]:
 
-        ips = []
-        for damage_type in ["Impact", "Puncture", "Slash"]:
-            if damage_type not in weapon["NormalAttack"]["Damage"]:
-                weapon["NormalAttack"]["Damage"][damage_type] = 0
-            ips.append(weapon["NormalAttack"]["Damage"][damage_type])
+            # TODO: Bows and other charged weapons
+            if "Trigger" in weapon and weapon["Trigger"] in [
+                "Charge",
+                "Burst / Charge",
+            ]:
+                continue
 
-        if "CritChance" not in weapon["NormalAttack"]:
-            weapon["NormalAttack"]["CritChance"] = 0
+            # Fill in missing values
 
-        if "CritMultiplier" not in weapon["NormalAttack"]:
-            weapon["NormalAttack"]["CritMultiplier"] = 1
+            ips = []
+            for damage_type in ["Impact", "Puncture", "Slash"]:
+                if damage_type not in weapon["NormalAttack"]["Damage"]:
+                    weapon["NormalAttack"]["Damage"][damage_type] = 0
+                ips.append(weapon["NormalAttack"]["Damage"][damage_type])
 
-        # Regulators have a listed reload time for some reason
-        if weapon["Name"].startswith("Regulators"):
-            weapon["Magazine"] = 100
-            weapon["Reload"] = 0
+            if "CritChance" not in weapon["NormalAttack"]:
+                weapon["NormalAttack"]["CritChance"] = 0
 
-        # There are no mods limited to a certain type of secondary
-        if weapon["Type"] == "Secondary":
-            weapon["Class"] = "PISTOL"
+            if "CritMultiplier" not in weapon["NormalAttack"]:
+                weapon["NormalAttack"]["CritMultiplier"] = 1
 
-        # Create the weapon
-        arsenal[weapon["Name"].lower()] = Weapon(
-            name=weapon["Name"],
-            category=weapon["Type"].upper(),
-            compat=weapon["Class"].upper(),
-            cc=weapon["NormalAttack"]["CritChance"],
-            cd=weapon["NormalAttack"]["CritMultiplier"],
-            fire_rate=weapon["NormalAttack"]["FireRate"],
-            mag=weapon["Magazine"],
-            rel=weapon["Reload"],
-            imp=ips[0],
-            punc=ips[1],
-            slash=ips[2],
-            element=sum(weapon["NormalAttack"]["Damage"].values()) - sum(ips),
-        )
+            # Regulators have a listed reload time for some reason
+            if weapon["Name"].startswith("Regulators"):
+                weapon["Magazine"] = 100
+                weapon["Reload"] = 0
+
+            # There are no mods limited to a certain type of secondary
+            if weapon["Type"] == "Secondary":
+                weapon["Class"] = "PISTOL"
+
+            # Create the weapon
+            arsenal[weapon["Name"].lower()] = Weapon(
+                name=weapon["Name"],
+                category=weapon["Type"].upper(),
+                compat=weapon["Class"].upper(),
+                cc=weapon["NormalAttack"]["CritChance"],
+                cd=weapon["NormalAttack"]["CritMultiplier"],
+                fire_rate=weapon["NormalAttack"]["FireRate"],
+                mag=weapon["Magazine"],
+                rel=weapon["Reload"],
+                imp=ips[0],
+                punc=ips[1],
+                slash=ips[2],
+                element=sum(weapon["NormalAttack"]["Damage"].values()) - sum(ips),
+            )
 
 regular_compats = ["PRIMARY", "RIFLE", "SHOTGUN", "PISTOL", "ASSAULT RIFLE", "SNIPER"]
 
