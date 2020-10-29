@@ -334,7 +334,7 @@ async def role_handler(bot, payload):
 
         channel = bot.get_channel(payload.channel_id)
         message = await channel.fetch_message(payload.message_id)
-        user = message.guild.get_member(payload.user_id)
+        user = await message.guild.fetch_member(payload.user_id)
 
         if payload.message_id in ROLE_MESSAGE_IDS:
 
