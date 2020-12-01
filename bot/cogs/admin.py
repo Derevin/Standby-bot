@@ -5,6 +5,7 @@ import random
 import re
 import datetime
 from settings import *
+from utils.util_functions import int_to_emoji
 
 
 class Admin(commands.Cog):
@@ -173,6 +174,35 @@ class Admin(commands.Cog):
                         await channel.send(embed=msg.embeds[0])
                         break
         await ctx.message.delete()
+
+    @commands.command(brief="Starts a vote")
+    @commands.has_any_role("Moderator", "Guides of the Void")
+    async def vote(self, ctx, *, topic):
+        await ctx.message.delete()
+
+        if ctx.channel.name not in ["mod-chat", "mod-votes"]:
+            raise commands.errors.CommandError(
+                "You can only run this command in a mod channel."
+            )
+
+        embed = discord.Embed(color=PALE_YELLOW)
+        embed.title = "A vote has been requested"
+        embed.add_field(name="Started by", value=ctx.author.mention)
+
+        await ctx.send("@here")
+
+        if re.search(r"\d\. ", topic):
+            topic = re.sub(r"(?<!\n)(\d)\. ", r"\n\1\. ", topic)
+            embed.description = topic
+            options = re.findall(r"(?<=\n)\d", topic)
+            vote_msg = await ctx.send(embed=embed)
+            for num in options:
+                await vote_msg.add_reaction(int_to_emoji(int(num)))
+        else:
+            embed.description = topic
+            vote_msg = await ctx.send(embed=embed)
+            await vote_msg.add_reaction("✅")
+            await vote_msg.add_reaction("❌")
 
 
 def message_embed(msg, cmd, trigger_author) -> discord.Embed:
