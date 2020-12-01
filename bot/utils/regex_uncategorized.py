@@ -217,7 +217,7 @@ async def loli_resp(message: discord.Message):
         return
     glare = discord.utils.get(message.guild.emojis, name="BlobGlare")
     if glare is not None:
-        await message.channel.send(glare)
+        await message.add_reaction(glare)
     await message.channel.send(
         "https://cdn.discordapp.com/attachments/413861431906402334/731636158223614113/image0-27.jpg"
     )
