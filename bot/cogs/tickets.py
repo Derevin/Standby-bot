@@ -171,6 +171,9 @@ class Tickets(commands.Cog):
         chnl = await cat.create_text_channel(
             name=CLAIMABLE_CHANNEL_NAME, reason="Making a claimable channel."
         )
+        muted_role = discord.utils.get(cat.guild.roles, name="Muted")
+        if muted_role:
+            await chnl.set_permissions(muted_role, send_messages=True)
         await chnl.send(CLAIMABLE_CHANNEL_MESSAGE)
 
     async def get_or_create_tickets_log(self, ctx):
