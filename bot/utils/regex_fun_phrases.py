@@ -97,6 +97,16 @@ regex_fun_phrases_commands.append(
     ("^.{0,4}Es ist Mittwoch\\W{0,4}$", mittwoch_resp, re.M | re.I)
 )
 
+
+async def sroda_resp(message: discord.Message):
+    await message.channel.send("o panowie")
+    await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
+
+
+regex_fun_phrases_commands.append(
+    ("^.{0,4}jest [sś]roda\\W{0,4}$", sroda_resp, re.M | re.I)
+)
+
 ### tuesday
 
 
