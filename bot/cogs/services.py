@@ -72,6 +72,17 @@ class Services(commands.Cog):
         )
         await ctx.channel.send(starboard_ldr)
 
+    @commands.command(brief="Displays thanks leaderboard",)
+    async def thnksldr(self, ctx):
+        thanks_ldr = await self.bot.pg_pool.fetch(
+            f"SELECT usr_id, SUM(thanks) as sum_thanks "
+            f"FROM usr "
+            f"WHERE guild_id = {ctx.guild.id}) "
+            f"GROUP BY usr_id "
+            f"ORDER BY sum_thanks DESC ;"
+        )
+        await ctx.channel.send(thanks_ldr)
+
 
 async def urban_handler(bot, payload):
     if isinstance(payload, discord.RawReactionActionEvent):
