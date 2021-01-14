@@ -219,6 +219,8 @@ class Giveaways(commands.Cog):
         if guild:
             channels = await guild.fetch_channels()
             giveaway_channel = discord.utils.get(channels, name=GIVEAWAY_CHANNEL_NAME)
+            if not giveaway_channel:
+                return
             await giveaway_lock.acquire()
             try:
                 async for message in giveaway_channel.history(limit=25):
