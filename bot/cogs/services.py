@@ -57,6 +57,18 @@ class Services(commands.Cog):
         elif isinstance(response, str):
             await ctx.send(response)
 
+    @commands.command(
+        aliases=["sleaderboard", "starboard"],
+        brief="Displays the starboard leaderboards. Also works as +sleaderboard, +starboard",
+    )
+    async def sbldr(self, ctx):
+        await ctx.channel.send("ok")
+        starboard_ldr = await self.bot.pg_pool.fetchrow(
+            f"SELECT * FROM starboard WHERE usr_id IN (SELECT usr_id FROM usr WHERE guild_id = {ctx.guild.id});"
+        )
+        print(starboard_ldr)
+        await ctx.channel.send(starboard_ldr)
+
 
 async def urban_handler(bot, payload):
     if isinstance(payload, discord.RawReactionActionEvent):
