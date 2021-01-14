@@ -64,6 +64,7 @@ async def urban_handler(bot, payload):
         message = await channel.fetch_message(payload.message_id)
         if (
             payload.user_id != BOT_ID
+            and not payload.member.bot
             and message.embeds
             and message.embeds[0].title.startswith("Page")
             and payload.emoji.name in ["⬅️", "➡️", "🇽"]
@@ -79,9 +80,9 @@ async def urban_handler(bot, payload):
                 page, pages = int(match.group(1)), int(match.group(2))
                 query = re.search(r"\[(.*)\]", embed.fields[0].value).group(1)
                 user = message.guild.get_member(payload.user_id)
-                if payload.emoji.name == "⬅️" and page != 1:
+                if payload.emoji.name == "⬅️" and page > 1:
                     embed = await urban_embed(query, page - 1)
-                elif payload.emoji.name == "➡️" and page != pages:
+                elif payload.emoji.name == "➡️" and page < pages:
                     embed = await urban_embed(query, page + 1)
 
                 await message.remove_reaction(payload.emoji, user)
