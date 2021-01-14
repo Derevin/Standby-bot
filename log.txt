@@ -1,0 +1,1500 @@
+2021-01-12T18:54:24.963740+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-12T18:54:24.963741+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-12T18:54:24.963805+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-12T18:54:24.963806+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-12T18:54:24.963835+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-12T18:54:24.963835+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-12T18:54:24.963885+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-12T19:02:57.260576+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-12T19:02:57.260905+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-12T19:02:57.261013+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-12T19:02:57.261014+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-12T19:02:57.261045+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-12T19:02:57.261046+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-12T19:02:57.261108+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-12T19:02:57.261109+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-12T19:02:57.261159+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-12T20:56:58.078842+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-12T20:56:58.079014+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-12T20:56:58.079080+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-12T20:56:58.079081+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-12T20:56:58.079085+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-12T20:56:58.079086+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-12T20:56:58.079107+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-12T20:56:58.079108+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-12T20:56:58.079158+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-12T21:50:09.957030+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-12T21:50:09.957394+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-12T21:50:09.957482+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-12T21:50:09.957484+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-12T21:50:09.957552+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-12T21:50:09.957553+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-12T21:50:09.957583+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-12T21:50:09.957584+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-12T21:50:09.957643+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-12T21:50:14.582651+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-12T21:50:14.582957+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-12T21:50:14.583020+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-12T21:50:14.583021+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-12T21:50:14.583051+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-12T21:50:14.583051+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-12T21:50:14.583096+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-12T21:50:14.583097+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-12T21:50:14.583130+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-12T21:50:21.546449+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-12T21:50:21.546926+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-12T21:50:21.547068+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-12T21:50:21.547069+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-12T21:50:21.547118+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-12T21:50:21.547119+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-12T21:50:21.547212+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-12T21:50:21.547213+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-12T21:50:21.547327+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-12T21:56:27.893105+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-12T21:56:27.893306+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-12T21:56:27.893383+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-12T21:56:27.893384+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-12T21:56:27.893388+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-12T21:56:27.893389+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-12T21:56:27.893419+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-12T21:56:27.893420+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-12T21:56:27.893473+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-12T21:56:32.741229+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-12T21:56:32.741446+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-12T21:56:32.741940+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-12T21:56:32.741943+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-12T21:56:32.742010+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-12T21:56:32.742011+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-12T21:56:32.742080+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-12T21:56:32.742081+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-12T21:56:32.742162+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-12T21:56:33.209169+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-12T21:56:33.209413+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-12T21:56:33.209488+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-12T21:56:33.209489+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-12T21:56:33.209529+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-12T21:56:33.209530+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-12T21:56:33.209564+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-12T21:56:33.209564+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-12T21:56:33.209615+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-12T22:03:22.145114+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-12T22:03:22.145304+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-12T22:03:22.145406+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-12T22:03:22.145408+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-12T22:03:22.145459+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-12T22:03:22.145460+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-12T22:03:22.145508+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-12T22:03:22.145509+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-12T22:03:22.145574+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-12T22:19:24.176234+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-12T22:19:24.176458+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-12T22:19:24.176533+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-12T22:19:24.176534+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-12T22:19:24.176585+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-12T22:19:24.176586+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-12T22:19:24.176591+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-12T22:19:24.176591+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-12T22:19:24.176634+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-12T22:19:28.493646+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-12T22:19:28.494041+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-12T22:19:28.494186+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-12T22:19:28.494188+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-12T22:19:28.494257+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-12T22:19:28.494258+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-12T22:19:28.494326+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-12T22:19:28.494327+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-12T22:19:28.494408+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-12T23:57:13.388743+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-12T23:57:13.389211+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-12T23:57:13.389236+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-12T23:57:13.389237+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-12T23:57:13.389239+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-12T23:57:13.389239+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-12T23:57:13.389240+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-12T23:57:13.389241+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-12T23:57:13.389242+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T05:35:14.192510+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T05:35:14.195720+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T05:35:14.195779+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T05:35:14.195780+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T05:35:14.195826+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T05:35:14.195827+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T05:35:14.195869+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T05:35:14.195870+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T05:35:14.195965+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T05:36:26.536454+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T05:36:26.536671+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T05:36:26.536733+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T05:36:26.536734+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T05:36:26.536794+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T05:36:26.536795+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T05:36:26.536799+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T05:36:26.536800+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T05:36:26.536845+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T05:38:53.237796+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T05:38:53.239283+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T05:38:53.239570+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T05:38:53.239573+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T05:38:53.239648+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T05:38:53.239648+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T05:38:53.239714+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T05:38:53.239715+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T05:38:53.239795+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T10:13:24.117894+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T10:13:24.118387+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T10:13:24.118529+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T10:13:24.118530+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T10:13:24.118553+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T10:13:24.118554+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T10:13:24.118651+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T10:13:24.118651+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T10:13:24.118768+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T10:19:30.560577+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T10:19:30.560771+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T10:19:30.561011+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T10:19:30.561012+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T10:19:30.561013+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T10:19:30.561014+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T10:19:30.561018+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T10:19:30.561019+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T10:19:30.561054+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T10:19:35.162838+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T10:19:35.163133+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T10:19:35.163225+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T10:19:35.163226+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T10:19:35.163320+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T10:19:35.163321+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T10:19:35.163359+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T10:19:35.163360+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T10:19:35.163442+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T10:19:43.422282+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T10:19:43.422662+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T10:19:43.422790+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T10:19:43.422791+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T10:19:43.422875+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T10:19:43.422876+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T10:19:43.422918+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T10:19:43.422919+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T10:19:43.423050+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T10:19:48.276959+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T10:19:48.277123+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T10:19:48.277171+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T10:19:48.277172+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T10:19:48.277202+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T10:19:48.277203+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T10:19:48.277249+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T10:19:48.277251+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T10:19:48.277270+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T10:19:48.913104+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T10:19:48.913429+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T10:19:48.913520+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T10:19:48.913521+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T10:19:48.913595+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T10:19:48.913595+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T10:19:48.913628+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T10:19:48.913629+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T10:19:48.913718+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T10:29:47.545194+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T10:29:47.545376+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T10:29:47.546153+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T10:29:47.546156+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T10:29:47.546202+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T10:29:47.546203+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T10:29:47.546533+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T10:29:47.546534+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T10:29:47.546596+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T10:38:44.676076+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T10:38:44.679397+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T10:38:44.679546+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T10:38:44.679548+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T10:38:44.679609+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T10:38:44.679610+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T10:38:44.679728+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T10:38:44.679728+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T10:38:44.679847+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T10:38:49.464442+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T10:38:49.464786+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T10:38:49.464891+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T10:38:49.464892+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T10:38:49.464929+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T10:38:49.464930+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T10:38:49.464992+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T10:38:49.464993+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T10:38:49.465056+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T10:41:05.973129+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T10:41:05.973357+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T10:41:05.973438+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T10:41:05.973440+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T10:41:05.973445+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T10:41:05.973445+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T10:41:05.973492+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T10:41:05.973493+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T10:41:05.973509+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T10:41:28.084960+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T10:41:28.085243+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T10:41:28.085303+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T10:41:28.085304+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T10:41:28.085334+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T10:41:28.085335+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T10:41:28.085378+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T10:41:28.085379+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T10:41:28.085411+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T11:29:07.014330+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T11:29:07.014484+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T11:29:07.014545+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T11:29:07.014547+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T11:29:07.014551+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T11:29:07.014552+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T11:29:07.014585+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T11:29:07.014586+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T11:29:07.014632+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T11:57:37.358095+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T11:57:37.358429+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T11:57:37.358568+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T11:57:37.358569+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T11:57:37.358638+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T11:57:37.358639+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T11:57:37.358710+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T11:57:37.358711+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T11:57:37.358794+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T12:12:41.862958+00:00 heroku[worker.1]: Cycling
+2021-01-13T12:12:41.864836+00:00 heroku[worker.1]: State changed from up to starting
+2021-01-13T12:12:43.675732+00:00 heroku[worker.1]: Stopping all processes with SIGTERM
+2021-01-13T12:12:44.387589+00:00 heroku[worker.1]: Process exited with status 0
+2021-01-13T12:12:46.041987+00:00 heroku[worker.1]: Starting process with command `python bot/main.py`
+2021-01-13T12:12:46.627942+00:00 heroku[worker.1]: State changed from starting to up
+2021-01-13T12:12:48.361058+00:00 app[worker.1]: prod
+2021-01-13T12:12:50.424983+00:00 app[worker.1]: expected create exception: constraint "usr_fk0" for relation "usr" already exists
+2021-01-13T12:32:14.148478+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T12:32:14.149277+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T12:32:14.149327+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T12:32:14.149328+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T12:32:14.149329+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T12:32:14.149329+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T12:32:14.149332+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T12:32:14.149332+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T12:32:14.149363+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T12:33:53.584387+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T12:33:53.584532+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T12:33:53.584585+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T12:33:53.584586+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T12:33:53.584588+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T12:33:53.584589+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T12:33:53.584589+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T12:33:53.584590+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T12:33:53.584616+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T13:07:51.777763+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T13:07:51.777910+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T13:07:51.777951+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T13:07:51.777952+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T13:07:51.777955+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T13:07:51.777955+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T13:07:51.777957+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T13:07:51.777957+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T13:07:51.777992+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T13:08:03.571231+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T13:08:03.571405+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T13:08:03.571474+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T13:08:03.571475+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T13:08:03.571478+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T13:08:03.571479+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T13:08:03.571491+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T13:08:03.571491+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T13:08:03.571522+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T13:08:08.256451+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T13:08:08.256577+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T13:08:08.256616+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T13:08:08.256617+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T13:08:08.256619+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T13:08:08.256619+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T13:08:08.256628+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T13:08:08.256628+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T13:08:08.256657+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T13:08:09.689772+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T13:08:09.689891+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T13:08:09.689930+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T13:08:09.689931+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T13:08:09.689931+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T13:08:09.689932+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T13:08:09.689944+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T13:08:09.689945+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T13:08:09.689978+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T13:08:13.737841+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T13:08:13.737969+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T13:08:13.738008+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T13:08:13.738008+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T13:08:13.738010+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T13:08:13.738010+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T13:08:13.738032+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T13:08:13.738033+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T13:08:13.738057+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T13:08:40.721870+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T13:08:40.722006+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T13:08:40.722053+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T13:08:40.722054+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T13:08:40.722054+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T13:08:40.722055+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T13:08:40.722057+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T13:08:40.722057+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T13:08:40.722088+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T13:15:02.894049+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T13:15:02.894379+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T13:15:02.894482+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T13:15:02.894484+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T13:15:02.894527+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T13:15:02.894528+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T13:15:02.894561+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T13:15:02.894562+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T13:15:02.894613+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T13:15:07.520053+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T13:15:07.520172+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T13:15:07.520212+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T13:15:07.520213+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T13:15:07.520215+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T13:15:07.520215+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T13:15:07.520233+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T13:15:07.520234+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T13:15:07.520258+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T13:15:12.699818+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T13:15:12.699969+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T13:15:12.700025+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T13:15:12.700026+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T13:15:12.700029+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T13:15:12.700029+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T13:15:12.700030+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T13:15:12.700031+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T13:15:12.700077+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T13:15:12.868733+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T13:15:12.868740+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T13:15:12.868740+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T13:15:12.868741+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T13:15:12.868778+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T13:15:12.868779+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T13:15:12.868781+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T13:15:12.868781+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T13:15:12.868815+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T13:20:46.623205+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T13:20:46.623345+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T13:20:46.623390+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T13:20:46.623391+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T13:20:46.623394+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T13:20:46.623394+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T13:20:46.623395+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T13:20:46.623396+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T13:20:46.623423+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T13:22:01.712091+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T13:22:01.712209+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T13:22:01.712251+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T13:22:01.712252+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T13:22:01.712254+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T13:22:01.712255+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T13:22:01.712273+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T13:22:01.712273+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T13:22:01.712298+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T13:48:38.878237+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T13:48:38.878480+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T13:48:38.878512+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T13:48:38.878513+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T13:48:38.878515+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T13:48:38.878516+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T13:48:38.878526+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T13:48:38.878526+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T13:48:38.878557+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T14:03:52.641262+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T14:03:52.641380+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T14:03:52.641422+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T14:03:52.641424+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T14:03:52.641427+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T14:03:52.641427+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T14:03:52.641446+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T14:03:52.641446+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T14:03:52.641470+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T14:03:57.180971+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T14:03:57.181107+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T14:03:57.181145+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T14:03:57.181146+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T14:03:57.181148+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T14:03:57.181148+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T14:03:57.181159+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T14:03:57.181159+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T14:03:57.181187+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T14:04:02.362975+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T14:04:02.363126+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T14:04:02.363168+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T14:04:02.363169+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T14:04:02.363195+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T14:04:02.363195+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T14:04:02.363215+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T14:04:02.363216+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T14:04:02.363246+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T14:04:02.634264+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T14:04:02.634430+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T14:04:02.634474+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T14:04:02.634474+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T14:04:02.634498+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T14:04:02.634499+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T14:04:02.634520+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T14:04:02.634521+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T14:04:02.634548+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T14:26:42.388516+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T14:26:42.388763+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T14:26:42.388808+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T14:26:42.388809+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T14:26:42.388812+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T14:26:42.388812+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T14:26:42.388813+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T14:26:42.388813+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T14:26:42.388842+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T16:58:41.993561+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T16:58:41.993685+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T16:58:41.993724+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T16:58:41.993725+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T16:58:41.993727+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T16:58:41.993728+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T16:58:41.993739+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T16:58:41.993739+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T16:58:41.993767+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T16:59:11.086863+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T16:59:11.086985+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T16:59:11.087024+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T16:59:11.087025+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T16:59:11.087027+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T16:59:11.087028+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T16:59:11.087045+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T16:59:11.087046+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T16:59:11.087069+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T16:59:21.062195+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T16:59:21.062315+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T16:59:21.062357+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T16:59:21.062358+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T16:59:21.062359+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T16:59:21.062359+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T16:59:21.062362+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T16:59:21.062362+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T16:59:21.062394+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T16:59:35.185372+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T16:59:35.185587+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T16:59:35.185663+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T16:59:35.185663+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T16:59:35.185696+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T16:59:35.185697+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T16:59:35.185724+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T16:59:35.185724+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T16:59:35.185775+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T17:01:07.381024+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T17:01:07.381240+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T17:01:07.381258+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T17:01:07.381260+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T17:01:07.381261+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T17:01:07.381261+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T17:01:07.381262+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T17:01:07.381263+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T17:01:07.381295+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T17:01:11.744081+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T17:01:11.744203+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T17:01:11.744245+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T17:01:11.744246+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T17:01:11.744249+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T17:01:11.744249+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T17:01:11.744251+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T17:01:11.744251+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T17:01:11.744287+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T17:01:16.779441+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T17:01:16.779551+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T17:01:16.779629+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T17:01:16.779630+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T17:01:16.779633+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T17:01:16.779634+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T17:01:16.779635+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T17:01:16.779635+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T17:01:16.779663+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T17:01:17.091840+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T17:01:17.091962+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T17:01:17.092005+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T17:01:17.092006+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T17:01:17.092009+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T17:01:17.092010+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T17:01:17.092012+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T17:01:17.092013+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T17:01:17.092044+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T17:01:29.846475+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T17:01:29.846622+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T17:01:29.846673+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T17:01:29.846674+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T17:01:29.846677+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T17:01:29.846678+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T17:01:29.846678+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T17:01:29.846679+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T17:01:29.846700+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T17:13:41.290794+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T17:13:41.290992+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T17:13:41.291046+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T17:13:41.291047+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T17:13:41.291096+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T17:13:41.291097+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T17:13:41.291147+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T17:13:41.291148+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T17:13:41.291217+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T20:25:50.669456+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T20:25:50.669659+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T20:25:50.669660+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T20:25:50.669661+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T20:25:50.669661+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T20:25:50.669662+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T20:25:50.669662+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T20:25:50.669663+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T20:25:50.669692+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T20:25:50.807790+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T20:25:50.807903+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T20:25:50.807944+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T20:25:50.807944+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T20:25:50.807946+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T20:25:50.807947+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T20:25:50.807957+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T20:25:50.807957+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T20:25:50.807986+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T20:25:50.945437+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T20:25:50.945565+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T20:25:50.945606+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T20:25:50.945606+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T20:25:50.945609+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T20:25:50.945610+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T20:25:50.945632+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T20:25:50.945633+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T20:25:50.945656+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T20:25:51.102826+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T20:25:51.102952+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T20:25:51.103009+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T20:25:51.103010+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T20:25:51.103013+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T20:25:51.103014+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T20:25:51.103016+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T20:25:51.103017+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T20:25:51.103048+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T22:25:26.681395+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T22:25:26.684120+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T22:25:26.684180+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T22:25:26.684182+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T22:25:26.684187+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T22:25:26.684187+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T22:25:26.684218+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T22:25:26.684218+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T22:25:26.684261+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T22:25:31.353080+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T22:25:31.353198+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T22:25:31.353240+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T22:25:31.353241+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T22:25:31.353243+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T22:25:31.353243+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T22:25:31.353261+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T22:25:31.353262+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T22:25:31.353285+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T22:25:32.265187+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T22:25:32.265417+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T22:25:32.265474+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T22:25:32.265475+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T22:25:32.265476+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T22:25:32.265476+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T22:25:32.265480+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T22:25:32.265481+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T22:25:32.265520+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T22:32:21.433337+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T22:32:21.433492+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T22:32:21.433557+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T22:32:21.433559+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T22:32:21.433563+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T22:32:21.433563+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T22:32:21.433584+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T22:32:21.433584+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T22:32:21.433609+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T22:34:31.815496+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T22:34:31.815712+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T22:34:31.815760+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T22:34:31.815761+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T22:34:31.815763+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T22:34:31.815763+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T22:34:31.815786+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T22:34:31.815786+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T22:34:31.815809+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T22:36:25.192074+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T22:36:25.192225+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T22:36:25.192267+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T22:36:25.192268+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T22:36:25.192270+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T22:36:25.192270+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T22:36:25.192300+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T22:36:25.192301+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T22:36:25.192339+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T22:37:22.741367+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T22:37:22.741529+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T22:37:22.741594+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T22:37:22.741594+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T22:37:22.741598+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T22:37:22.741598+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T22:37:22.741599+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T22:37:22.741599+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T22:37:22.741637+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T22:49:08.226686+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T22:49:08.226858+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T22:49:08.226949+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T22:49:08.226951+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T22:49:08.226993+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T22:49:08.226994+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T22:49:08.227032+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T22:49:08.227033+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T22:49:08.227101+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T23:13:35.133028+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T23:13:35.133225+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T23:13:35.133228+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T23:13:35.133229+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T23:13:35.133229+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T23:13:35.133230+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T23:13:35.133230+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T23:13:35.133231+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T23:13:35.133231+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T23:13:41.624315+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T23:13:41.625221+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T23:13:41.625388+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T23:13:41.625389+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T23:13:41.626366+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T23:13:41.626367+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T23:13:41.626405+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T23:13:41.626405+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T23:13:41.626456+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T23:25:46.457402+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T23:25:46.457516+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T23:25:46.457559+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T23:25:46.457560+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T23:25:46.457562+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T23:25:46.457563+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T23:25:46.457573+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T23:25:46.457573+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T23:25:46.457602+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T23:38:49.441509+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T23:38:49.441630+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T23:38:49.441670+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T23:38:49.441671+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T23:38:49.441673+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T23:38:49.441673+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T23:38:49.441684+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T23:38:49.441685+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T23:38:49.441713+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T23:38:54.193241+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T23:38:54.193363+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T23:38:54.193402+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T23:38:54.193402+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T23:38:54.193404+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T23:38:54.193405+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T23:38:54.193422+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T23:38:54.193423+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T23:38:54.193446+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-13T23:38:55.293107+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-13T23:38:55.293251+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-13T23:38:55.293291+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-13T23:38:55.293292+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-13T23:38:55.293314+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-13T23:38:55.293315+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-13T23:38:55.293336+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-13T23:38:55.293337+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-13T23:38:55.293369+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T00:12:46.287093+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T00:12:46.287252+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T00:12:46.287314+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T00:12:46.287315+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T00:12:46.287345+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T00:12:46.287345+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T00:12:46.287372+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T00:12:46.287372+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T00:12:46.287416+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T00:14:07.161992+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T00:14:07.162095+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T00:14:07.162143+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T00:14:07.162144+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T00:14:07.162148+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T00:14:07.162148+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T00:14:07.162179+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T00:14:07.162179+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T00:14:07.162207+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T03:28:56.627830+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T03:28:56.628057+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T03:28:56.628133+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T03:28:56.628135+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T03:28:56.628182+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T03:28:56.628183+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T03:28:56.628184+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T03:28:56.628184+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T03:28:56.628232+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T03:29:01.372676+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T03:29:01.373069+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T03:29:01.373126+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T03:29:01.373127+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T03:29:01.373131+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T03:29:01.373132+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T03:29:01.373168+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T03:29:01.373169+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T03:29:01.373217+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T09:12:38.803214+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T09:12:38.803605+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T09:12:38.803687+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T09:12:38.803689+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T09:12:38.803693+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T09:12:38.803693+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T09:12:38.803720+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T09:12:38.803721+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T09:12:38.803771+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T09:18:52.484639+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T09:18:52.484867+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T09:18:52.484932+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T09:18:52.484934+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T09:18:52.484938+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T09:18:52.484938+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T09:18:52.484941+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T09:18:52.484942+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T09:18:52.484994+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T09:19:13.052943+00:00 app[worker.1]: Ignoring exception in on_raw_message_edit
+2021-01-14T09:19:13.082522+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T09:19:13.082552+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T09:19:13.082553+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T09:19:13.082557+00:00 app[worker.1]: File "/app/bot/cogs/logs.py", line 31, in on_raw_message_edit
+2021-01-14T09:19:13.082557+00:00 app[worker.1]: await logs.send(embed=embed)
+2021-01-14T09:19:13.082559+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/abc.py", line 870, in send
+2021-01-14T09:19:13.082559+00:00 app[worker.1]: data = await state.http.send_message(channel.id, content, tts=tts, embed=embed, nonce=nonce)
+2021-01-14T09:19:13.082570+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/http.py", line 225, in request
+2021-01-14T09:19:13.082570+00:00 app[worker.1]: raise HTTPException(r, data)
+2021-01-14T09:19:13.082611+00:00 app[worker.1]: discord.errors.HTTPException: 400 Bad Request (error code: 50035): Invalid Form Body
+2021-01-14T09:19:13.082612+00:00 app[worker.1]: In embed.fields.1.value: Must be 1024 or fewer in length.
+2021-01-14T10:34:20.755890+00:00 app[worker.1]: Ignoring exception in on_raw_message_edit
+2021-01-14T10:34:20.761158+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T10:34:20.761233+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T10:34:20.761235+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T10:34:20.761240+00:00 app[worker.1]: File "/app/bot/cogs/logs.py", line 26, in on_raw_message_edit
+2021-01-14T10:34:20.761240+00:00 app[worker.1]: embed = await edited_embed(self.bot, payload)
+2021-01-14T10:34:20.761271+00:00 app[worker.1]: File "/app/bot/cogs/logs.py", line 105, in edited_embed
+2021-01-14T10:34:20.761271+00:00 app[worker.1]: guild = await bot.fetch_guild(guild_id)
+2021-01-14T10:34:20.761294+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 1042, in fetch_guild
+2021-01-14T10:34:20.761295+00:00 app[worker.1]: data = await self.http.get_guild(guild_id)
+2021-01-14T10:34:20.761324+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/http.py", line 165, in request
+2021-01-14T10:34:20.761325+00:00 app[worker.1]: async with self.__session.request(method, url, **kwargs) as r:
+2021-01-14T10:34:20.761357+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/aiohttp/client.py", line 1012, in __aenter__
+2021-01-14T10:34:20.761358+00:00 app[worker.1]: self._resp = await self._coro
+2021-01-14T10:34:20.761361+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/aiohttp/client.py", line 504, in _request
+2021-01-14T10:34:20.761361+00:00 app[worker.1]: await resp.start(conn)
+2021-01-14T10:34:20.761385+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/aiohttp/client_reqrep.py", line 847, in start
+2021-01-14T10:34:20.761385+00:00 app[worker.1]: message, payload = await self._protocol.read()  # type: ignore  # noqa
+2021-01-14T10:34:20.761433+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/aiohttp/streams.py", line 591, in read
+2021-01-14T10:34:20.761434+00:00 app[worker.1]: await self._waiter
+2021-01-14T10:34:20.761484+00:00 app[worker.1]: aiohttp.client_exceptions.ClientOSError: [Errno 104] Connection reset by peer
+2021-01-14T10:34:20.761728+00:00 app[worker.1]: Ignoring exception in on_raw_message_edit
+2021-01-14T10:34:20.763818+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T10:34:20.763958+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T10:34:20.763959+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T10:34:20.764032+00:00 app[worker.1]: File "/app/bot/cogs/logs.py", line 26, in on_raw_message_edit
+2021-01-14T10:34:20.764033+00:00 app[worker.1]: embed = await edited_embed(self.bot, payload)
+2021-01-14T10:34:20.764068+00:00 app[worker.1]: File "/app/bot/cogs/logs.py", line 106, in edited_embed
+2021-01-14T10:34:20.764069+00:00 app[worker.1]: author = await guild.fetch_member(author_id)
+2021-01-14T10:34:20.764103+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/guild.py", line 1215, in fetch_member
+2021-01-14T10:34:20.764104+00:00 app[worker.1]: data = await self._state.http.get_member(self.id, member_id)
+2021-01-14T10:34:20.764138+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/http.py", line 165, in request
+2021-01-14T10:34:20.764139+00:00 app[worker.1]: async with self.__session.request(method, url, **kwargs) as r:
+2021-01-14T10:34:20.764214+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/aiohttp/client.py", line 1012, in __aenter__
+2021-01-14T10:34:20.764215+00:00 app[worker.1]: self._resp = await self._coro
+2021-01-14T10:34:20.764255+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/aiohttp/client.py", line 504, in _request
+2021-01-14T10:34:20.764256+00:00 app[worker.1]: await resp.start(conn)
+2021-01-14T10:34:20.764297+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/aiohttp/client_reqrep.py", line 847, in start
+2021-01-14T10:34:20.764298+00:00 app[worker.1]: message, payload = await self._protocol.read()  # type: ignore  # noqa
+2021-01-14T10:34:20.764383+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/aiohttp/streams.py", line 591, in read
+2021-01-14T10:34:20.764384+00:00 app[worker.1]: await self._waiter
+2021-01-14T10:34:20.764461+00:00 app[worker.1]: aiohttp.client_exceptions.ClientOSError: [Errno 104] Connection reset by peer
+2021-01-14T10:37:13.446883+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T10:37:13.447138+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T10:37:13.447217+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T10:37:13.447219+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T10:37:13.447225+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T10:37:13.447226+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T10:37:13.447252+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T10:37:13.447252+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T10:37:13.447318+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T12:11:28.066022+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T12:11:28.066195+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T12:11:28.066269+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T12:11:28.066270+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T12:11:28.066271+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T12:11:28.066272+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T12:11:28.066279+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T12:11:28.066279+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T12:11:28.066332+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T12:54:26.281765+00:00 heroku[worker.1]: Cycling
+2021-01-14T12:54:26.283855+00:00 heroku[worker.1]: State changed from up to starting
+2021-01-14T12:54:27.556970+00:00 heroku[worker.1]: Stopping all processes with SIGTERM
+2021-01-14T12:54:28.127829+00:00 heroku[worker.1]: Process exited with status 0
+2021-01-14T12:54:30.576547+00:00 heroku[worker.1]: Starting process with command `python bot/main.py`
+2021-01-14T12:54:31.140858+00:00 heroku[worker.1]: State changed from starting to up
+2021-01-14T12:54:33.043065+00:00 app[worker.1]: prod
+2021-01-14T12:54:35.728201+00:00 app[worker.1]: expected create exception: constraint "usr_fk0" for relation "usr" already exists
+2021-01-14T13:41:36.704404+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T13:41:36.705201+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T13:41:36.705237+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T13:41:36.705238+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T13:41:36.705241+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T13:41:36.705241+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T13:41:36.705258+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T13:41:36.705259+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T13:41:36.705285+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:03:58.622793+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:03:58.625405+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:03:58.625537+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:03:58.625539+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:03:58.625624+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 15, in on_raw_reaction_add
+2021-01-14T14:03:58.625625+00:00 app[worker.1]: await starboard_handler(self.bot, payload)
+2021-01-14T14:03:58.625671+00:00 app[worker.1]: File "/app/bot/utils/starboard.py", line 65, in starboard_handler
+2021-01-14T14:03:58.625672+00:00 app[worker.1]: "INSERT INTO starboard (msg_id, sb_id, stars, usr_id) VALUES "
+2021-01-14T14:03:58.625719+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/asyncpg/pool.py", line 518, in execute
+2021-01-14T14:03:58.625720+00:00 app[worker.1]: return await con.execute(query, *args, timeout=timeout)
+2021-01-14T14:03:58.625804+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/asyncpg/connection.py", line 272, in execute
+2021-01-14T14:03:58.625805+00:00 app[worker.1]: return await self._protocol.query(query, timeout)
+2021-01-14T14:03:58.625850+00:00 app[worker.1]: File "asyncpg/protocol/protocol.pyx", line 316, in query
+2021-01-14T14:03:58.625918+00:00 app[worker.1]: asyncpg.exceptions.UniqueViolationError: duplicate key value violates unique constraint "starboard_pk"
+2021-01-14T14:03:58.625919+00:00 app[worker.1]: DETAIL:  Key (msg_id)=(799277541021712414) already exists.
+2021-01-14T14:04:13.140815+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:04:13.141105+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:04:13.141260+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:04:13.141261+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:04:13.141313+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:04:13.141314+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:04:13.141401+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:04:13.141402+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:04:13.141468+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:04:18.233741+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:04:18.233941+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:04:18.234033+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:04:18.234034+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:04:18.234081+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:04:18.234082+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:04:18.234127+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:04:18.234128+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:04:18.234190+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:04:25.429040+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:04:25.429263+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:04:25.429327+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:04:25.429327+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:04:25.429364+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:04:25.429364+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:04:25.429398+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:04:25.429398+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:04:25.429455+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:05:02.477946+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:05:02.478153+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:05:02.478226+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:05:02.478227+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:05:02.478273+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:05:02.478274+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:05:02.478274+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:05:02.478275+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:05:02.478326+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:08:28.630381+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:08:28.630588+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:08:28.630680+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:08:28.630682+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:08:28.630729+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:08:28.630730+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:08:28.630775+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:08:28.630776+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:08:28.630839+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:12:45.148774+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:12:45.148980+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:12:45.149050+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:12:45.149051+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:12:45.149085+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:12:45.149085+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:12:45.149121+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:12:45.149122+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:12:45.149166+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:12:49.326115+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:12:49.326540+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:12:49.326672+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:12:49.326673+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:12:49.326720+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:12:49.326744+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:12:49.326841+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:12:49.326842+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:12:49.326925+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:12:54.845573+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:12:54.845800+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:12:54.845853+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:12:54.845854+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:12:54.845887+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:12:54.845888+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:12:54.845892+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:12:54.845893+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:12:54.845939+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:12:55.668064+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:12:55.668394+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:12:55.668485+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:12:55.668486+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:12:55.668531+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:12:55.668532+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:12:55.668600+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:12:55.668600+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:12:55.668738+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:13:00.369754+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:13:00.370265+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:13:00.370400+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:13:00.370402+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:13:00.370449+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:13:00.370449+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:13:00.370529+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:13:00.370530+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:13:00.370592+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:17:38.224697+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:17:38.225035+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:17:38.225125+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:17:38.225127+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:17:38.225132+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 15, in on_raw_reaction_add
+2021-01-14T14:17:38.225132+00:00 app[worker.1]: await starboard_handler(self.bot, payload)
+2021-01-14T14:17:38.225170+00:00 app[worker.1]: File "/app/bot/utils/starboard.py", line 65, in starboard_handler
+2021-01-14T14:17:38.225171+00:00 app[worker.1]: "INSERT INTO starboard (msg_id, sb_id, stars, usr_id) VALUES "
+2021-01-14T14:17:38.225207+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/asyncpg/pool.py", line 518, in execute
+2021-01-14T14:17:38.225208+00:00 app[worker.1]: return await con.execute(query, *args, timeout=timeout)
+2021-01-14T14:17:38.225236+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/asyncpg/connection.py", line 272, in execute
+2021-01-14T14:17:38.225237+00:00 app[worker.1]: return await self._protocol.query(query, timeout)
+2021-01-14T14:17:38.225264+00:00 app[worker.1]: File "asyncpg/protocol/protocol.pyx", line 316, in query
+2021-01-14T14:17:38.225317+00:00 app[worker.1]: asyncpg.exceptions.UniqueViolationError: duplicate key value violates unique constraint "starboard_pk"
+2021-01-14T14:17:38.225318+00:00 app[worker.1]: DETAIL:  Key (msg_id)=(799277952298778755) already exists.
+2021-01-14T14:29:51.376645+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:29:51.377146+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:29:51.377268+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:29:51.377270+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:29:51.377336+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 15, in on_raw_reaction_add
+2021-01-14T14:29:51.377337+00:00 app[worker.1]: await starboard_handler(self.bot, payload)
+2021-01-14T14:29:51.377398+00:00 app[worker.1]: File "/app/bot/utils/starboard.py", line 65, in starboard_handler
+2021-01-14T14:29:51.377399+00:00 app[worker.1]: "INSERT INTO starboard (msg_id, sb_id, stars, usr_id) VALUES "
+2021-01-14T14:29:51.377446+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/asyncpg/pool.py", line 518, in execute
+2021-01-14T14:29:51.377447+00:00 app[worker.1]: return await con.execute(query, *args, timeout=timeout)
+2021-01-14T14:29:51.377492+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/asyncpg/connection.py", line 272, in execute
+2021-01-14T14:29:51.377493+00:00 app[worker.1]: return await self._protocol.query(query, timeout)
+2021-01-14T14:29:51.377572+00:00 app[worker.1]: File "asyncpg/protocol/protocol.pyx", line 316, in query
+2021-01-14T14:29:51.377641+00:00 app[worker.1]: asyncpg.exceptions.UniqueViolationError: duplicate key value violates unique constraint "starboard_pk"
+2021-01-14T14:29:51.377642+00:00 app[worker.1]: DETAIL:  Key (msg_id)=(799284062656397403) already exists.
+2021-01-14T14:30:15.471941+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:30:15.472143+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:30:15.472274+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:30:15.472276+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:30:15.472324+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:30:15.472325+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:30:15.472370+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:30:15.472371+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:30:15.472432+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:30:20.090671+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:30:20.090861+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:30:20.090953+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:30:20.090954+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:30:20.091001+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:30:20.091002+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:30:20.091047+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:30:20.091047+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:30:20.091111+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:30:33.013700+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:30:33.013893+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:30:33.013946+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:30:33.013947+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:30:33.013972+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:30:33.013973+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:30:33.014004+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:30:33.014004+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:30:33.014051+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:30:37.538568+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:30:37.538877+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:30:37.538965+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:30:37.538966+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:30:37.539012+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:30:37.539013+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:30:37.539057+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:30:37.539058+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:30:37.539116+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:30:42.554332+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:30:42.554622+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:30:42.554714+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:30:42.554715+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:30:42.554763+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:30:42.554764+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:30:42.554809+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:30:42.554810+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:30:42.554872+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:31:39.321309+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:31:39.321588+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:31:39.321669+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:31:39.321670+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:31:39.321725+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:31:39.321726+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:31:39.321751+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:31:39.321752+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:31:39.321797+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:31:43.972957+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:31:43.985377+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:31:43.985483+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:31:43.985484+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:31:43.985611+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:31:43.985611+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:31:43.985654+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:31:43.985655+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:31:43.985732+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:31:45.457637+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:31:45.458262+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:31:45.458330+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:31:45.458331+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:31:45.458577+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:31:45.458578+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:31:45.458582+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:31:45.458596+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:31:45.458631+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:31:49.448619+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:31:49.450484+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:31:49.451748+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:31:49.451749+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:31:49.452357+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:31:49.452358+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:31:49.452450+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:31:49.452451+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:31:49.452539+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:46:44.826650+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:46:44.826964+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:46:44.827093+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:46:44.827095+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:46:44.827142+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:46:44.827143+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:46:44.827224+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:46:44.827225+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:46:44.827288+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:50:33.907506+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:50:33.907789+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:50:33.907883+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:50:33.907884+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:50:33.907933+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:50:33.907934+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:50:33.907981+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:50:33.907982+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:50:33.908046+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:50:38.753271+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:50:38.753483+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:50:38.753557+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:50:38.753558+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:50:38.753564+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:50:38.753564+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:50:38.753603+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:50:38.753604+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:50:38.753649+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:50:39.335901+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:50:39.336091+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:50:39.336283+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:50:39.336284+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:50:39.336331+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:50:39.336332+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:50:39.336415+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:50:39.336416+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:50:39.336484+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:51:21.641347+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:51:21.641540+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:51:21.641594+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:51:21.641596+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:51:21.642986+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:51:21.642988+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:51:21.643024+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:51:21.643024+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:51:21.643075+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:51:37.353619+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:51:37.353827+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:51:37.353876+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:51:37.353877+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:51:37.353881+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:51:37.353882+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:51:37.353918+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:51:37.353918+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:51:37.353960+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:54:56.005694+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:54:56.006135+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:54:56.006137+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:54:56.006138+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:54:56.006138+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:54:56.006139+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:54:56.006140+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:54:56.006140+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:54:56.006141+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:55:25.145720+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:55:25.146055+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:55:25.146173+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:55:25.146174+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:55:25.146179+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:55:25.146179+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:55:25.146205+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:55:25.146206+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:55:25.146310+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:55:30.811265+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:55:30.811502+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:55:30.811572+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:55:30.811573+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:55:30.811607+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:55:30.811608+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:55:30.811637+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:55:30.811638+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:55:30.811690+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:55:36.012479+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:55:36.012724+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:55:36.012779+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:55:36.012780+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:55:36.012814+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:55:36.012814+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:55:36.012862+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:55:36.012862+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:55:36.012915+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:55:40.651998+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:55:40.652372+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:55:40.652480+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:55:40.652481+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:55:40.652526+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:55:40.652527+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:55:40.652784+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:55:40.652785+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:55:40.652866+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:55:51.165615+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:55:51.165941+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:55:51.166031+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:55:51.166032+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:55:51.166079+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:55:51.166080+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:55:51.166129+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:55:51.166130+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:55:51.166193+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:55:51.649499+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:55:51.649722+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:55:51.649780+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:55:51.649781+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:55:51.649811+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:55:51.649812+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:55:51.649838+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:55:51.649839+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:55:51.649900+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:55:56.818238+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:55:56.818447+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:55:56.818517+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:55:56.818518+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:55:56.818554+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:55:56.818555+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:55:56.818559+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:55:56.818560+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:55:56.818615+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:56:01.309641+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:56:01.310038+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:56:01.310204+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:56:01.310205+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:56:01.310280+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:56:01.310281+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:56:01.310511+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:56:01.310511+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:56:01.310640+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:56:01.676777+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:56:01.677114+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:56:01.677449+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:56:01.677450+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:56:01.677530+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:56:01.677531+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:56:01.677577+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:56:01.677577+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:56:01.677640+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:56:01.858700+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:56:01.859041+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:56:01.859146+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:56:01.859147+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:56:01.859194+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:56:01.859195+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:56:01.859275+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:56:01.859275+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:56:01.859330+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:56:02.088669+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:56:02.089010+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:56:02.089115+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:56:02.089117+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:56:02.089161+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:56:02.089162+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:56:02.089244+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:56:02.089245+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:56:02.089308+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:56:06.725974+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:56:06.726218+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:56:06.726283+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:56:06.726284+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:56:06.726339+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:56:06.726339+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:56:06.726374+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:56:06.726375+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:56:06.726420+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:56:06.875863+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:56:06.876268+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:56:06.876351+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:56:06.876352+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:56:06.876383+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:56:06.876384+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:56:06.876410+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:56:06.876411+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:56:06.876497+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T14:56:07.061504+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T14:56:07.061823+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T14:56:07.061909+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T14:56:07.061910+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T14:56:07.061949+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T14:56:07.061950+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T14:56:07.062003+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T14:56:07.062004+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T14:56:07.062069+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T15:08:47.011560+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T15:08:47.012012+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T15:08:47.012130+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T15:08:47.012132+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T15:08:47.012180+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T15:08:47.012181+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T15:08:47.012238+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T15:08:47.012239+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T15:08:47.012337+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T15:08:47.178274+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T15:08:47.178388+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T15:08:47.178426+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T15:08:47.178427+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T15:08:47.178430+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T15:08:47.178430+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T15:08:47.178440+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T15:08:47.178440+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T15:08:47.178466+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T15:08:51.854378+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T15:08:51.854488+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T15:08:51.854526+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T15:08:51.854526+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T15:08:51.854528+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T15:08:51.854529+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T15:08:51.854547+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T15:08:51.854547+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T15:08:51.854570+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T15:08:52.016352+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T15:08:52.016457+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T15:08:52.016496+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T15:08:52.016497+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T15:08:52.016499+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T15:08:52.016499+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T15:08:52.016517+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T15:08:52.016517+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T15:08:52.016540+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T15:08:52.202011+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T15:08:52.202123+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T15:08:52.202160+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T15:08:52.202161+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T15:08:52.202163+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T15:08:52.202163+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T15:08:52.202181+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T15:08:52.202181+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T15:08:52.202204+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T15:14:55.540997+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T15:14:55.541103+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T15:14:55.541144+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T15:14:55.541145+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T15:14:55.541147+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T15:14:55.541147+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T15:14:55.541151+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T15:14:55.541151+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T15:14:55.541165+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T15:14:55.875264+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T15:14:55.875396+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T15:14:55.875458+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T15:14:55.875459+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T15:14:55.875463+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T15:14:55.875463+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T15:14:55.875488+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T15:14:55.875489+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T15:14:55.875529+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T15:15:06.053739+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T15:15:06.053896+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T15:15:06.053950+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T15:15:06.053951+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T15:15:06.053971+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T15:15:06.053971+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T15:15:06.053989+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T15:15:06.053990+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T15:15:06.054023+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T15:15:16.085544+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T15:15:16.085749+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T15:15:16.085844+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T15:15:16.085845+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T15:15:16.085884+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T15:15:16.085885+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T15:15:16.085916+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T15:15:16.085917+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T15:15:16.085962+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T15:16:11.092871+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T15:16:11.092981+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T15:16:11.093028+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T15:16:11.093029+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T15:16:11.093030+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T15:16:11.093031+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T15:16:11.093032+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T15:16:11.093032+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T15:16:11.093051+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T15:16:39.582436+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T15:16:39.582548+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T15:16:39.582585+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T15:16:39.582586+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T15:16:39.582588+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T15:16:39.582588+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T15:16:39.582598+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T15:16:39.582599+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T15:16:39.582629+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T15:24:21.703802+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T15:24:21.703912+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T15:24:21.703953+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T15:24:21.703955+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T15:24:21.703956+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T15:24:21.703956+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T15:24:21.703960+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T15:24:21.703961+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T15:24:21.703988+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T16:40:24.699253+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T16:40:24.699620+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T16:40:24.700329+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T16:40:24.700331+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T16:40:24.700336+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T16:40:24.700336+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T16:40:24.700366+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T16:40:24.700366+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T16:40:24.700405+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T17:30:08.800620+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T17:30:08.800880+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T17:30:08.800886+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T17:30:08.800887+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T17:30:08.800887+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T17:30:08.800888+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T17:30:08.800888+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T17:30:08.800889+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T17:30:08.800889+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T17:59:30.037462+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T17:59:30.037659+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T17:59:30.037727+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T17:59:30.037729+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T17:59:30.037756+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T17:59:30.037757+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T17:59:30.037778+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T17:59:30.037779+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T17:59:30.037820+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T18:55:25.236137+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T18:55:25.247297+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T18:55:25.247345+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T18:55:25.247347+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T18:55:25.247351+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T18:55:25.247351+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T18:55:25.247378+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T18:55:25.247379+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T18:55:25.247416+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T19:27:04.047258+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T19:27:04.047452+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T19:27:04.047504+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T19:27:04.047506+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T19:27:04.047510+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T19:27:04.047510+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T19:27:04.047539+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T19:27:04.047540+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T19:27:04.047577+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T20:09:39.000000+00:00 app[api]: Build started by user thederevin@gmail.com
+2021-01-14T20:10:12.718351+00:00 app[api]: Release v216 created by user thederevin@gmail.com
+2021-01-14T20:10:12.718351+00:00 app[api]: Deploy d469e346 by user thederevin@gmail.com
+2021-01-14T20:10:13.977163+00:00 heroku[worker.1]: Restarting
+2021-01-14T20:10:13.981003+00:00 heroku[worker.1]: State changed from up to starting
+2021-01-14T20:10:15.274334+00:00 heroku[worker.1]: Stopping all processes with SIGTERM
+2021-01-14T20:10:15.697773+00:00 heroku[worker.1]: Process exited with status 0
+2021-01-14T20:10:21.080777+00:00 heroku[worker.1]: Starting process with command `python bot/main.py`
+2021-01-14T20:10:21.724931+00:00 heroku[worker.1]: State changed from starting to up
+2021-01-14T20:10:25.794045+00:00 app[worker.1]: prod
+2021-01-14T20:10:26.000000+00:00 app[api]: Build succeeded
+2021-01-14T20:10:29.250917+00:00 app[worker.1]: expected create exception: constraint "usr_fk0" for relation "usr" already exists
+2021-01-14T20:27:55.666437+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T20:27:55.668621+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T20:27:55.668733+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T20:27:55.668735+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T20:27:55.668795+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T20:27:55.668796+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T20:27:55.668840+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T20:27:55.668841+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T20:27:55.668949+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T20:39:16.428567+00:00 app[worker.1]: Ignoring exception in on_raw_reaction_add
+2021-01-14T20:39:16.428778+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T20:39:16.428845+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T20:39:16.428846+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T20:39:16.428846+00:00 app[worker.1]: File "/app/bot/cogs/reaction_handler.py", line 18, in on_raw_reaction_add
+2021-01-14T20:39:16.428847+00:00 app[worker.1]: await urban_handler(self.bot, payload)
+2021-01-14T20:39:16.428876+00:00 app[worker.1]: File "/app/bot/cogs/services.py", line 68, in urban_handler
+2021-01-14T20:39:16.428877+00:00 app[worker.1]: and message.embeds[0].title.startswith("Page")
+2021-01-14T20:39:16.428920+00:00 app[worker.1]: AttributeError: '_EmptyEmbed' object has no attribute 'startswith'
+2021-01-14T20:48:34.000000+00:00 app[api]: Build started by user thederevin@gmail.com
+2021-01-14T20:49:07.885970+00:00 app[api]: Release v217 created by user thederevin@gmail.com
+2021-01-14T20:49:07.885970+00:00 app[api]: Deploy 9d6361c7 by user thederevin@gmail.com
+2021-01-14T20:49:08.944425+00:00 heroku[worker.1]: Restarting
+2021-01-14T20:49:08.946617+00:00 heroku[worker.1]: State changed from up to starting
+2021-01-14T20:49:10.449674+00:00 heroku[worker.1]: Stopping all processes with SIGTERM
+2021-01-14T20:49:15.643051+00:00 heroku[worker.1]: Starting process with command `python bot/main.py`
+2021-01-14T20:49:16.288556+00:00 heroku[worker.1]: State changed from starting to up
+2021-01-14T20:49:20.859958+00:00 heroku[worker.1]: Process exited with status 0
+2021-01-14T20:49:22.000000+00:00 app[api]: Build succeeded
+2021-01-14T20:49:29.309228+00:00 app[worker.1]: prod
+2021-01-14T20:49:41.144938+00:00 app[worker.1]: expected create exception: constraint "usr_fk0" for relation "usr" already exists
+2021-01-14T21:23:41.392194+00:00 heroku[worker.1]: Relocating dyno to a new server
+2021-01-14T21:23:41.398160+00:00 heroku[worker.1]: State changed from up to down
+2021-01-14T21:23:41.399722+00:00 heroku[worker.1]: State changed from down to starting
+2021-01-14T21:23:46.330019+00:00 heroku[worker.1]: Starting process with command `python bot/main.py`
+2021-01-14T21:23:46.984691+00:00 heroku[worker.1]: State changed from starting to up
+2021-01-14T21:23:49.931801+00:00 app[worker.1]: prod
+2021-01-14T21:23:52.154142+00:00 app[worker.1]: expected create exception: constraint "usr_fk0" for relation "usr" already exists
+2021-01-14T21:24:24.318448+00:00 heroku[worker.1]: Stopping all processes with SIGTERM
+2021-01-14T21:24:36.262551+00:00 heroku[worker.1]: Process exited with status 0
+2021-01-14T21:36:44.000000+00:00 app[api]: Build started by user thederevin@gmail.com
+2021-01-14T21:37:18.450353+00:00 app[api]: Release v218 created by user thederevin@gmail.com
+2021-01-14T21:37:18.450353+00:00 app[api]: Deploy 3ec1407a by user thederevin@gmail.com
+2021-01-14T21:37:19.924393+00:00 heroku[worker.1]: Restarting
+2021-01-14T21:37:19.926769+00:00 heroku[worker.1]: State changed from up to starting
+2021-01-14T21:37:21.498443+00:00 heroku[worker.1]: Stopping all processes with SIGTERM
+2021-01-14T21:37:22.061809+00:00 heroku[worker.1]: Process exited with status 0
+2021-01-14T21:37:24.329006+00:00 heroku[worker.1]: Starting process with command `python bot/main.py`
+2021-01-14T21:37:24.964807+00:00 heroku[worker.1]: State changed from starting to up
+2021-01-14T21:37:26.750777+00:00 app[worker.1]: prod
+2021-01-14T21:37:28.751321+00:00 app[worker.1]: expected create exception: constraint "usr_fk0" for relation "usr" already exists
+2021-01-14T21:37:32.000000+00:00 app[api]: Build succeeded
+2021-01-14T21:48:32.574961+00:00 app[worker.1]: Ignoring exception in on_raw_message_edit
+2021-01-14T21:48:32.576377+00:00 app[worker.1]: Traceback (most recent call last):
+2021-01-14T21:48:32.576420+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/client.py", line 312, in _run_event
+2021-01-14T21:48:32.576421+00:00 app[worker.1]: await coro(*args, **kwargs)
+2021-01-14T21:48:32.576424+00:00 app[worker.1]: File "/app/bot/cogs/logs.py", line 31, in on_raw_message_edit
+2021-01-14T21:48:32.576424+00:00 app[worker.1]: await logs.send(embed=embed)
+2021-01-14T21:48:32.576441+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/abc.py", line 870, in send
+2021-01-14T21:48:32.576441+00:00 app[worker.1]: data = await state.http.send_message(channel.id, content, tts=tts, embed=embed, nonce=nonce)
+2021-01-14T21:48:32.576443+00:00 app[worker.1]: File "/app/.heroku/python/lib/python3.6/site-packages/discord/http.py", line 225, in request
+2021-01-14T21:48:32.576443+00:00 app[worker.1]: raise HTTPException(r, data)
+2021-01-14T21:48:32.576477+00:00 app[worker.1]: discord.errors.HTTPException: 400 Bad Request (error code: 50035): Invalid Form Body
+2021-01-14T21:48:32.576477+00:00 app[worker.1]: In embed.fields.0.value: Must be 1024 or fewer in length.
+2021-01-14T21:48:32.576478+00:00 app[worker.1]: In embed.fields.1.value: Must be 1024 or fewer in length.
+2021-01-14T21:53:07.000000+00:00 app[api]: Build started by user thederevin@gmail.com
+2021-01-14T21:53:38.300756+00:00 app[api]: Deploy ab579525 by user thederevin@gmail.com
+2021-01-14T21:53:38.300756+00:00 app[api]: Release v219 created by user thederevin@gmail.com
+2021-01-14T21:53:41.568593+00:00 heroku[worker.1]: Restarting
+2021-01-14T21:53:41.569948+00:00 heroku[worker.1]: State changed from up to starting
+2021-01-14T21:53:42.445131+00:00 heroku[worker.1]: Stopping all processes with SIGTERM
+2021-01-14T21:53:47.968742+00:00 heroku[worker.1]: Starting process with command `python bot/main.py`
+2021-01-14T21:53:48.588222+00:00 heroku[worker.1]: State changed from starting to up
+2021-01-14T21:53:52.000000+00:00 app[api]: Build succeeded
+2021-01-14T21:53:52.588186+00:00 app[worker.1]: prod
+2021-01-14T21:53:52.646217+00:00 heroku[worker.1]: Process exited with status 0
+2021-01-14T21:53:55.666679+00:00 app[worker.1]: expected create exception: constraint "usr_fk0" for relation "usr" already exists
+2021-01-14T22:00:42.000000+00:00 app[api]: Build started by user thederevin@gmail.com
+2021-01-14T22:01:12.177458+00:00 app[api]: Deploy ad6c6372 by user thederevin@gmail.com
+2021-01-14T22:01:12.177458+00:00 app[api]: Release v220 created by user thederevin@gmail.com
+2021-01-14T22:01:13.738160+00:00 heroku[worker.1]: Restarting
+2021-01-14T22:01:13.750175+00:00 heroku[worker.1]: State changed from up to starting
+2021-01-14T22:01:15.236605+00:00 heroku[worker.1]: Stopping all processes with SIGTERM
+2021-01-14T22:01:18.311088+00:00 heroku[worker.1]: Starting process with command `python bot/main.py`
+2021-01-14T22:01:18.943557+00:00 heroku[worker.1]: State changed from starting to up
+2021-01-14T22:01:21.039455+00:00 app[worker.1]: prod
+2021-01-14T22:01:23.294702+00:00 app[worker.1]: expected create exception: constraint "usr_fk0" for relation "usr" already exists
+2021-01-14T22:01:25.584872+00:00 heroku[worker.1]: Process exited with status 0
+2021-01-14T22:01:26.000000+00:00 app[api]: Build succeeded
