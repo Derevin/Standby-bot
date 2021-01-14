@@ -73,7 +73,7 @@ class Services(commands.Cog):
         await ctx.channel.send(starboard_ldr)
 
     @commands.command(brief="Displays thanks leaderboard",)
-    async def thnksldr(self, ctx):
+    async def thanksldr(self, ctx):
         thanks_ldr = await self.bot.pg_pool.fetch(
             f"SELECT usr_id, SUM(thanks) as sum_thanks "
             f"FROM usr "
