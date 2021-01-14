@@ -25,8 +25,8 @@ def starboard_embed(message, stars) -> discord.Embed:
     content_msg = "[Link to message]"
     if len(message.content) > 0:
         content_msg = message.content
-        if len(content_msg) > 500:
-            content_msg = content_msg[0:500]
+        if len(content_msg) > 950:
+            content_msg = content_msg[0:950]
             content_msg += " [Click the link to see more]"
     embed.set_thumbnail(url=message.author.avatar_url)
     embed.title = message.author.name
