@@ -77,7 +77,7 @@ class Services(commands.Cog):
         thanks_ldr = await self.bot.pg_pool.fetch(
             f"SELECT usr_id, SUM(thanks) as sum_thanks "
             f"FROM usr "
-            f"WHERE guild_id = {ctx.guild.id}) "
+            f"WHERE guild_id = {ctx.guild.id} "
             f"GROUP BY usr_id "
             f"ORDER BY sum_thanks DESC ;"
         )
