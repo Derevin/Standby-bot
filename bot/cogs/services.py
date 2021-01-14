@@ -62,7 +62,6 @@ class Services(commands.Cog):
         brief="Displays the starboard leaderboards. Also works as +sleaderboard, +starboard",
     )
     async def sbldr(self, ctx):
-        await ctx.channel.send("ok")
         starboard_ldr = await self.bot.pg_pool.fetch(
             f"SELECT usr_id, SUM(stars) as sum_stars "
             f"FROM starboard "
@@ -71,7 +70,6 @@ class Services(commands.Cog):
             f"GROUP BY usr_id "
             f"ORDER BY sum_stars DESC ;"
         )
-        print(starboard_ldr)
         await ctx.channel.send(starboard_ldr)
 
 
