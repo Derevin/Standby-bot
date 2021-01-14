@@ -63,8 +63,13 @@ class Services(commands.Cog):
     )
     async def sbldr(self, ctx):
         await ctx.channel.send("ok")
-        starboard_ldr = await self.bot.pg_pool.fetchrow(
-            f"SELECT * FROM starboard WHERE usr_id IN (SELECT usr_id FROM usr WHERE guild_id = {ctx.guild.id});"
+        starboard_ldr = await self.bot.pg_pool.fetch(
+            f"SELECT usr_id, SUM(stars) as sum_stars "
+            f"FROM starboard "
+            f"WHERE usr_id IN "
+            f"(SELECT usr_id FROM usr WHERE guild_id = {ctx.guild.id}) "
+            f"GROUP BY usr_id "
+            f"ORDER BY sum_stars DESC ;"
         )
         print(starboard_ldr)
         await ctx.channel.send(starboard_ldr)
