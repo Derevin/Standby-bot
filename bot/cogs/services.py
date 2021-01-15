@@ -66,8 +66,8 @@ class Services(commands.Cog):
             await ctx.send(response)
 
     @commands.command(
-        aliases=["sleaderboard", "starboard"],
-        brief="Displays the starboard leaderboards. Also works as +sleaderboard, +starboard",
+        aliases=["sleaderboard", "starboardl"],
+        brief="Displays the starboard leaderboards. Also works as +sleaderboard, +starboardl",
     )
     async def sbldr(self, ctx):
         starboard_ldr = await self.bot.pg_pool.fetch(
@@ -90,7 +90,10 @@ class Services(commands.Cog):
         )
         await ctx.channel.send(embed=embed)
 
-    @commands.command(brief="Displays thanks leaderboard",)
+    @commands.command(
+        aliases=["tleaderboard", "thanksl"],
+        brief="Displays voids leaderboard. Also works as +tleaderboard, +thanksl",
+    )
     async def thanksldr(self, ctx):
         thanks_ldr = await self.bot.pg_pool.fetch(
             f"SELECT usr_id, SUM(thanks) as sum_thanks "
