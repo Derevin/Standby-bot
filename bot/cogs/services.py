@@ -9,8 +9,10 @@ import random
 import datetime
 
 
-THANKS_LDR_HEADER = "Thanking leaderboards"
-STARBOARD_LDR_HEADER = "Starboard leaderboards"
+THANKS_LDR_HEADER = "Voids leaderboard"
+THANKS_LDR_THANKS_HEADER = "Voids"
+THANKS_LDR_USER_HEADER = "User"
+STARBOARD_LDR_HEADER = "Stars leaderboard"
 
 
 class Services(commands.Cog):
@@ -90,19 +92,16 @@ class Services(commands.Cog):
         for rec in thanks_ldr:
             usr = ctx.guild.get_member(rec["usr_id"])
             ldr.append((rec["sum_thanks"], f"{usr.name}#{usr.discriminator}"))
-        # message_str = ""
         thanks_str = ""
         user_str = ""
         for line in ldr:
             thanks_str += f"{line[0]}\n"
             user_str += f"{line[1]}\n"
-            # message_str += f"{str(line[0]).ljust(5)} {line[1]}\n"
 
         embed = discord.Embed(color=VIE_PURPLE)
-        embed.add_field(name="Voids", value=thanks_str)
-        embed.add_field(name="User", value=user_str)
+        embed.add_field(name=THANKS_LDR_THANKS_HEADER, value=thanks_str)
+        embed.add_field(name=THANKS_LDR_USER_HEADER, value=user_str)
         embed.title = THANKS_LDR_HEADER
-        # await ctx.channel.send(message_str, embed=embed)
         await ctx.channel.send(embed=embed)
 
 
