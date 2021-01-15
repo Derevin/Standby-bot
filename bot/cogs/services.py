@@ -13,6 +13,8 @@ THANKS_LDR_HEADER = "Voids leaderboard"
 THANKS_LDR_THANKS_HEADER = "Voids"
 THANKS_LDR_USER_HEADER = "User"
 STARBOARD_LDR_HEADER = "Stars leaderboard"
+STARBOARD_LDR_STARS_HEADER = "Stars"
+STARBOARD_LDR_USER_HEADER = "User"
 
 
 class Services(commands.Cog):
@@ -76,7 +78,17 @@ class Services(commands.Cog):
             f"GROUP BY usr_id "
             f"ORDER BY sum_stars DESC ;"
         )
-        await ctx.channel.send(starboard_ldr)
+        embed = await build_leaderboard_embed(
+            ctx,
+            starboard_ldr,
+            "sum_stars",
+            "usr_id",
+            STARBOARD_COLOUR,
+            STARBOARD_LDR_STARS_HEADER,
+            STARBOARD_LDR_USER_HEADER,
+            STARBOARD_LDR_HEADER,
+        )
+        await ctx.channel.send(embed=embed)
 
     @commands.command(brief="Displays thanks leaderboard",)
     async def thanksldr(self, ctx):
@@ -88,21 +100,45 @@ class Services(commands.Cog):
             f"HAVING SUM(thanks) > 0 "
             f"ORDER BY sum_thanks DESC ;"
         )
-        ldr = []
-        for rec in thanks_ldr:
-            usr = ctx.guild.get_member(rec["usr_id"])
-            ldr.append((rec["sum_thanks"], f"{usr.name}#{usr.discriminator}"))
-        thanks_str = ""
-        user_str = ""
-        for line in ldr:
-            thanks_str += f"{line[0]}\n"
-            user_str += f"{line[1]}\n"
 
-        embed = discord.Embed(color=VIE_PURPLE)
-        embed.add_field(name=THANKS_LDR_THANKS_HEADER, value=thanks_str)
-        embed.add_field(name=THANKS_LDR_USER_HEADER, value=user_str)
-        embed.title = THANKS_LDR_HEADER
+        embed = await build_leaderboard_embed(
+            ctx,
+            thanks_ldr,
+            "sum_thanks",
+            "usr_id",
+            VIE_PURPLE,
+            THANKS_LDR_THANKS_HEADER,
+            THANKS_LDR_USER_HEADER,
+            THANKS_LDR_HEADER,
+        )
         await ctx.channel.send(embed=embed)
+
+
+async def build_leaderboard_embed(
+    ctx,
+    leaderboard,
+    count_col_name,
+    usr_col_name,
+    color,
+    header_count,
+    header_user,
+    header_title,
+):
+    ldr = []
+    for rec in leaderboard:
+        usr = ctx.guild.get_member(rec[usr_col_name])
+        ldr.append((rec[count_col_name], f"{usr.name}#{usr.discriminator}"))
+    count_str = ""
+    user_str = ""
+    for line in ldr:
+        count_str += f"{line[0]}\n"
+        user_str += f"{line[1]}\n"
+
+    embed = discord.Embed(color=color)
+    embed.add_field(name=header_count, value=count_str)
+    embed.add_field(name=header_user, value=user_str)
+    embed.title = header_title
+    return embed
 
 
 async def urban_handler(bot, payload):
