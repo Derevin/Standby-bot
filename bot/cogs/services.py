@@ -79,6 +79,7 @@ class Services(commands.Cog):
             f"FROM usr "
             f"WHERE guild_id = {ctx.guild.id} "
             f"GROUP BY usr_id "
+            f"HAVING SUM(thanks) > 0 "
             f"ORDER BY sum_thanks DESC ;"
         )
         await ctx.channel.send(thanks_ldr)
