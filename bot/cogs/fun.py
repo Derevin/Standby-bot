@@ -2,6 +2,7 @@ from discord.ext import commands
 import discord
 import random
 from utils.util_functions import *
+from settings import *
 
 
 TOUCAN_PRAISE = """
@@ -43,7 +44,10 @@ class Fun(commands.Cog):
             "https://cdn.discordapp.com/attachments/258941607238172673/717436181901475990/anti_horny.jpg",
             "https://cdn.discordapp.com/attachments/620408411393228809/724613520318267422/ubil7fxr99551.png",
         ]
-        await ctx.channel.send(random.choice(links))
+        if ctx.author.id == JORM_ID:
+            await ctx.channel.send(links[5])
+        else:
+            await ctx.channel.send(random.choice(links))
 
     @commands.command(brief="Posts an 'anime' warning")
     async def anime(self, ctx):
