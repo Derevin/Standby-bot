@@ -52,6 +52,9 @@ async def deleted_embed(payload, channel):
         if message.author.bot or str(message.type) == "MessageType.pins_add":
             return None
         embed.description = message.content
+        if len(embed.description) > 950:
+            embed.description = embed.description[0:950]
+            embed.description += "[Message had to be shortened]"
         embed.set_thumbnail(url=message.author.avatar_url)
         embed.add_field(name="Author", value=message.author.mention)
         embed.add_field(name="Channel", value=message.channel.mention)
@@ -114,6 +117,12 @@ async def edited_embed(bot, payload):
 
     embed = discord.Embed(color=LIGHT_BLUE)
     embed.title = "Message edited"
+    if len(before_message) > 950:
+        before_message = before_message[0:950]
+        before_message += " [Message had to be shortened]"
+    if len(after_message) > 600:
+        after_message = after_message[0:950]
+        after_message += " [Message had to be shortened]"
     embed.add_field(name="Before", value=before_message, inline=False)
     embed.add_field(name="After", value=after_message, inline=False)
     embed.add_field(name="Author", value=author.mention)
