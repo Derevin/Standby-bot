@@ -144,7 +144,7 @@ async def srida_resp(message: discord.Message):
 
 
 regex_fun_phrases_commands.append(
-    ("^.{0,4}sri(je)?da je\\W{0,4}$", srida_resp, re.M | re.I)
+    ("^.{0,4}sr(e|i(je)?)da je\\W{0,4}$", srida_resp, re.M | re.I)
 )
 
 
