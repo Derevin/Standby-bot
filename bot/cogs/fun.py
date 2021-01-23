@@ -3,6 +3,7 @@ import discord
 import random
 from utils.util_functions import *
 from settings import *
+from fuzzywuzzy import process
 
 
 TOUCAN_PRAISE = """
@@ -18,6 +19,14 @@ TOUCAN_PRAISE = """
 ░░░░░░has░░░░░░░░▀▄▄███████████████
 ░░░░░arrived░░░░░░░░░░░░█▀██████░░
 """
+
+
+memes = {
+    "invest": "https://cdn.discordapp.com/attachments/744224801429782679/799296186019741696/Invest_Button_Banner.png",
+    "chad yes": "https://cdn.discordapp.com/attachments/744224801429782679/799296476835610674/cover5.png",
+    "pointing spiderman": "https://cdn.discordapp.com/attachments/744224801429782679/799298056373534800/C-658VsXoAo3ovC.png",
+    "always has been": "https://cdn.discordapp.com/attachments/744224801429782679/802392943620915220/Always-Has-Been.png",
+}
 
 
 class Fun(commands.Cog):
@@ -92,6 +101,12 @@ class Fun(commands.Cog):
         )
         rip = await ctx.channel.send(embed=embed)
         await rip.add_reaction("🇫")
+
+    @commands.command(brief="Posts a meme")
+    async def meme(self, ctx, *, query):
+        best_match = process.extractOne(query, list(memes.keys()), score_cutoff=67)
+        if best_match:
+            await ctx.send(memes[best_match[0]])
 
 
 def setup(bot):
