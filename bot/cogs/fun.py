@@ -104,9 +104,11 @@ class Fun(commands.Cog):
 
     @commands.command(brief="Posts a meme")
     async def meme(self, ctx, *, query):
-        best_match = process.extractOne(query, list(memes.keys()), score_cutoff=67)
+        best_match = process.extractOne(query, list(memes.keys()), score_cutoff=75)
         if best_match:
             await ctx.send(memes[best_match[0]])
+        else:
+            await ctx.send("Meme not found.")
 
 
 def setup(bot):
