@@ -26,7 +26,12 @@ memes = {
     "chad yes": "https://cdn.discordapp.com/attachments/744224801429782679/799296476835610674/cover5.png",
     "pointing spiderman": "https://cdn.discordapp.com/attachments/744224801429782679/799298056373534800/C-658VsXoAo3ovC.png",
     "always has been": "https://cdn.discordapp.com/attachments/744224801429782679/802392943620915220/Always-Has-Been.png",
+    "stonks": "https://cdn.discordapp.com/attachments/744224801429782679/802547348940521492/Screen_Shot_2019-06-05_at_1.png",
+    "noted": "https://cdn.discordapp.com/attachments/744224801429782679/802549793913176074/kowalskicover.png",
 }
+help_text = f"""
+Currently available memes: {', '.join(list(memes.keys()))}.
+"""
 
 
 class Fun(commands.Cog):
@@ -102,7 +107,7 @@ class Fun(commands.Cog):
         rip = await ctx.channel.send(embed=embed)
         await rip.add_reaction("🇫")
 
-    @commands.command(brief="Posts a meme")
+    @commands.command(brief="Posts a meme", help=help_text)
     async def meme(self, ctx, *, query):
         best_match = process.extractOne(query, list(memes.keys()), score_cutoff=75)
         if best_match:
