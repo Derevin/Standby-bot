@@ -2,6 +2,8 @@ from discord.ext import commands
 import discord
 import random
 from utils.util_functions import *
+from settings import *
+from fuzzywuzzy import process
 
 
 TOUCAN_PRAISE = """
@@ -16,6 +18,19 @@ TOUCAN_PRAISE = """
 ░░░░toucan░░░░░░▀▄░░░▐█████████████▄
 ░░░░░░has░░░░░░░░▀▄▄███████████████
 ░░░░░arrived░░░░░░░░░░░░█▀██████░░
+"""
+
+
+memes = {
+    "invest": "https://cdn.discordapp.com/attachments/744224801429782679/799296186019741696/Invest_Button_Banner.png",
+    "chad yes": "https://cdn.discordapp.com/attachments/744224801429782679/799296476835610674/cover5.png",
+    "pointing spiderman": "https://cdn.discordapp.com/attachments/744224801429782679/799298056373534800/C-658VsXoAo3ovC.png",
+    "always has been": "https://cdn.discordapp.com/attachments/744224801429782679/802392943620915220/Always-Has-Been.png",
+    "stonks": "https://cdn.discordapp.com/attachments/744224801429782679/802547348940521492/Screen_Shot_2019-06-05_at_1.png",
+    "noted": "https://cdn.discordapp.com/attachments/744224801429782679/802549793913176074/kowalskicover.png",
+}
+help_text = f"""
+Currently available memes: {', '.join(list(memes.keys()))}.
 """
 
 
@@ -43,7 +58,10 @@ class Fun(commands.Cog):
             "https://cdn.discordapp.com/attachments/258941607238172673/717436181901475990/anti_horny.jpg",
             "https://cdn.discordapp.com/attachments/620408411393228809/724613520318267422/ubil7fxr99551.png",
         ]
-        await ctx.channel.send(random.choice(links))
+        if ctx.author.id == JORM_ID:
+            await ctx.channel.send(links[5])
+        else:
+            await ctx.channel.send(random.choice(links))
 
     @commands.command(brief="Posts an 'anime' warning")
     async def anime(self, ctx):
@@ -88,6 +106,14 @@ class Fun(commands.Cog):
         )
         rip = await ctx.channel.send(embed=embed)
         await rip.add_reaction("🇫")
+
+    @commands.command(brief="Posts a meme", help=help_text)
+    async def meme(self, ctx, *, query):
+        best_match = process.extractOne(query, list(memes.keys()), score_cutoff=75)
+        if best_match:
+            await ctx.send(memes[best_match[0]])
+        else:
+            await ctx.send("Meme not found.")
 
 
 def setup(bot):

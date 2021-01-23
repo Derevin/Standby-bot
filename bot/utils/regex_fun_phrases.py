@@ -107,6 +107,47 @@ regex_fun_phrases_commands.append(
     ("^.{0,4}jest [sś]roda\\W{0,4}$", sroda_resp, re.M | re.I)
 )
 
+
+async def woensdag_resp(message: discord.Message):
+    await message.channel.send("mijn makkers")
+    await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
+
+
+regex_fun_phrases_commands.append(
+    ("^.{0,4}het is woensdag\\W{0,4}$", woensdag_resp, re.M | re.I)
+)
+
+
+async def szerda_resp(message: discord.Message):
+    await message.channel.send("felebarátaim")
+    await message.channel.send("ááááááááááÁÁÁÁÁÁÁÁÁÁ**ÁÁÁÁÁ**")
+
+
+regex_fun_phrases_commands.append(
+    ("^.{0,4}szerda van\\W{0,4}$", szerda_resp, re.M | re.I)
+)
+
+
+async def streda_resp(message: discord.Message):
+    await message.channel.send("kamoši moji")
+    await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
+
+
+regex_fun_phrases_commands.append(
+    ("^.{0,4}je streda\\W{0,4}$", streda_resp, re.M | re.I)
+)
+
+
+async def srida_resp(message: discord.Message):
+    await message.channel.send("moji ljudi")
+    await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
+
+
+regex_fun_phrases_commands.append(
+    ("^.{0,4}sr(e|i(je)?)da je\\W{0,4}$", srida_resp, re.M | re.I)
+)
+
+
 ### tuesday
 
 
