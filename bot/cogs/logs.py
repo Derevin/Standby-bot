@@ -18,7 +18,8 @@ class Logs(commands.Cog):
         if embed:
             guild = channel.guild
             logs = discord.utils.get(guild.text_channels, name=LOGS_CHANNEL_NAME)
-            await logs.send(embed=embed)
+            if logs:
+                await logs.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_raw_message_edit(self, payload):
@@ -28,7 +29,8 @@ class Logs(commands.Cog):
             channel = self.bot.get_channel(payload.channel_id)
             guild = channel.guild
             logs = discord.utils.get(guild.text_channels, name=LOGS_CHANNEL_NAME)
-            await logs.send(embed=embed)
+            if logs:
+                await logs.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
@@ -40,8 +42,8 @@ class Logs(commands.Cog):
 
         guild = member.guild
         logs = discord.utils.get(guild.text_channels, name=LOGS_CHANNEL_NAME)
-
-        await logs.send(embed=embed)
+        if logs:
+            await logs.send(embed=embed)
 
 
 async def deleted_embed(payload, channel):
