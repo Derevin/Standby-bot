@@ -5,7 +5,11 @@ from settings import *
 
 from db.db_main import init_db_connection
 
-bot = commands.Bot(command_prefix=PREFIX)
+intents = discord.Intents.default()
+intents.members = True
+intents.presences = True
+
+bot = commands.Bot(command_prefix=PREFIX, intents=intents)
 
 
 @bot.event
