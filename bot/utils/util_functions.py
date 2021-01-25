@@ -19,7 +19,11 @@ def mention_role(guild, name):
 
 
 def get_channel(guild, name):
-    return discord.utils.get(guild.text_channels, name=name)
+    match = re.search(r"^<#(\d+)>$", name)
+    if match:
+        return discord.utils.get(guild.text_channels, id=int(match.group(1)))
+    else:
+        return discord.utils.get(guild.text_channels, name=name)
 
 
 def get_user(guild, query):

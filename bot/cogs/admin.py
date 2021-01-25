@@ -5,7 +5,7 @@ import random
 import re
 import datetime
 from settings import *
-from utils.util_functions import int_to_emoji
+from utils.util_functions import *
 
 
 class Admin(commands.Cog):
@@ -35,7 +35,7 @@ class Admin(commands.Cog):
     @commands.has_any_role("Moderator", "Guides of the Void")
     async def say(self, ctx, channel_name, *message):
         await ctx.message.delete()
-        channel = discord.utils.get(ctx.guild.text_channels, name=channel_name)
+        channel = get_channel(ctx.guild, channel_name)
         if channel:
             if message:
                 msg = " ".join(message)
@@ -44,7 +44,7 @@ class Admin(commands.Cog):
                 raise commands.errors.BadArgument("Please enter a message")
         else:
             raise commands.errors.BadArgument(
-                "Please enter a valid channel, no leading #"
+                "Please enter a valid channel name or mention"
             )
 
     @commands.command(brief="Leaves several ghost pings for a user")
@@ -62,7 +62,7 @@ class Admin(commands.Cog):
         ]
 
         for ch in ch_list:
-            channel = discord.utils.get(guild.text_channels, name=ch)
+            channel = get_channel(guild, ch)
             if channel:
                 ping = await channel.send(user_mention)
                 await ping.delete()
@@ -71,7 +71,7 @@ class Admin(commands.Cog):
         await asyncio.sleep(45)
 
         for ch in ch_list:
-            channel = discord.utils.get(guild.text_channels, name=ch)
+            channel = get_channel(guild, ch)
             if channel:
                 ping = await channel.send(user_mention)
                 await ping.delete()
@@ -80,7 +80,7 @@ class Admin(commands.Cog):
     @commands.command(brief="Adds a reaction to a post")
     @commands.has_any_role("Moderator", "Guides of the Void")
     async def react(self, ctx, channel_name, msg_id, emoji):
-        channel = discord.utils.get(ctx.guild.text_channels, name=channel_name)
+        channel = get_channel(ctx.guild, channel_name)
         if channel:
             try:
                 msg = await channel.fetch_message(msg_id)
@@ -89,7 +89,7 @@ class Admin(commands.Cog):
 
         else:
             raise commands.errors.BadArgument(
-                "Please enter a valid channel, no leading #"
+                "Please enter a valid channel name or mention"
             )
 
         await msg.add_reaction(emoji)
@@ -125,13 +125,13 @@ class Admin(commands.Cog):
         if not from_channel:
             from_channel = ctx.channel
         else:
-            from_channel = discord.utils.get(ctx.guild.text_channels, name=from_channel)
+            from_channel = get_channel(ctx.guild, from_channel)
 
-        to_channel = discord.utils.get(ctx.guild.text_channels, name=to_channel)
+        to_channel = get_channel(ctx.guild, to_channel)
 
         if not (to_channel and from_channel):
             raise commands.errors.BadArgument(
-                "Please enter valid channel names, no leading #"
+                "Please enter valid channel names or mentions"
             )
         try:
             msg = await from_channel.fetch_message(int(msg_id))
@@ -157,7 +157,7 @@ class Admin(commands.Cog):
     @commands.command(brief="Reposts the last 'user left' message to a channel")
     @commands.has_any_role("Moderator", "Guides of the Void")
     async def obit(self, ctx, channel_name, *msg_id):
-        channel = discord.utils.get(ctx.guild.text_channels, name=channel_name)
+        channel = get_channel(ctx.guild, channel_name)
         if channel:
             if msg_id:
                 msg_id = int(msg_id[0])
