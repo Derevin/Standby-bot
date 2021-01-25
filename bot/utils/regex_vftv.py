@@ -142,16 +142,6 @@ async def siegeQ_resp(message: discord.Message):
 regex_vftv_commands.append(("siege.*\\?", siegeQ_resp, re.M | re.I))
 
 
-### Siege.
-
-
-async def siege_resp(message: discord.Message):
-    await message.channel.send("Did someone say Siege? 👀")
-
-
-regex_vftv_commands.append(("^.*siege[^\\?]*$", siege_resp, re.M | re.I))
-
-
 ### #offers
 
 
