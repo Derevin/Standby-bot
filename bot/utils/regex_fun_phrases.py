@@ -2,6 +2,7 @@ import discord
 import re
 import random
 import asyncio
+import datetime
 from settings import *
 
 regex_fun_phrases_commands = []
@@ -145,6 +146,21 @@ async def srida_resp(message: discord.Message):
 
 regex_fun_phrases_commands.append(
     ("^.{0,4}sr(e|i(je)?)da je\\W{0,4}$", srida_resp, re.M | re.I)
+)
+
+
+async def onsdag_resp(message: discord.Message):
+    if datetime.datetime.today().weekday() != 4:
+        await message.channel.send("Tiden är ännu inte mogen. Tålamod, min vän.")
+    elif re.search("fredag", message.content):
+        await message.channel.send("mina bekanta")
+        await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
+    else:
+        await message.channel.send("Det är det inte alls det.")
+
+
+regex_fun_phrases_commands.append(
+    ("^.{0,4}det är [a-zåäö]{3,4}dag\\W{0,4}$", onsdag_resp, re.M | re.I)
 )
 
 
