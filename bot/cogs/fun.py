@@ -28,6 +28,16 @@ memes = {
     "always has been": "https://cdn.discordapp.com/attachments/744224801429782679/802392943620915220/Always-Has-Been.png",
     "stonks": "https://cdn.discordapp.com/attachments/744224801429782679/802547348940521492/Screen_Shot_2019-06-05_at_1.png",
     "noted": "https://cdn.discordapp.com/attachments/744224801429782679/802549793913176074/kowalskicover.png",
+    "big brain temple tap": (
+        "https://cdn.discordapp.com/attachments/"
+        "744224801429782679/803778693624365066/highresrollsafe.png"
+    ),
+    "spongebob aight imma head out": (
+        "https://cdn.discordapp.com/attachments/"
+        "744224801429782679/803779170176991272/spongebob.png"
+    ),
+    "i am the senate": "https://cdn.discordapp.com/attachments/744224801429782679/803780347627044914/87d.png",
+    "dd stress cat": "https://cdn.discordapp.com/attachments/744224801429782679/803781720700485672/3mdb6pdclcr51.png",
 }
 help_text = f"""
 Currently available memes: {', '.join(list(memes.keys()))}.
