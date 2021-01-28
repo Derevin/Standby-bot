@@ -204,6 +204,28 @@ class Admin(commands.Cog):
             await vote_msg.add_reaction("✅")
             await vote_msg.add_reaction("❌")
 
+    @commands.command(brief="Puts people in horny jail")
+    @commands.has_any_role("Moderator", "Guides of the Void")
+    async def hornyjail(self, ctx, offenders):
+        if ctx.message.mentions:
+            horny = get_role(ctx.guild, "horny")
+            muted = get_role(ctx.guild, "Muted")
+            if horny and muted:
+                for offender in ctx.message.mentions:
+                    await offender.add_roles(horny)
+                    await offender.add_roles(muted)
+
+    @commands.command(brief="Releases people from horny jail")
+    @commands.has_any_role("Moderator", "Guides of the Void")
+    async def hornyrelease(self, ctx, prisoners):
+        if ctx.message.mentions:
+            horny = get_role(ctx.guild, "horny")
+            muted = get_role(ctx.guild, "Muted")
+            if horny and muted:
+                for prisoner in ctx.message.mentions:
+                    await prisoner.remove_roles(horny)
+                    await prisoner.remove_roles(muted)
+
 
 def message_embed(msg, cmd, trigger_author) -> discord.Embed:
 
