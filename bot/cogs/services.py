@@ -130,7 +130,8 @@ async def build_leaderboard_embed(
     ldr = []
     for rec in leaderboard:
         usr = ctx.guild.get_member(rec[usr_col_name])
-        ldr.append((rec[count_col_name], f"{usr.name}#{usr.discriminator}"))
+        if usr:
+            ldr.append((rec[count_col_name], f"{usr.name}#{usr.discriminator}"))
     count_str = ""
     user_str = ""
     for line in ldr:
