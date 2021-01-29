@@ -79,7 +79,7 @@ class Admin(commands.Cog):
 
     @commands.command(brief="Adds a reaction to a post")
     @commands.has_any_role("Moderator", "Guides of the Void")
-    async def react(self, ctx, channel_name, msg_id, emoji):
+    async def react(self, ctx, channel_name, msg_id, *emojis):
         channel = get_channel(ctx.guild, channel_name)
         if channel:
             try:
@@ -92,7 +92,8 @@ class Admin(commands.Cog):
                 "Please enter a valid channel name or mention"
             )
 
-        await msg.add_reaction(emoji)
+        for emoji in emojis:
+            await msg.add_reaction(emoji)
         await ctx.message.delete()
 
     @commands.command(
