@@ -210,3 +210,12 @@ regex_vftv_commands.append(
     )
 )
 
+
+async def hms_resp(message: discord.Message):
+    await message.channel.send(
+        "https://cdn.discordapp.com/attachments/744224801429782679/806231697728995358/unknown.png"
+    )
+
+
+regex_vftv_commands.append(("welcome aboard the hms fucking", hms_resp, re.M | re.I))
+
