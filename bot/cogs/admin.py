@@ -33,19 +33,26 @@ class Admin(commands.Cog):
 
     @commands.command(brief="Sends a message through the bot to a chosen channel")
     @commands.has_any_role("Moderator", "Guides of the Void")
-    async def say(self, ctx, channel_name, *message):
+    async def say(self, ctx, channel_name, *, message):
         await ctx.message.delete()
         channel = get_channel(ctx.guild, channel_name)
         if channel:
-            if message:
-                msg = " ".join(message)
-                await channel.send(msg)
-            else:
-                raise commands.errors.BadArgument("Please enter a message")
+            await channel.send(msg)
         else:
             raise commands.errors.BadArgument(
                 "Please enter a valid channel name or mention"
             )
+
+    @commands.command(brief="Responds to a message")
+    @commands.has_any_role("Moderator", "Guides of the Void")
+    async def reply(self, ctx, channel_name, reply_msg_id, *, message):
+        await ctx.message.delete()
+        channel = get_channel(ctx.guild, channel_name)
+        try:
+            reply_msg = await channel.fetch_message(int(reply_msg_id))
+        except Exception:
+            raise commands.errors.BadArgument("No message found with that ID")
+        await channel.send(message, reference=reply_msg)
 
     @commands.command(brief="Leaves several ghost pings for a user")
     @commands.has_any_role("Moderator", "Guides of the Void")
