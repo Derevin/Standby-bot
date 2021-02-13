@@ -250,16 +250,19 @@ class Rules(commands.Cog):
                 ):
                     time = datetime.datetime.utcnow() - member.joined_at
                     if time.days >= 30:
-                        await member.send(
-                            "Hi! You have been automatically kicked from the Vie for the Void Discord "
-                            f"as you have failed to read our rules and unlock the full server within 30 days. If this "
-                            f"was an accident, please feel free to join us again!\n{EMPTY}\n{INVITE_LINK}"
-                        )
                         try:
-                            maint = await self.bot.fetch_channel(ERROR_CHANNEL_ID)
-                            await maint.send(
-                                f"{member.name}#{member.discriminator} has been kicked due to inactivity."
+                            await member.send(
+                                "Hi! You have been automatically kicked from the Vie for the Void Discord "
+                                f"as you have failed to read our rules and unlock the full server within 30 days. If this "
+                                f"was an accident, please feel free to join us again!\n{EMPTY}\n{INVITE_LINK}"
                             )
+                            try:
+                                maint = await self.bot.fetch_channel(ERROR_CHANNEL_ID)
+                                await maint.send(
+                                    f"{member.name}#{member.discriminator} has been kicked due to inactivity."
+                                )
+                            except Exception:
+                                pass
                         except Exception:
                             pass
 
