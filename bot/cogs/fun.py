@@ -68,16 +68,19 @@ class Fun(commands.Cog):
 
     @commands.command(aliases=["horni"], brief="Posts a random 'horny' warning")
     async def horny(self, ctx):
+        dd_horny = "https://cdn.discordapp.com/attachments/620408411393228809/724613520318267422/ubil7fxr99551.png"
         links = [
             "https://cdn.discordapp.com/attachments/267554564838785024/667115013412225054/image0.jpg",
             "https://i.kym-cdn.com/entries/icons/original/000/033/758/Screen_Shot_2020-04-28_at_12.21.48_PM.png",
             "https://cdn.discordapp.com/attachments/267554564838785024/701271178790305852/horny.jpg",
             "https://cdn.discordapp.com/attachments/267554564838785024/708425147064909944/x3x53kej4jr31.png",
             "https://cdn.discordapp.com/attachments/258941607238172673/717436181901475990/anti_horny.jpg",
-            "https://cdn.discordapp.com/attachments/620408411393228809/724613520318267422/ubil7fxr99551.png",
+            dd_horny,
+            "https://cdn.discordapp.com/attachments/413861431906402334/"
+            "810260242494783488/149741269_3647325365384706_5138601859788440225_n.png",
         ]
         if ctx.author.id == JORM_ID:
-            await ctx.channel.send(links[5])
+            await ctx.channel.send(dd_horny)
         else:
             await ctx.channel.send(random.choice(links))
 
