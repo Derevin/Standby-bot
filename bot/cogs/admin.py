@@ -37,7 +37,7 @@ class Admin(commands.Cog):
         await ctx.message.delete()
         channel = get_channel(ctx.guild, channel_name)
         if channel:
-            await channel.send(msg)
+            await channel.send(message)
         else:
             raise commands.errors.BadArgument(
                 "Please enter a valid channel name or mention"
