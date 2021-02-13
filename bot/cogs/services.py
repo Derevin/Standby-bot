@@ -154,7 +154,7 @@ async def urban_handler(bot, payload):
             and not payload.member.bot
             and message.embeds
             and message.embeds[0]
-            and message.embeds[0].title.startswith("Page")
+            and str(message.embeds[0].title).startswith("Page")
             and payload.emoji.name in ["⬅️", "➡️", "🇽"]
         ):
             if payload.emoji.name == "🇽":
@@ -163,7 +163,6 @@ async def urban_handler(bot, payload):
                 await message.clear_reaction("🇽")
             else:
                 embed = message.embeds[0]
-                print(embed)
                 title = embed.title
                 match = re.search(r"Page (\d+)\/(\d+)", title)
                 page, pages = int(match.group(1)), int(match.group(2))
