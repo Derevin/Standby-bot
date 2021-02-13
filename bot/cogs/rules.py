@@ -253,7 +253,8 @@ class Rules(commands.Cog):
                         try:
                             await member.send(
                                 "Hi! You have been automatically kicked from the Vie for the Void Discord "
-                                f"as you have failed to read our rules and unlock the full server within 30 days. If this "
+                                f"as you have failed to read our rules and"
+                                " unlock the full server within 30 days. If this "
                                 f"was an accident, please feel free to join us again!\n{EMPTY}\n{INVITE_LINK}"
                             )
                         except Exception:

@@ -24,9 +24,15 @@ TOUCAN_PRAISE = """
 memes = {
     "invest": "https://cdn.discordapp.com/attachments/744224801429782679/799296186019741696/Invest_Button_Banner.png",
     "chad yes": "https://cdn.discordapp.com/attachments/744224801429782679/799296476835610674/cover5.png",
-    "pointing spiderman": "https://cdn.discordapp.com/attachments/744224801429782679/799298056373534800/C-658VsXoAo3ovC.png",
-    "always has been": "https://cdn.discordapp.com/attachments/744224801429782679/802392943620915220/Always-Has-Been.png",
-    "stonks": "https://cdn.discordapp.com/attachments/744224801429782679/802547348940521492/Screen_Shot_2019-06-05_at_1.png",
+    "pointing spiderman": (
+        "https://cdn.discordapp.com/attachments/744224801429782679/799298056373534800/C-658VsXoAo3ovC.png"
+    ),
+    "always has been": (
+        "https://cdn.discordapp.com/attachments/744224801429782679/802392943620915220/Always-Has-Been.png"
+    ),
+    "stonks": (
+        "https://cdn.discordapp.com/attachments/744224801429782679/802547348940521492/Screen_Shot_2019-06-05_at_1.png"
+    ),
     "noted": "https://cdn.discordapp.com/attachments/744224801429782679/802549793913176074/kowalskicover.png",
     "big brain temple tap": (
         "https://cdn.discordapp.com/attachments/744224801429782679/803778693624365066/highresrollsafe.png"
