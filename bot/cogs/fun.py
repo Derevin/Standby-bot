@@ -60,7 +60,7 @@ class Fun(commands.Cog):
             "https://cdn.discordapp.com/attachments/743071403447943269/756976939591270431/unknown.png"
         )
 
-    @commands.command(brief="Posts a random 'horny' warning")
+    @commands.command(aliases=["horni"], brief="Posts a random 'horny' warning")
     async def horny(self, ctx):
         links = [
             "https://cdn.discordapp.com/attachments/267554564838785024/667115013412225054/image0.jpg",
