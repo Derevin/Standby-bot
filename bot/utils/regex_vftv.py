@@ -80,7 +80,7 @@ regex_vftv_commands.append(("wood", wood_resp, re.M | re.I))
 
 
 async def stradavar_resp(message: discord.Message):
-    await message.channel.send("Quickly, <@168350377824092160>, quickly!")
+    await message.channel.send(f"Quickly, <@{JORM_ID}>, quickly!")
     await message.add_reaction("👏")
 
 
@@ -168,7 +168,7 @@ regex_vftv_commands.append((".*", offers_resp, re.M | re.I))
 
 
 async def pp_resp(message: discord.Message):
-    await message.channel.send("Just like <@168350377824092160>'s pp")
+    await message.channel.send(f"Just like <@{JORM_ID}>'s pp")
 
 
 regex_vftv_commands.append(
