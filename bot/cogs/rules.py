@@ -267,7 +267,12 @@ class Rules(commands.Cog):
                         except Exception:
                             pass
 
-                        await member.kick()
+                        try:
+                            await member.kick()
+                        except Exception as e:
+                            print(
+                                f"{member.name}#{member.discriminator} couldn't be kicked:\n{e}"
+                            )
 
 
 async def welcome_message(bot, member):
