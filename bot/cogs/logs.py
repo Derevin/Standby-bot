@@ -125,6 +125,10 @@ async def edited_embed(bot, payload):
     if len(after_message) > 600:
         after_message = after_message[0:950]
         after_message += " [Message had to be shortened]"
+    if len(before_message) <= 0:
+        before_message = "[empty]"
+    if len(after_message) <= 0:
+        after_message = "[empty]"
     embed.add_field(name="Before", value=before_message, inline=False)
     embed.add_field(name="After", value=after_message, inline=False)
     embed.add_field(name="Author", value=author.mention)
@@ -134,6 +138,7 @@ async def edited_embed(bot, payload):
     if attachment_url:
         embed.add_field(name="Attachment", value=f"[Click here]({attachment_url})")
     embed.timestamp = datetime.datetime.utcnow()
+
     return embed
 
 
