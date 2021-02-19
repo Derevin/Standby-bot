@@ -241,7 +241,7 @@ class Tickets(commands.Cog):
                 if int(lst[-1]) > num:
                     num = int(lst[-1])
             except Exception:
-                print(lst, "has no number")
+                print(f"debug: {lst} has no number")
 
         for x in resolved_ticket_cat.channels:
             lst = x.name.split("-")
@@ -249,7 +249,7 @@ class Tickets(commands.Cog):
                 if int(lst[-1]) > num:
                     num = int(lst[-1])
             except Exception:
-                print(lst, "has no number")
+                print(f"debug: {lst} has no number")
 
         return num
 
