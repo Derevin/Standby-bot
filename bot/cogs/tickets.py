@@ -108,7 +108,7 @@ class Tickets(commands.Cog):
         if not open_ticket_cat.channels:
             await self.create_claimable(open_ticket_cat)
 
-    @commands.command(brief="Marks your ticket as resolved")
+    @commands.command(aliases=["tresolved"], brief="Marks your ticket as resolved")
     async def tresolve(self, ctx, *args):
         if ctx.channel.category.name != ACTIVE_TICKETS_CAT_NAME:
             raise commands.errors.UserInputError(
