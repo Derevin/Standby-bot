@@ -11,7 +11,7 @@ async def reputation_resp(bot, message: discord.Message):
     if message:
         print(f"debug: message {message}")
     if message and message.mentions:
-        print("debug: message has thanks + mention")
+        print(f"debug: message has thanks + mentions: {message.mentions}")
         for x in message.mentions:
             print("debug: starting for loop")
             if message.author.id == x.id:
@@ -29,7 +29,7 @@ async def reputation_resp(bot, message: discord.Message):
             await message.channel.send(f"Gave +1 {THANK_TYPE} to {x.mention}")
             print("debug: confirmation message sent")
     else:
-        print(f"warn: thanks with was triggered by {message} but not processed")
+        print("warn: thanks as triggered but not processed")
 
 
 regex_reputation_command.append(
