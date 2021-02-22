@@ -47,6 +47,7 @@ memes = {
     ),
     "you have no power here": "https://cdn.discordapp.com/attachments/744224801429782679/805832792004755486/keiyb.png",
     "well yes but actually no": "https://cdn.discordapp.com/attachments/744224801429782679/810929401322668062/unknown.png",
+    "unsee juice": "https://cdn.discordapp.com/attachments/744224801429782679/813170790971211786/df0.png",
 }
 help_text = f"""
 Currently available memes: {', '.join(list(memes.keys()))}.
