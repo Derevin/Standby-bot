@@ -29,7 +29,7 @@ async def reputation_resp(bot, message: discord.Message):
             await message.channel.send(f"Gave +1 {THANK_TYPE} to {x.mention}")
             print("debug: confirmation message sent")
     else:
-        print("warn: thanks as triggered but not processed")
+        print("warn: thanks was triggered but not processed")
 
 
 regex_reputation_command.append(
