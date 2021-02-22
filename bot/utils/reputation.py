@@ -11,7 +11,7 @@ async def reputation_resp(bot, message: discord.Message):
     if message and message.mentions:
         print("debug: message has thanks + mention")
         for x in message.mentions:
-            print("debug: starting for loop"
+            print("debug: starting for loop")
             if message.author.id == x.id:
                 print("debug: message is a self-thank")
                 await message.channel.send("Thanking yourself gives no reputation.")
