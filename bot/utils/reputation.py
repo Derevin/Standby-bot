@@ -8,6 +8,8 @@ THANK_TYPE = "Void"
 
 
 async def reputation_resp(bot, message: discord.Message):
+    if message:
+        print(f"debug: message {message}")
     if message and message.mentions:
         print("debug: message has thanks + mention")
         for x in message.mentions:
@@ -26,7 +28,8 @@ async def reputation_resp(bot, message: discord.Message):
             print("debug: DB command executed")
             await message.channel.send(f"Gave +1 {THANK_TYPE} to {x.mention}")
             print("debug: confirmation message sent")
-    pass
+    else:
+        print(f"warn: thanks with was triggered by {message} but not processed")
 
 
 regex_reputation_command.append(
