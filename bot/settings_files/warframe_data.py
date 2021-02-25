@@ -50,6 +50,7 @@ if "data" in weapon_data:
     weapon_data = weapon_data["data"]["Weapons"]
 
     arsenal = {}
+    # TODO: ensure weapon_data has the fields it requires so that it doesn't need to try/except everywhere :)
 
     for item in weapon_data:
         weapon = weapon_data[item]
@@ -68,15 +69,24 @@ if "data" in weapon_data:
 
             ips = []
             for damage_type in ["Impact", "Puncture", "Slash"]:
-                if damage_type not in weapon["NormalAttack"]["Damage"]:
-                    weapon["NormalAttack"]["Damage"][damage_type] = 0
-                ips.append(weapon["NormalAttack"]["Damage"][damage_type])
+                try:
+                    if damage_type not in weapon["NormalAttack"]["Damage"]:
+                        weapon["NormalAttack"]["Damage"][damage_type] = 0
+                    ips.append(weapon["NormalAttack"]["Damage"][damage_type])
+                except Exception:
+                    pass
 
-            if "CritChance" not in weapon["NormalAttack"]:
-                weapon["NormalAttack"]["CritChance"] = 0
+            try:
+                if "CritChance" not in weapon["NormalAttack"]:
+                    weapon["NormalAttack"]["CritChance"] = 0
+            except Exception:
+                pass
 
-            if "CritMultiplier" not in weapon["NormalAttack"]:
-                weapon["NormalAttack"]["CritMultiplier"] = 1
+            try:
+                if "CritMultiplier" not in weapon["NormalAttack"]:
+                    weapon["NormalAttack"]["CritMultiplier"] = 1
+            except Exception:
+                pass
 
             # Regulators have a listed reload time for some reason
             if weapon["Name"].startswith("Regulators"):
@@ -88,20 +98,23 @@ if "data" in weapon_data:
                 weapon["Class"] = "PISTOL"
 
             # Create the weapon
-            arsenal[weapon["Name"].lower()] = Weapon(
-                name=weapon["Name"],
-                category=weapon["Type"].upper(),
-                compat=weapon["Class"].upper(),
-                cc=weapon["NormalAttack"]["CritChance"],
-                cd=weapon["NormalAttack"]["CritMultiplier"],
-                fire_rate=weapon["NormalAttack"]["FireRate"],
-                mag=weapon["Magazine"],
-                rel=weapon["Reload"],
-                imp=ips[0],
-                punc=ips[1],
-                slash=ips[2],
-                element=sum(weapon["NormalAttack"]["Damage"].values()) - sum(ips),
-            )
+            try:
+                arsenal[weapon["Name"].lower()] = Weapon(
+                    name=weapon["Name"],
+                    category=weapon["Type"].upper(),
+                    compat=weapon["Class"].upper(),
+                    cc=weapon["NormalAttack"]["CritChance"],
+                    cd=weapon["NormalAttack"]["CritMultiplier"],
+                    fire_rate=weapon["NormalAttack"]["FireRate"],
+                    mag=weapon["Magazine"],
+                    rel=weapon["Reload"],
+                    imp=ips[0],
+                    punc=ips[1],
+                    slash=ips[2],
+                    element=sum(weapon["NormalAttack"]["Damage"].values()) - sum(ips),
+                )
+            except Exception:
+                pass
 
 regular_compats = ["PRIMARY", "RIFLE", "SHOTGUN", "PISTOL", "ASSAULT RIFLE", "SNIPER"]
 

@@ -8,29 +8,31 @@ THANK_TYPE = "Void"
 
 
 async def reputation_resp(bot, message: discord.Message):
-    print("debug: reputation start")
+    debugprint = ""
+    debugprint += "debug: reputation start\n"
     if message:
-        print(f"debug: message {message}")
+        debugprint += f"debug: message {message}\ndebug: content: {message.content}\n"
     if message and message.mentions:
-        print(f"debug: message has thanks + mentions: {message.mentions}")
+        debugprint += f"debug: message has thanks + mentions: {message.mentions}\n"
         for x in message.mentions:
-            print("debug: starting for loop")
+            debugprint += "debug: starting for loop\n"
             if message.author.id == x.id:
-                print("debug: message is a self-thank")
+                debugprint += "debug: message is a self-thank\n"
                 await message.channel.send("Thanking yourself gives no reputation.")
-                print("debug: self-thank message sent")
+                debugprint += "debug: self-thank message sent\n"
                 continue
-            print("debug: not a self-thank")
+            debugprint += "debug: not a self-thank\n"
             await ensure_usr_existence(bot, x.id, x.guild.id)
-            print("debug: existence ensured")
+            debugprint += "debug: existence ensured\n"
             await bot.pg_pool.execute(
                 f"UPDATE usr SET thanks = thanks + 1 WHERE usr_id = {x.id}"
             )
-            print("debug: DB command executed")
+            debugprint += "debug: DB command executed\n"
             await message.channel.send(f"Gave +1 {THANK_TYPE} to {x.mention}")
-            print("debug: confirmation message sent")
+            debugprint += "debug: confirmation message sent\n"
     else:
-        print("warn: thanks was triggered but not processed")
+        debugprint += "warn: thanks was triggered but not processed\n"
+    print(debugprint, end="")
 
 
 regex_reputation_command.append(
