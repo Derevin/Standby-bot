@@ -8,6 +8,7 @@ THANK_TYPE = "Void"
 
 
 async def reputation_resp(bot, message: discord.Message):
+    print("debug: reputation start")
     if message:
         print(f"debug: message {message}")
     if message and message.mentions:
