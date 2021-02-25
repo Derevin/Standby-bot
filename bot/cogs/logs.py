@@ -109,7 +109,7 @@ async def edited_embed(bot, payload):
 
         guild = await bot.fetch_guild(guild_id)
         author = await guild.fetch_member(author_id)
-        if author.bot:
+        if author.bot or not author:
             return None
         channel = await bot.fetch_channel(channel_id)
         message = await channel.fetch_message(message_id)
