@@ -34,6 +34,6 @@ async def reputation_resp(bot, message: discord.Message):
 
 
 regex_reputation_command.append(
-    (r"thanks?( (yo)?u)?( for .{2,20})?\W*<@!.{14,22}>", reputation_resp, re.M | re.I)
+    (r"thanks?( (yo)?u)?( for .{2,60})?\W*<.{8,28}>", reputation_resp, re.M | re.I)
 )
 
