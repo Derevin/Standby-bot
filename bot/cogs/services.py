@@ -140,17 +140,21 @@ async def build_leaderboard_embed(
     ljust_num = len(str(header_count))
     ldr = []
     cnt = 0
+
+    keep_printing = True
     for rec in leaderboard:
         cnt += 1
         if cnt > MAX_LEADERBOARD_PRINT:
-            break
-        usr = ctx.guild.get_member(rec[usr_col_name])
-        if usr:
-            num_spaces = ljust_num - len(str(rec[count_col_name])) + 1
-            spaces = " " * num_spaces
-            ldr.append(
-                f"{rec[count_col_name]}`{spaces}` {usr.name}#{usr.discriminator}"
-            )
+            keep_printing = False
+
+        if keep_printing or ctx.message.author.id == rec[usr_col_name]:
+            usr = ctx.guild.get_member(rec[usr_col_name])
+            if usr:
+                num_spaces = ljust_num - len(str(rec[count_col_name])) + 1
+                spaces = " " * num_spaces
+                ldr.append(
+                    f"{rec[count_col_name]}`{spaces}` {usr.name}#{usr.discriminator}"
+                )
 
     header_merged = f"{header_count}\t{header_user}"
 
