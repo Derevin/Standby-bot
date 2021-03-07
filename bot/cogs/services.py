@@ -15,6 +15,7 @@ THANKS_LDR_USER_HEADER = "User"
 STARBOARD_LDR_HEADER = "Stars leaderboard"
 STARBOARD_LDR_STARS_HEADER = "Stars"
 STARBOARD_LDR_USER_HEADER = "User"
+MAX_LEADERBOARD_PRINT = 15
 
 
 class Services(commands.Cog):
@@ -66,10 +67,10 @@ class Services(commands.Cog):
             await ctx.send(response)
 
     @commands.command(
-        aliases=["sleaderboard", "starboardl"],
-        brief="Displays the starboard leaderboards. Also works as +sleaderboard, +starboardl",
+        aliases=["sleaderboard", "sleaderboards", "starboardl", "sbldr"],
+        brief="Displays the starboard leaderboards. '+help <command>' to view aliases.",
     )
-    async def sbldr(self, ctx):
+    async def sldr(self, ctx):
         starboard_ldr = await self.bot.pg_pool.fetch(
             f"SELECT usr_id, SUM(stars) as sum_stars "
             f"FROM starboard "
@@ -91,10 +92,17 @@ class Services(commands.Cog):
         await ctx.channel.send(embed=embed)
 
     @commands.command(
-        aliases=["tleaderboard", "thanksl"],
-        brief="Displays voids leaderboard. Also works as +tleaderboard, +thanksl",
+        aliases=[
+            "tleaderboard",
+            "thanksl",
+            "tleaderboards",
+            "thanksldr",
+            "tyldr",
+            "tyleaderboards",
+        ],
+        brief="Displays thanking leaderboard. '+help <command>' to view aliases.",
     )
-    async def thanksldr(self, ctx):
+    async def tldr(self, ctx):
         thanks_ldr = await self.bot.pg_pool.fetch(
             f"SELECT usr_id, SUM(thanks) as sum_thanks "
             f"FROM usr "
@@ -127,20 +135,31 @@ async def build_leaderboard_embed(
     header_user,
     header_title,
 ):
+    if not leaderboard:
+        return discord.Embed(color=color)
+    ljust_num = len(str(header_count))
     ldr = []
+    cnt = 0
     for rec in leaderboard:
+        cnt += 1
+        if cnt > MAX_LEADERBOARD_PRINT:
+            break
         usr = ctx.guild.get_member(rec[usr_col_name])
         if usr:
-            ldr.append((rec[count_col_name], f"{usr.name}#{usr.discriminator}"))
-    count_str = ""
-    user_str = ""
+            num_spaces = ljust_num - len(str(rec[count_col_name])) + 1
+            spaces = " " * num_spaces
+            ldr.append(
+                f"{rec[count_col_name]}`{spaces}` {usr.name}#{usr.discriminator}"
+            )
+
+    header_merged = f"{header_count}\t{header_user}"
+
+    merged_str = ""
     for line in ldr:
-        count_str += f"{line[0]}\n"
-        user_str += f"{line[1]}\n"
+        merged_str += f"{line}\n"
 
     embed = discord.Embed(color=color)
-    embed.add_field(name=header_count, value=count_str)
-    embed.add_field(name=header_user, value=user_str)
+    embed.add_field(name=header_merged, value=merged_str)
     embed.title = header_title
     return embed
 
