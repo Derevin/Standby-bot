@@ -15,7 +15,7 @@ THANKS_LDR_USER_HEADER = "User"
 STARBOARD_LDR_HEADER = "Stars leaderboard"
 STARBOARD_LDR_STARS_HEADER = "Stars"
 STARBOARD_LDR_USER_HEADER = "User"
-MAX_LEADERBOARD_PRINT = 15
+MAX_LEADERBOARD_PRINT = 12
 
 
 class Services(commands.Cog):
@@ -141,13 +141,18 @@ async def build_leaderboard_embed(
     ldr = []
     cnt = 0
 
+    prev_count = -1
     keep_printing = True
     for rec in leaderboard:
         cnt += 1
         if cnt > MAX_LEADERBOARD_PRINT:
             keep_printing = False
 
-        if keep_printing or ctx.message.author.id == rec[usr_col_name]:
+        if (
+            keep_printing
+            or prev_count == rec[count_col_name]
+            or ctx.message.author.id == rec[usr_col_name]
+        ):
             usr = ctx.guild.get_member(rec[usr_col_name])
             if usr:
                 num_spaces = ljust_num - len(str(rec[count_col_name])) + 1
@@ -155,6 +160,8 @@ async def build_leaderboard_embed(
                 ldr.append(
                     f"{rec[count_col_name]}`{spaces}` {usr.name}#{usr.discriminator}"
                 )
+            if keep_printing:
+                prev_count = rec[count_col_name]
 
     header_merged = f"{header_count}\t{header_user}"
 
