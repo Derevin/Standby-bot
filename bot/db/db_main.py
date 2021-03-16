@@ -4,6 +4,6 @@ from settings import *
 
 
 async def init_db_connection(bot):
-    bot.pg_pool = await asyncpg.create_pool(DATABASE_URL)
+    bot.pg_pool = await asyncpg.create_pool(DATABASE_URL, ssl="require")
     async with bot.pg_pool.acquire() as con:
         await create_tables(con)
