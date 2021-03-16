@@ -218,10 +218,18 @@ class Admin(commands.Cog):
         if ctx.message.mentions:
             horny = get_role(ctx.guild, "horny")
             muted = get_role(ctx.guild, "Muted")
+            jail = get_channel(ctx.guild, "horny-jail")
             if horny and muted:
                 for offender in ctx.message.mentions:
                     await offender.add_roles(horny)
                     await offender.add_roles(muted)
+                    if jail:
+                        jail.send(
+                            f"Welcome to horny jail, {offender.mention}. Do not enjoy your stay."
+                        )
+                        jail.send(
+                            "https://cdn.discordapp.com/attachments/744224801429782679/819163418258702336/46zenaxz1td61.png"
+                        )
 
     @commands.command(brief="Releases people from horny jail")
     @commands.has_any_role("Moderator", "Guides of the Void")
