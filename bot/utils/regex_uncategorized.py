@@ -213,7 +213,7 @@ regex_uncategorized_commands.append(("^hans\\W*$", hans_resp, re.M | re.I))
 
 
 async def loli_resp(message: discord.Message):
-    if message.author.id == JORM_ID:
+    if message.author.id == JORM_ID or re.search("http", message.content, re.I):
         return
     glare = discord.utils.get(message.guild.emojis, name="BlobGlare")
     if glare is not None:
@@ -225,7 +225,7 @@ async def loli_resp(message: discord.Message):
         await message.channel.send(f"Fuck off, {message.author.mention}")
 
 
-regex_uncategorized_commands.append(("^[^\\/]*[lI]o[lI]i", loli_resp, re.M | re.I))
+regex_uncategorized_commands.append(("(^|\\W)[LlI|][Oo0][LlI|][Ii]", loli_resp, re.M))
 
 
 async def dont_at_me_resp(message: discord.Message):
