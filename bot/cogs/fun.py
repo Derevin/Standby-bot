@@ -50,6 +50,7 @@ memes = {
         "https://cdn.discordapp.com/attachments/744224801429782679/810929401322668062/unknown.png"
     ),
     "unsee juice": "https://cdn.discordapp.com/attachments/744224801429782679/813170790971211786/df0.png",
+    "oof": "https://cdn.discordapp.com/attachments/744224801429782679/825175112420032562/unknown.png",
 }
 help_text = f"""
 Currently available memes: {', '.join(list(memes.keys()))}.
