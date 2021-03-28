@@ -29,8 +29,16 @@ def get_channel(guild, name):
 def get_user(guild, query):
 
     if re.search(r".*#\d{4}$", query):
-        name, tag = re.split(" ?#", query)
-        user = discord.utils.get(guild.members, name=name, discriminator=tag)
+        query, tag = re.split(" ?#", query)
+    else:
+        tag = None
+
+    if tag:
+        users = [
+            user
+            for user in guild.members
+            if (user.name.lower() == query.lower() and user.discriminator == tag)
+        ]
 
     else:
         users = [
@@ -41,9 +49,10 @@ def get_user(guild, query):
                 or re.search(query, user.name, re.I)
             )
         ]
-        user = users[0] if len(users) == 1 else None
 
-    return user
+    if len(users) == 1:
+        return users[0]
+    return None
 
 
 def int_to_emoji(num):
