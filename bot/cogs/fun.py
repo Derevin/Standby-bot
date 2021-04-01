@@ -54,6 +54,7 @@ memes = {
     "epic embed fail": "https://cdn.discordapp.com/attachments/744224801429782679/826115081027846144/embed.gif",
     "pathetic": "https://cdn.discordapp.com/attachments/744224801429782679/826798511793373254/1t5np8.png",
     "oh lmao rip": "https://cdn.discordapp.com/attachments/744224801429782679/827236052062175322/image0.png",
+    "i love democracy": "https://cdn.discordapp.com/attachments/744224801429782679/827236877328318474/palp.png",
 }
 help_text = f"""
 Currently available memes: {', '.join(list(memes.keys()))}.
