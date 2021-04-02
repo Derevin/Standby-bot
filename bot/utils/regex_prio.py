@@ -9,6 +9,13 @@ regex_prio_commands = []
 
 
 async def link_resp(message: discord.Message):
+    if re.search(
+        r"\|\|.*https:\/\/(\w+\.)?discord(app)?\.com\/channels\/\d+\/\d+\/\d+.*\|\|",
+        message.content,
+        re.M | re.I,
+    ):
+        return
+
     ids = re.search(r"\d+\/\d+\/\d+", message.content).group()
     guild_id, channel_id, message_id = re.split(r"\/", ids)
     channel = discord.utils.get(message.guild.text_channels, id=int(channel_id))
@@ -32,7 +39,7 @@ async def link_resp(message: discord.Message):
 
 regex_prio_commands.append(
     (
-        r"(?<!\|\|.*)https:\/\/(\w+\.)?discord(app)?\.com\/channels\/\d+\/\d+\/\d+(?!.*\|\|)",
+        r"https:\/\/(\w+\.)?discord(app)?\.com\/channels\/\d+\/\d+\/\d+",
         link_resp,
         re.M | re.I,
     )
