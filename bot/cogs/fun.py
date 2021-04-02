@@ -22,42 +22,44 @@ TOUCAN_PRAISE = """
 
 
 memes = {
-    "invest": "https://cdn.discordapp.com/attachments/744224801429782679/799296186019741696/Invest_Button_Banner.png",
-    "chad yes": "https://cdn.discordapp.com/attachments/744224801429782679/799296476835610674/cover5.png",
-    "pointing spiderman": (
+    "Invest": "https://cdn.discordapp.com/attachments/744224801429782679/799296186019741696/Invest_Button_Banner.png",
+    "Chad yes": "https://cdn.discordapp.com/attachments/744224801429782679/799296476835610674/cover5.png",
+    "Pointing Spiderman": (
         "https://cdn.discordapp.com/attachments/744224801429782679/799298056373534800/C-658VsXoAo3ovC.png"
     ),
-    "always has been": (
+    "Always has been": (
         "https://cdn.discordapp.com/attachments/744224801429782679/802392943620915220/Always-Has-Been.png"
     ),
-    "stonks": (
+    "Stonks": (
         "https://cdn.discordapp.com/attachments/744224801429782679/802547348940521492/Screen_Shot_2019-06-05_at_1.png"
     ),
-    "noted": "https://cdn.discordapp.com/attachments/744224801429782679/802549793913176074/kowalskicover.png",
-    "big brain temple tap": (
+    "Noted": "https://cdn.discordapp.com/attachments/744224801429782679/802549793913176074/kowalskicover.png",
+    "Big brain temple tap": (
         "https://cdn.discordapp.com/attachments/744224801429782679/803778693624365066/highresrollsafe.png"
     ),
-    "spongebob aight imma head out": (
+    "Spongebob aight imma head out": (
         "https://cdn.discordapp.com/attachments/744224801429782679/803779170176991272/spongebob.png"
     ),
-    "i am the senate": "https://cdn.discordapp.com/attachments/744224801429782679/803780347627044914/87d.png",
-    "dd stress cat": "https://cdn.discordapp.com/attachments/744224801429782679/803781720700485672/3mdb6pdclcr51.png",
-    "understandable have a great day": (
+    "I am the senate": "https://cdn.discordapp.com/attachments/744224801429782679/803780347627044914/87d.png",
+    "DD stress cat": "https://cdn.discordapp.com/attachments/744224801429782679/803781720700485672/3mdb6pdclcr51.png",
+    "Understandable, have a great day": (
         "https://cdn.discordapp.com/attachments/744224801429782679/805832118583427112/unknown.png"
     ),
-    "you have no power here": "https://cdn.discordapp.com/attachments/744224801429782679/805832792004755486/keiyb.png",
-    "well yes but actually no": (
+    "You have no power here": "https://cdn.discordapp.com/attachments/744224801429782679/805832792004755486/keiyb.png",
+    "Well yes but actually no": (
         "https://cdn.discordapp.com/attachments/744224801429782679/810929401322668062/unknown.png"
     ),
-    "unsee juice": "https://cdn.discordapp.com/attachments/744224801429782679/813170790971211786/df0.png",
+    "Unsee juice": "https://cdn.discordapp.com/attachments/744224801429782679/813170790971211786/df0.png",
     "oof": "https://cdn.discordapp.com/attachments/744224801429782679/825175112420032562/unknown.png",
-    "epic embed fail": "https://cdn.discordapp.com/attachments/744224801429782679/826115081027846144/embed.gif",
-    "pathetic": "https://cdn.discordapp.com/attachments/744224801429782679/826798511793373254/1t5np8.png",
+    "Epic embed fail": "https://cdn.discordapp.com/attachments/744224801429782679/826115081027846144/embed.gif",
+    "Pathetic": "https://cdn.discordapp.com/attachments/744224801429782679/826798511793373254/1t5np8.png",
     "oh lmao rip": "https://cdn.discordapp.com/attachments/744224801429782679/827236052062175322/image0.png",
-    "i love democracy": "https://cdn.discordapp.com/attachments/744224801429782679/827236877328318474/palp.png",
+    "I love democracy": "https://cdn.discordapp.com/attachments/744224801429782679/827236877328318474/palp.png",
 }
+
+meme_names = "\n".join(sorted(list(memes.keys())))
 help_text = f"""
-Currently available memes: {', '.join(list(memes.keys()))}.
+Currently available memes:\n{meme_names}
 """
 
 
