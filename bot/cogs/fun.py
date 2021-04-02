@@ -143,7 +143,10 @@ class Fun(commands.Cog):
     async def meme(self, ctx, *, query):
         best_match = process.extractOne(query, list(memes.keys()), score_cutoff=75)
         if best_match:
-            await ctx.send(memes[best_match[0]])
+            await ctx.send(
+                memes[best_match[0]],
+                reference=(ctx.message.reference if ctx.message.reference else None),
+            )
         else:
             await ctx.send("Meme not found.")
 
