@@ -43,7 +43,7 @@ memes = {
     "I am the senate": "https://cdn.discordapp.com/attachments/744224801429782679/803780347627044914/87d.png",
     "DD stress cat": "https://cdn.discordapp.com/attachments/744224801429782679/803781720700485672/3mdb6pdclcr51.png",
     "Understandable, have a great day": (
-        "https://cdn.discordapp.com/attachments/744224801429782679/805832118583427112/unknown.png"
+        "https://cdn.discordapp.com/attachments/744224801429782679/828058522499416074/unknown.png"
     ),
     "You have no power here": "https://cdn.discordapp.com/attachments/744224801429782679/805832792004755486/keiyb.png",
     "Well yes but actually no": (
