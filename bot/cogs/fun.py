@@ -145,7 +145,8 @@ class Fun(commands.Cog):
         if best_match:
             await ctx.send(
                 memes[best_match[0]],
-                reference=(ctx.message.reference if ctx.message.reference else None),
+                reference=ctx.message.reference,
+                mention_author=False,
             )
         else:
             await ctx.send("Meme not found.")
