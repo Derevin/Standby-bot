@@ -51,7 +51,10 @@ memes = {
     ),
     "Unsee juice": "https://cdn.discordapp.com/attachments/744224801429782679/813170790971211786/df0.png",
     "oof": "https://cdn.discordapp.com/attachments/744224801429782679/825175112420032562/unknown.png",
-    "Epic embed fail": "https://cdn.discordapp.com/attachments/744224801429782679/826115081027846144/embed.gif",
+    "Epic embed fail": [
+        "https://cdn.discordapp.com/attachments/744224801429782679/826115081027846144/embed.gif",
+        "https://cdn.discordapp.com/attachments/744224801429782679/829356227171581992/image0-4.png",
+    ],
     "Pathetic": "https://cdn.discordapp.com/attachments/744224801429782679/826798511793373254/1t5np8.png",
     "oh lmao rip": "https://cdn.discordapp.com/attachments/744224801429782679/827236052062175322/image0.png",
     "I love democracy": "https://cdn.discordapp.com/attachments/744224801429782679/827236877328318474/palp.png",
@@ -141,12 +144,15 @@ class Fun(commands.Cog):
 
     @commands.command(brief="Posts a meme", help=help_text)
     async def meme(self, ctx, *, query):
-        best_match = process.extractOne(query, list(memes.keys()), score_cutoff=75)
+        best_match = process.extractOne(query, list(memes.keys()), score_cutoff=75)[0]
         if best_match:
+            link = (
+                random.choice(memes[best_match])
+                if type(memes[best_match]) == list
+                else memes[best_match]
+            )
             await ctx.send(
-                memes[best_match[0]],
-                reference=ctx.message.reference,
-                mention_author=False,
+                link, reference=ctx.message.reference, mention_author=False,
             )
         else:
             await ctx.send("Meme not found.")
