@@ -56,6 +56,8 @@ if "data" in weapon_data:
         weapon = weapon_data[item]
 
         # TODO: Archguns
+        if "Type" not in weapon:
+            continue
         if weapon["Type"] in ["Primary", "Secondary"]:
 
             # TODO: Bows and other charged weapons
