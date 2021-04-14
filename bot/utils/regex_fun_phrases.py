@@ -149,6 +149,16 @@ regex_fun_phrases_commands.append(
 )
 
 
+async def mercredi_resp(message: discord.Message):
+    await message.channel.send("mes mecs")
+    await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
+
+
+regex_fun_phrases_commands.append(
+    ("^.{0,4}c'?est mercredi\\W{0,4}$", mercredi_resp, re.M | re.I)
+)
+
+
 async def onsdag_resp(message: discord.Message):
     if datetime.datetime.today().weekday() != 4:
         await message.channel.send("Tiden är ännu inte mogen. Tålamod, min vän.")
