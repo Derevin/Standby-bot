@@ -179,6 +179,13 @@ regex_fun_phrases_commands.append(
 )
 
 
+async def suiyobi_resp(message: discord.Message):
+    await message.channel.send("お前ら")
+    await message.channel.send("ああああああ**ああああ**")
+
+
+regex_fun_phrases_commands.append(("^.{0,4}水曜日だ\\W{0,4}$", suiyobi_resp, re.M | re.I))
+
 ### tuesday
 
 
