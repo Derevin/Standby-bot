@@ -170,17 +170,12 @@ regex_fun_phrases_commands.append(
 
 
 async def onsdag_resp(message: discord.Message):
-    if datetime.datetime.today().weekday() != 4:
-        await message.channel.send("Tiden är ännu inte mogen. Tålamod, min vän.")
-    elif re.search("fredag", message.content):
-        await message.channel.send("mina bekanta")
-        await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
-    else:
-        await message.channel.send("Det är det inte alls det.")
+    await message.channel.send("mina bekanta")
+    await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
 
 
 regex_fun_phrases_commands.append(
-    ("^.{0,4}det är [a-zåäö]{3,4}dag\\W{0,4}$", onsdag_resp, re.M | re.I)
+    ("^.{0,4}det är (ons|fre)dag\\W{0,4}$", onsdag_resp, re.M | re.I)
 )
 
 
