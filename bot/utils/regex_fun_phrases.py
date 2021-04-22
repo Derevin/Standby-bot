@@ -159,6 +159,16 @@ regex_fun_phrases_commands.append(
 )
 
 
+async def keskiviikko_resp(message: discord.Message):
+    await message.channel.send("kaverit")
+    await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
+
+
+regex_fun_phrases_commands.append(
+    ("^.{0,4}se on keskiviikko\\W{0,4}$", keskiviikko_resp, re.M | re.I)
+)
+
+
 async def onsdag_resp(message: discord.Message):
     if datetime.datetime.today().weekday() != 4:
         await message.channel.send("Tiden är ännu inte mogen. Tålamod, min vän.")
