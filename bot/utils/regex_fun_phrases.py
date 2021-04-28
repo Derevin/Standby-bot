@@ -186,6 +186,17 @@ async def suiyobi_resp(message: discord.Message):
 
 regex_fun_phrases_commands.append(("^.{0,4}水曜日だ\\W{0,4}$", suiyobi_resp, re.M | re.I))
 
+
+async def onsdag_resp_no(message: discord.Message):
+    await message.channel.send("folkens")
+    await message.channel.send("ææææææææææÆÆÆÆÆÆÆÆÆÆ**ÆÆÆÆÆ**")
+
+
+regex_fun_phrases_commands.append(
+    ("^.{0,4}det er onsdag\\W{0,4}$", onsdag_resp_no, re.M | re.I)
+)
+
+
 ### tuesday
 
 
