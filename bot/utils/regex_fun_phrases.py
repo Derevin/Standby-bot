@@ -206,6 +206,16 @@ regex_fun_phrases_commands.append(
     ("^.{0,4}es mi(e|é)rcoles\\W{0,4}$", miercoles_resp, re.M | re.I)
 )
 
+
+async def miercuri_resp(message: discord.Message):
+    await message.channel.send("fraţii mei")
+    await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
+
+
+regex_fun_phrases_commands.append(
+    ("^.{0,4}este miercuri\\W{0,4}$", miercuri_resp, re.M | re.I)
+)
+
 ### tuesday
 
 
