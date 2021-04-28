@@ -144,8 +144,9 @@ class Fun(commands.Cog):
 
     @commands.command(brief="Posts a meme", help=help_text)
     async def meme(self, ctx, *, query):
-        best_match = process.extractOne(query, list(memes.keys()), score_cutoff=75)[0]
-        if best_match:
+        matches = process.extractOne(query, list(memes.keys()), score_cutoff=75)
+        if matches:
+            best_match = matches[0]
             link = (
                 random.choice(memes[best_match])
                 if type(memes[best_match]) == list
