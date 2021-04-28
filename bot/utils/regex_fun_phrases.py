@@ -197,6 +197,15 @@ regex_fun_phrases_commands.append(
 )
 
 
+async def miercoles_resp(message: discord.Message):
+    await message.channel.send("mis amigos")
+    await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
+
+
+regex_fun_phrases_commands.append(
+    ("^.{0,4}es mi(e|é)rcoles\\W{0,4}$", miercoles_resp, re.M | re.I)
+)
+
 ### tuesday
 
 
