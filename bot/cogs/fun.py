@@ -58,9 +58,13 @@ memes = {
     "Pathetic": "https://cdn.discordapp.com/attachments/744224801429782679/826798511793373254/1t5np8.png",
     "oh lmao rip": "https://cdn.discordapp.com/attachments/744224801429782679/827236052062175322/image0.png",
     "I love democracy": "https://cdn.discordapp.com/attachments/744224801429782679/827236877328318474/palp.png",
+    "Shame (Mordor)": "https://cdn.discordapp.com/attachments/744224801429782679/838151854327463936/rwye5emkqe301.png",
+    "Shame (Hot Fuzz)": "https://tenor.com/view/shame-pity-reload-shotgun-gif-5160379",
+    "Same": "https://cdn.discordapp.com/attachments/744224801429782679/838169939784499230/r45ahkjo0ih41.png",
+    "Steve Buscemi": "https://cdn.discordapp.com/attachments/744224801429782679/838170137659834378/steve.png",
 }
 
-meme_names = "\n".join(sorted(list(memes.keys())))
+meme_names = "\n".join(sorted(list(memes.keys()), key=str.casefold))
 help_text = f"""
 Currently available memes:\n{meme_names}
 """
