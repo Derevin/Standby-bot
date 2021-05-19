@@ -28,7 +28,12 @@ regex_uncategorized_commands.append((f"{BOT_ID}", ping_resp, re.M | re.I))
 
 async def uwu_resp(message: discord.Message):
     msg = message.content
-    whitelist = [r":[^ ]*(o|u|0|O|U)[wvWV](o|u|0|O|U)[^ ]*:", "lenovo", "coworker"]
+    whitelist = [
+        r":[^ ]*(o|u|0|O|U)[wvWV](o|u|0|O|U)[^ ]*:",
+        "lenovo",
+        "coworker",
+        "kosovo",
+    ]
 
     for word in whitelist:
         if re.search(word, msg, re.I) is not None:
