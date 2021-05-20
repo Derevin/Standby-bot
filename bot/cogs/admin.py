@@ -122,45 +122,40 @@ class Admin(commands.Cog):
         await asyncio.sleep(3)
         await reply.delete()
 
-    @commands.command(brief="Moves a post from one channel to another",)
+    @commands.command(
+        brief="Moves a post from one channel to another",
+        aliases=["copy"],
+        help="Use as a reply to the target message",
+    )
     @commands.has_any_role("Moderator", "Guides of the Void")
-    async def move(self, ctx, msg_id, to_channel, from_channel=None):
+    async def move(self, ctx, to_channel):
 
         cmd = re.split(" ", ctx.message.content)[0][1:]
 
-        await ctx.message.delete()
+        # await ctx.message.delete()
 
-        if not from_channel:
-            from_channel = ctx.channel
-        else:
-            from_channel = get_channel(ctx.guild, from_channel)
+        if not ctx.message.reference:
+            raise commands.errors.UserInputError(
+                "Use this command as a reply to the target message"
+            )
+
+        if not to_channel:
+            raise commands.errors.BadArgument(
+                "Please enter a valid channel name or mention"
+            )
 
         to_channel = get_channel(ctx.guild, to_channel)
 
-        if not (to_channel and from_channel):
-            raise commands.errors.BadArgument(
-                "Please enter valid channel names or mentions"
-            )
-        try:
-            msg = await from_channel.fetch_message(int(msg_id))
-        except Exception:
-            raise commands.errors.BadArgument("No message found with that ID")
+        msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
 
         embed = message_embed(msg, cmd, ctx.author)
 
         await to_channel.send(embed=embed)
+
+        await ctx.message.delete()
+
         if cmd == "move":
             await msg.delete()
-
-    @commands.command(brief="Copies a post from one channel to another")
-    @commands.has_any_role("Moderator", "Guides of the Void")
-    async def copy(self, ctx, msg_id, to_channel, from_channel=None):
-        await ctx.invoke(
-            self.bot.get_command("move"),
-            msg_id=msg_id,
-            to_channel=to_channel,
-            from_channel=from_channel,
-        )
 
     @commands.command(brief="Reposts the last 'user left' message to a channel")
     @commands.has_any_role("Moderator", "Guides of the Void")
