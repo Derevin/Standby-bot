@@ -62,6 +62,7 @@ memes = {
     "Shame (Hot Fuzz)": "https://tenor.com/view/shame-pity-reload-shotgun-gif-5160379",
     "Same": "https://cdn.discordapp.com/attachments/744224801429782679/838169939784499230/r45ahkjo0ih41.png",
     "Steve Buscemi": "https://cdn.discordapp.com/attachments/744224801429782679/838170137659834378/steve.png",
+    "False Shepherd Mark Edited": "https://cdn.discordapp.com/attachments/744224801429782679/845726754408497182/unknown.png",
 }
 
 meme_names = "\n".join(sorted(list(memes.keys()), key=str.casefold))
