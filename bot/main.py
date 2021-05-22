@@ -15,6 +15,9 @@ bot = commands.Bot(command_prefix=PREFIX, intents=intents)
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=discord.Game(name="Have a nice day!"))
+    channel = bot.get_channel(ERROR_CHANNEL_ID)
+    if channel:
+        await channel.send("Reboot complete.")
 
 
 for filename in os.listdir("bot/cogs"):
