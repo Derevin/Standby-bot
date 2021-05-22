@@ -1,5 +1,6 @@
 import os
 import discord
+import asyncio
 from discord.ext import commands
 from settings import *
 
@@ -15,9 +16,11 @@ bot = commands.Bot(command_prefix=PREFIX, intents=intents)
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=discord.Game(name="Have a nice day!"))
-    channel = bot.get_channel(ERROR_CHANNEL_ID)
+    channel = bot.get_channel(743100162104361010)
     if channel:
-        await channel.send("Reboot complete.")
+        msg = await channel.send("Reboot complete.")
+        await asyncio.sleep(60)
+        await msg.delete()
 
 
 for filename in os.listdir("bot/cogs"):
