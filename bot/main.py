@@ -19,7 +19,7 @@ async def on_ready():
     channel = bot.get_channel(ERROR_CHANNEL_ID)
     if channel:
         msg = await channel.send("Reboot complete.")
-        await asyncio.sleep(60)
+        await asyncio.sleep(180)
         await msg.delete()
 
 
