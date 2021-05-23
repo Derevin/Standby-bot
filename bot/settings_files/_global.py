@@ -3,6 +3,7 @@ import settings_files.rules_contents
 
 PREFIX = "+"
 
+NO_SSL = os.getenv("NO_SSL", False)
 NODB = os.getenv("NODB", False)
 BOT_TOKEN = str(os.getenv("BOT_TOKEN", False))
 BOT_ID = int(os.getenv("BOT_ID", False))
