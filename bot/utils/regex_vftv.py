@@ -29,12 +29,14 @@ async def wave_resp(message: discord.Message):
     if message.author.id == FEL_ID:
         reactions = [
             ":BlobWave:382606234148143115",
-            "🇭",
-            "🇮",
-            ":BlobGuns:388081474760605706",
             "🇫",
             "🇪",
             "🇱",
+            "❤️",
+            "🇨",
+            "🇭",
+            "🇦",
+            "🇳",
             ":BlobAww:380182813300752395",
         ]
         for x in reactions:
