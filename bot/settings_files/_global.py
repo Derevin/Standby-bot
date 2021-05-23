@@ -10,6 +10,9 @@ DATABASE_URL = str(os.getenv("DATABASE_URL", False))
 GUILD_ID = int(os.getenv("GUILD_ID", False))
 STARBOARD_ID = int(os.getenv("STARBOARD_ID", False))
 
+DB_TMER_REMINDER = 1
+DB_TMER_GIVEAWAY = 2
+
 
 ERROR_CHANNEL_NAME = "maintenance-channel"
 ERROR_CHANNEL_ID = 376031149371162635
