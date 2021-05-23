@@ -41,14 +41,13 @@ async def wave_resp(message: discord.Message):
         ]
         for x in reactions:
             await message.add_reaction(x)
-    elif random.randint(0, 99) < 45:
+    else:
         await message.add_reaction(":BlobWave:382606234148143115")
 
 
 regex_vftv_commands.append(
     (
-        """^(<:BlobWave:382606234148143115> ?(<:BlobCoffee:456004868990173198>)?|
-        <:BlobCoffee:456004868990173198> ?(<:BlobWave:382606234148143115>)?)$""",
+        """^(<:BlobWave:382606234148143115>|<:BlobCoffee:456004868990173198>)""",
         wave_resp,
         re.M | re.I,
     )
