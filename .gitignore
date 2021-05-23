@@ -133,3 +133,5 @@ dmypy.json
 /bot/nodemon.json
 nodemon.json
 stbot.bat
+
+.vscode

@@ -38,6 +38,23 @@ ALTER TABLE "starboard" ADD CONSTRAINT "starboard_fk0" FOREIGN KEY ("usr_id") RE
 """
 
 
+CREATE_TMERS = """
+CREATE TABLE IF NOT EXISTS "tmers" (
+    "tmer_id" SERIAL PRIMARY KEY,
+    "usr_id" BIGINT NOT NULL,
+    "expires" TIMESTAMP NOT NULL,
+    "ttype" BIGINT NOT NULL,
+    "params" TEXT
+) WITH (
+  OIDS=FALSE
+);
+"""
+
+ALTER_TMERS = """
+ALTER TABLE "tmers" ADD CONSTRAINT "usr_fk0" FOREIGN KEY ("usr_id") REFERENCES "usr"("usr_id");
+"""
+
+
 async def create_tables(con):
     try:
         await con.execute(CREATE_USER)
@@ -45,6 +62,14 @@ async def create_tables(con):
         await con.execute(CREATE_GUILD)
         await con.execute(ALTER_USER)
         await con.execute(ALTER_STARBOARD)
+        print("successfully ran db script batch 1")
     except Exception as e:
-        print("expected create exception:", e)
+        print("expected create exception 1:", e)
+
+    try:
+        await con.execute(CREATE_TMERS)
+        await con.execute(ALTER_TMERS)
+        print("successfully ran db script batch 2")
+    except Exception as e:
+        print("expected create exception 2:", e)
 
