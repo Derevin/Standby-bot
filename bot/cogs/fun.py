@@ -63,6 +63,8 @@ memes = {
     "Same": "https://cdn.discordapp.com/attachments/744224801429782679/838169939784499230/r45ahkjo0ih41.png",
     "Steve Buscemi": "https://cdn.discordapp.com/attachments/744224801429782679/838170137659834378/steve.png",
     "False Shepherd Mark Edited": "https://cdn.discordapp.com/attachments/744224801429782679/845726754408497182/unknown.png",
+    "Don't give me hope": "https://cdn.discordapp.com/attachments/744224801429782679/846529020266151977/5aszwj.png",
+    "Perfection": "https://cdn.discordapp.com/attachments/744224801429782679/846529089723957258/704.png",
 }
 
 meme_names = "\n".join(sorted(list(memes.keys()), key=str.casefold))
