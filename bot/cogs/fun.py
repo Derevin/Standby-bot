@@ -20,6 +20,27 @@ TOUCAN_PRAISE = """
 ░░░░░arrived░░░░░░░░░░░░█▀██████░░
 """
 
+YEEE = """
+░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░░░░░░░░░░░░░▄███▄▄▄░░░░░░░
+░░░░░░░░░▄▄▄██▀▀▀▀███▄░░░░░
+░░░░░░░▄▀▀░░░░░░░░░░░▀█░░░░
+░░░░▄▄▀░░░░░░░░░░░░░░░▀█░░░
+░░░█░░░░░▀▄░░▄▀░░░░░░░░█░░░
+░░░▐██▄░░▀▄▀▀▄▀░░▄██▀░▐▌░░░
+░░░█▀█░▀░░░▀▀░░░▀░█▀░░▐▌░░░
+░░░█░░▀▐░░░░░░░░▌▀░░░░░█░░░
+░░░█░░░░░░░░░░░░░░░░░░░█░░░
+░░░░█░░▀▄░░░░▄▀░░░░░░░░█░░░
+░░░░█░░░░░░░░░░░▄▄░░░░█░░░░
+░░░░░█▀██▀▀▀▀██▀░░░░░░█░░░░
+░░░░░█░░▀████▀░░░░░░░█░░░░░
+░░░░░░█░░░░░░░░░░░░▄█░░░░░░
+░░░░░░░██░░░░░█▄▄▀▀░█░░░░░░
+░░░░░░░░▀▀█▀▀▀▀░░░░░░█░░░░░
+░░░░░░░░░█░░░░░░░░░░░░█░░░░
+"""
+
 
 memes = {
     "Invest": "https://cdn.discordapp.com/attachments/744224801429782679/799296186019741696/Invest_Button_Banner.png",
@@ -62,7 +83,9 @@ memes = {
     "Shame (Hot Fuzz)": "https://tenor.com/view/shame-pity-reload-shotgun-gif-5160379",
     "Same": "https://cdn.discordapp.com/attachments/744224801429782679/838169939784499230/r45ahkjo0ih41.png",
     "Steve Buscemi": "https://cdn.discordapp.com/attachments/744224801429782679/838170137659834378/steve.png",
-    "False Shepherd Mark Edited": "https://cdn.discordapp.com/attachments/744224801429782679/845726754408497182/unknown.png",
+    "False Shepherd Mark Edited": (
+        "https://cdn.discordapp.com/attachments/744224801429782679/845726754408497182/unknown.png"
+    ),
     "Don't give me hope": "https://cdn.discordapp.com/attachments/744224801429782679/846529020266151977/5aszwj.png",
     "Perfection": "https://cdn.discordapp.com/attachments/744224801429782679/846529089723957258/704.png",
 }
@@ -78,13 +101,34 @@ class Fun(commands.Cog):
         self.bot = bot
 
     @commands.command(brief="Praises toucan")
-    async def praise(self, ctx):
+    async def praiseraw(self, ctx):
         await ctx.channel.send(TOUCAN_PRAISE)
 
-    @commands.command(brief="Praise screenshot")
-    async def praisepic(self, ctx):
+    @commands.command(brief="Praise screenshot", aliases=["praisepic"])
+    async def praise(self, ctx):
         await ctx.channel.send(
             "https://cdn.discordapp.com/attachments/743071403447943269/756976939591270431/unknown.png"
+        )
+
+    @commands.command(brief="YEE")
+    async def yeeraw(self, ctx):
+        await ctx.channel.send(YEEE)
+
+    @commands.command(
+        brief="YEE screenshot",
+        aliases=[
+            "yeee",
+            "yeeee",
+            "yeeeee",
+            "yeeeeee",
+            "yeeeeeee",
+            "yeeeeeeee",
+            "yeepic",
+        ],
+    )
+    async def yee(self, ctx):
+        await ctx.channel.send(
+            "https://cdn.discordapp.com/attachments/738109782300557395/847974632551481384/unknown.png"
         )
 
     @commands.command(aliases=["horni"], brief="Posts a random 'horny' warning")
