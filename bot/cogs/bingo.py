@@ -70,6 +70,61 @@ class BingoGame:
         self.messages = {}
         self.winners = []
         self.lock = asyncio.Lock()
+        self.autodraw = False
+        self.host = None
+        self.channel = None
+
+    def setup(self, host, channel):
+        self.status = "Lobby open"
+        self.host = host
+        self.channel = channel
+
+    async def draw(self):
+        if len(self.draws) == 0:
+            await self.channel.send(
+                "All numbers have been drawn - please check your cards."
+            )
+            self.autodraw = False
+        else:
+            num = self.draws.pop()
+            await self.channel.send(f"The number {num} has been drawn.")
+            for player in self.players:
+                result = self.cards[player].mark(num)
+                if result == "Hit":
+                    await player.send(f"{num} is a hit! Your card has been updated.")
+                    await self.messages[player].edit(content=self.cards[player])
+
+    async def start(self):
+        for player in self.players:
+            self.cards[player] = BingoCard()
+            await player.send("Welcome to Void Bingo! Here is your card.")
+            msg = await player.send(self.cards[player])
+            self.messages[player] = msg
+        self.status = "Active"
+        self.draws = list(range(1, 76))
+        random.shuffle(game.draws)
+
+    async def bingo(self, winner):
+        await self.lock.acquire()
+        if len(self.winners) == 0:
+            self.winners.append(winner.mention)
+            self.lock.release()
+            await self.channel.send(
+                "Check your cards one last time - the game will finish in 30 seconds."
+            )
+            await asyncio.sleep(15)
+            await self.channel.send("15 seconds remaining.")
+            await asyncio.sleep(15)
+            await self.channel.send("The game has finished!")
+            if len(self.winners) == 1:
+                await self.channel.send(f"The winner is {self.winners[0]}.")
+            else:
+                await self.channel.send(
+                    f"The winners are {', '.join(self.winners[:-1])} and {self.winners[-1]}"
+                )
+        else:
+            self.winners.append(winner.mention)
+            self.lock.release()
 
 
 game = BingoGame()
@@ -92,9 +147,7 @@ class Bingo(
         elif game.status == "Active":
             await ctx.send("A game is already running, please wait for the next one.")
         else:
-            game.status = "Lobby open"
-            game.host = ctx.author
-            game.channel = ctx.channel
+            game.setup(host=ctx.author, channel=ctx.channel)
             await ctx.send("Lobby created, type `+bjoin` to join.")
 
     @commands.command(brief="Joins an open Void Bingo lobby.")
@@ -108,10 +161,13 @@ class Bingo(
             await ctx.send(
                 f"Please head over to {game.channel.mention} to join the current lobby."
             )
+        elif ctx.author in game.players:
+            await ctx.send("You're already in this lobby.")
         else:
             game.players.append(ctx.author)
             await ctx.send(
-                f"Welcome {ctx.author.display_name}. Players currently in lobby: {len(game.players)}."
+                f"""Welcome {ctx.author.display_name}. Players currently in lobby: {len(game.players)}. """
+                """The game host can type `+bstart` to start the game."""
             )
 
     @commands.command(brief="Begins a game of Void Bingo with the current lobby.")
@@ -134,14 +190,7 @@ class Bingo(
         elif len(game.players) == 0:
             await ctx.send("The lobby is empty, type `+bjoin` to join.")
         else:
-            for player in game.players:
-                game.cards[player] = BingoCard()
-                await player.send("Welcome to Void Bingo! Here is your card.")
-                msg = await player.send(game.cards[player])
-                game.messages[player] = msg
-            game.status = "Active"
-            game.draws = list(range(1, 76))
-            random.shuffle(game.draws)
+            await game.start()
             await ctx.send("Void Bingo has begun! Type `+bdraw` to draw a number.")
 
     @commands.command(brief="Aborts the current game of Void Bingo.")
@@ -188,20 +237,40 @@ class Bingo(
                 "All numbers have already been drawn - please check your cards."
             )
         else:
-            num = game.draws.pop()
-            await ctx.send(f"The number is {num}.")
-            for player in game.players:
-                result = game.cards[player].mark(num)
-                if result == "Hit":
-                    await player.send(f"{num} is a hit! Your card has been updated.")
-                    await game.messages[player].edit(content=game.cards[player])
+            await game.draw()
 
     @commands.command(brief="Automatically draws numbers.")
     async def bautodraw(self, ctx):
         global game
-        while game.status == "Active" and len(game.winners) == 0:
-            await ctx.invoke(self.bot.get_command("bdraw"),)
-            await asyncio.sleep(15)
+        if game.status != "Active":
+            await ctx.send("No active game found.")
+        elif (
+            ctx.author != game.host
+            and get_role(ctx.guild, "Moderator") not in ctx.author.roles
+            and get_role(ctx.guild, "Guides of the Void") not in ctx.author.roles
+        ):
+            await ctx.send("Only the person who started the game can draw numbers.")
+        elif game.channel != ctx.channel:
+            await ctx.send(
+                f"Numbers may only be drawn in the current game's channel, please head over to {game.channel.mention}."
+            )
+        elif len(game.winners) > 0:
+            await ctx.send(
+                "One or more players have Bingo, no more numbers may be drawn."
+            )
+        elif len(game.draws) == 0:
+            await ctx.send(
+                "All numbers have already been drawn - please check your cards."
+            )
+        else:
+            game.autodraw = not game.autodraw
+            if game.autodraw:
+                await ctx.send("Automatic drawing started.")
+            else:
+                await ctx.send("Automatic drawing stopped.")
+            while game.autodraw:
+                await game.draw()
+                await asyncio.sleep(15)
 
     @commands.command(brief="Declare Void Bingo!")
     async def bingo(self, ctx):
@@ -219,26 +288,8 @@ class Bingo(
             )
         else:
             await ctx.send("VOID BINGO!", reference=ctx.message)
-            await game.lock.acquire()
-            game.winners.append(ctx.author.mention)
-            if len(game.winners) > 1:
-                game.lock.release()
-            else:
-                game.lock.release()
-                await ctx.send(
-                    "Check your cards one last time - the game will finish in 30 seconds."
-                )
-                await asyncio.sleep(15)
-                await ctx.send("15 seconds remaining.")
-                await asyncio.sleep(15)
-                await ctx.send("The game has finished!")
-                if len(game.winners) == 1:
-                    await ctx.send(f"The winner is {game.winners[0]}.")
-                else:
-                    await ctx.send(
-                        f"The winners are {', '.join(game.winners[:-1])} and {game.winners[-1]}"
-                    )
-                game = BingoGame()
+            await game.bingo(winner=ctx.author)
+            game = BingoGame()
 
 
 def setup(bot):
