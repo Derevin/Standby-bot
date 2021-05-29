@@ -75,11 +75,16 @@ class BingoGame:
 game = BingoGame()
 
 
-class Bingo(commands.Cog):
+class Bingo(
+    commands.Cog,
+    name="Void Bingo",
+    description="""Embrace your inner boomer and play some Void Bingo - win by completing """
+    """a row, column or diagonal (middle square is free).""",
+):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(brief="Creates a Void Bingo lobby.")
     async def bcreate(self, ctx):
         global game
         if game.status == "Lobby open":
@@ -92,7 +97,7 @@ class Bingo(commands.Cog):
             game.channel = ctx.channel
             await ctx.send("Lobby created, type `+bjoin` to join.")
 
-    @commands.command()
+    @commands.command(brief="Joins an open Void Bingo lobby.")
     async def bjoin(self, ctx):
         global game
         if game.status == "Inactive":
@@ -109,7 +114,7 @@ class Bingo(commands.Cog):
                 f"Welcome {ctx.author.display_name}. Players currently in lobby: {len(game.players)}."
             )
 
-    @commands.command()
+    @commands.command(brief="Begins a game of Void Bingo with the current lobby.")
     async def bstart(self, ctx):
         global game
         if game.status == "Inactive":
@@ -139,7 +144,7 @@ class Bingo(commands.Cog):
             random.shuffle(game.draws)
             await ctx.send("Void Bingo has begun! Type `+bdraw` to draw a number.")
 
-    @commands.command()
+    @commands.command(brief="Aborts the current game of Void Bingo.")
     async def bstop(self, ctx):
         global game
         if game.status != "Active":
@@ -152,13 +157,13 @@ class Bingo(commands.Cog):
             await ctx.send("Only the person who started the game can stop it.")
         elif len(game.winners) > 0:
             await ctx.send(
-                "One or more players have Bingo - the game will automatically finish soon."
+                "One or more players have Void Bingo - the game will automatically finish soon."
             )
         else:
             game = BingoGame()
             await ctx.send("Game stopped. Type `+bcreate` to start a new one")
 
-    @commands.command()
+    @commands.command(brief="Draws a number.")
     async def bdraw(self, ctx):
         global game
 
@@ -191,19 +196,22 @@ class Bingo(commands.Cog):
                     await player.send(f"{num} is a hit! Your card has been updated.")
                     await game.messages[player].edit(content=game.cards[player])
 
-    @commands.command()
+    @commands.command(brief="Declare Void Bingo!")
     async def bingo(self, ctx):
         global game
         if game.status != "Active" or ctx.author not in game.players:
             await ctx.send("You are not currently in a game.")
         elif not game.cards[ctx.author].check():
             await ctx.send(
-                "You don't have bingo - check your card again.", reference=ctx.message,
+                "You don't have Void Bingo - check your card again.",
+                reference=ctx.message,
             )
         elif ctx.author.mention in game.winners:
-            await ctx.send("You have already declared Bingo.", reference=ctx.message)
+            await ctx.send(
+                "You have already declared Void Bingo.", reference=ctx.message
+            )
         else:
-            await ctx.send("BINGO!", reference=ctx.message)
+            await ctx.send("VOID BINGO!", reference=ctx.message)
             await game.lock.acquire()
             game.winners.append(ctx.author.mention)
             if len(game.winners) > 1:
