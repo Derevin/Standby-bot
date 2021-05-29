@@ -196,6 +196,13 @@ class Bingo(
                     await player.send(f"{num} is a hit! Your card has been updated.")
                     await game.messages[player].edit(content=game.cards[player])
 
+    @commands.command(brief="Automatically draws numbers.")
+    async def bautodraw(self, ctx):
+        global game
+        while game.status == "Active" and len(game.winners) == 0:
+            await ctx.invoke(self.bot.get_command("bdraw"),)
+            await asyncio.sleep(15)
+
     @commands.command(brief="Declare Void Bingo!")
     async def bingo(self, ctx):
         global game
