@@ -20,7 +20,10 @@ async def on_ready():
     if channel:
         msg = await channel.send("Reboot complete.")
         await asyncio.sleep(180)
-        await msg.delete()
+        try:
+            await msg.delete()
+        except Exception:
+            pass
 
 
 for filename in os.listdir("bot/cogs"):
