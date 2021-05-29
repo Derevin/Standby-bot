@@ -134,6 +134,8 @@ class Bingo(commands.Cog):
                 msg = await player.send(game.cards[player])
                 game.messages[player] = msg
             game.status = "Active"
+            game.draws = list(range(1, 76))
+            random.shuffle(game.draws)
             await ctx.send("Void Bingo has begun! Type `+bdraw` to draw a number.")
 
     @commands.command()
@@ -162,24 +164,23 @@ class Bingo(commands.Cog):
             and get_role(ctx.guild, "Moderator") not in ctx.author.roles
             and get_role(ctx.guild, "Guides of the Void") not in ctx.author.roles
         ):
-            await ctx.send("You must be playing the game to draw numbers")
+            await ctx.send("You must be playing the game to draw numbers.")
         elif game.channel != ctx.channel:
             await ctx.send(
                 f"Numbers may only be drawn in the current game's channel, please head over to {game.channel.mention}."
             )
         else:
             winners = []
-            num = random.randint(1, 75)
+            num = game.draws.pop()
             await ctx.send(f"The number is {num}.")
             for player in game.players:
                 result = game.cards[player].mark(num)
-                if result == "Hit":
+                if result != "Miss":
                     await player.send(f"{num} is a hit! Your card has been updated.")
                     await game.messages[player].edit(content=game.cards[player])
-                elif result == "Bingo":
+                if result == "Bingo":
                     winners.append(player.mention)
                     await player.send("BINGO!")
-                    await game.messages[player].edit(content=game.cards[player])
 
             if len(winners) > 0:
                 await ctx.send("BINGO!")
