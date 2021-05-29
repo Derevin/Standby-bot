@@ -137,7 +137,7 @@ class Bingo(commands.Cog):
                 msg = await player.send(game.cards[player])
                 game.messages[player] = msg
             game.status = "Active"
-            x = await ctx.send("Void Bingo has begun! Type `+bdraw` to draw a number.")
+            await ctx.send("Void Bingo has begun! Type `+bdraw` to draw a number.")
 
     @commands.command()
     async def bstop(self, ctx):
@@ -155,7 +155,7 @@ class Bingo(commands.Cog):
             await ctx.send("Game stopped. Type `+bcreate` to start a new one")
 
     @commands.command()
-    async def bdraw(self, ctx, num):
+    async def bdraw(self, ctx):
         global game
 
         if game.status != "Active":
@@ -172,10 +172,7 @@ class Bingo(commands.Cog):
             )
         else:
             winners = []
-            if num == "x":
-                num = random.randint(1, 75)
-            else:
-                num = int(num)
+            num = random.randint(1, 75)
             await ctx.send(f"The number is {num}.")
             for player in game.players:
                 result = game.cards[player].mark(num)
