@@ -1,3 +1,4 @@
+import asyncio
 from discord.ext import commands
 import random
 from utils.util_functions import *
@@ -33,8 +34,6 @@ class BingoCard:
             self.grid[col][self.grid[col].index(number)] = " X"
         else:
             res = "Miss"
-        if self.check():
-            res = "Bingo"
         return res
 
     def check(self):
@@ -69,6 +68,8 @@ class BingoGame:
         self.players = []
         self.cards = {}
         self.messages = {}
+        self.winners = []
+        self.lock = asyncio.Lock()
 
 
 game = BingoGame()
@@ -149,6 +150,10 @@ class Bingo(commands.Cog):
             and get_role(ctx.guild, "Guides of the Void") not in ctx.author.roles
         ):
             await ctx.send("Only the person who started the game can stop it.")
+        elif len(game.winners) > 0:
+            await ctx.send(
+                "One or more players have Bingo - the game will automatically finish soon."
+            )
         else:
             game = BingoGame()
             await ctx.send("Game stopped. Type `+bcreate` to start a new one")
@@ -160,35 +165,63 @@ class Bingo(commands.Cog):
         if game.status != "Active":
             await ctx.send("No active game found.")
         elif (
-            ctx.author not in game.players
+            ctx.author != game.host
             and get_role(ctx.guild, "Moderator") not in ctx.author.roles
             and get_role(ctx.guild, "Guides of the Void") not in ctx.author.roles
         ):
-            await ctx.send("You must be playing the game to draw numbers.")
+            await ctx.send("Only the person who started the game can draw numbers.")
         elif game.channel != ctx.channel:
             await ctx.send(
                 f"Numbers may only be drawn in the current game's channel, please head over to {game.channel.mention}."
             )
+        elif len(game.winners) > 0:
+            await ctx.send(
+                "One or more players have Bingo, no more numbers may be drawn."
+            )
+        elif len(game.draws) == 0:
+            await ctx.send(
+                "All numbers have already been drawn - please check your cards."
+            )
         else:
-            winners = []
             num = game.draws.pop()
             await ctx.send(f"The number is {num}.")
             for player in game.players:
                 result = game.cards[player].mark(num)
-                if result != "Miss":
+                if result == "Hit":
                     await player.send(f"{num} is a hit! Your card has been updated.")
                     await game.messages[player].edit(content=game.cards[player])
-                if result == "Bingo":
-                    winners.append(player.mention)
-                    await player.send("BINGO!")
 
-            if len(winners) > 0:
-                await ctx.send("BINGO!")
-                if len(winners) == 1:
-                    await ctx.send(f"The winner is {winners[0]}.")
+    @commands.command()
+    async def bingo(self, ctx):
+        global game
+        if game.status != "Active" or ctx.author not in game.players:
+            await ctx.send("You are not currently in a game.")
+        elif not game.cards[ctx.author].check():
+            await ctx.send(
+                "You don't have bingo - check your card again.", reference=ctx.message,
+            )
+        elif ctx.author.mention in game.winners:
+            await ctx.send("You have already declared Bingo.", reference=ctx.message)
+        else:
+            await ctx.send("BINGO!", reference=ctx.message)
+            await game.lock.acquire()
+            game.winners.append(ctx.author.mention)
+            if len(game.winners) > 1:
+                game.lock.release()
+            else:
+                game.lock.release()
+                await ctx.send(
+                    "Check your cards one last time - the game will finish in 30 seconds."
+                )
+                await asyncio.sleep(15)
+                await ctx.send("15 seconds remaining.")
+                await asyncio.sleep(15)
+                await ctx.send("The game has finished!")
+                if len(game.winners) == 1:
+                    await ctx.send(f"The winner is {game.winners[0]}.")
                 else:
                     await ctx.send(
-                        f"The winners are {', '.join(winners[:-1])} and {winners[-1]}"
+                        f"The winners are {', '.join(game.winners[:-1])} and {game.winners[-1]}"
                     )
                 game = BingoGame()
 
