@@ -239,7 +239,7 @@ class Bingo(
         else:
             await game.draw()
 
-    @commands.command(brief="Automatically draws numbers.")
+    @commands.command(brief="Toggles automatic drawing on or off.")
     async def bautodraw(self, ctx):
         global game
         if game.status != "Active":
