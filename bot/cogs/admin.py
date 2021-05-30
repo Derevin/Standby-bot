@@ -4,6 +4,9 @@ import asyncio
 import random
 import re
 import datetime
+from PIL import Image, ImageFilter
+import requests
+import io
 from settings import *
 from utils.util_functions import *
 
@@ -236,6 +239,39 @@ class Admin(commands.Cog):
                 for prisoner in ctx.message.mentions:
                     await prisoner.remove_roles(horny)
                     await prisoner.remove_roles(muted)
+
+    @commands.command(brief="Voidifies the mentioned user's avatar.")
+    async def voidify(self, ctx, target):
+
+        if ctx.author.id != JORM_ID:
+            await ctx.send("Jorm alone controls the void. Access denied")
+            return
+
+        target = ctx.message.mentions[0]
+        avatar_url = target.avatar_url
+        avatar = Image.open(requests.get(avatar_url, stream=True).raw)
+        avatar = avatar.convert("RGBA")
+        border = Image.open(requests.get(GINNY_TRANSPARENT_URL, stream=True).raw)
+        border = border.resize(avatar.size, Image.ANTIALIAS)
+        avatar.paste(border, (0, 0), border)
+
+        newImage = []
+        border_white = Image.open(requests.get(GINNY_WHITE_URL, stream=True).raw)
+        border_white = border_white.resize(avatar.size, Image.ANTIALIAS)
+        white_data = border_white.getdata()
+        avatar_data = avatar.getdata()
+        for i in range(len(white_data)):
+            if white_data[i] == (255, 255, 255, 255):
+                newImage.append((0, 0, 0, 0))
+            else:
+                newImage.append(avatar_data[i])
+        avatar.putdata(newImage)
+
+        obj = io.BytesIO()
+        avatar.save(obj, "png")
+        obj.seek(0)
+
+        await ctx.send(file=discord.File(obj, filename="pic.png"))
 
 
 def message_embed(msg, cmd, trigger_author) -> discord.Embed:

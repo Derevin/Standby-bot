@@ -26,3 +26,4 @@ gekko==0.2.8
 requests==2.24.0
 python-Levenshtein-wheels==0.13.1
 fuzzywuzzy==0.18.0
+pillow==8.2.0

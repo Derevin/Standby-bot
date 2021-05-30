@@ -10,6 +10,9 @@ BOT_ID = int(os.getenv("BOT_ID", False))
 DATABASE_URL = str(os.getenv("DATABASE_URL", False))
 GUILD_ID = int(os.getenv("GUILD_ID", False))
 STARBOARD_ID = int(os.getenv("STARBOARD_ID", False))
+GINNY_TRANSPARENT_URL = str(os.getenv("GINNY_TRANSPARENT_URL", False))
+GINNY_WHITE_URL = str(os.getenv("GINNY_WHITE_URL", False))
+
 
 DB_TMER_REMINDER = 1
 DB_TMER_GIVEAWAY = 2
