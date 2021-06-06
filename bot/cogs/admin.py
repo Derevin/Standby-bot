@@ -244,7 +244,7 @@ class Admin(commands.Cog):
     async def voidify(self, ctx, target):
 
         if ctx.author.id != JORM_ID:
-            await ctx.send("Jorm alone controls the void. Access denied")
+            await ctx.send("Jorm alone controls the void. Access denied.")
             return
 
         target = ctx.message.mentions[0]
