@@ -89,6 +89,7 @@ memes = {
     "Don't give me hope": "https://cdn.discordapp.com/attachments/744224801429782679/846529020266151977/5aszwj.png",
     "Perfection": "https://cdn.discordapp.com/attachments/744224801429782679/846529089723957258/704.png",
     "Mod abuse": "https://cdn.discordapp.com/attachments/744224801429782679/851077716274053120/unknown.png",
+    "Ironic": "https://cdn.discordapp.com/attachments/744224801429782679/851456678759104552/q9khzibd1x911.png",
 }
 
 meme_names = "\n".join(sorted(list(memes.keys()), key=str.casefold))
