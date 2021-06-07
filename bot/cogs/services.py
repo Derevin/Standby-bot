@@ -7,6 +7,8 @@ import re
 import aiohttp
 import random
 import datetime
+from transliterate import translit
+from transliterate.base import TranslitLanguagePack, registry
 
 
 THANKS_LDR_HEADER = "Voids leaderboard"
@@ -123,6 +125,45 @@ class Services(commands.Cog):
             THANKS_LDR_HEADER,
         )
         await ctx.channel.send(embed=embed)
+
+    @commands.command(brief="Converts your nickname to cyrillic")
+    async def cyrillify(self, ctx):
+        class ExampleLanguagePack(TranslitLanguagePack):
+            language_code = "custom"
+            language_name = "Custom"
+            mapping = (
+                "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwYyZz",
+                "АаБбКкДдЕеФфГгХхИиЙйКкЛлМмНнОоПпКкРрСсТтУуВвУуЙйЗз",
+            )
+            pre_processor_mapping = {
+                "scht": "щ",
+                "sht": "щ",
+                "sh": "ш",
+                "tsch": "ч",
+                "tch": "ч",
+                "sch": "ш",
+                "zh": "ж",
+                "tz": "ц",
+                "ch": "ч",
+                "yu": "ю",
+                "ya": "я",
+                "x": "кс",
+                "ck": "к",
+                "ph": "ф",
+            }
+
+        registry.register(ExampleLanguagePack)
+
+        if ctx.message.mentions:
+            if get_role(ctx.guild, "Moderator") not in ctx.author.roles:
+                await ctx.send("You are not allowed to cyrillify other people.")
+                return
+            else:
+                target = ctx.message.mentions[0]
+        else:
+            target = ctx.author
+
+        await target.edit(nick=translit(target.nick, "custom"))
 
 
 async def build_leaderboard_embed(
