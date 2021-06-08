@@ -141,7 +141,7 @@ class Bingo(
 
     @commands.command(brief="Creates a Void Bingo lobby.")
     async def bcreate(self, ctx):
-        global game
+
         if game.status == "Lobby open":
             await ctx.send("A lobby is already open, type `+bjoin` to join.")
         elif game.status == "Active":
@@ -152,7 +152,7 @@ class Bingo(
 
     @commands.command(brief="Joins an open Void Bingo lobby.")
     async def bjoin(self, ctx):
-        global game
+
         if game.status == "Inactive":
             await ctx.send("No open lobby found - type `+bcreate` to create one.")
         elif game.status == "Active":
@@ -172,7 +172,7 @@ class Bingo(
 
     @commands.command(brief="Begins a game of Void Bingo with the current lobby.")
     async def bstart(self, ctx):
-        global game
+
         if game.status == "Inactive":
             await ctx.send("No open lobby found - type `+bcreate` to create one.")
         elif game.status == "Active":
@@ -196,6 +196,7 @@ class Bingo(
     @commands.command(brief="Aborts the current game of Void Bingo.")
     async def bstop(self, ctx):
         global game
+
         if game.status != "Active":
             await ctx.send("No active game found.")
         elif (
@@ -214,7 +215,6 @@ class Bingo(
 
     @commands.command(brief="Draws a number.")
     async def bdraw(self, ctx):
-        global game
 
         if game.status != "Active":
             await ctx.send("No active game found.")
@@ -241,7 +241,7 @@ class Bingo(
 
     @commands.command(brief="Toggles automatic drawing on or off.")
     async def bautodraw(self, ctx):
-        global game
+
         if game.status != "Active":
             await ctx.send("No active game found.")
         elif (
@@ -275,6 +275,7 @@ class Bingo(
     @commands.command(brief="Declare Void Bingo!")
     async def bingo(self, ctx):
         global game
+
         if game.status != "Active" or ctx.author not in game.players:
             await ctx.send("You are not currently in a game.")
         elif not game.cards[ctx.author].check():
