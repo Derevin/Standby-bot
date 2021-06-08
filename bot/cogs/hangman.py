@@ -150,8 +150,8 @@ class Hangman(commands.Cog, name="Void Hangman"):
             )
         elif game.status == "Choosing word":
             await ctx.send(f"{game.host.mention} is choosing the word - please wait.")
-        # elif game.host == ctx.author:
-        #     await ctx.send("Hey, no cheating.")
+        elif game.host == ctx.author:
+            await ctx.send("Hey, no cheating.")
         else:
 
             guess = guess.upper()
