@@ -126,8 +126,8 @@ class Services(commands.Cog):
         )
         await ctx.channel.send(embed=embed)
 
-    @commands.command(brief="Converts your nickname to cyrillic")
-    async def cyrillify(self, ctx):
+    @commands.command(brief="Converts text into cyrillic")
+    async def cyrillify(self, ctx, *text):
         class ExampleLanguagePack(TranslitLanguagePack):
             language_code = "custom"
             language_name = "Custom"
@@ -154,16 +154,12 @@ class Services(commands.Cog):
 
         registry.register(ExampleLanguagePack)
 
-        if ctx.message.mentions:
-            if get_role(ctx.guild, "Moderator") not in ctx.author.roles:
-                await ctx.send("You are not allowed to cyrillify other people.")
-                return
-            else:
-                target = ctx.message.mentions[0]
+        if not text:
+            text = "Lorem ipsum dolor sit amet."
         else:
-            target = ctx.author
+            text = " ".join(text)
 
-        await target.edit(nick=translit(target.nick, "custom"))
+        await ctx.send(translit(text, "custom"))
 
 
 async def build_leaderboard_embed(
