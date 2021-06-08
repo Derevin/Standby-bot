@@ -4,6 +4,8 @@ import random
 from utils.util_functions import *
 from settings import *
 from fuzzywuzzy import process
+from transliterate import translit
+from transliterate.base import TranslitLanguagePack, registry
 
 
 TOUCAN_PRAISE = """
@@ -210,6 +212,45 @@ class Fun(commands.Cog):
             )
         else:
             await ctx.send("Meme not found.")
+
+    @commands.command(brief="Converts text into cyrillic", aliases=["cyrillic", "crlf"])
+    async def cyrillify(self, ctx, *text):
+        class ExampleLanguagePack(TranslitLanguagePack):
+            language_code = "custom"
+            language_name = "Custom"
+            mapping = (
+                "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwYyZz",
+                "АаБбКкДдЕеФфГгХхИиЙйКкЛлМмНнОоПпКкРрСсТтУуВвУуЙйЗз",
+            )
+            pre_processor_mapping = {
+                "scht": "щ",
+                "sht": "щ",
+                "sh": "ш",
+                "tsch": "ч",
+                "tch": "ч",
+                "sch": "ш",
+                "zh": "ж",
+                "tz": "ц",
+                "ch": "ч",
+                "yu": "ю",
+                "ya": "я",
+                "x": "кс",
+                "ck": "к",
+                "ph": "ф",
+            }
+            chars = list(pre_processor_mapping.keys())
+            for lat in chars:
+                cyr = pre_processor_mapping[lat]
+                pre_processor_mapping[lat.capitalize()] = cyr.capitalize()
+
+        registry.register(ExampleLanguagePack)
+
+        if not text:
+            text = "Lorem ipsum dolor sit amet."
+        else:
+            text = " ".join(text)
+
+        await ctx.send(translit(text, "custom"))
 
 
 def setup(bot):

@@ -7,9 +7,6 @@ import re
 import aiohttp
 import random
 import datetime
-from transliterate import translit
-from transliterate.base import TranslitLanguagePack, registry
-
 
 THANKS_LDR_HEADER = "Voids leaderboard"
 THANKS_LDR_THANKS_HEADER = "Voids"
@@ -125,41 +122,6 @@ class Services(commands.Cog):
             THANKS_LDR_HEADER,
         )
         await ctx.channel.send(embed=embed)
-
-    @commands.command(brief="Converts text into cyrillic", aliases=["cyrillic", "crlf"])
-    async def cyrillify(self, ctx, *text):
-        class ExampleLanguagePack(TranslitLanguagePack):
-            language_code = "custom"
-            language_name = "Custom"
-            mapping = (
-                "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwYyZz",
-                "АаБбКкДдЕеФфГгХхИиЙйКкЛлМмНнОоПпКкРрСсТтУуВвУуЙйЗз",
-            )
-            pre_processor_mapping = {
-                "scht": "щ",
-                "sht": "щ",
-                "sh": "ш",
-                "tsch": "ч",
-                "tch": "ч",
-                "sch": "ш",
-                "zh": "ж",
-                "tz": "ц",
-                "ch": "ч",
-                "yu": "ю",
-                "ya": "я",
-                "x": "кс",
-                "ck": "к",
-                "ph": "ф",
-            }
-
-        registry.register(ExampleLanguagePack)
-
-        if not text:
-            text = "Lorem ipsum dolor sit amet."
-        else:
-            text = " ".join(text)
-
-        await ctx.send(translit(text, "custom"))
 
 
 async def build_leaderboard_embed(
