@@ -144,12 +144,12 @@ class Hangman(commands.Cog, name="Void Hangman"):
 
         if game.status == "Inactive":
             await ctx.send("No active game found.")
+        elif game.status == "Choosing word":
+            await ctx.send(f"{game.host.mention} is choosing the word - please wait.")
         elif game.channel != ctx.channel:
             await ctx.send(
                 f"You can only make guesses in the current game's channel, please head over to {game.channel.mention}."
             )
-        elif game.status == "Choosing word":
-            await ctx.send(f"{game.host.mention} is choosing the word - please wait.")
         elif game.host == ctx.author:
             await ctx.send("Hey, no cheating.")
         else:
