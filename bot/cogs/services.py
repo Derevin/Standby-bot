@@ -126,7 +126,7 @@ class Services(commands.Cog):
         )
         await ctx.channel.send(embed=embed)
 
-    @commands.command(brief="Converts text into cyrillic")
+    @commands.command(brief="Converts text into cyrillic", aliases=["cyrillic", "crlf"])
     async def cyrillify(self, ctx, *text):
         class ExampleLanguagePack(TranslitLanguagePack):
             language_code = "custom"
