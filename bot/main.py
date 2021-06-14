@@ -10,7 +10,7 @@ intents = discord.Intents.default()
 intents.members = True
 intents.presences = True
 
-bot = commands.Bot(command_prefix=PREFIX, intents=intents)
+bot = commands.Bot(command_prefix=PREFIX, intents=intents, case_insensitive=True)
 
 
 @bot.event
