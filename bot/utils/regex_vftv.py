@@ -167,6 +167,24 @@ async def offers_resp(message: discord.Message):
 
 regex_vftv_commands.append((".*", offers_resp, re.M | re.I))
 
+### #streams
+
+
+async def streams_resp(message: discord.Message):
+    if (
+        message.channel.name == "community-streams"
+        and "twitch.tv" not in message.content
+    ):
+        await message.delete()
+        await message.author.send(
+            f"Hi {message.author.mention}! We're keeping {message.channel.mention} reserved for stream posts - "
+            "please update your post to contain a twitch link and re-post it. "
+            "If you've received this message in error, please contact your favorite mod."
+        )
+
+
+regex_vftv_commands.append((".*", streams_resp, re.M | re.I))
+
 
 async def pp_resp(message: discord.Message):
     await message.channel.send(f"Just like <@{JORM_ID}>'s pp")
