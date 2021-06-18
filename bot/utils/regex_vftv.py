@@ -41,7 +41,7 @@ async def wave_resp(message: discord.Message):
         ]
         for x in reactions:
             await message.add_reaction(x)
-    else:
+    elif ":Whale" not in message.content:
         await message.add_reaction(":BlobWave:382606234148143115")
 
 
