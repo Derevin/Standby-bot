@@ -285,7 +285,7 @@ regex_uncategorized_commands.append(("tree fiddy", tree_fiddy_resp, re.M | re.I)
 async def cluttered_link_resp(message: discord.Message):
 
     link = re.search(
-        r"(https:\/\/\w+\.\w+\.\w+.+)\?(\w+=\w+&?)+", message.content
+        r"(https:\/\/\w+\.\w+\.\w+.+)\?(\w+=\D+&?)+", message.content
     ).group(1)
     whitelist = ["youtube", "spotify"]
 
@@ -305,7 +305,7 @@ async def cluttered_link_resp(message: discord.Message):
 
 
 regex_uncategorized_commands.append(
-    (r"https:\/\/\w+\.\w+\.\w+.+\?(\w+=\w+&?)+", cluttered_link_resp, re.M | re.I)
+    (r"https:\/\/\w+\.\w+\.\w+.+\?(\w+=\D+&?)+", cluttered_link_resp, re.M | re.I)
 )
 
 
