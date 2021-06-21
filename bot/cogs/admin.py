@@ -241,6 +241,7 @@ class Admin(commands.Cog):
                     await prisoner.remove_roles(muted)
 
     @commands.command(brief="Voidifies the mentioned user's avatar.")
+    @commands.has_any_role("Moderator", "Guides of the Void")
     async def voidify(self, ctx, target):
 
         if ctx.author.id != JORM_ID:
