@@ -287,7 +287,9 @@ async def cluttered_link_resp(message: discord.Message):
     link = re.search(
         r"(https:\/\/\w+\.\w+\.\w+.+)\?(\w+=\w+&?)+", message.content
     ).group(1)
-    if "youtube" in link:
+    whitelist = ["youtube", "spotify"]
+
+    if any(exception in link for exception in whitelist):
         return
 
     ree = get_emoji(message.channel.guild, "FEELSREEE")
