@@ -4,7 +4,7 @@ import random
 import aiohttp
 import asyncio
 from settings import *
-from settings_files.warframe_data import all_mods
+from settings_files.warframe_data import mod_list
 from utils.util_functions import *
 
 regex_uncategorized_commands = []
@@ -257,9 +257,8 @@ regex_uncategorized_commands.append(
 async def mod_resp(message: discord.Message):
     mod_names = re.findall(r"(?<=\[)[a-zA-Z ']+(?=\])", message.content)
     for mod_name in mod_names:
-        mod = all_mods[mod_name.title()]
-        if mod is not None and mod.image is not None:
-            await message.channel.send(all_mods[mod_name.title()].image)
+        if mod_name.lower() in mod_list:
+            await message.channel.send(mod_list[mod_name.lower()])
 
 
 regex_uncategorized_commands.append((r"\[.*\]", mod_resp, re.M | re.I))
