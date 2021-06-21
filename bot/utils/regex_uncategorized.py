@@ -282,34 +282,34 @@ async def tree_fiddy_resp(message: discord.Message):
 regex_uncategorized_commands.append(("tree fiddy", tree_fiddy_resp, re.M | re.I))
 
 
-async def cluttered_link_resp(message: discord.Message):
-    ree = get_emoji(message.channel.guild, "FEELSREEE")
-    if ree:
-        await message.channel.send(ree)
+# async def cluttered_link_resp(message: discord.Message):
+#     ree = get_emoji(message.channel.guild, "FEELSREEE")
+#     if ree:
+#         await message.channel.send(ree)
 
-    await message.channel.send("Clean up your links REEE")
+#     await message.channel.send("Clean up your links REEE")
 
-    link = re.search(
-        r"(https:\/\/\w+\.\w+\.\w+.+)\?(\w+=\w+&?)+", message.content
-    ).group(1)
-    clean_links.append(link)
-    await asyncio.sleep(60)
-    if link in clean_links:
-        clean_links.remove(link)
-
-
-regex_uncategorized_commands.append(
-    (r"https:\/\/\w+\.\w+\.\w+.+\?(\w+=\w+&?)+", cluttered_link_resp, re.M | re.I)
-)
+#     link = re.search(
+#         r"(https:\/\/\w+\.\w+\.\w+.+)\?(\w+=\w+&?)+", message.content
+#     ).group(1)
+#     clean_links.append(link)
+#     await asyncio.sleep(60)
+#     if link in clean_links:
+#         clean_links.remove(link)
 
 
-async def clean_link_resp(message: discord.Message):
-    for link in clean_links:
-        if link in message.content:
-            await message.channel.send("Thank you.")
-            clean_links.remove(link)
-            break
+# regex_uncategorized_commands.append(
+#     (r"https:\/\/\w+\.\w+\.\w+.+\?(\w+=\w+&?)+", cluttered_link_resp, re.M | re.I)
+# )
 
 
-regex_uncategorized_commands.append((r"https:", clean_link_resp, re.M | re.I))
+# async def clean_link_resp(message: discord.Message):
+#     for link in clean_links:
+#         if link in message.content:
+#             await message.channel.send("Thank you.")
+#             clean_links.remove(link)
+#             break
+
+
+# regex_uncategorized_commands.append((r"https:", clean_link_resp, re.M | re.I))
 
