@@ -162,17 +162,13 @@ class Admin(commands.Cog):
 
     @commands.command(brief="Reposts the last 'user left' message to a channel")
     @commands.has_any_role("Moderator", "Guides of the Void")
-    async def obit(self, ctx, channel_name, *msg_id):
+    async def obit(self, ctx, channel_name):
         channel = get_channel(ctx.guild, channel_name)
         if channel:
-            if msg_id:
-                msg_id = int(msg_id[0])
-                try:
-                    msg = await ctx.channel.fetch_message(msg_id)
-                    if isLeaveMessage(msg):
-                        await channel.send(embed=msg.embeds[0])
-                except Exception:
-                    raise commands.errors.BadArgument("No message found with that ID")
+            if ctx.message.reference:
+                msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
+                if isLeaveMessage(msg):
+                    await channel.send(embed=msg.embeds[0])
 
             else:
                 async for msg in ctx.channel.history(limit=6):

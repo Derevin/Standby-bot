@@ -37,7 +37,11 @@ class Services(commands.Cog):
         query = " ".join(user)
 
         if not user:
-            user = ctx.author
+            if ctx.message.reference:
+                msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
+                user = msg.author
+            else:
+                user = ctx.author
 
         elif ctx.message.mentions:
             user = ctx.message.mentions[0]
@@ -51,7 +55,8 @@ class Services(commands.Cog):
 
         else:
             raise commands.errors.BadArgument(
-                message="Enter a unique identifier - mention, nickname or username (tag optional) - or leave empty"
+                message="""Enter a unique identifier - mention, nickname or username (tag optional) - """
+                """or run the command in a reply. Leave empty to show your own avatar."""
             )
 
     @commands.command(brief="Returns the Urban Dictionary definition of a word")

@@ -169,12 +169,14 @@ class Fun(commands.Cog):
         )
 
     @commands.command(brief="Gives a user a hug")
-    async def hug(self, ctx, *, user):
-
+    async def hug(self, ctx, *user):
         if ctx.message.mentions:
             user = ctx.message.mentions[0]
+        elif ctx.message.reference:
+            msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
+            user = msg.author
         else:
-            user = get_user(ctx.guild, user)
+            user = get_user(ctx.guild, " ".join(user))
 
         if user:
             if user == ctx.author:
@@ -188,6 +190,8 @@ class Fun(commands.Cog):
                 hug = get_emoji(ctx.guild, "BlobReachAndHug")
                 if hug:
                     await ctx.channel.send(hug)
+
+            await ctx.message.delete()
 
     @commands.command(brief="Pay your respects")
     async def f(self, ctx, *target):
