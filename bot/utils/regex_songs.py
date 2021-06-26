@@ -7,7 +7,7 @@ regex_songs_commands = []
 #### What is love
 
 
-async def what_is_love_resp(message: discord.Message):
+async def what_is_love_resp(bot, message: discord.Message):
     await message.channel.send("*♬ Baby don't hurt me ♬*")
 
 
@@ -16,7 +16,7 @@ regex_songs_commands.append(
 )
 
 
-async def baby_dont_hurt_me_resp(message: discord.Message):
+async def baby_dont_hurt_me_resp(bot, message: discord.Message):
     await message.channel.send("*♬ no more ♬*")
 
 
@@ -27,7 +27,7 @@ regex_songs_commands.append(
 #### Sweet dreams
 
 
-async def sweet_dreams_resp(message: discord.Message):
+async def sweet_dreams_resp(bot, message: discord.Message):
     await message.channel.send("*♬ are made of this ♬*")
 
 
@@ -38,7 +38,7 @@ regex_songs_commands.append(
 ### pirates
 
 
-async def yarr_harr_resp(message: discord.Message):
+async def yarr_harr_resp(bot, message: discord.Message):
     await message.channel.send("fiddle de dee")
 
 
@@ -49,7 +49,7 @@ regex_songs_commands.append(
 ### trust me
 
 
-async def trust_me_resp(message: discord.Message):
+async def trust_me_resp(bot, message: discord.Message):
     await message.channel.send("I'm an engineer!")
 
 
@@ -58,7 +58,7 @@ regex_songs_commands.append(("^.{0,2}trust me.{0,4}$", trust_me_resp, re.M | re.
 ### kickapoo
 
 
-async def long_ass_time_resp(message: discord.Message):
+async def long_ass_time_resp(bot, message: discord.Message):
     await message.channel.send("*♬ ..in a town called Kickapoo ♬*")
 
 
@@ -69,7 +69,7 @@ regex_songs_commands.append(
 ### eminem
 
 
-async def testing_attention_resp(message: discord.Message):
+async def testing_attention_resp(bot, message: discord.Message):
     await message.channel.send("*♬ Feel the tension soon as someone mentions me ♬*")
 
 
@@ -82,14 +82,14 @@ regex_songs_commands.append(
 )
 
 
-async def testing_emn_resp(message: discord.Message):
+async def testing_emn_resp(bot, message: discord.Message):
     await message.channel.send("**♬ Attention please! ♬**")
 
 
 regex_songs_commands.append(("^testing.{0,4}$", testing_emn_resp, re.M | re.I))
 
 
-async def spaghetti_resp(message: discord.Message):
+async def spaghetti_resp(bot, message: discord.Message):
     await message.channel.send("*mom's spaghetti*")
 
 
@@ -98,7 +98,7 @@ regex_songs_commands.append(("^.{18,30}already\\W{0,4}$", spaghetti_resp, re.M |
 #### moneyyy
 
 
-async def moneyyy_resp(message: discord.Message):
+async def moneyyy_resp(bot, message: discord.Message):
     await message.channel.send(
         "Money money money money money money money money money money!"
     )
@@ -109,7 +109,7 @@ regex_songs_commands.append(("^here comes the money.{0,4}$", moneyyy_resp, re.M 
 #### yesterday
 
 
-async def yesterday_resp(message: discord.Message):
+async def yesterday_resp(bot, message: discord.Message):
     await message.channel.send("*♬ All my troubles seemed so far away ♬*")
 
 
@@ -118,7 +118,7 @@ regex_songs_commands.append(("^.{0,2}yesterday.{0,4}$", yesterday_resp, re.M | r
 #### deja vu
 
 
-async def deja_vu_resp(message: discord.Message):
+async def deja_vu_resp(bot, message: discord.Message):
     await message.channel.send("*♬ I've just been in this place before ♬*")
 
 
@@ -127,14 +127,14 @@ regex_songs_commands.append(("^.{0,2}deja vu.{0,4}$", deja_vu_resp, re.M | re.I)
 #### allstars
 
 
-async def somebody_resp(message: discord.Message):
+async def somebody_resp(bot, message: discord.Message):
     await message.channel.send("**BODY ONCE TOLD ME**")
 
 
 regex_songs_commands.append(("^(some|.*\\Wsome\\W*)$", somebody_resp, re.M | re.I))
 
 
-async def roll_me_resp(message: discord.Message):
+async def roll_me_resp(bot, message: discord.Message):
     await message.channel.send("**I AIN'T THE SHARPEST TOOL IN THE SHED**")
 
 
@@ -145,7 +145,7 @@ regex_songs_commands.append(
 #### hard rock
 
 
-async def hard_rock_resp(message: discord.Message):
+async def hard_rock_resp(bot, message: discord.Message):
     await message.channel.send("**Hallelujah!**")
 
 
@@ -156,7 +156,7 @@ regex_songs_commands.append(
 #### soad
 
 
-async def wake_up_resp(message: discord.Message):
+async def wake_up_resp(bot, message: discord.Message):
     await message.channel.send("*♬ Grab a brush and put a little make up! ♬*")
 
 
@@ -166,7 +166,7 @@ regex_songs_commands.append(("^.{0,2}wake up.{0,4}$", wake_up_resp, re.M | re.I)
 #### beep boop
 
 
-async def beep_boop_resp(message: discord.Message):
+async def beep_boop_resp(bot, message: discord.Message):
     await message.channel.send("I'm a robot.")
 
 
@@ -176,28 +176,28 @@ regex_songs_commands.append(("^.{0,2}beep boop.{0,4}$", beep_boop_resp, re.M | r
 #### that one song
 
 
-async def beep_beep_resp(message: discord.Message):
+async def beep_beep_resp(bot, message: discord.Message):
     await message.channel.send("I'm a sheep.")
 
 
 regex_songs_commands.append(("^.{0,2}beep beep.{0,4}$", beep_beep_resp, re.M | re.I))
 
 
-async def bark_bark_resp(message: discord.Message):
+async def bark_bark_resp(bot, message: discord.Message):
     await message.channel.send("I'm a shark.")
 
 
 regex_songs_commands.append(("^.{0,4}bark bark.{0,4}$", bark_bark_resp, re.M | re.I))
 
 
-async def meow_meow_resp(message: discord.Message):
+async def meow_meow_resp(bot, message: discord.Message):
     await message.channel.send("I'm a cow.")
 
 
 regex_songs_commands.append(("^.{0,2}meow meow.{0,4}$", meow_meow_resp, re.M | re.I))
 
 
-async def quack_quack_resp(message: discord.Message):
+async def quack_quack_resp(bot, message: discord.Message):
     await message.channel.send("I'm a yak.")
 
 
@@ -206,14 +206,14 @@ regex_songs_commands.append(
 )
 
 
-async def dab_dab_resp(message: discord.Message):
+async def dab_dab_resp(bot, message: discord.Message):
     await message.channel.send("I'm a crab.")
 
 
 regex_songs_commands.append(("^.{0,2}dab dab.{0,4}$", dab_dab_resp, re.M | re.I))
 
 
-async def float_float_resp(message: discord.Message):
+async def float_float_resp(bot, message: discord.Message):
     await message.channel.send("I'm a goat.")
 
 
@@ -222,7 +222,7 @@ regex_songs_commands.append(
 )
 
 
-async def screech_screech_resp(message: discord.Message):
+async def screech_screech_resp(bot, message: discord.Message):
     await message.channel.send("I'm a leech.")
 
 
@@ -231,7 +231,7 @@ regex_songs_commands.append(
 )
 
 
-async def bam_bam_resp(message: discord.Message):
+async def bam_bam_resp(bot, message: discord.Message):
     await message.channel.send("I'm a lamb.")
 
 
@@ -240,14 +240,14 @@ regex_songs_commands.append(
 )
 
 
-async def dig_dig_resp(message: discord.Message):
+async def dig_dig_resp(bot, message: discord.Message):
     await message.channel.send("I'm a pig.")
 
 
 regex_songs_commands.append(("^.{0,2}dig dig.{0,4}$", dig_dig_resp, re.M | re.I))
 
 
-async def roar_roar_resp(message: discord.Message):
+async def roar_roar_resp(bot, message: discord.Message):
     await message.channel.send(
         "I'm a boar." if 1 == random.randint(0, 1) else "Dinosaur"
     )
@@ -256,7 +256,7 @@ async def roar_roar_resp(message: discord.Message):
 regex_songs_commands.append(("^.{0,2}roar roar.{0,4}$", roar_roar_resp, re.M | re.I))
 
 
-async def shake_shake_resp(message: discord.Message):
+async def shake_shake_resp(bot, message: discord.Message):
     await message.channel.send("I'm a snake.")
 
 
@@ -265,7 +265,7 @@ regex_songs_commands.append(
 )
 
 
-async def swish_swish_resp(message: discord.Message):
+async def swish_swish_resp(bot, message: discord.Message):
     await message.channel.send("I'm a fish.")
 
 
@@ -274,7 +274,7 @@ regex_songs_commands.append(
 )
 
 
-async def squawk_squawk_resp(message: discord.Message):
+async def squawk_squawk_resp(bot, message: discord.Message):
     await message.channel.send("I'm a hawk.")
 
 
@@ -283,14 +283,14 @@ regex_songs_commands.append(
 )
 
 
-async def cluck_cluck_resp(message: discord.Message):
+async def cluck_cluck_resp(bot, message: discord.Message):
     await message.channel.send("I'm a duck.")
 
 
 regex_songs_commands.append((".{0,2}cluck cluck.{0,4}$", cluck_cluck_resp, re.M | re.I))
 
 
-async def growl_growl_resp(message: discord.Message):
+async def growl_growl_resp(bot, message: discord.Message):
     await message.channel.send("I'm an owl.")
 
 
@@ -299,14 +299,14 @@ regex_songs_commands.append(
 )
 
 
-async def drop_drop_resp(message: discord.Message):
+async def drop_drop_resp(bot, message: discord.Message):
     await message.channel.send("Do the flop!")
 
 
 regex_songs_commands.append(("^.{0,2}drop drop.{0,4}$", drop_drop_resp, re.M | re.I))
 
 
-async def boink_boink_resp(message: discord.Message):
+async def boink_boink_resp(bot, message: discord.Message):
     await message.channel.send("I'm bad at rhyming. :(")
 
 
@@ -315,7 +315,7 @@ regex_songs_commands.append(
 )
 
 
-async def click_click_resp(message: discord.Message):
+async def click_click_resp(bot, message: discord.Message):
     await message.channel.send("I'm a chick.")
 
 

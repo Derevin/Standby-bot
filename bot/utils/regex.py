@@ -21,13 +21,7 @@ prio_db_commands = []
 prio_db_commands.extend(regex_reputation_command)
 
 
-async def handle_simple_commands(message: discord.Message, cmnds):
-    for trig, resp, flags in cmnds:
-        if re.search(trig, message.content, flags) is not None:
-            await resp(message)
-
-
-async def handle_db_commands(bot, message: discord.Message, cmnds):
+async def handle_commands(bot, message: discord.Message, cmnds):
     for trig, resp, flags in cmnds:
         if re.search(trig, message.content, flags) is not None:
             await resp(bot, message)
@@ -38,14 +32,14 @@ async def regex_handler(bot, message: discord.Message):
     if message.content.startswith(PREFIX):
         return
 
-    await handle_simple_commands(message, prio_commands)
-    await handle_db_commands(bot, message, prio_db_commands)
+    await handle_commands(bot, message, prio_commands)
+    await handle_commands(bot, message, prio_db_commands)
 
     if message.channel.name in NO_RESPONSE_CHANNELS:
         return
 
-    await handle_simple_commands(message, regex_commands)
+    await handle_commands(bot, message, regex_commands)
 
     if message.guild.id == GUILD_ID:
-        await handle_simple_commands(message, regex_vftv_commands)
+        await handle_commands(bot, message, regex_vftv_commands)
 

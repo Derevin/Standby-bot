@@ -8,7 +8,7 @@ from settings import *
 regex_prio_commands = []
 
 
-async def link_resp(message: discord.Message):
+async def link_resp(bot, message: discord.Message):
     if re.search(
         r"\|\|.*https:\/\/(\w+\.)?discord(app)?\.com\/channels\/\d+\/\d+\/\d+.*\|\|",
         message.content,
