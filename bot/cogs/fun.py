@@ -138,7 +138,7 @@ class Fun(commands.Cog):
             "https://cdn.discordapp.com/attachments/738109782300557395/847974632551481384/unknown.png"
         )
 
-    @commands.command(aliases=["horni"], brief="Posts a random 'horny' warning")
+    @commands.command(aliases=["horni", "bonk"], brief="Posts a random 'horny' warning")
     async def horny(self, ctx):
         dd_horny = "https://cdn.discordapp.com/attachments/620408411393228809/724613520318267422/ubil7fxr99551.png"
         links = [
@@ -150,6 +150,7 @@ class Fun(commands.Cog):
             dd_horny,
             "https://cdn.discordapp.com/attachments/413861431906402334/"
             "810260242494783488/149741269_3647325365384706_5138601859788440225_n.png",
+            "https://cdn.discordapp.com/attachments/744224801429782679/858313203402407936/E4s5y3gVUAIaSBX.png",
         ]
         if ctx.author.id == JORM_ID:
             await ctx.channel.send(dd_horny)
