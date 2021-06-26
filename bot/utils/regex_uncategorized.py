@@ -8,7 +8,6 @@ from settings_files.warframe_data import mod_list
 from utils.util_functions import *
 
 regex_uncategorized_commands = []
-clean_links = []
 
 
 async def cough_resp(bot, message: discord.Message):
@@ -292,30 +291,33 @@ async def cluttered_link_resp(bot, message: discord.Message):
     if any(exception in link for exception in whitelist):
         return
 
-    ree = get_emoji(message.channel.guild, "FEELSREEE")
-    if ree:
-        await message.channel.send(ree)
+    reee = get_emoji(message.channel.guild, "FEELSREEE")
+    if reee:
+        reee_msg = await message.channel.send(reee)
 
-    await message.channel.send("Clean up your links REEE")
+    clean_msg = await message.channel.send("Clean up your links REEE")
 
-    clean_links.append(link)
-    await asyncio.sleep(60)
-    if link in clean_links:
-        clean_links.remove(link)
+    try:
+
+        def check(before, after):
+            return after == message and not re.search(
+                r"(https:\/\/\w+\.\w+\.\w+.+)\?(\w+=\D+&?)+", after.content
+            )
+
+        await bot.wait_for("message_edit", timeout=120, check=check)
+        heart = get_emoji(message.channel.guild, "BlobHeart")
+        if reee:
+            if heart:
+                await reee_msg.edit(content=heart)
+            else:
+                await reee_msg.delete()
+        await clean_msg.edit(content="~~" + clean_msg.content + "~~ " + "Thank you!")
+
+    except asyncio.TimeoutError:
+        pass
 
 
 regex_uncategorized_commands.append(
     (r"https:\/\/\w+\.\w+\.\w+.+\?(\w+=\D+&?)+", cluttered_link_resp, re.M | re.I)
 )
-
-
-async def clean_link_resp(bot, message: discord.Message):
-    for link in clean_links:
-        if link in message.content:
-            await message.channel.send("Thank you.")
-            clean_links.remove(link)
-            break
-
-
-regex_uncategorized_commands.append((r"https:", clean_link_resp, re.M | re.I))
 
