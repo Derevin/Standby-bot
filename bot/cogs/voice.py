@@ -24,7 +24,7 @@ class Voice(commands.Cog):
                     name=after.channel.name, mentionable=True
                 )
 
-            await member.add_roles(get_role(member.guild, after.channel.name))
+            await member.add_roles(role)
 
     @commands.Cog.listener()
     async def on_guild_channel_update(self, before, after):
