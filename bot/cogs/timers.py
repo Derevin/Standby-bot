@@ -40,7 +40,7 @@ class Timers(commands.Cog):
                     channel = self.bot.get_channel(params_dict["channel"])
                     if channel:
                         await channel.send(
-                            f"<@{rec['usr_id']}> {rec['expires']}: {params_dict['msg']}"
+                            f"<@{rec['usr_id']}> {rec['expires'].strftime('%b %d, %H:%M')}: {params_dict['msg']}"
                         )
 
                     await self.bot.pg_pool.execute(
@@ -103,8 +103,8 @@ class Timers(commands.Cog):
         )
 
         await ctx.channel.send(
-            f"Your reminder has been registered on {timenow} (bot time) "
-            f"and you will be reminded on {tfuture} (bot time)."
+            f"Your reminder has been registered on {timenow.strftime('%b %d, %H:%M')} (bot time) "
+            f"and you will be reminded on {tfuture.strftime('%b %d, %H:%M')} (bot time)."
         )
 
 
