@@ -220,6 +220,8 @@ class Rules(commands.Cog):
         if channel.name != CLAIMABLE_CHANNEL_NAME:
             return
         rules = get_channel(channel.guild, RULES_CHANNEL_NAME)
+        if not rules:
+            return
         message = await rules.fetch_message(RULES_MESSAGE_ID)
         match = re.search(r"\n(\d+)\. (.*ticket.*)", message.embeds[0].description)
         if match:

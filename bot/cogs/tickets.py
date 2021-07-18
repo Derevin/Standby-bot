@@ -11,7 +11,7 @@ RESOLVED_TICKETS_CAT_NAME = "Resolved tickets"
 TICKETS_LOG_CHANNEL_NAME = "tickets-log"
 CLAIMABLE_CHANNEL_MESSAGE = (
     "If you have an issue and want to talk to the mod team, this is the place!\n"
-    "Claim this channel by typing: ```+tclaim```"
+    "Claim this channel by typing: ```+ticket claim```"
     " and then this channel will be restricted for your and mod-team eyes only.\n"
     "Disclaimer: It is recommended to mute this channel's category,"
     " otherwise you will get an unread message notification "
@@ -21,19 +21,17 @@ CLAIMED_MESSAGE = (
     "This channel has been claimed, please type what is it that you want to discuss.\n"
     "You can make sure you're talking only to the mod team by looking "
     "at current member list of the channel (right side of discord).\n"
-    "Once this issue has been resolved, type: ```+tresolve```"
+    "Once this issue has been resolved, type: ```+ticket resolve```"
 )
 
 RESOLVED_MESSAGE = (
     "This issue has been marked as resolved."
-    " If this was a mistake, type: ```+treopen``` otherwise open a new issue.\n"
-    "This issue can be scrapped with ```+tscrap``` by moderators.\n"
+    " If this was a mistake, type: ```+ticket reopen``` otherwise open a new issue.\n"
+    "This issue can be scrapped with ```+ticket scrap``` by moderators.\n"
     "Scrapping takes a while to complete."
 )
 
-REOPENED_MESSAGE = (
-    "This issue has been reopened. Once the issue is resolved, type: ```+tresolve```"
-)
+REOPENED_MESSAGE = "This issue has been reopened. Once the issue is resolved, type: ```+ticket resolve```"
 
 
 class Tickets(commands.Cog):
@@ -66,11 +64,14 @@ class Tickets(commands.Cog):
                             )
                         )
 
-    @commands.command(
-        brief="Initiates ticket system - creates categories, channels etc"
-    )
+    @commands.group(brief="Ticketing system, see subhelp for further commands")
+    async def ticket(self, ctx):
+        if ctx.invoked_subcommand is None:
+            await ctx.send("Invalid ticket subcommand passed...")
+
+    @ticket.command(brief="Initiates ticket system - creates categories, channels etc")
     @commands.has_any_role("Moderator", "Guides of the Void")
-    async def tinit(self, ctx, *args):
+    async def init(self, ctx, *args):
         open_ticket_cat = await self.get_or_create_open_cat(ctx)
         if not open_ticket_cat.channels:
             await self.create_claimable(open_ticket_cat)
@@ -78,8 +79,8 @@ class Tickets(commands.Cog):
         await self.get_or_create_resolved_cat(ctx)
         await self.get_or_create_tickets_log(ctx)
 
-    @commands.command(aliases=["topen"], brief="Claims the ticket channel")
-    async def tclaim(self, ctx, *args):
+    @ticket.command(aliases=["topen"], brief="Claims the ticket channel")
+    async def claim(self, ctx, *args):
         if ctx.channel.name != CLAIMABLE_CHANNEL_NAME:
             raise commands.errors.UserInputError(
                 "This command can be used only in a claimable channel"
@@ -108,8 +109,8 @@ class Tickets(commands.Cog):
         if not open_ticket_cat.channels:
             await self.create_claimable(open_ticket_cat)
 
-    @commands.command(aliases=["tresolved"], brief="Marks your ticket as resolved")
-    async def tresolve(self, ctx, *args):
+    @ticket.command(aliases=["tresolved"], brief="Marks your ticket as resolved")
+    async def resolve(self, ctx, *args):
         if ctx.channel.category.name != ACTIVE_TICKETS_CAT_NAME:
             raise commands.errors.UserInputError(
                 "This command can be used only in an active channel"
@@ -120,8 +121,8 @@ class Tickets(commands.Cog):
 
         await ctx.channel.send(RESOLVED_MESSAGE)
 
-    @commands.command(brief="Reopens a resolved ticket")
-    async def treopen(self, ctx, *args):
+    @ticket.command(brief="Reopens a resolved ticket")
+    async def reopen(self, ctx, *args):
         if ctx.channel.category.name != RESOLVED_TICKETS_CAT_NAME:
             raise commands.errors.UserInputError(
                 "This command can be used only in a resolved channel"
@@ -132,11 +133,11 @@ class Tickets(commands.Cog):
 
         await ctx.channel.send(REOPENED_MESSAGE)
 
-    @commands.command(
+    @ticket.command(
         brief="Scraps a resolved ticket, logs the messages and deletes the channel"
     )
     @commands.has_any_role("Moderator", "Guides of the Void")
-    async def tscrap(self, ctx, *args):
+    async def scrap(self, ctx, *args):
         if ctx.channel.category.name != RESOLVED_TICKETS_CAT_NAME:
             raise commands.errors.UserInputError(
                 "This command can be used only in a resolved channel"

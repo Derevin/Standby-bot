@@ -58,7 +58,7 @@ class ErrorHandler(commands.Cog):
         try:
             await msg.delete()
         except Exception:
-            print("can't delete")
+            print("warn: can't delete msg in _sleep_and_delete")
 
     async def handle_user_input_error(
         self, ctx: commands.Context, e: commands.errors.UserInputError
