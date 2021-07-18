@@ -103,8 +103,8 @@ class Timers(commands.Cog):
         )
 
         await ctx.channel.send(
-            f"Your reminder has been registered on {timenow.strftime('%b %d, %H:%M')} (bot time) "
-            f"and you will be reminded on {tfuture.strftime('%b %d, %H:%M')} (bot time)."
+            f"{timenow.strftime('%b %d, %H:%M')} (bot time): Your reminder has been registered "
+            f"and you will be reminded on {tfuture.strftime('%b %d, %H:%M')}."
         )
 
 
