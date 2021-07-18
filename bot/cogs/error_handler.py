@@ -55,7 +55,10 @@ class ErrorHandler(commands.Cog):
 
     async def _sleep_and_delete(self, msg):
         await asyncio.sleep(20)
-        await msg.delete()
+        try:
+            await msg.delete()
+        except Exception:
+            print("can't delete")
 
     async def handle_user_input_error(
         self, ctx: commands.Context, e: commands.errors.UserInputError
