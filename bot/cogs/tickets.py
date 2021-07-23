@@ -18,7 +18,7 @@ CLAIMABLE_CHANNEL_MESSAGE = (
     "everytime this channel gets recreated."
 )
 CLAIMED_MESSAGE = (
-    "This channel has been claimed, please type what is it that you want to discuss.\n"
+    "You have successfully claimed this channel, please type what is it that you want to discuss.\n"
     "You can make sure you're talking only to the mod team by looking "
     "at current member list of the channel (right side of discord).\n"
     "Once this issue has been resolved, type: ```+ticket resolve```"
@@ -46,23 +46,17 @@ class Tickets(commands.Cog):
             str(message.channel.type) == "text"
             and str(message.channel.name) == CLAIMABLE_CHANNEL_NAME
         ):
+            print("here")
             try:
-                if (
-                    str(message.content) != "+tclaim"
-                    and str(message.content) != "+topen"
-                ):
-                    await message.delete()
+                await message.delete()
             except Exception as e:
-                if message.guild.id == GUILD_ID:
-                    channel = discord.utils.get(
-                        message.guild.text_channels, name=ERROR_CHANNEL_NAME
+                channel = discord.utils.get(
+                    message.guild.text_channels, name=ERROR_CHANNEL_NAME
+                )
+                if channel is not None:
+                    await channel.send(
+                        embed=unhandled_error_embed(message.content, message.channel, e)
                     )
-                    if channel is not None:
-                        await channel.send(
-                            embed=unhandled_error_embed(
-                                message.content, message.channel, e
-                            )
-                        )
 
     @commands.group(brief="Ticketing system, see subhelp for further commands")
     async def ticket(self, ctx):
@@ -72,14 +66,14 @@ class Tickets(commands.Cog):
     @ticket.command(brief="Initiates ticket system - creates categories, channels etc")
     @commands.has_any_role("Moderator", "Guides of the Void")
     async def init(self, ctx, *args):
-        open_ticket_cat = await self.get_or_create_open_cat(ctx)
-        if not open_ticket_cat.channels:
-            await self.create_claimable(open_ticket_cat)
+        claimable_ticket_cat = await self.get_or_create_claimable_cat(ctx)
+        if not claimable_ticket_cat.channels:
+            await self.create_claimable_channel(claimable_ticket_cat)
         await self.get_or_create_active_cat(ctx)
         await self.get_or_create_resolved_cat(ctx)
         await self.get_or_create_tickets_log(ctx)
 
-    @ticket.command(aliases=["topen"], brief="Claims the ticket channel")
+    @ticket.command(aliases=["open"], brief="Claims the ticket channel")
     async def claim(self, ctx, *args):
         if ctx.channel.name != CLAIMABLE_CHANNEL_NAME:
             raise commands.errors.UserInputError(
@@ -92,24 +86,21 @@ class Tickets(commands.Cog):
         overwrites = {
             ctx.guild.default_role: discord.PermissionOverwrite(read_messages=False)
         }
-        await ctx.channel.edit(
+
+        ticket_chnl = await active_ticket_cat.create_text_channel(
             name=f"{ctx.author.name}-{issue_num}",
-            category=active_ticket_cat,
+            reason="Making a ticket.",
             overwrites=overwrites,
         )
-        await ctx.channel.set_permissions(ctx.message.author, read_messages=True)
+        await ticket_chnl.set_permissions(ctx.message.author, read_messages=True)
         for x in MOD_ROLES_NAMES:
             role = discord.utils.get(ctx.guild.roles, name=x)
             if role is not None:
-                await ctx.channel.set_permissions(role, read_messages=True)
+                await ticket_chnl.set_permissions(role, read_messages=True)
 
-        await ctx.channel.send(CLAIMED_MESSAGE)
+        await ticket_chnl.send(f"<@{ctx.author.id}> {CLAIMED_MESSAGE}")
 
-        open_ticket_cat = await self.get_or_create_open_cat(ctx)
-        if not open_ticket_cat.channels:
-            await self.create_claimable(open_ticket_cat)
-
-    @ticket.command(aliases=["tresolved"], brief="Marks your ticket as resolved")
+    @ticket.command(aliases=["resolved"], brief="Marks your ticket as resolved")
     async def resolve(self, ctx, *args):
         if ctx.channel.category.name != ACTIVE_TICKETS_CAT_NAME:
             raise commands.errors.UserInputError(
@@ -168,7 +159,7 @@ class Tickets(commands.Cog):
         embed.add_field(name="Date", value=message.created_at)
         return embed
 
-    async def create_claimable(self, cat):
+    async def create_claimable_channel(self, cat):
         chnl = await cat.create_text_channel(
             name=CLAIMABLE_CHANNEL_NAME, reason="Making a claimable channel."
         )
@@ -198,16 +189,16 @@ class Tickets(commands.Cog):
                     await tickets_log.set_permissions(role, read_messages=True)
         return tickets_log
 
-    async def get_or_create_open_cat(self, ctx):
-        open_ticket_cat = discord.utils.get(
+    async def get_or_create_claimable_cat(self, ctx):
+        claimable_ticket_cat = discord.utils.get(
             ctx.guild.categories, name=CLAIMABLE_TICKETS_CAT_NAME
         )
-        if open_ticket_cat is None:
-            open_ticket_cat = await ctx.guild.create_category(
+        if claimable_ticket_cat is None:
+            claimable_ticket_cat = await ctx.guild.create_category(
                 name=CLAIMABLE_TICKETS_CAT_NAME,
                 reason="Making a category for claimable tickets.",
             )
-        return open_ticket_cat
+        return claimable_ticket_cat
 
     async def get_or_create_active_cat(self, ctx):
         active_ticket_cat = discord.utils.get(

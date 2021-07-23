@@ -215,25 +215,6 @@ class Rules(commands.Cog):
         if not ctx.message.embeds:
             await ctx.message.delete()
 
-    @commands.Cog.listener()
-    async def on_guild_channel_create(self, channel):
-        if channel.name != CLAIMABLE_CHANNEL_NAME:
-            return
-        rules = get_channel(channel.guild, RULES_CHANNEL_NAME)
-        if not rules:
-            return
-        message = await rules.fetch_message(RULES_MESSAGE_ID)
-        match = re.search(r"\n(\d+)\. (.*ticket.*)", message.embeds[0].description)
-        if match:
-            rule_number = match.group(1)
-            rule_text = match.group(2)
-            ctx = await self.bot.get_context(message)
-            await ctx.invoke(
-                self.bot.get_command("editrule"),
-                number=rule_number,
-                text=re.sub(r"<#\d+>", channel.mention, rule_text),
-            )
-
     @tasks.loop(hours=8)
     async def kick_inactives(self):
         guild = None
