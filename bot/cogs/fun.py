@@ -95,6 +95,22 @@ memes = {
     "I'm in this photo and I don't like it": (
         "https://cdn.discordapp.com/attachments/744224801429782679/851915990601433128/7a9.png"
     ),
+    "Praise - le toucan has arrived": (
+        "https://cdn.discordapp.com/attachments/743071403447943269/756976939591270431/unknown.png"
+    ),
+    "Horny": [
+        "https://cdn.discordapp.com/attachments/620408411393228809/724613520318267422/ubil7fxr99551.png",
+        "https://cdn.discordapp.com/attachments/267554564838785024/667115013412225054/image0.jpg",
+        "https://i.kym-cdn.com/entries/icons/original/000/033/758/Screen_Shot_2020-04-28_at_12.21.48_PM.png",
+        "https://cdn.discordapp.com/attachments/267554564838785024/701271178790305852/horny.jpg",
+        "https://cdn.discordapp.com/attachments/267554564838785024/708425147064909944/x3x53kej4jr31.png",
+        "https://cdn.discordapp.com/attachments/258941607238172673/717436181901475990/anti_horny.jpg",
+        "https://cdn.discordapp.com/attachments/413861431906402334/"
+        "810260242494783488/149741269_3647325365384706_5138601859788440225_n.png",
+        "https://cdn.discordapp.com/attachments/744224801429782679/858313203402407936/E4s5y3gVUAIaSBX.png",
+    ],
+    "anime": "https://cdn.discordapp.com/attachments/744224801429782679/758417628544106546/4fmrlk.png",
+    "cringe": "https://cdn.discordapp.com/attachments/441286267548729345/709160523907989524/EVACI9dUcAQp2Mb.png",
 }
 
 meme_names = "\n".join(sorted(list(memes.keys()), key=str.casefold))
@@ -106,16 +122,6 @@ Currently available memes:\n{meme_names}
 class Fun(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
-    @commands.command(brief="Praises toucan")
-    async def praiseraw(self, ctx):
-        await ctx.channel.send(TOUCAN_PRAISE)
-
-    @commands.command(brief="Praise screenshot", aliases=["praisepic"])
-    async def praise(self, ctx):
-        await ctx.channel.send(
-            "https://cdn.discordapp.com/attachments/743071403447943269/756976939591270431/unknown.png"
-        )
 
     @commands.command(brief="YEE")
     async def yeeraw(self, ctx):
@@ -136,37 +142,6 @@ class Fun(commands.Cog):
     async def yee(self, ctx):
         await ctx.channel.send(
             "https://cdn.discordapp.com/attachments/738109782300557395/847974632551481384/unknown.png"
-        )
-
-    @commands.command(aliases=["horni", "bonk"], brief="Posts a random 'horny' warning")
-    async def horny(self, ctx):
-        dd_horny = "https://cdn.discordapp.com/attachments/620408411393228809/724613520318267422/ubil7fxr99551.png"
-        links = [
-            "https://cdn.discordapp.com/attachments/267554564838785024/667115013412225054/image0.jpg",
-            "https://i.kym-cdn.com/entries/icons/original/000/033/758/Screen_Shot_2020-04-28_at_12.21.48_PM.png",
-            "https://cdn.discordapp.com/attachments/267554564838785024/701271178790305852/horny.jpg",
-            "https://cdn.discordapp.com/attachments/267554564838785024/708425147064909944/x3x53kej4jr31.png",
-            "https://cdn.discordapp.com/attachments/258941607238172673/717436181901475990/anti_horny.jpg",
-            dd_horny,
-            "https://cdn.discordapp.com/attachments/413861431906402334/"
-            "810260242494783488/149741269_3647325365384706_5138601859788440225_n.png",
-            "https://cdn.discordapp.com/attachments/744224801429782679/858313203402407936/E4s5y3gVUAIaSBX.png",
-        ]
-        if ctx.author.id == JORM_ID:
-            await ctx.channel.send(dd_horny)
-        else:
-            await ctx.channel.send(random.choice(links))
-
-    @commands.command(brief="Posts an 'anime' warning")
-    async def anime(self, ctx):
-        await ctx.channel.send(
-            "https://cdn.discordapp.com/attachments/744224801429782679/758417628544106546/4fmrlk.png"
-        )
-
-    @commands.command(brief="Posts a 'cringe' warning")
-    async def cringe(self, ctx):
-        await ctx.send(
-            "https://cdn.discordapp.com/attachments/441286267548729345/709160523907989524/EVACI9dUcAQp2Mb.png"
         )
 
     @commands.command(brief="Gives a user a hug")
@@ -216,7 +191,9 @@ class Fun(commands.Cog):
         if matches:
             best_match = matches[0]
             link = (
-                random.choice(memes[best_match])
+                memes[best_match][0]
+                if "horny" in query.lower() and ctx.author.id == JORM_ID
+                else random.choice(memes[best_match])
                 if type(memes[best_match]) == list
                 else memes[best_match]
             )
