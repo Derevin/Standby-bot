@@ -23,7 +23,9 @@ async def on_ready():
     if channel:
         reason_found = "not found"
         try:
-            logs = str(subprocess.check_output("heroku logs -n 15 --app=standby-bot"))
+            logs = str(
+                subprocess.check_output("logs -n 15 --app=standby-bot", shell=True)
+            )
             chunks = re.split("\\\\n", logs)
             next_is_reason = False
             for c in reversed(chunks):
