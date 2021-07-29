@@ -20,17 +20,17 @@ async def on_ready():
     await bot.change_presence(activity=discord.Game(name="Have a nice day!"))
     channel = bot.get_channel(ERROR_CHANNEL_ID)
     if channel:
-        logs = str(subprocess.check_output("heroku logs -n 15", shell=True))
-        chunks = re.split("\\\\n", logs)
+        # logs = str(subprocess.check_output("heroku logs -n 15", shell=True))
+        # chunks = re.split("\\\\n", logs)
         reason_found = "unkown"
-        next_is_reason = False
-        for c in reversed(chunks):
-            if next_is_reason:
-                reason_found = c.split("]: ")[1]
-                break
-            if "State changed from up to" in c:
-                next_is_reason = True
-                continue
+        # next_is_reason = False
+        # for c in reversed(chunks):
+        #     if next_is_reason:
+        #         reason_found = c.split("]: ")[1]
+        #         break
+        #     if "State changed from up to" in c:
+        #         next_is_reason = True
+        #         continue
         await channel.send(f"Reboot complete. Reason:{reason_found}")
 
 

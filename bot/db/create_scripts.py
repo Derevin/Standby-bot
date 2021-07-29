@@ -54,6 +54,10 @@ ALTER_TMERS = """
 ALTER TABLE "tmers" ADD CONSTRAINT "usr_fk0" FOREIGN KEY ("usr_id") REFERENCES "usr"("usr_id");
 """
 
+ALTER_GUILD_ADD_PERMS = """
+ALTER TABLE "guild" ADD  "config" TEXT;
+"""
+
 
 async def create_tables(con):
     try:
