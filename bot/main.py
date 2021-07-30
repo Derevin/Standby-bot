@@ -3,7 +3,9 @@ import subprocess
 import discord
 import asyncio
 import re
-import traceback
+import git
+import aiohttp
+from datetime import datetime, timedelta
 from discord.ext import commands
 from settings import *
 
@@ -20,25 +22,32 @@ bot = commands.Bot(command_prefix=PREFIX, intents=intents, case_insensitive=True
 async def on_ready():
     await bot.change_presence(activity=discord.Game(name="Have a nice day!"))
     channel = bot.get_channel(ERROR_CHANNEL_ID)
+    if not channel:
+        channel = bot.get_channel(740944936991457431)
     if channel:
-        reason_found = "not found"
-        try:
-            logs = str(
-                subprocess.check_output("logs -n 15 --app=standby-bot", shell=True)
-            )
-            chunks = re.split("\\\\n", logs)
-            next_is_reason = False
-            for c in reversed(chunks):
-                if next_is_reason:
-                    reason_found = c.split("]: ")[1]
-                    break
-                if "State changed from up to" in c:
-                    next_is_reason = True
-                    continue
-        except Exception:
-            reason_found = "uknown"
-            traceback.print_exc()
-        await channel.send(f"Reboot complete. Reason:{reason_found}")
+        reason_found = "unkown reason"
+        async with aiohttp.ClientSession() as cs:
+            async with cs.get(
+                "https://api.github.com/repos/Derevin/Standby-bot/commits/master"
+            ) as r:
+                data = await r.json()
+                timenow = datetime.now()
+                format = "%Y-%m-%dT%H:%M:%SZ"
+                dt_commit_time = datetime.strptime(
+                    data["commit"]["committer"]["date"], format
+                )
+                timepast = timenow - timedelta(minutes=5)
+                if timepast < dt_commit_time:
+                    author = data["commit"]["committer"]["name"]
+                    message = data["commit"]["message"]
+                    link = data["html_url"]
+                    reason_found = (
+                        f"Commit by {author} with message `{message}`. Link: <{link}>"
+                    )
+                else:
+                    reason_found = "Heroku restart or crash (most likely)."
+
+        await channel.send(f"Reboot complete. Caused by {reason_found}")
 
 
 #        await asyncio.sleep(180)
