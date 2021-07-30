@@ -42,7 +42,7 @@ async def on_ready():
                     message = data["commit"]["message"]
                     link = data["html_url"]
                     reason_found = (
-                        f"Commit by {author} with message `{message}`. Link: <{link}>"
+                        f"commit from {author} with message `{message}`. Link: <{link}>"
                     )
                 else:
                     reason_found = "Heroku restart or crash (most likely)."
