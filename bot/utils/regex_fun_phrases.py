@@ -216,6 +216,16 @@ regex_fun_phrases_commands.append(
     ("^.{0,4}este miercuri\\W{0,4}$", miercuri_resp, re.M | re.I)
 )
 
+
+async def reviee_resp(bot, message: discord.Message):
+    await message.channel.send("אחים שלי")
+    await message.channel.send("אאאאאאאאאאאאאאאאה")
+
+
+regex_fun_phrases_commands.append(
+    ("^.{0,4}היום יום רביעי\\W{0,4}$", reviee_resp, re.M | re.I)
+)
+
 ### tuesday
 
 
