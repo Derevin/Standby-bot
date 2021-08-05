@@ -281,43 +281,34 @@ async def tree_fiddy_resp(bot, message: discord.Message):
 regex_uncategorized_commands.append(("tree fiddy", tree_fiddy_resp, re.M | re.I))
 
 
-async def cluttered_link_resp(bot, message: discord.Message):
+# async def cluttered_link_resp(bot, message: discord.Message):
 
-    link = re.search(
-        r"(https:\/\/\w+\.\w+\.\w+.+)\?(\w+=\D+&?)+", message.content
-    ).group(1)
-    whitelist = ["youtube", "spotify"]
+#     reee = get_emoji(message.channel.guild, "FEELSREEE")
+#     if reee:
+#         reee_msg = await message.channel.send(reee)
 
-    if any(exception in link for exception in whitelist):
-        return
+#     clean_msg = await message.channel.send("Clean up your links REEE")
 
-    reee = get_emoji(message.channel.guild, "FEELSREEE")
-    if reee:
-        reee_msg = await message.channel.send(reee)
+#     try:
 
-    clean_msg = await message.channel.send("Clean up your links REEE")
+#         def check(before, after):
+#             return after == message and not re.search(
+#                 r"(https:\/\/\w+\.\w+\.\w+.+)\?(\w+=\D+&?)+", after.content
+#             )
 
-    try:
+#         await bot.wait_for("message_edit", timeout=120, check=check)
+#         heart = get_emoji(message.channel.guild, "BlobHeart")
+#         if reee:
+#             if heart:
+#                 await reee_msg.edit(content=heart)
+#             else:
+#                 await reee_msg.delete()
+#         await clean_msg.edit(content="~~" + clean_msg.content + "~~ " + "Thank you!")
 
-        def check(before, after):
-            return after == message and not re.search(
-                r"(https:\/\/\w+\.\w+\.\w+.+)\?(\w+=\D+&?)+", after.content
-            )
-
-        await bot.wait_for("message_edit", timeout=120, check=check)
-        heart = get_emoji(message.channel.guild, "BlobHeart")
-        if reee:
-            if heart:
-                await reee_msg.edit(content=heart)
-            else:
-                await reee_msg.delete()
-        await clean_msg.edit(content="~~" + clean_msg.content + "~~ " + "Thank you!")
-
-    except asyncio.TimeoutError:
-        pass
+#     except asyncio.TimeoutError:
+#         pass
 
 
-regex_uncategorized_commands.append(
-    (r"https:\/\/\w+\.\w+\.\w+.+\?(\w+=\D+&?)+", cluttered_link_resp, re.M | re.I)
-)
-
+# regex_uncategorized_commands.append(
+#     (r"https:\/\/\w+\.\w+\.\w+.+\?(\w+=\D+&?)+", cluttered_link_resp, re.M | re.I)
+# )
