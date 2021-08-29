@@ -35,6 +35,7 @@ async def uwu_resp(bot, message: discord.Message):
         "lenovo",
         "coworker",
         "kosovo",
+        "provo[ck]",
     ]
 
     for word in whitelist:
