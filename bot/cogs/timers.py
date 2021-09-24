@@ -102,9 +102,10 @@ class Timers(commands.Cog):
             params_json,
         )
 
+        frmat = "%b %d, %H:%M" if timenow.year == tfuture.year else "%b %d %Y, %H:%M"
         await ctx.channel.send(
             f"{timenow.strftime('%b %d, %H:%M')} (bot time): Your reminder has been registered "
-            f"and you will be reminded on {tfuture.strftime('%b %d, %H:%M')}."
+            f"and you will be reminded on {tfuture.strftime(frmat)}."
         )
 
 
