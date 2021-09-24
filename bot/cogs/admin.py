@@ -46,6 +46,18 @@ class Admin(commands.Cog):
                 "Please enter a valid channel name or mention"
             )
 
+    @commands.command(brief="Edits a bot message")
+    @commands.has_any_role("Moderator", "Guides of the Void")
+    async def edit(self, ctx, channel_name, id, *, text):
+        await ctx.message.delete()
+        channel = get_channel(ctx.guild, channel_name)
+        try:
+            message = await channel.fetch_message(int(id))
+        except Exception:
+            raise commands.errors.BadArgument("No message found with that ID")
+        if message.author.bot:
+            await message.edit(content=text)
+
     @commands.command(brief="Responds to a message")
     @commands.has_any_role("Moderator", "Guides of the Void")
     async def reply(self, ctx, channel_name, reply_msg_id, *, message):
