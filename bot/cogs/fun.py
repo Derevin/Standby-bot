@@ -242,6 +242,27 @@ class Fun(commands.Cog):
 
         await ctx.send(translit(text, "custom"))
 
+    @commands.command(brief="Burger someone")
+    async def burger(self, ctx, target_mention):
+        burgered = get_role(ctx.guild, "Burgered")
+        if burgered and burgered in ctx.author.roles:
+            if ctx.message.mentions:
+                target = ctx.message.mentions[0]
+                if target == ctx.author:
+                    await ctx.send(
+                        "You can't burger yourself - you are already burgered!"
+                    )
+                else:
+                    await ctx.author.remove_roles(burgered)
+                    await target.add_roles(burgered)
+                    await ctx.send(target.mention)
+                    await ctx.send(
+                        "https://cdn.discordapp.com/attachments/744224801429782679/893950953378705508/unknown.png"
+                    )
+
+        else:
+            await ctx.send("Only one who has been burgered may burger others.")
+
 
 def setup(bot):
     bot.add_cog(Fun(bot))
