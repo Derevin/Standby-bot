@@ -93,7 +93,7 @@ class Tickets(commands.Cog):
             overwrites=overwrites,
         )
         await ticket_chnl.set_permissions(ctx.message.author, read_messages=True)
-        for x in MOD_ROLES_NAMES:
+        for x in MOD_ROLES:
             role = discord.utils.get(ctx.guild.roles, name=x)
             if role is not None:
                 await ticket_chnl.set_permissions(role, read_messages=True)
@@ -183,7 +183,7 @@ class Tickets(commands.Cog):
                 reason="Making a channel for ticket logs.",
                 overwrites=overwrites,
             )
-            for x in MOD_ROLES_NAMES:
+            for x in MOD_ROLES:
                 role = discord.utils.get(ctx.guild.roles, name=x)
                 if role is not None:
                     await tickets_log.set_permissions(role, read_messages=True)
