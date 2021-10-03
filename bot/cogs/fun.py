@@ -252,6 +252,10 @@ class Fun(commands.Cog):
                     await ctx.send(
                         "You can't burger yourself - you are already burgered!"
                     )
+                elif target.bot:
+                    await ctx.send(
+                        "Fool me once, shame on — shame on you. Fool me — you can't get fooled again."
+                    )
                 else:
                     await ctx.author.remove_roles(burgered)
                     await target.add_roles(burgered)
