@@ -1,5 +1,6 @@
 from discord.ext import commands
 import discord
+from cogs.error_handler import unhandled_error_embed
 from settings import *
 from inspect import Parameter
 
