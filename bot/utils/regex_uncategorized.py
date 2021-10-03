@@ -206,8 +206,8 @@ regex_uncategorized_commands.append(("^\\W*bruh\\W*$", bruh_resp, re.M | re.I))
 # async def dad_reclaim_resp(bot, message: discord.Message):
 #    await message.channel.send("Oi, that's my job!")
 #    await message.channel.send("Well, it used to be, at least...")
-# 
-# 
+#
+#
 # regex_uncategorized_commands.append(
 #     ("^Hi\\W+.*I(m|'m| am) .{0,30}$", dad_reclaim_resp, re.M | re.I)
 # )
@@ -280,6 +280,13 @@ async def tree_fiddy_resp(bot, message: discord.Message):
 
 
 regex_uncategorized_commands.append(("tree fiddy", tree_fiddy_resp, re.M | re.I))
+
+
+async def ass_testing_resp(bot, message: discord.Message):
+    await message.add_reaction("🍑")
+
+
+regex_uncategorized_commands.append(("ass testing", ass_testing_resp, re.M | re.I))
 
 
 # async def cluttered_link_resp(bot, message: discord.Message):
