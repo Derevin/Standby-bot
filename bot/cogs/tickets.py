@@ -64,7 +64,7 @@ class Tickets(commands.Cog):
             await ctx.send("Invalid ticket subcommand passed...")
 
     @ticket.command(brief="Initiates ticket system - creates categories, channels etc")
-    @commands.has_any_role("Moderator", "Guides of the Void")
+    @commands.has_any_role(*MOD_ROLES)
     async def init(self, ctx, *args):
         claimable_ticket_cat = await self.get_or_create_claimable_cat(ctx)
         if not claimable_ticket_cat.channels:
@@ -127,7 +127,7 @@ class Tickets(commands.Cog):
     @ticket.command(
         brief="Scraps a resolved ticket, logs the messages and deletes the channel"
     )
-    @commands.has_any_role("Moderator", "Guides of the Void")
+    @commands.has_any_role(*MOD_ROLES)
     async def scrap(self, ctx, *args):
         if ctx.channel.category.name != RESOLVED_TICKETS_CAT_NAME:
             raise commands.errors.UserInputError(

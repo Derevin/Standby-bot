@@ -18,7 +18,7 @@ class Giveaways(commands.Cog):
         self.check_giveaways.cancel()
 
     @commands.command(brief="Starts a giveaway in the #giveaways channel")
-    @commands.has_any_role("Moderator", "Guides of the Void", "Raffler")
+    @commands.has_any_role(*MOD_ROLES, "Raffler")
     async def gstart(self, ctx, time, winners, *title):
 
         await ctx.message.delete()
@@ -56,7 +56,7 @@ class Giveaways(commands.Cog):
         await giveaway.add_reaction(TADA)
 
     @commands.command(brief="Manually end a giveaway")
-    @commands.has_any_role("Moderator", "Guides of the Void")
+    @commands.has_any_role(*MOD_ROLES)
     async def gfinish(self, ctx, id=None):
 
         await ctx.message.delete()
@@ -85,7 +85,7 @@ class Giveaways(commands.Cog):
                 giveaway_lock.release()
 
     @commands.command(brief="Draw a new winner for a giveaway", aliases=["greroll"])
-    @commands.has_any_role("Moderator", "Guides of the Void")
+    @commands.has_any_role(*MOD_ROLES)
     async def gredraw(self, ctx, number=1, id="last"):
 
         await ctx.message.delete()
@@ -166,7 +166,7 @@ class Giveaways(commands.Cog):
                 )
 
     @commands.command(brief="Edits the number of winners for a giveaway")
-    @commands.has_any_role("Moderator", "Guides of the Void")
+    @commands.has_any_role(*MOD_ROLES)
     async def gchange(self, ctx, change, *id):
 
         await ctx.message.delete()

@@ -16,7 +16,7 @@ class Admin(commands.Cog):
         self.bot = bot
 
     @commands.command(brief="Displays basic server stats")
-    @commands.has_any_role("Moderator", "Guides of the Void")
+    @commands.has_any_role(*MOD_ROLES)
     async def status(self, ctx, *args):
         guild = ctx.guild
 
@@ -30,12 +30,12 @@ class Admin(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(aliases=["pong"], brief="Pong!")
-    @commands.has_any_role("Moderator", "Guides of the Void")
+    @commands.has_any_role(*MOD_ROLES)
     async def ping(self, ctx):
         await ctx.send("Ponguu!")
 
     @commands.command(brief="Sends a message through the bot to a chosen channel")
-    @commands.has_any_role("Moderator", "Guides of the Void")
+    @commands.has_any_role(*MOD_ROLES)
     async def say(self, ctx, channel_name, *, message):
         await ctx.message.delete()
         channel = get_channel(ctx.guild, channel_name)
@@ -47,7 +47,7 @@ class Admin(commands.Cog):
             )
 
     @commands.command(brief="Edits a bot message")
-    @commands.has_any_role("Moderator", "Guides of the Void")
+    @commands.has_any_role(*MOD_ROLES)
     async def edit(self, ctx, channel_name, id, *, text):
         await ctx.message.delete()
         channel = get_channel(ctx.guild, channel_name)
@@ -59,7 +59,7 @@ class Admin(commands.Cog):
             await message.edit(content=text)
 
     @commands.command(brief="Responds to a message")
-    @commands.has_any_role("Moderator", "Guides of the Void")
+    @commands.has_any_role(*MOD_ROLES)
     async def reply(self, ctx, channel_name, reply_msg_id, *, message):
         await ctx.message.delete()
         channel = get_channel(ctx.guild, channel_name)
@@ -70,7 +70,7 @@ class Admin(commands.Cog):
         await channel.send(message, reference=reply_msg)
 
     @commands.command(brief="Leaves several ghost pings for a user")
-    @commands.has_any_role("Moderator", "Guides of the Void")
+    @commands.has_any_role(*MOD_ROLES)
     async def punish(self, ctx, user_mention):
         await ctx.message.delete()
         guild = ctx.guild
@@ -100,7 +100,7 @@ class Admin(commands.Cog):
                 await asyncio.sleep(2)
 
     @commands.command(brief="Adds a reaction to a post")
-    @commands.has_any_role("Moderator", "Guides of the Void")
+    @commands.has_any_role(*MOD_ROLES)
     async def react(self, ctx, channel_name, msg_id, *emojis):
         channel = get_channel(ctx.guild, channel_name)
         if channel:
@@ -122,7 +122,7 @@ class Admin(commands.Cog):
         aliases=["clean"],
         brief="Clears the last X messages sent in the channel (max 20)",
     )
-    @commands.has_any_role("Moderator", "Guides of the Void")
+    @commands.has_any_role(*MOD_ROLES)
     async def clear(self, ctx, amount):
         await ctx.message.delete()
         deleted = 0
@@ -142,7 +142,7 @@ class Admin(commands.Cog):
         aliases=["copy"],
         help="Use as a reply to the target message",
     )
-    @commands.has_any_role("Moderator", "Guides of the Void")
+    @commands.has_any_role(*MOD_ROLES)
     async def move(self, ctx, to_channel):
 
         cmd = re.split(" ", ctx.message.content)[0][1:]
@@ -173,7 +173,7 @@ class Admin(commands.Cog):
             await msg.delete()
 
     @commands.command(brief="Reposts the last 'user left' message to a channel")
-    @commands.has_any_role("Moderator", "Guides of the Void")
+    @commands.has_any_role(*MOD_ROLES)
     async def obit(self, ctx, channel_name):
         channel = get_channel(ctx.guild, channel_name)
         if channel:
@@ -190,7 +190,7 @@ class Admin(commands.Cog):
         await ctx.message.delete()
 
     @commands.command(brief="Starts a vote")
-    @commands.has_any_role("Moderator", "Guides of the Void")
+    @commands.has_any_role(*MOD_ROLES)
     async def vote(self, ctx, *, topic):
         await ctx.message.delete()
 
@@ -219,7 +219,7 @@ class Admin(commands.Cog):
             await vote_msg.add_reaction("❌")
 
     @commands.command(brief="Puts people in horny jail")
-    @commands.has_any_role("Moderator", "Guides of the Void")
+    @commands.has_any_role(*MOD_ROLES)
     async def hornyjail(self, ctx, offenders):
         if ctx.message.mentions:
             horny = get_role(ctx.guild, "horny")
@@ -238,7 +238,7 @@ class Admin(commands.Cog):
                         )
 
     @commands.command(brief="Releases people from horny jail")
-    @commands.has_any_role("Moderator", "Guides of the Void")
+    @commands.has_any_role(*MOD_ROLES)
     async def hornyrelease(self, ctx, prisoners):
         if ctx.message.mentions:
             horny = get_role(ctx.guild, "horny")
@@ -249,7 +249,7 @@ class Admin(commands.Cog):
                     await prisoner.remove_roles(muted)
 
     @commands.command(brief="Voidifies the mentioned user's avatar.")
-    @commands.has_any_role("Moderator", "Guides of the Void")
+    @commands.has_any_role(*MOD_ROLES)
     async def voidify(self, ctx, target):
 
         if ctx.author.id != JORM_ID:
