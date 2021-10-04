@@ -31,7 +31,7 @@ NO_RESPONSE_CHANNELS = [
 ]
 GIVEAWAY_CHANNEL_NAME = "giveaways"
 LOGS_CHANNEL_NAME = "mod-log"
-INVITE_LINK = "https://discord.gg/xW9TxMw"
+INVITE_LINK = "https://discord.gg/x7nsqEj"
 MOD_ROLES = ["Moderator", "Guides of the Void"]
 SOFT_RED = 0xCD6D6D
 STARBOARD_COLOUR = 0xFFAC33
