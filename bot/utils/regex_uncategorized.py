@@ -190,14 +190,11 @@ regex_uncategorized_commands.append(("paragon", paragon_resp, re.M | re.I))
 
 
 async def bruh_resp(bot, message: discord.Message):
-    bruh = await message.channel.send(
-        "https://cdn.discordapp.com/attachments/"
-        "376031149371162635/746081315270426704/unknown.png"
-    )
-    await bruh.add_reaction("🅱️")
-    await bruh.add_reaction("🇷")
-    await bruh.add_reaction("🇺")
-    await bruh.add_reaction("🇭")
+
+    await message.add_reaction("🅱️")
+    await message.add_reaction("🇷")
+    await message.add_reaction("🇺")
+    await message.add_reaction("🇭")
 
 
 regex_uncategorized_commands.append(("^\\W*bruh\\W*$", bruh_resp, re.M | re.I))
