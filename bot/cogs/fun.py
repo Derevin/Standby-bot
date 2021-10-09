@@ -309,7 +309,7 @@ class Fun(commands.Cog):
                 "Please pick a valid vanity role. Type `+vanity show` to see the full list."
             )
 
-    @vanity.command(brief="Remove a vanity role")
+    @vanity.command(brief="Remove your vanity role")
     async def remove(self, ctx, role):
         role = get_role(ctx.guild, role)
         vanity_roles = get_vanity_roles(ctx.guild)
