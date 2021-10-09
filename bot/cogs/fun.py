@@ -327,7 +327,7 @@ class Fun(commands.Cog):
 def get_vanity_roles(guild):
     start, stop = [
         i for i in range(len(guild.roles)) if guild.roles[i].name == "Vanity"
-    ][0:1]
+    ][0:2]
     return guild.roles[start + 1 : stop]
 
 
