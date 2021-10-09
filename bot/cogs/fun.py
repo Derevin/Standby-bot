@@ -267,6 +267,69 @@ class Fun(commands.Cog):
         else:
             await ctx.send("Only one who has been burgered may burger others.")
 
+    @commands.group(brief="Add or rmeove vanity roles")
+    async def vanity(self, ctx):
+        if ctx.invoked_subcommand is None:
+            await ctx.invoke(self.bot.get_command("vanity show"))
+
+    @vanity.command(brief="Show all available vanity roles")
+    async def show(self, ctx):
+
+        vanity_roles = get_vanity_roles(ctx.guild)
+        vanity_roles.sort(key=lambda x: x.name)
+
+        embed = discord.Embed()
+        embed.title = "Currently available vanity roles:"
+        embed.description = (
+            ", ".join([role.mention for role in vanity_roles]) + 2 * "\n"
+        )
+        embed.description += (
+            "Type `+vanity add [role]` or `+vanity remove` to change your vanity role"
+        )
+        await ctx.send(embed=embed)
+
+    @vanity.command(brief="Pick a vanity role")
+    async def pick(self, ctx, role):
+        vanity_roles = get_vanity_roles(ctx.guild)
+        role = get_role(ctx.guild, role)
+
+        if role:
+            if role in vanity_roles:
+                if role not in ctx.author.roles:
+                    await ctx.author.remove_roles(*vanity_roles)
+                    await ctx.author.add_roles(role)
+                else:
+                    await ctx.send("You already have that role!")
+            else:
+                await ctx.send(
+                    "You can only pick a vanity role. Type `+vanity show` to see the full list."
+                )
+        else:
+            await ctx.send(
+                "Please pick a valid vanity role. Type `+vanity show` to see the full list."
+            )
+
+    @vanity.command(brief="Remove a vanity role")
+    async def remove(self, ctx, role):
+        role = get_role(ctx.guild, role)
+        vanity_roles = get_vanity_roles(ctx.guild)
+        if role:
+            if role in vanity_roles:
+                await ctx.author.remove_roles(role)
+            else:
+                await ctx.send("You can only remove vanity roles.")
+        else:
+            await ctx.send(
+                "Please pick a valid vanity role. Type `+vanity show` to see the full list."
+            )
+
+
+def get_vanity_roles(guild):
+    start, stop = [
+        i for i in range(len(guild.roles)) if guild.roles[i].name == "Vanity"
+    ][0:1]
+    return guild.roles[start + 1 : stop]
+
 
 def setup(bot):
     bot.add_cog(Fun(bot))
