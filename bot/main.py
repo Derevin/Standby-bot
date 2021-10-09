@@ -3,7 +3,6 @@ import subprocess
 import discord
 import asyncio
 import re
-import git
 import aiohttp
 from datetime import datetime, timedelta
 from discord.ext import commands
