@@ -283,7 +283,9 @@ class Fun(commands.Cog):
         embed.description = (
             ", ".join([role.mention for role in vanity_roles]) + 2 * "\n"
         )
-        embed.description += "Type `+vanity choose [role]` or `+vanity remove` to change your vanity role"
+        embed.description += (
+            "Type `+vanity pick [role]` or `+vanity remove` to change your vanity role"
+        )
         await ctx.send(embed=embed)
 
     @vanity.command(brief="Pick a vanity role")
