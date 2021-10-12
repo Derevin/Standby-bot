@@ -333,7 +333,6 @@ class Fun(commands.Cog):
         draw = ImageDraw.Draw(img)
 
         font_path = str(Path(__file__).parent.parent.parent) + r"/fonts/impact.ttf"
-        await ctx.send(font_path)
 
         font = ImageFont.truetype(font=font_path, size=100)
         text = " ".join(caption).upper() if caption else ""
