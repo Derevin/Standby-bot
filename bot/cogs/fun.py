@@ -6,6 +6,9 @@ from settings import *
 from fuzzywuzzy import process
 from transliterate import translit
 from transliterate.base import TranslitLanguagePack, registry
+from PIL import Image, ImageDraw, ImageFont
+import requests
+import io
 
 
 TOUCAN_PRAISE = """
@@ -111,6 +114,7 @@ memes = {
     ],
     "anime": "https://cdn.discordapp.com/attachments/744224801429782679/758417628544106546/4fmrlk.png",
     "cringe": "https://cdn.discordapp.com/attachments/441286267548729345/709160523907989524/EVACI9dUcAQp2Mb.png",
+    "farquaad pointing": "https://cdn.discordapp.com/attachments/744224801429782679/897539202441433129/unknown.png",
 }
 
 meme_names = "\n".join(sorted(list(memes.keys()), key=str.casefold))
@@ -322,6 +326,32 @@ class Fun(commands.Cog):
             await ctx.send(
                 "Please pick a valid vanity role. Type `+vanity show` to see the full list."
             )
+
+    @commands.command(brief="Genererate a Pointing Farquaad meme")
+    async def farquaad(self, ctx, *caption):
+        img = Image.open(requests.get(memes["farquaad pointing"], stream=True).raw)
+        draw = ImageDraw.Draw(img)
+
+        font = ImageFont.truetype("impact.ttf", 100)
+        text = " ".join(caption).upper() if caption else ""
+        width, height = draw.textsize(text, font)
+        x_coord = img.width / 2 - width / 2
+        y_coord = img.height - height - 25
+
+        draw.text((x_coord - 3, y_coord - 3), text, (0, 0, 0), font=font)
+        draw.text((x_coord + 3, y_coord - 3), text, (0, 0, 0), font=font)
+        draw.text((x_coord + 3, y_coord + 3), text, (0, 0, 0), font=font)
+        draw.text((x_coord - 3, y_coord + 3), text, (0, 0, 0), font=font)
+        draw.text((x_coord, y_coord), text, (255, 255, 255), font=font)
+
+        obj = io.BytesIO()
+        img.save(obj, "png")
+        obj.seek(0)
+
+        await ctx.send(
+            file=discord.File(obj, filename="Farquaad.png"),
+            reference=ctx.message.reference if ctx.message.reference else None,
+        )
 
 
 def get_vanity_roles(guild):
