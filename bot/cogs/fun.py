@@ -9,7 +9,7 @@ from transliterate.base import TranslitLanguagePack, registry
 from PIL import Image, ImageDraw, ImageFont
 import requests
 import io
-
+from pathlib import Path
 
 TOUCAN_PRAISE = """
 ░░░░░░░░▄▄▄▀▀▀▄▄███▄░░░░░░░░░░░░░░
@@ -332,7 +332,9 @@ class Fun(commands.Cog):
         img = Image.open(requests.get(memes["farquaad pointing"], stream=True).raw)
         draw = ImageDraw.Draw(img)
 
-        font = ImageFont.truetype("impact.ttf", 100)
+        font_path = str(Path(__file__).parent.parent.parent) + r"\fonts\impact.ttf"
+
+        font = ImageFont.truetype(font=font_path, size=100)
         text = " ".join(caption).upper() if caption else ""
         width, height = draw.textsize(text, font)
         x_coord = img.width / 2 - width / 2
