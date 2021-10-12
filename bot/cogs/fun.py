@@ -332,7 +332,7 @@ class Fun(commands.Cog):
         img = Image.open(requests.get(memes["farquaad pointing"], stream=True).raw)
         draw = ImageDraw.Draw(img)
 
-        font_path = str(Path(__file__).parent.parent.parent) + r"\fonts\impact.ttf"
+        font_path = str(Path(__file__).parent.parent.parent) + r"/fonts/impact.ttf"
         await ctx.send(font_path)
 
         font = ImageFont.truetype(font=font_path, size=100)
