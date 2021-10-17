@@ -7,7 +7,7 @@ def get_emoji(guild, name):
 
 
 def get_role(guild, name):
-    return discord.utils.get(guild.roles, name=name)
+    return discord.utils.find(lambda r: r.name.lower() == name.lower(), guild.roles)
 
 
 def mention_role(guild, name):
