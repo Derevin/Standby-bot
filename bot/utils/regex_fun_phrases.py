@@ -213,7 +213,7 @@ async def miercuri_resp(bot, message: discord.Message):
 
 
 regex_fun_phrases_commands.append(
-    ("^.{0,4}este miercuri\\W{0,4}$", miercuri_resp, re.M | re.I)
+    ("^.{0,4}(est)?e miercuri\\W{0,4}$", miercuri_resp, re.M | re.I)
 )
 
 
