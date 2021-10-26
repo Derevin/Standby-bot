@@ -273,7 +273,8 @@ async def welcome_message(bot, member):
             await general.send(message)
             await asyncio.sleep(30 * 60)
             if (
-                member.guild.get_member(member.id)
+                not member.bot
+                and member.guild.get_member(member.id)
                 and get_role(member.guild, "Alliance") not in member.roles
                 and get_role(member.guild, "Community") not in member.roles
             ):
