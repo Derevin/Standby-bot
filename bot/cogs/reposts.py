@@ -41,8 +41,10 @@ class Reposts(commands.Cog):
 
             if rees >= 4:
 
-                await ensure_guild_existence(self.bot, ctx.guild.id)
-                await ensure_usr_existence(self.bot, ctx.author.id, ctx.guild.id)
+                await ensure_guild_existence(self.bot, message.guild.id)
+                await ensure_usr_existence(
+                    self.bot, message.author.id, message.guild.id
+                )
 
                 params_dict = {
                     "message_id": message.id,
@@ -51,7 +53,7 @@ class Reposts(commands.Cog):
                 params_json = json.dumps(params_dict)
 
                 await self.bot.pg_pool.execute(
-                    """INSERT IGNORE INTO tmers (usr_id, expires, ttype, params) """
+                    """INSERT INTO tmers (usr_id, expires, ttype, params) """
                     """VALUES ($1, $2, $3, $4) ON CONFLICT (params) DO NOTHING;""",
                     message.author.id,
                     message.created_at + datetime.timedelta(days=1),
