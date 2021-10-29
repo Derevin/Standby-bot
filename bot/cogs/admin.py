@@ -34,6 +34,7 @@ class Admin(commands.Cog):
     @commands.has_any_role(*MOD_ROLES)
     async def ping(self, ctx):
         await ctx.send("Ponguu!")
+        print(datetime.datetime(2021, 10, 29, 20, 45, 15))
 
     @commands.command(brief="Sends a message through the bot to a chosen channel")
     @commands.has_any_role(*MOD_ROLES)
@@ -290,8 +291,8 @@ class Admin(commands.Cog):
 
         for rec in gtable:
             text = (
-                f"ID: {rec['tmer_id']}, user ID: {rec['usr_id'],} "
-                + f"type: {rec['ttype']}, params: {[item for item in json.loads(rec['params'])]}"
+                f"ID: {rec['tmer_id']}, user ID: {rec['usr_id'],}, expires: {rec['expires']}"
+                + f"type: {rec['ttype']}, params: {[rec['params'][item] for item in json.loads(rec['params'])]}"
             )
             await ctx.send(text)
 
