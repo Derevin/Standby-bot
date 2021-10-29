@@ -290,9 +290,10 @@ class Admin(commands.Cog):
         gtable = await self.bot.pg_pool.fetch("SELECT * FROM tmers")
 
         for rec in gtable:
+            params_dict = json.loads(rec["params"])
             text = (
                 f"ID: {rec['tmer_id']}, user ID: {rec['usr_id'],}, expires: {rec['expires']}"
-                + f"type: {rec['ttype']}, params: {[str(rec['params'][item]) for item in json.loads(rec['params'])]}"
+                + f"type: {rec['ttype']}, params: {[params_dict[item] for item in params_dict]}"
             )
             await ctx.send(text)
 
