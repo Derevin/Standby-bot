@@ -23,6 +23,7 @@ class Reposts(commands.Cog):
         guild = await self.bot.fetch_guild(GUILD_ID)
         reemoji = get_emoji(guild, REEPOSTER_EMOJI)
         reeposter = get_role(guild, REEPOSTER_NAME)
+        reposter_duration = datetime.timedelta(days=1)
 
         if (
             isinstance(payload, discord.RawReactionActionEvent)
@@ -30,6 +31,8 @@ class Reposts(commands.Cog):
         ):
             channel = self.bot.get_channel(payload.channel_id)
             message = await channel.fetch_message(payload.message_id)
+            if (datetime.datetime.now() - message.created_at) > reposter_duration / 3:
+                return
 
             rees = 0
             for emoji in message.reactions:
@@ -43,56 +46,44 @@ class Reposts(commands.Cog):
                     self.bot, message.author.id, message.guild.id
                 )
 
-                params_dict = {
-                    "message_id": message.id,
-                    "guild_id": guild.id,
-                }
-                params_json = json.dumps(params_dict)
-
                 await message.author.add_roles(reeposter)
 
-                await self.bot.pg_pool.execute(
-                    """INSERT INTO tmers (usr_id, expires, ttype, params) """
-                    """VALUES ($1, $2, $3, $4);""",
-                    message.author.id,
-                    message.created_at + datetime.timedelta(days=1),
-                    DB_TMER_REPOST,
-                    params_json,
+                exists = await self.bot.pg_pool.fetch(
+                    f"SELECT * FROM tmers WHERE ttype={DB_TMER_REPOST} AND usr_id = {message.author.id}"
                 )
+                if not exists:
+                    await self.bot.pg_pool.execute(
+                        """INSERT INTO tmers (usr_id, expires, ttype) """
+                        """VALUES ($1, $2, $3);""",
+                        message.author.id,
+                        message.created_at + reposter_duration,
+                        DB_TMER_REPOST,
+                    )
 
     @tasks.loop(seconds=60)
     async def check_reposters(self):
         try:
-            gtable = await self.bot.pg_pool.fetch("SELECT * FROM tmers")
+            gtable = await self.bot.pg_pool.fetch(
+                f"SELECT * FROM tmers WHERE ttype={DB_TMER_REPOST}"
+            )
             for rec in gtable:
-                if rec["ttype"] == DB_TMER_REPOST:
-                    timenow = datetime.now()
-                    if timenow <= rec["expires"]:
-                        continue
-
-                    print(f"record expired: {rec}")
-                    params_dict = json.loads(rec["params"])
-                    if "message_id" not in params_dict or "guild_id" not in params_dict:
-                        print("invalid json, deleting")
-                        await self.bot.pg_pool.execute(
-                            "DELETE FROM tmers WHERE tmer_id = $1;", rec["tmer_id"]
-                        )
-                        continue
-
-                    guild = self.bot.get_channel(params_dict["guild_id"])
-
-                    user = await guild.fetch_member(rec["usr_id"])
-
-                    reeposter = get_role(guild, REEPOSTER_NAME)
-
-                    await user.remove_roles(reeposter)
-
-                    await self.bot.pg_pool.execute(
-                        "DELETE FROM tmers WHERE tmer_id = $1;", rec["tmer_id"]
-                    )
-                else:
-                    print(f"type {rec['ttype']} is not yet implemented")
+                timenow = datetime.now()
+                if timenow <= rec["expires"]:
                     continue
+
+                print(f"record expired: {rec}")
+
+                guild = await self.bot.fetch_guild(GUILD_ID)
+
+                user = await guild.fetch_member(rec["usr_id"])
+
+                reeposter = get_role(guild, REEPOSTER_NAME)
+
+                await user.remove_roles(reeposter)
+
+                await self.bot.pg_pool.execute(
+                    "DELETE FROM tmers WHERE tmer_id = $1;", rec["tmer_id"]
+                )
         except AttributeError:  # bot hasn't loaded yet and pg_pool doesn't exist
             return
         except Exception:

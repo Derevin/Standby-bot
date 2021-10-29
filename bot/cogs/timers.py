@@ -22,7 +22,9 @@ class Timers(commands.Cog):
     @tasks.loop(seconds=10)
     async def check_timers(self):
         try:
-            gtable = await self.bot.pg_pool.fetch("SELECT * FROM tmers")
+            gtable = await self.bot.pg_pool.fetch(
+                f"SELECT * FROM tmers WHERE ttype={DB_TMER_REMINDER}"
+            )
             for rec in gtable:
                 if rec["ttype"] == DB_TMER_REMINDER:
                     timenow = datetime.now()
@@ -46,9 +48,6 @@ class Timers(commands.Cog):
                     await self.bot.pg_pool.execute(
                         "DELETE FROM tmers WHERE tmer_id = $1;", rec["tmer_id"]
                     )
-                else:
-                    print(f"type {rec['ttype']} is not yet implemented")
-                    continue
         except AttributeError:  # bot hasn't loaded yet and pg_pool doesn't exist
             return
         except Exception:
