@@ -20,13 +20,10 @@ class Reposts(commands.Cog):
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
 
-        if NODB:
-            return
-
         guild = await self.bot.fetch_guild(GUILD_ID)
         reemoji = get_emoji(guild, REEPOSTER_EMOJI)
         reeposter = get_role(guild, REEPOSTER_NAME)
-        print(reeposter)
+
         if (
             isinstance(payload, discord.RawReactionActionEvent)
             and payload.emoji == reemoji
@@ -52,6 +49,8 @@ class Reposts(commands.Cog):
                 }
                 params_json = json.dumps(params_dict)
 
+                await message.author.add_roles(reeposter)
+
                 await self.bot.pg_pool.execute(
                     """INSERT INTO tmers (usr_id, expires, ttype, params) """
                     """VALUES ($1, $2, $3, $4) ON CONFLICT (params) DO NOTHING;""",
@@ -60,8 +59,6 @@ class Reposts(commands.Cog):
                     DB_TMER_REPOST,
                     params_json,
                 )
-                await message.author.add_roles(reeposter)
-                await channel.send("Success", reference=message)
 
     @tasks.loop(seconds=60)
     async def check_reposters(self):
