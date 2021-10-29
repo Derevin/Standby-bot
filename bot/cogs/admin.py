@@ -9,6 +9,7 @@ import requests
 import io
 from settings import *
 from utils.util_functions import *
+import json
 
 
 class Admin(commands.Cog):
@@ -286,7 +287,13 @@ class Admin(commands.Cog):
     @commands.has_any_role(*MOD_ROLES)
     async def printDB(self, ctx):
         gtable = await self.bot.pg_pool.fetch("SELECT * FROM tmers")
-        await ctx.send(str(gtable))
+
+        for rec in gtable:
+            text = (
+                f"ID: {rec['tmer_id']}, user ID: {rec['usr_id'],} "
+                + f"type: {rec['ttype']}, params: {[item for item in json.loads(rec['params'])]}"
+            )
+            await ctx.send(text)
 
 
 def message_embed(msg, cmd, trigger_author) -> discord.Embed:
