@@ -53,7 +53,7 @@ class Reposts(commands.Cog):
 
                 await self.bot.pg_pool.execute(
                     """INSERT INTO tmers (usr_id, expires, ttype, params) """
-                    """VALUES ($1, $2, $3, $4) ON CONFLICT (params) DO NOTHING;""",
+                    """VALUES ($1, $2, $3, $4);""",
                     message.author.id,
                     message.created_at + datetime.timedelta(days=1),
                     DB_TMER_REPOST,

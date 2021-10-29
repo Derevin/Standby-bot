@@ -292,7 +292,7 @@ class Admin(commands.Cog):
         for rec in gtable:
             params_dict = json.loads(rec["params"])
             text = (
-                f"ID: {rec['tmer_id']}, user ID: {rec['usr_id'],}, expires: {rec['expires']}"
+                f"ID: {rec['tmer_id']}, user ID: {rec['usr_id'],}, expires: {rec['expires']}, "
                 + f"type: {rec['ttype']}, params: {[params_dict[item] for item in params_dict]}"
             )
             await ctx.send(text)
