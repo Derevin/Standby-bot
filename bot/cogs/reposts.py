@@ -66,7 +66,7 @@ class Reposts(commands.Cog):
         try:
             gtable = await self.bot.pg_pool.fetch("SELECT * FROM tmers")
             for rec in gtable:
-                if rec["ttype"] == DB_TMER_REMINDER:
+                if rec["ttype"] == DB_TMER_REPOST:
                     timenow = datetime.now()
                     if timenow <= rec["expires"]:
                         continue
