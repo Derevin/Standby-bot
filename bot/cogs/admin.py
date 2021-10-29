@@ -282,6 +282,12 @@ class Admin(commands.Cog):
 
         await ctx.send(file=discord.File(obj, filename="pic.png"))
 
+    @commands.command(brief="Prints the timer database")
+    @commands.has_any_role(*MOD_ROLES)
+    async def printDB(self, ctx):
+        gtable = await self.bot.pg_pool.fetch("SELECT * FROM tmers")
+        await ctx.send(str(gtable))
+
 
 def message_embed(msg, cmd, trigger_author) -> discord.Embed:
 
