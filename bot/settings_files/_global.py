@@ -16,6 +16,7 @@ GINNY_WHITE_URL = str(os.getenv("GINNY_WHITE_URL", False))
 
 DB_TMER_REMINDER = 1
 DB_TMER_GIVEAWAY = 2
+DB_TMER_REPOST = 3
 
 
 ERROR_CHANNEL_NAME = "maintenance-channel"
@@ -33,6 +34,8 @@ GIVEAWAY_CHANNEL_NAME = "giveaways"
 LOGS_CHANNEL_NAME = "mod-log"
 INVITE_LINK = "https://discord.gg/x7nsqEj"
 MOD_ROLES = ["Moderator", "Guides of the Void"]
+REEPOSTER_NAME = "REE-poster"
+REEPOSTER_EMOJI = "FEELSREEE"
 SOFT_RED = 0xCD6D6D
 STARBOARD_COLOUR = 0xFFAC33
 DARK_BLUE = 0x00008B
