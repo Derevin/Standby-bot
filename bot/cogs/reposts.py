@@ -67,15 +67,18 @@ class Reposts(commands.Cog):
                 f"SELECT * FROM tmers WHERE ttype={DB_TMER_REPOST}"
             )
             for rec in gtable:
-                timenow = datetime.now()
+                timenow = datetime.datetime.utcnow()
                 if timenow <= rec["expires"]:
                     continue
 
                 print(f"record expired: {rec}")
 
-                guild_id = await self.bot.pg_pool.fetch(
+                guild_tbl = await self.bot.pg_pool.fetch(
                     f"SELECT guild_id FROM usr WHERE usr_id = {rec['usr_id']}"
                 )
+
+                guild_id = guild_tbl[0]["guild_id"]
+
                 guild = await self.bot.fetch_guild(guild_id)
 
                 user = await guild.fetch_member(rec["usr_id"])
