@@ -34,7 +34,6 @@ class Admin(commands.Cog):
     @commands.has_any_role(*MOD_ROLES)
     async def ping(self, ctx):
         await ctx.send("Ponguu!")
-        print(datetime.datetime(2021, 10, 29, 20, 45, 15))
 
     @commands.command(brief="Sends a message through the bot to a chosen channel")
     @commands.has_any_role(*MOD_ROLES)
@@ -287,8 +286,9 @@ class Admin(commands.Cog):
     @commands.command(brief="Prints the timer database")
     @commands.has_any_role(*MOD_ROLES)
     async def printDB(self, ctx):
+        print("a")
         gtable = await self.bot.pg_pool.fetch("SELECT * FROM tmers")
-
+        print(gtable)
         for rec in gtable:
             params_dict = json.loads(rec["params"]) if rec["params"] else {}
             text = (

@@ -47,7 +47,6 @@ class Tickets(commands.Cog):
             str(message.channel.type) == "text"
             and str(message.channel.name) == CLAIMABLE_CHANNEL_NAME
         ):
-            print("here")
             try:
                 await message.delete()
             except Exception as e:
