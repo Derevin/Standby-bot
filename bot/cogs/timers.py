@@ -83,6 +83,7 @@ class Timers(commands.Cog):
         )
 
         tfuture = timenow + tdelta
+        tfuture = tfuture.replace(microsecond=0)
 
         await ensure_guild_existence(self.bot, ctx.guild.id)
         await ensure_usr_existence(self.bot, ctx.author.id, ctx.guild.id)
@@ -100,7 +101,7 @@ class Timers(commands.Cog):
             DB_TMER_REMINDER,
             params_json,
         )
-
+        print(tfuture)
         frmat = "%b %d, %H:%M" if timenow.year == tfuture.year else "%b %d %Y, %H:%M"
         await ctx.channel.send(
             f"{timenow.strftime('%b %d, %H:%M')} (bot time): Your reminder has been registered "
