@@ -31,7 +31,9 @@ class Reposts(commands.Cog):
         ):
             channel = self.bot.get_channel(payload.channel_id)
             message = await channel.fetch_message(payload.message_id)
-            if (datetime.datetime.now() - message.created_at) > reposter_duration / 3:
+
+            message_age = datetime.datetime.utcnow() - message.created_at
+            if message_age > reposter_duration / 3:
                 return
 
             rees = 0
@@ -51,12 +53,16 @@ class Reposts(commands.Cog):
                 exists = await self.bot.pg_pool.fetch(
                     f"SELECT * FROM tmers WHERE ttype={DB_TMER_REPOST} AND usr_id = {message.author.id}"
                 )
+
                 if not exists:
+                    expires = message.created_at + reposter_duration
+                    expires = expires.replace(microsecond=0)
+
                     await self.bot.pg_pool.execute(
                         """INSERT INTO tmers (usr_id, expires, ttype) """
                         """VALUES ($1, $2, $3);""",
                         message.author.id,
-                        message.created_at + reposter_duration,
+                        expires,
                         DB_TMER_REPOST,
                     )
 
@@ -73,11 +79,9 @@ class Reposts(commands.Cog):
 
                 print(f"record expired: {rec}")
 
-                guild_tbl = await self.bot.pg_pool.fetch(
+                guild_id = await self.bot.pg_pool.fetchval(
                     f"SELECT guild_id FROM usr WHERE usr_id = {rec['usr_id']}"
                 )
-
-                guild_id = guild_tbl[0]["guild_id"]
 
                 guild = await self.bot.fetch_guild(guild_id)
 
