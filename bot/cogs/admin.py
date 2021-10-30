@@ -283,19 +283,24 @@ class Admin(commands.Cog):
 
         await ctx.send(file=discord.File(obj, filename="pic.png"))
 
-    @commands.command(brief="Prints the timer database")
+    @commands.command(brief="Print a database table")
     @commands.has_any_role(*MOD_ROLES)
-    async def printDB(self, ctx):
-        print("a")
-        gtable = await self.bot.pg_pool.fetch("SELECT * FROM tmers")
-        print(gtable)
-        for rec in gtable:
-            params_dict = json.loads(rec["params"]) if rec["params"] else {}
-            text = (
-                f"ID: {rec['tmer_id']}, user ID: {rec['usr_id'],}, expires: {rec['expires']}, "
-                + f"type: {rec['ttype']}, params: {[params_dict[item] for item in params_dict]}"
-            )
-            await ctx.send(text)
+    async def printDB(self, ctx, table="tmers"):
+
+        try:
+            gtable = await self.bot.pg_pool.fetch(f"SELECT * FROM {table}")
+        except Exception:
+            await ctx.send(f"Table `{table}` not found.")
+        else:
+            if gtable:
+                for rec in gtable:
+                    d = rec
+                    text = ""
+                    for key, value in d.items():
+                        text += key + ": " + str(value) + "\n"
+                    await ctx.send(text)
+            else:
+                await ctx.send(f"Table `{table}` is empty.")
 
 
 def message_embed(msg, cmd, trigger_author) -> discord.Embed:
