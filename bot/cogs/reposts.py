@@ -73,7 +73,10 @@ class Reposts(commands.Cog):
 
                 print(f"record expired: {rec}")
 
-                guild = await self.bot.fetch_guild(GUILD_ID)
+                guild_id = await self.bot.pg_pool.fetch(
+                    f"SELECT guild_id FROM usr WHERE usr_id = {rec['usr_id']}"
+                )
+                guild = await self.bot.fetch_guild(guild_id)
 
                 user = await guild.fetch_member(rec["usr_id"])
 
