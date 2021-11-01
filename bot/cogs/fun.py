@@ -295,7 +295,7 @@ class Fun(commands.Cog):
         await ctx.send(embed=embed)
 
     @vanity.command(brief="Pick a vanity role")
-    async def pick(self, ctx, role):
+    async def pick(self, ctx, *, role):
         vanity_roles = get_vanity_roles(ctx.guild)
         role = get_role(ctx.guild, role)
 
