@@ -202,7 +202,9 @@ class Fun(commands.Cog):
                 else memes[best_match]
             )
             await ctx.send(
-                link, reference=ctx.message.reference, mention_author=False,
+                link,
+                reference=ctx.message.reference,
+                mention_author=False,
             )
         else:
             await ctx.send("Meme not found.")
@@ -314,18 +316,21 @@ class Fun(commands.Cog):
             )
 
     @vanity.command(brief="Remove your vanity role")
-    async def remove(self, ctx, role):
-        role = get_role(ctx.guild, role)
+    async def remove(self, ctx, *role):
         vanity_roles = get_vanity_roles(ctx.guild)
         if role:
-            if role in vanity_roles:
+            role = get_role(ctx.guild, " ".join(role))
+            if not role:
+                await ctx.send(
+                    "Please pick a valid vanity role, or leave blank to remove your current one. "
+                    + "Type `+vanity show` to see the full list."
+                )
+            elif role in vanity_roles:
                 await ctx.author.remove_roles(role)
             else:
                 await ctx.send("You can only remove vanity roles.")
         else:
-            await ctx.send(
-                "Please pick a valid vanity role. Type `+vanity show` to see the full list."
-            )
+            await ctx.author.remove_roles(*vanity_roles)
 
     @commands.command(brief="Genererate a Pointing Farquaad meme")
     async def farquaad(self, ctx, *caption):
