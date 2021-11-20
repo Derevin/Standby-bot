@@ -238,3 +238,12 @@ async def hms_resp(bot, message: discord.Message):
 
 regex_vftv_commands.append(("welcome aboard the hms fucking", hms_resp, re.M | re.I))
 
+
+async def gramps_resp(bot, message: discord.Message):
+    await message.channel.send(
+        "https://tenor.com/view/markus-marcus-losmachen-g%C3%B6nnung-looosmachen-gif-20859211"
+    )
+    await message.channel.send(message.content)
+
+
+regex_vftv_commands.append((r"^<@!141523991260037120>$", gramps_resp, re.M | re.I))
