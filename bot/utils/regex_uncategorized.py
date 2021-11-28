@@ -287,6 +287,15 @@ async def ass_testing_resp(bot, message: discord.Message):
 regex_uncategorized_commands.append(("ass testing", ass_testing_resp, re.M | re.I))
 
 
+async def belgium_resp(bot, message: discord.Message):
+    await message.channel.send("Watch your language!")
+
+
+regex_uncategorized_commands.append(
+    ("^.{0,4}belgium\\W{0,4}$", belgium_resp, re.M | re.I)
+)
+
+
 # async def cluttered_link_resp(bot, message: discord.Message):
 
 #     reee = get_emoji(message.channel.guild, "FEELSREEE")
