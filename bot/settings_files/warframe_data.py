@@ -5,7 +5,8 @@ import re
 
 MODS_URL = "https://raw.githubusercontent.com/WFCD/warframe-items/development/data/json/Mods.json"
 r = requests.get(url=MODS_URL)
-mod_data = r.json()
+# mod_data = r.json()
+mod_data = {}
 
 mod_list = {}
 
