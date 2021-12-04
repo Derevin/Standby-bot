@@ -149,20 +149,36 @@ regex_vftv_commands.append(("siege.*\\?", siegeQ_resp, re.M | re.I))
 async def offers_resp(bot, message: discord.Message):
     if message.channel.name != "offers":
         return
+
+    whitelist = [
+        "https",
+        "store",
+        "steam",
+        "free",
+        "epic",
+        "EGS",
+        "launcher",
+        "percent",
+        "%",
+        "uplay",
+        "origin",
+        "GOG",
+        "ubi",
+        "key",
+    ]
+
     if (
-        re.search(
-            "https|store|steam|free|epic|EGS|launcher|percent|%|uplay|origin|GOG|ubi",
-            message.content,
-        )
-        is None
-        and len(message.attachments) == 0
+        any([word in message.content for word in whitelist])
+        or len(message.attachments) > 0
     ):
-        await message.delete()
-        await message.author.send(
-            f"Hi {message.author.mention}! We're trying to streamline {message.channel.mention} - please update "
-            "your post to contain a link, an image, or a specific reference to a game store and re-post it. "
-            "If you've received this message in error, please contact your favorite mod."
-        )
+        return
+
+    await message.delete()
+    await message.author.send(
+        f"Hi {message.author.mention}! We're trying to streamline {message.channel.mention} - please update "
+        "your post to contain a link, an image, or a specific reference to a game store and re-post it. "
+        "If you've received this message in error, please contact your favorite mod."
+    )
 
 
 regex_vftv_commands.append((".*", offers_resp, re.M | re.I))
