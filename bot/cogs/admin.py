@@ -302,6 +302,16 @@ class Admin(commands.Cog):
             else:
                 await ctx.send(f"Table `{table}` is empty.")
 
+    @commands.command(brief="Replace text in an embed")
+    @commands.has_any_role(*MOD_ROLES)
+    async def edit_embed(self, ctx, channel_name, id, remove, replace):
+
+        channel = get_channel(ctx.guild, channel_name)
+        embed_message = await channel.fetch_message(id)
+        embed = embed_message.embeds[0]
+        embed.description = re.sub(remove, replace, embed.description)
+        await embed_message.edit(embed=embed)
+
 
 def message_embed(msg, cmd, trigger_author) -> discord.Embed:
 
