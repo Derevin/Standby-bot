@@ -116,6 +116,7 @@ memes = {
     "cringe": "https://cdn.discordapp.com/attachments/441286267548729345/709160523907989524/EVACI9dUcAQp2Mb.png",
     "farquaad pointing": "https://cdn.discordapp.com/attachments/744224801429782679/897539202441433129/unknown.png",
     "Silence, brand": "https://cdn.discordapp.com/attachments/744224801429782679/915240126190350416/unknown.png",
+    "I am looking away, I do not see it": "https://cdn.discordapp.com/attachments/744224801429782679/918249653412167690/unknown.png",
 }
 
 meme_names = "\n".join(sorted(list(memes.keys()), key=str.casefold))
