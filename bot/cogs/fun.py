@@ -119,6 +119,7 @@ memes = {
     "I am looking away, I do not see it": (
         "https://cdn.discordapp.com/attachments/744224801429782679/918249653412167690/unknown.png"
     ),
+    "Chadoru": "https://cdn.discordapp.com/attachments/744224801429782679/919260111250280468/padoruchad.png",
 }
 
 meme_names = "\n".join(sorted(list(memes.keys()), key=str.casefold))
