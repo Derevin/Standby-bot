@@ -262,4 +262,4 @@ async def gramps_resp(bot, message: discord.Message):
     await message.channel.send(message.content)
 
 
-regex_vftv_commands.append((r"^<@!141523991260037120>$", gramps_resp, re.M | re.I))
+regex_vftv_commands.append((r"^<@!?141523991260037120>$", gramps_resp, re.M | re.I))
