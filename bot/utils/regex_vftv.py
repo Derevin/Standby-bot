@@ -202,19 +202,6 @@ async def streams_resp(bot, message: discord.Message):
 regex_vftv_commands.append((".*", streams_resp, re.M | re.I))
 
 
-async def pp_resp(bot, message: discord.Message):
-    await message.channel.send(f"Just like <@{JORM_ID}>'s pp")
-
-
-regex_vftv_commands.append(
-    (
-        "(so|really|very|pretty|it[ 'i]*s) (tiny|small|smol|puny)\\W*$",
-        pp_resp,
-        re.M | re.I,
-    )
-)
-
-
 ## GOOD/BAD bot
 
 
