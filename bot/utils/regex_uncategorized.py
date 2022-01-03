@@ -296,6 +296,14 @@ regex_uncategorized_commands.append(
 )
 
 
+async def finally_resp(bot, message: discord.Message):
+    await message.channel.send("middle text")
+
+
+regex_uncategorized_commands.append(
+    ("^.{0,4}finally\\W{0,4}$", finally_resp, re.M | re.I)
+)
+
 # async def cluttered_link_resp(bot, message: discord.Message):
 
 #     reee = get_emoji(message.channel.guild, "FEELSREEE")
