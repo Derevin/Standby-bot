@@ -278,7 +278,7 @@ class Fun(commands.Cog):
         else:
             await ctx.send("Only one who has been burgered may burger others.")
 
-    @commands.group(brief="Add or rmeove vanity roles")
+    @commands.group(brief="Add or remove vanity roles")
     async def vanity(self, ctx):
         if ctx.invoked_subcommand is None:
             await ctx.invoke(self.bot.get_command("vanity show"))
