@@ -79,6 +79,20 @@ class Birthdays(commands.Cog):
 
         await ctx.send("Your birthday has been set.")
 
+    @birthday.command(brief="Remove your birthday", aliases=["clear"])
+    async def remove(self, ctx):
+
+        exists = await self.bot.pg_pool.fetch(
+            f"SELECT * FROM bdays WHERE usr_id = {ctx.author.id}"
+        )
+        if not exists:
+            await ctx.send("You have not set your birthday.")
+        else:
+            await self.bot.pg_pool.execute(
+                f"DELETE FROM bdays WHERE usr_id = {ctx.author.id};"
+            )
+            await ctx.send("Birthday removed.")
+
     @tasks.loop(hours=1)
     async def check_bdays(self):
 
