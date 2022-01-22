@@ -3,7 +3,7 @@ import discord
 import random
 from utils.util_functions import *
 from settings import *
-from fuzzywuzzy import process
+from fuzzywuzzy import process, fuzz
 from transliterate import translit
 from transliterate.base import TranslitLanguagePack, registry
 from PIL import Image, ImageDraw, ImageFont
@@ -200,7 +200,9 @@ class Fun(commands.Cog):
         if cmd == "memed":
             await ctx.message.delete()
 
-        matches = process.extractOne(query, list(memes.keys()), score_cutoff=67)
+        matches = process.extractOne(
+            query, list(memes.keys()), scorer=fuzz.token_set_ratio, score_cutoff=67
+        )
         if matches:
             best_match = matches[0]
             link = (
