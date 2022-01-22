@@ -120,6 +120,10 @@ memes = {
         "https://cdn.discordapp.com/attachments/744224801429782679/918249653412167690/unknown.png"
     ),
     "Chadoru": "https://cdn.discordapp.com/attachments/744224801429782679/919260111250280468/padoruchad.png",
+    "Jesse, what the fuck are you talking about": [
+        "https://cdn.discordapp.com/attachments/744224801429782679/934550870681595935/unknown.png",
+        "https://cdn.discordapp.com/attachments/744224801429782679/934551037761716234/unknown.png",
+    ],
 }
 
 meme_names = "\n".join(sorted(list(memes.keys()), key=str.casefold))
