@@ -19,7 +19,7 @@ class Birthdays(commands.Cog):
     @commands.group(brief="Birthday commands", aliases=["bday"])
     async def birthday(self, ctx):
         if ctx.invoked_subcommand is None:
-            await ctx.send("error")
+            await ctx.send("Type `+help birthday` to see available subcommands.")
 
     @birthday.command(brief="Set your birthday")
     async def set(self, ctx, day, month):
