@@ -23,17 +23,3 @@ async def ensure_usr_existence(bot, uid, gid):
             uid,
             gid,
         )
-
-
-async def ensure_bday_existence(bot, uid):
-    usr = await bot.pg_pool.fetch(
-        "SELECT * FROM bdays WHERE usr_id = $1;",
-        uid,
-    )
-
-    if not usr:
-        print(f"Adding user {uid} to db.")
-        await bot.pg_pool.execute(
-            "INSERT INTO bdays (usr_id, month, day) VALUES ($1, 1, 0);",
-            uid,
-        )

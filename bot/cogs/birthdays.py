@@ -58,8 +58,6 @@ class Birthdays(commands.Cog):
             await ctx.send("Invalid date - please try again.")
             return
 
-        await ensure_bday_existence(self.bot, ctx.author.id)
-
         exists = await self.bot.pg_pool.fetch(
             f"SELECT * FROM bdays WHERE usr_id = {ctx.author.id}"
         )
