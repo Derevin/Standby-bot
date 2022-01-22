@@ -36,6 +36,7 @@ INVITE_LINK = "https://discord.gg/x7nsqEj"
 MOD_ROLES = ["Moderator", "Guides of the Void"]
 REEPOSTER_NAME = "REE-poster"
 REEPOSTER_EMOJI = "FEELSREEE"
+BIRTHDAY_NAME = "Birthday Haver"
 SOFT_RED = 0xCD6D6D
 STARBOARD_COLOUR = 0xFFAC33
 DARK_BLUE = 0x00008B

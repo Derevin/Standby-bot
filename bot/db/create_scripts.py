@@ -54,8 +54,23 @@ ALTER_TMERS = """
 ALTER TABLE "tmers" ADD CONSTRAINT "usr_fk0" FOREIGN KEY ("usr_id") REFERENCES "usr"("usr_id");
 """
 
+
 ALTER_GUILD_ADD_PERMS = """
 ALTER TABLE "guild" ADD  "config" TEXT;
+"""
+
+CREATE_BDAYS = """
+CREATE TABLE IF NOT EXISTS "bdays" (
+    "usr_id" BIGINT NOT NULL,
+    "month" SMALLINT NOT NULL,
+    "day" SMALLINT NOT NULL,
+    CONSTRAINT "bdays_pk" PRIMARY KEY ("usr_id")
+) WITH (
+  OIDS=FALSE
+);
+"""
+ALTER_BDAYS = """
+ALTER TABLE "bdays" ADD CONSTRAINT "usr_fk0" FOREIGN KEY ("usr_id") REFERENCES "usr"("usr_id");
 """
 
 
@@ -77,3 +92,9 @@ async def create_tables(con):
     except Exception as e:
         print("expected create exception 2:", e)
 
+    try:
+        await con.execute(CREATE_BDAYS)
+        await con.execute(ALTER_BDAYS)
+        print("succesfully ran db script batch 3")
+    except Exception as e:
+        print("expected create exception 3:", e)
