@@ -4,7 +4,6 @@ import datetime
 from settings import *
 from utils.util_functions import *
 import json
-from db.db_func import ensure_bday_existence
 
 
 class Birthdays(commands.Cog):
