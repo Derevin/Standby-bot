@@ -114,7 +114,7 @@ class Rules(commands.Cog):
         message = await rules.fetch_message(msg_id)
         if not message.embeds:
             raise commands.errors.BadArgument("Cannot add roles to that message")
-        if not role.mention in [guild_role.mention for guild_role in ctx.guild.roles]:
+        if role not in [guild_role.mention for guild_role in ctx.guild.roles]:
             raise commands.errors.BadArgument("No role with that name found.")
         new_text = f"React {emoji} for {role}\n"
         embed = message.embeds[0]
