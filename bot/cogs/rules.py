@@ -108,12 +108,14 @@ class Rules(commands.Cog):
 
     @commands.command(brief="Adds a new role to a post")
     @commands.has_role("Moderator")
-    async def addrole(self, ctx, msg_id, emoji, role):
+    async def addrole(self, ctx, msg_id, role, emoji):
 
         rules = get_channel(ctx.guild, RULES_CHANNEL_NAME)
         message = await rules.fetch_message(msg_id)
         if not message.embeds:
             raise commands.errors.BadArgument("Cannot add roles to that message")
+        if not role.mention in [guild_role.mention for guild_role in ctx.guild.roles]:
+            raise commands.errors.BadArgument("No role with that name found.")
         new_text = f"React {emoji} for {role}\n"
         embed = message.embeds[0]
         embed.description += "\n" + new_text
