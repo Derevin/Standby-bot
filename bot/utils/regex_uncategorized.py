@@ -304,6 +304,15 @@ regex_uncategorized_commands.append(
     ("^.{0,4}finally\\W{0,4}$", finally_resp, re.M | re.I)
 )
 
+
+async def now_resp(bot, message: discord.Message):
+    await message.channel.send(
+        "https://cdn.discordapp.com/attachments/744224801429782679/941400177296699463/unknown.png"
+    )
+
+
+regex_uncategorized_commands.append(("NOW\\W{0,4}$", now_resp, re.M))
+
 # async def cluttered_link_resp(bot, message: discord.Message):
 
 #     reee = get_emoji(message.channel.guild, "FEELSREEE")
