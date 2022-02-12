@@ -44,7 +44,7 @@ async def uwu_resp(bot, message: discord.Message):
             return
 
     n = len(re.findall("[rRlL]", msg))
-    txt = "https://www.youtube.com/watch?v=rrD3jp34BFg"
+    txt = "https://cdn.discordapp.com/attachments/744224801429782679/942124592581996574/warning.mp4"
     if n > 4:
         txt = re.sub("[rRlL]", "w", msg)
     elif random.randint(1, 10) == 7:
