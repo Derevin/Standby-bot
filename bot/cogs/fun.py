@@ -124,6 +124,9 @@ memes = {
         "https://cdn.discordapp.com/attachments/744224801429782679/934550870681595935/unknown.png",
         "https://cdn.discordapp.com/attachments/744224801429782679/934551037761716234/unknown.png",
     ],
+    "They hated Jesus because he told them the truth": (
+        "https://cdn.discordapp.com/attachments/744224801429782679/943556748734771260/unknown.png"
+    ),
 }
 
 meme_names = "\n".join(sorted(list(memes.keys()), key=str.casefold))
