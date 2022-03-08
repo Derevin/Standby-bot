@@ -196,7 +196,7 @@ class Fun(commands.Cog):
         rip = await ctx.channel.send(embed=embed)
         await rip.add_reaction("🇫")
 
-    @commands.command(brief="Posts a meme", help=help_text)
+    @commands.command(brief="Posts a meme", aliases=["memed"], help=help_text)
     async def meme(self, ctx, *, query):
 
         await ctx.message.delete()
