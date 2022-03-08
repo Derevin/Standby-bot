@@ -127,6 +127,7 @@ memes = {
     "They hated Jesus because he told them the truth": (
         "https://cdn.discordapp.com/attachments/744224801429782679/943556748734771260/unknown.png"
     ),
+    "Megamind No bitches?": "https://cdn.discordapp.com/attachments/744224801429782679/950791113487319070/unknown.png",
 }
 
 meme_names = "\n".join(sorted(list(memes.keys()), key=str.casefold))
@@ -344,18 +345,26 @@ class Fun(commands.Cog):
         else:
             await ctx.author.remove_roles(*vanity_roles)
 
-    @commands.command(brief="Genererate a Pointing Farquaad meme")
+    @commands.command(brief="Genererate a captioned meme", aliases=["megamind"])
     async def farquaad(self, ctx, *caption):
-        img = Image.open(requests.get(memes["farquaad pointing"], stream=True).raw)
+
+        cmd = re.split(" ", ctx.message.content)[0][1:].lower()
+
+        if cmd == "farquaad":
+            query, font_size, align = "farquaad pointing", 100, "bottom"
+        elif cmd == "megamind":
+            query, font_size, align = "Megamind No bitches?", 125, "top"
+
+        img = Image.open(requests.get(memes[query], stream=True).raw)
         draw = ImageDraw.Draw(img)
 
         font_path = str(Path(__file__).parent.parent.parent) + r"/fonts/impact.ttf"
 
-        font = ImageFont.truetype(font=font_path, size=100)
+        font = ImageFont.truetype(font=font_path, size=font_size)
         text = " ".join(caption).upper() if caption else ""
         width, height = draw.textsize(text, font)
         x_coord = img.width / 2 - width / 2
-        y_coord = img.height - height - 25
+        y_coord = img.height - height - 25 if align == "bottom" else 0
 
         draw.text((x_coord - 3, y_coord - 3), text, (0, 0, 0), font=font)
         draw.text((x_coord + 3, y_coord - 3), text, (0, 0, 0), font=font)
@@ -368,7 +377,7 @@ class Fun(commands.Cog):
         obj.seek(0)
 
         await ctx.send(
-            file=discord.File(obj, filename="Farquaad.png"),
+            file=discord.File(obj, filename=f"{cmd}.png"),
             reference=ctx.message.reference if ctx.message.reference else None,
         )
 
