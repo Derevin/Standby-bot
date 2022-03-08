@@ -219,7 +219,7 @@ class Fun(commands.Cog):
                 mention_author=False,
             )
         else:
-            await ctx.send("Meme not found.")
+            await ctx.send("Meme not found - type `+help meme` to see available memes.")
 
     @commands.command(brief="Converts text into cyrillic", aliases=["cyrillic", "crlf"])
     async def cyrillify(self, ctx, *text):
