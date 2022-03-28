@@ -165,6 +165,7 @@ async def offers_resp(bot, message: discord.Message):
         "GOG",
         "ubi",
         "key",
+        "code",
     ]
 
     if (
