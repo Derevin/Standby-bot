@@ -124,7 +124,7 @@ class Hangman(commands.Cog, name="Void Hangman"):
                         and len(m.content) < 86
                     )
 
-                msg = await self.bot.wait_for("message", timeout=30, check=check)
+                msg = await self.bot.wait_for("message", timeout=90, check=check)
 
             except asyncio.TimeoutError:
                 await ctx.send(
@@ -133,7 +133,9 @@ class Hangman(commands.Cog, name="Void Hangman"):
                 game.status = "Inactive"
             else:
                 game.setup(
-                    msg.content, ctx.author, ctx.channel,
+                    msg.content,
+                    ctx.author,
+                    ctx.channel,
                 )
                 await ctx.send(embed=game.embed)
 
