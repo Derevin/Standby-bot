@@ -7,6 +7,7 @@ import re
 import aiohttp
 import random
 import datetime
+from db.db_func import ensure_usr_existence
 
 THANKS_LDR_HEADER = "Voids leaderboard"
 THANKS_LDR_THANKS_HEADER = "Voids"
@@ -14,6 +15,9 @@ THANKS_LDR_USER_HEADER = "User"
 STARBOARD_LDR_HEADER = "Stars leaderboard"
 STARBOARD_LDR_STARS_HEADER = "Stars"
 STARBOARD_LDR_USER_HEADER = "User"
+SKULLS_LDR_HEADER = "Skulls leaderboard"
+SKULLS_LDR_SKULLS_HEADER = "💀"
+SKULLS_LDR_USER_HEADER = "Metalhead"
 MAX_LEADERBOARD_PRINT = 12
 
 
@@ -128,6 +132,53 @@ class Services(commands.Cog):
         )
         await ctx.channel.send(embed=embed)
 
+    @commands.command()
+    async def skull(self, ctx):
+
+        if not ctx.author.id == JORM_ID:
+            await ctx.send(
+                "https://cdn.discordapp.com/attachments/744224801429782679/805832792004755486/keiyb.png"
+            )
+            return
+
+        if not ctx.message.mentions:
+            await ctx.send("Please mention the user(s) you want to give skulls to.")
+            return
+
+        for guesser in ctx.message.mentions:
+
+            await ensure_usr_existence(self.bot, guesser.id, guesser.guild.id)
+
+            await self.bot.pg_pool.execute(
+                f"UPDATE usr SET skulls = skulls + 1 WHERE usr_id = {guesser.id}"
+            )
+            await ctx.send(f"Gave a 💀 to {guesser.mention}")
+
+    @commands.command(
+        brief="Displays the skull leaderboard.",
+    )
+    async def skullboard(self, ctx):
+        skull_ldr = await self.bot.pg_pool.fetch(
+            f"SELECT usr_id, SUM(skulls) as sum_skulls "
+            f"FROM usr "
+            f"WHERE guild_id = {ctx.guild.id} "
+            f"GROUP BY usr_id "
+            f"HAVING SUM(skulls) > 0 "
+            f"ORDER BY sum_skulls DESC ;"
+        )
+
+        embed = await build_leaderboard_embed(
+            ctx,
+            skull_ldr,
+            "sum_skulls",
+            "usr_id",
+            VIE_PURPLE,
+            SKULLS_LDR_SKULLS_HEADER,
+            SKULLS_LDR_USER_HEADER,
+            SKULLS_LDR_HEADER,
+        )
+        await ctx.channel.send(embed=embed)
+
 
 async def build_leaderboard_embed(
     ctx,
@@ -141,7 +192,7 @@ async def build_leaderboard_embed(
 ):
     if not leaderboard:
         return discord.Embed(color=color)
-    ljust_num = len(str(header_count))
+    ljust_num = len(str(header_count)) if str(header_count).isalnum() else 3
     ldr = []
     cnt = 0
 
@@ -160,9 +211,9 @@ async def build_leaderboard_embed(
             usr = ctx.guild.get_member(rec[usr_col_name])
             if usr:
                 num_spaces = ljust_num - len(str(rec[count_col_name])) + 1
-                spaces = " " * num_spaces
+                spaces = EMPTY2 * num_spaces
                 ldr.append(
-                    f"{rec[count_col_name]}`{spaces}` {usr.name}#{usr.discriminator}"
+                    f"{rec[count_col_name]}{spaces} {usr.name}#{usr.discriminator}"
                 )
             if keep_printing:
                 prev_count = rec[count_col_name]
@@ -242,7 +293,9 @@ async def urban_embed(query, page):
                 web_link = f"https://www.urbandictionary.com/define.php?term={word}"
                 web_link = re.sub(" ", "%20", web_link)
                 embed.add_field(
-                    name="Word", value=f"[{word}]({web_link})", inline=False,
+                    name="Word",
+                    value=f"[{word}]({web_link})",
+                    inline=False,
                 )
                 embed.add_field(
                     name="Definition",

@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS "guild" (
 """
 
 ALTER_USER = 'ALTER TABLE "usr" ADD CONSTRAINT "usr_fk0" FOREIGN KEY ("guild_id") REFERENCES "guild"("guild_id");'
+ALTER_USER_ADD_SKULLS = 'ALTER TABLE "usr" ADD "skulls" integer DEFAULT 0'
 
 ALTER_STARBOARD = """
 ALTER TABLE "starboard" ADD CONSTRAINT "starboard_fk0" FOREIGN KEY ("usr_id") REFERENCES "usr"("usr_id");
@@ -56,7 +57,7 @@ ALTER TABLE "tmers" ADD CONSTRAINT "usr_fk0" FOREIGN KEY ("usr_id") REFERENCES "
 
 
 ALTER_GUILD_ADD_PERMS = """
-ALTER TABLE "guild" ADD  "config" TEXT;
+ALTER TABLE "guild" ADD "config" TEXT;
 """
 
 CREATE_BDAYS = """
@@ -79,6 +80,7 @@ async def create_tables(con):
         await con.execute(CREATE_USER)
         await con.execute(CREATE_STARBOARD)
         await con.execute(CREATE_GUILD)
+        await con.execute(ALTER_USER_ADD_SKULLS)
         await con.execute(ALTER_USER)
         await con.execute(ALTER_STARBOARD)
         print("successfully ran db script batch 1")
