@@ -128,6 +128,7 @@ memes = {
         "https://cdn.discordapp.com/attachments/744224801429782679/943556748734771260/unknown.png"
     ),
     "Megamind No bitches?": "https://cdn.discordapp.com/attachments/744224801429782679/950791113487319070/unknown.png",
+    "Live Kross reaction": "https://cdn.discordapp.com/attachments/744224801429782679/962417461192441896/kross.gif",
 }
 
 meme_names = "\n".join(sorted(list(memes.keys()), key=str.casefold))
