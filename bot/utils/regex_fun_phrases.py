@@ -226,6 +226,17 @@ regex_fun_phrases_commands.append(
     ("^.{0,4}היום יום רביעי\\W{0,4}$", reviee_resp, re.M | re.I)
 )
 
+
+async def treciadienis_resp(bot, message: discord.Message):
+    await message.channel.send("mano bičiuliai")
+    await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
+
+
+regex_fun_phrases_commands.append(
+    ("^.{0,4}jau tre[cč]iadienis\\W{0,4}$", treciadienis_resp, re.M | re.I)
+)
+
+
 ### tuesday
 
 
