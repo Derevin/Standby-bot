@@ -7,6 +7,7 @@ import json
 import sys
 import traceback
 from datetime import datetime, timedelta
+from utils.util_functions import dynamic_timestamp
 from settings import *
 from db.db_func import ensure_guild_existence, ensure_usr_existence
 
@@ -41,8 +42,9 @@ class Timers(commands.Cog):
                         continue
                     channel = self.bot.get_channel(params_dict["channel"])
                     if channel:
+                        print(type(rec["expires"]))
                         await channel.send(
-                            f"<@{rec['usr_id']}> {rec['expires'].strftime('%b %d, %H:%M')}: {params_dict['msg']}"
+                            f"<@{rec['usr_id']}> {dynamic_timestamp(rec['expires'],'long')}: {params_dict['msg']}"
                         )
 
                     await self.bot.pg_pool.execute(
@@ -102,10 +104,9 @@ class Timers(commands.Cog):
             params_json,
         )
         print(tfuture)
-        frmat = "%b %d, %H:%M" if timenow.year == tfuture.year else "%b %d %Y, %H:%M"
         await ctx.channel.send(
-            f"{timenow.strftime('%b %d, %H:%M')} (bot time): Your reminder has been registered "
-            f"and you will be reminded on {tfuture.strftime(frmat)}."
+            f"{dynamic_timestamp(timenow, 'short')}: Your reminder has been registered "
+            f"and you will be reminded on {dynamic_timestamp(tfuture, 'long')}."
         )
 
 
