@@ -1,5 +1,6 @@
 import discord
 import re
+import datetime
 
 
 def get_emoji(guild, name):
@@ -58,3 +59,8 @@ def get_user(guild, query):
 def int_to_emoji(num):
     emojis = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"]
     return emojis[num]
+
+
+def dynamic_timestamp(time, frmat):
+    mod = "t" if frmat == "short" else "R" if frmat == "delta" else "f"
+    return f"<t:{int(datetime.datetime.timestamp(time))}:{mod}>"
