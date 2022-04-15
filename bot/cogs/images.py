@@ -1,6 +1,6 @@
 import aiohttp
-from discord.ext import commands
-import discord
+from nextcord.ext import commands
+import nextcord
 import random
 
 
@@ -17,7 +17,7 @@ class Images(commands.Cog):
                 ) as r:
                     data = await r.json()
 
-                    embed = discord.Embed(title="Meow")
+                    embed = nextcord.Embed(title="Meow")
                     embed.set_image(url=data[0]["url"])
                     embed.set_footer(text="https://thecatapi.com")
 
@@ -30,7 +30,7 @@ class Images(commands.Cog):
                 async with cs.get("https://dog.ceo/api/breeds/image/random") as r:
                     data = await r.json()
 
-                    embed = discord.Embed(title="Woof")
+                    embed = nextcord.Embed(title="Woof")
                     embed.set_image(url=data["message"])
                     embed.set_footer(text="https://dog.ceo")
 
@@ -43,7 +43,7 @@ class Images(commands.Cog):
                 async with cs.get("https://randomfox.ca/floof/") as r:
                     data = await r.json()
 
-                    embed = discord.Embed(title="What does the fox say")
+                    embed = nextcord.Embed(title="What does the fox say")
                     embed.set_image(url=data["image"])
                     embed.set_footer(text="https://randomfox.ca")
 

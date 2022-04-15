@@ -1,6 +1,6 @@
 import random
 import re
-from discord.ext import commands
+from nextcord.ext import commands
 
 
 class Rando(commands.Cog):

@@ -1,5 +1,5 @@
-from discord.ext import commands, tasks
-import discord
+from nextcord.ext import commands, tasks
+import nextcord
 import datetime
 from settings import *
 from utils.util_functions import *
@@ -26,7 +26,7 @@ class Reposts(commands.Cog):
         reposter_duration = datetime.timedelta(days=1)
 
         if (
-            isinstance(payload, discord.RawReactionActionEvent)
+            isinstance(payload, nextcord.RawReactionActionEvent)
             and payload.emoji == reemoji
         ):
             channel = self.bot.get_channel(payload.channel_id)

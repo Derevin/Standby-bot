@@ -1,4 +1,4 @@
-import discord
+import nextcord
 import re
 from settings import *
 from utils.regex_fun_phrases import regex_fun_phrases_commands
@@ -21,13 +21,13 @@ prio_db_commands = []
 prio_db_commands.extend(regex_reputation_command)
 
 
-async def handle_commands(bot, message: discord.Message, cmnds):
+async def handle_commands(bot, message: nextcord.Message, cmnds):
     for trig, resp, flags in cmnds:
         if re.search(trig, message.content, flags) is not None:
             await resp(bot, message)
 
 
-async def regex_handler(bot, message: discord.Message):
+async def regex_handler(bot, message: nextcord.Message):
 
     if message.content.startswith(PREFIX):
         return
@@ -42,4 +42,3 @@ async def regex_handler(bot, message: discord.Message):
 
     if message.guild.id == GUILD_ID:
         await handle_commands(bot, message, regex_vftv_commands)
-

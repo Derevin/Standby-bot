@@ -1,5 +1,5 @@
-from discord.ext import commands
-import discord
+from nextcord.ext import commands
+import nextcord
 from settings import *
 from utils.util_functions import *
 from inspect import Parameter
@@ -66,7 +66,7 @@ class Services(commands.Cog):
     @commands.command(brief="Returns the Urban Dictionary definition of a word")
     async def urban(self, ctx, *, query):
         response = await urban_embed(query, 1)
-        if isinstance(response, discord.Embed):
+        if isinstance(response, nextcord.Embed):
             message = await ctx.send(embed=response)
             await message.add_reaction("⬅️")
             await message.add_reaction("➡️")
@@ -191,7 +191,7 @@ async def build_leaderboard_embed(
     header_title,
 ):
     if not leaderboard:
-        return discord.Embed(color=color)
+        return nextcord.Embed(color=color)
     ljust_num = len(str(header_count)) if str(header_count).isalnum() else 3
     ldr = []
     cnt = 0
@@ -224,14 +224,14 @@ async def build_leaderboard_embed(
     for line in ldr:
         merged_str += f"{line}\n"
 
-    embed = discord.Embed(color=color)
+    embed = nextcord.Embed(color=color)
     embed.add_field(name=header_merged, value=merged_str)
     embed.title = header_title
     return embed
 
 
 async def urban_handler(bot, payload):
-    if isinstance(payload, discord.RawReactionActionEvent):
+    if isinstance(payload, nextcord.RawReactionActionEvent):
         channel = bot.get_channel(payload.channel_id)
         try:
             message = await channel.fetch_message(payload.message_id)
@@ -265,9 +265,9 @@ async def urban_handler(bot, payload):
             pass
 
 
-def avatar_embed(user: discord.User) -> discord.Embed:
-    embed = discord.Embed(color=PALE_GREEN)
-    link = user.avatar_url
+def avatar_embed(user: nextcord.User) -> nextcord.Embed:
+    embed = nextcord.Embed(color=PALE_GREEN)
+    link = user.avatar.url
     embed.set_image(url=link)
     embed.title = user.display_name + " (" + str(user) + ")"
     text = "Direct Link"
@@ -287,7 +287,7 @@ async def urban_embed(query, page):
                 entries = data["list"]
                 pages = len(entries)
                 entry = entries[page - 1]
-                embed = discord.Embed(color=DARK_ORANGE)
+                embed = nextcord.Embed(color=DARK_ORANGE)
                 embed.title = f"Page {page}/{pages}"
                 word = entry["word"]
                 web_link = f"https://www.urbandictionary.com/define.php?term={word}"

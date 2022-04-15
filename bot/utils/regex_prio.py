@@ -1,4 +1,4 @@
-import discord
+import nextcord
 import re
 import random
 import asyncio
@@ -8,7 +8,7 @@ from settings import *
 regex_prio_commands = []
 
 
-async def link_resp(bot, message: discord.Message):
+async def link_resp(bot, message: nextcord.Message):
     if re.search(
         r"\|\|.*https:\/\/(\w+\.)?discord(app)?\.com\/channels\/\d+\/\d+\/\d+.*\|\|",
         message.content,
@@ -18,7 +18,7 @@ async def link_resp(bot, message: discord.Message):
 
     ids = re.search(r"\d+\/\d+\/\d+", message.content).group()
     guild_id, channel_id, message_id = re.split(r"\/", ids)
-    channel = discord.utils.get(message.guild.text_channels, id=int(channel_id))
+    channel = nextcord.utils.get(message.guild.text_channels, id=int(channel_id))
     source_message = None
 
     try:

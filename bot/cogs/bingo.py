@@ -1,5 +1,5 @@
 import asyncio
-from discord.ext import commands
+from nextcord.ext import commands
 import random
 from utils.util_functions import *
 

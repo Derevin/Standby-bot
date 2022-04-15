@@ -1,5 +1,5 @@
-from discord.ext import commands, tasks
-import discord
+from nextcord.ext import commands, tasks
+import nextcord
 import datetime
 from settings import *
 from utils.util_functions import *
@@ -134,7 +134,7 @@ class Birthdays(commands.Cog):
         else:
             txt = bday_havers[0]
         print(txt)
-        general = discord.utils.get(self.bot.get_all_channels(), name="general")
+        general = nextcord.utils.get(self.bot.get_all_channels(), name="general")
         await general.send("🎂🎂🎂")
         await general.send("Happy Birthday " + txt + "!")
 

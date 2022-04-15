@@ -1,5 +1,5 @@
 import re
-import discord
+import nextcord
 from db.db_func import ensure_usr_existence
 
 regex_reputation_command = []
@@ -7,7 +7,7 @@ regex_reputation_command = []
 THANK_TYPE = "Void"
 
 
-async def reputation_resp(bot, message: discord.Message):
+async def reputation_resp(bot, message: nextcord.Message):
     debugprint = ""
     debugprint += "debug: reputation start\n"
     if message:
@@ -38,4 +38,3 @@ async def reputation_resp(bot, message: discord.Message):
 regex_reputation_command.append(
     (r"thanks?( (yo)?u)?( for .{2,60})?\W*<.{8,28}>", reputation_resp, re.M | re.I)
 )
-

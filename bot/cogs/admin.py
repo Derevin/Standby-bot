@@ -1,5 +1,5 @@
-from discord.ext import commands
-import discord
+from nextcord.ext import commands
+import nextcord
 import asyncio
 import random
 import re
@@ -23,7 +23,7 @@ class Admin(commands.Cog):
 
         n_voice = len(guild.voice_channels)
         n_text = len(guild.text_channels)
-        embed = discord.Embed()
+        embed = nextcord.Embed()
         embed.add_field(name="Server Name", value=guild.name, inline=False)
         embed.add_field(name="Server ID", value=guild.id)
         embed.add_field(name="# Voice channels", value=n_voice, inline=False)
@@ -200,7 +200,7 @@ class Admin(commands.Cog):
                 "You can only run this command in a mod channel."
             )
 
-        embed = discord.Embed(color=PALE_YELLOW)
+        embed = nextcord.Embed(color=PALE_YELLOW)
         embed.title = "A vote has been requested"
         embed.add_field(name="Started by", value=ctx.author.mention)
 
@@ -258,7 +258,7 @@ class Admin(commands.Cog):
             return
 
         target = ctx.message.mentions[0]
-        avatar_url = target.avatar_url
+        avatar_url = target.avatar.url
         avatar = Image.open(requests.get(avatar_url, stream=True).raw)
         avatar = avatar.convert("RGBA")
         border = Image.open(requests.get(GINNY_TRANSPARENT_URL, stream=True).raw)
@@ -281,7 +281,7 @@ class Admin(commands.Cog):
         avatar.save(obj, "png")
         obj.seek(0)
 
-        await ctx.send(file=discord.File(obj, filename="pic.png"))
+        await ctx.send(file=nextcord.File(obj, filename="pic.png"))
 
     @commands.command(brief="Print a database table")
     @commands.has_any_role(*MOD_ROLES)
@@ -313,7 +313,7 @@ class Admin(commands.Cog):
         await embed_message.edit(embed=embed)
 
 
-def message_embed(msg, cmd, trigger_author) -> discord.Embed:
+def message_embed(msg, cmd, trigger_author) -> nextcord.Embed:
 
     embed_titles = {
         "copy": "Copied message",
@@ -327,9 +327,9 @@ def message_embed(msg, cmd, trigger_author) -> discord.Embed:
         "link": "Linked by",
     }
 
-    embed = discord.Embed(color=PALE_BLUE)
+    embed = nextcord.Embed(color=PALE_BLUE)
     embed.title = embed_titles[cmd]
-    embed.set_thumbnail(url=msg.author.avatar_url)
+    embed.set_thumbnail(url=msg.author.avatar.url)
     embed.description = msg.content
     embed.add_field(name="Channel", value=msg.channel.mention)
     timestamp = msg.created_at + datetime.timedelta(hours=2)

@@ -1,5 +1,5 @@
-from discord.ext import commands
-import discord
+from nextcord.ext import commands
+import nextcord
 from utils.util_functions import *
 
 
@@ -29,7 +29,7 @@ class Voice(commands.Cog):
     @commands.Cog.listener()
     async def on_guild_channel_update(self, before, after):
 
-        if isinstance(after, discord.channel.VoiceChannel):
+        if isinstance(after, nextcord.channel.VoiceChannel):
             role = get_role(after.guild, before.name)
             if role:
                 await role.edit(name=after.name)

@@ -1,5 +1,5 @@
-from discord.ext import commands, tasks
-import discord
+from nextcord.ext import commands, tasks
+import nextcord
 import asyncio
 import random
 import re
@@ -31,18 +31,18 @@ class Rules(commands.Cog):
             "https://cdn.discordapp.com/attachments/744224801429782679/748495451744894976/Ginny_Welcome.png"
         )
         await asyncio.sleep(delay)
-        rules_embed = discord.Embed(color=VIE_PURPLE)
+        rules_embed = nextcord.Embed(color=VIE_PURPLE)
         rules_embed.title = r"__RULES__"
         rules_embed.description = f"\n{EMPTY}\n".join(RULES_LIST)
         rules_embed.description
         await rules_ch.send(embed=rules_embed)
-        info_embed = discord.Embed(color=VIE_PURPLE)
+        info_embed = nextcord.Embed(color=VIE_PURPLE)
         info_embed.title = r"__GENERAL INFO__"
         info_embed.description = GENERAL_INFO
         await rules_ch.send(embed=info_embed)
         await asyncio.sleep(delay)
 
-        alli_embed = discord.Embed(color=VIE_PURPLE)
+        alli_embed = nextcord.Embed(color=VIE_PURPLE)
         alli_embed.title = "Step 1 - React to this post"
         alli_embed.description = f"""If you're part of a clan in the Warframe alliance, react with {get_emoji(vie,'Alli')}.
         If you're coming from anywhere else, react with {get_emoji(vie,'BlobWave')}."""
@@ -54,7 +54,7 @@ class Rules(commands.Cog):
         await alli_msg.add_reaction(get_emoji(vie, "BlobWave"))
         await asyncio.sleep(delay)
 
-        clan_embed = discord.Embed(color=VIE_PURPLE)
+        clan_embed = nextcord.Embed(color=VIE_PURPLE)
 
         clan_embed.title = "Step 2 - If you're part of the Warframe alliance, react to this post with your clan's emoji"
         clan_desc = ""
@@ -65,7 +65,7 @@ class Rules(commands.Cog):
         for clan in CLANS_PART_1:
             await clan_msg.add_reaction(get_emoji(vie, CLANS_PART_1[clan]))
 
-        clan_embed = discord.Embed(color=VIE_PURPLE)
+        clan_embed = nextcord.Embed(color=VIE_PURPLE)
 
         clan_desc = ""
         for clan in CLANS_PART_2:
@@ -77,7 +77,7 @@ class Rules(commands.Cog):
 
         await asyncio.sleep(delay)
 
-        opt_embed = discord.Embed(color=VIE_PURPLE)
+        opt_embed = nextcord.Embed(color=VIE_PURPLE)
         opt_embed.title = (
             "Step 3 - If you want to be notified for things like updates, events and giveaways,"
             " or to access certain opt-in channels, react to this post"
@@ -262,8 +262,8 @@ class Rules(commands.Cog):
 
 async def welcome_message(bot, member):
     if member.guild.id == GUILD_ID:
-        general = discord.utils.get(member.guild.text_channels, name="general")
-        rules_ch = discord.utils.get(member.guild.text_channels, name="rules")
+        general = nextcord.utils.get(member.guild.text_channels, name="general")
+        rules_ch = nextcord.utils.get(member.guild.text_channels, name="rules")
         rules_text = rules_ch.mention if rules_ch else "rules"
         if general:
             message = (
@@ -289,12 +289,14 @@ async def welcome_message(bot, member):
 
 async def leave_message(bot, member):
     if member.guild.id == GUILD_ID:
-        channel = discord.utils.get(member.guild.text_channels, name=ERROR_CHANNEL_NAME)
+        channel = nextcord.utils.get(
+            member.guild.text_channels, name=ERROR_CHANNEL_NAME
+        )
         if channel:
             name = member.name
             time = datetime.datetime.utcnow()
             time = time.strftime("%b %d, %H:%M")
-            embed = discord.Embed(color=GREY)
+            embed = nextcord.Embed(color=GREY)
             embed.title = "The void grows smaller..."
             embed.set_thumbnail(
                 url="https://cdn.discordapp.com/attachments/744224801429782679/747945281248559184/grave.png"
@@ -312,7 +314,7 @@ async def leave_message(bot, member):
                 "Critical paper cut",
                 "Executed by the ICC for their numerous war crimes in Albania",
             ]
-            animu = discord.utils.get(member.guild.text_channels, name="animu")
+            animu = nextcord.utils.get(member.guild.text_channels, name="animu")
             if animu:
                 causes.append(f"Too much time spent in {animu.mention}")
             embed.add_field(name="Time of death", value=time)
@@ -324,7 +326,7 @@ async def leave_message(bot, member):
 
 async def role_handler(bot, payload):
     if payload.user_id != BOT_ID and isinstance(
-        payload, discord.RawReactionActionEvent
+        payload, nextcord.RawReactionActionEvent
     ):
 
         channel = bot.get_channel(payload.channel_id)
@@ -341,7 +343,7 @@ async def role_handler(bot, payload):
             )
             if match:
                 role_id = int(match.group(1))
-                role = discord.utils.get(message.guild.roles, id=role_id)
+                role = nextcord.utils.get(message.guild.roles, id=role_id)
                 await toggle_role(user, role, payload.event_type)
             else:
                 await message.remove_reaction(payload.emoji, user)

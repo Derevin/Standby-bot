@@ -1,6 +1,6 @@
 import asyncio
-from discord.ext import commands
-import discord
+from nextcord.ext import commands
+import nextcord
 import re
 import random
 from settings import *
@@ -24,7 +24,7 @@ class HangmanGame:
 
     def create_embed(self):
 
-        embed = discord.Embed(color=PALE_GREEN)
+        embed = nextcord.Embed(color=PALE_GREEN)
         title = re.sub(" ", "   ", self.progress)
         title = re.sub("_", r"\_ ", title)
         title = re.sub(r"(\w)", r"\1 ", title)
@@ -118,9 +118,15 @@ class Hangman(commands.Cog, name="Void Hangman"):
             try:
 
                 def check(m):
+
                     return (
-                        type(m.channel) == discord.channel.DMChannel
-                        and m.channel.recipient == ctx.author
+                        type(m.channel) == nextcord.channel.DMChannel
+                        and (
+                            m.channel.recipient == ctx.author
+                            or m.channel.recipient is None
+                            # Known issue with nextcord 2.0. Small chance it might become an issue
+                            # if we add more features that require users to DM the bot.
+                        )
                         and len(m.content) < 86
                     )
 

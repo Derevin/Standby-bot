@@ -1,5 +1,5 @@
-from discord.ext import commands, tasks
-import discord
+from nextcord.ext import commands, tasks
+import nextcord
 import asyncio
 import random
 import re

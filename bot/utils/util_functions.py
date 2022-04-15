@@ -1,14 +1,14 @@
-import discord
+import nextcord
 import re
 import datetime
 
 
 def get_emoji(guild, name):
-    return discord.utils.get(guild.emojis, name=name)
+    return nextcord.utils.get(guild.emojis, name=name)
 
 
 def get_role(guild, name):
-    return discord.utils.find(lambda r: r.name.lower() == name.lower(), guild.roles)
+    return nextcord.utils.find(lambda r: r.name.lower() == name.lower(), guild.roles)
 
 
 def mention_role(guild, name):
@@ -22,9 +22,9 @@ def mention_role(guild, name):
 def get_channel(guild, name):
     match = re.search(r"^<#(\d+)>$", name)
     if match:
-        return discord.utils.get(guild.text_channels, id=int(match.group(1)))
+        return nextcord.utils.get(guild.text_channels, id=int(match.group(1)))
     else:
-        return discord.utils.get(guild.text_channels, name=name)
+        return nextcord.utils.get(guild.text_channels, name=name)
 
 
 def get_user(guild, query):

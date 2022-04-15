@@ -1,5 +1,5 @@
-from discord.ext import commands
-import discord
+from nextcord.ext import commands
+import nextcord
 from settings import *
 from utils.util_functions import *
 import datetime
@@ -17,7 +17,7 @@ class Logs(commands.Cog):
         embed = await deleted_embed(payload, channel)
         if embed:
             guild = channel.guild
-            logs = discord.utils.get(guild.text_channels, name=LOGS_CHANNEL_NAME)
+            logs = nextcord.utils.get(guild.text_channels, name=LOGS_CHANNEL_NAME)
             if logs:
                 await logs.send(embed=embed)
 
@@ -28,7 +28,7 @@ class Logs(commands.Cog):
         if embed:
             channel = self.bot.get_channel(payload.channel_id)
             guild = channel.guild
-            logs = discord.utils.get(guild.text_channels, name=LOGS_CHANNEL_NAME)
+            logs = nextcord.utils.get(guild.text_channels, name=LOGS_CHANNEL_NAME)
             if logs:
                 await logs.send(embed=embed)
 
@@ -41,13 +41,13 @@ class Logs(commands.Cog):
         embed = await voice_embed(member, before.channel, after.channel)
 
         guild = member.guild
-        logs = discord.utils.get(guild.text_channels, name=LOGS_CHANNEL_NAME)
+        logs = nextcord.utils.get(guild.text_channels, name=LOGS_CHANNEL_NAME)
         if logs:
             await logs.send(embed=embed)
 
 
 async def deleted_embed(payload, channel):
-    embed = discord.Embed(color=SOFT_RED)
+    embed = nextcord.Embed(color=SOFT_RED)
     embed.title = "Message deleted"
     if payload.cached_message is not None:
         message = payload.cached_message
@@ -57,7 +57,7 @@ async def deleted_embed(payload, channel):
         if len(embed.description) > 950:
             embed.description = embed.description[0:950]
             embed.description += "[Message had to be shortened]"
-        embed.set_thumbnail(url=message.author.avatar_url)
+        embed.set_thumbnail(url=message.author.avatar.url)
         embed.add_field(name="Author", value=message.author.mention)
         embed.add_field(name="Channel", value=message.channel.mention)
         if message.attachments:
@@ -95,7 +95,7 @@ async def edited_embed(bot, payload):
 
         channel = before.channel
         jump_url = before.jump_url
-        avatar_url = before.author.avatar_url
+        avatar_url = before.author.avatar.url
         attachment_url = before.attachments[0].url if before.attachments else None
 
     else:
@@ -114,10 +114,10 @@ async def edited_embed(bot, payload):
         channel = await bot.fetch_channel(channel_id)
         message = await channel.fetch_message(message_id)
         jump_url = message.jump_url
-        avatar_url = author.avatar_url
+        avatar_url = author.avatar.url
         attachment_url = message.attachments[0].url if message.attachments else None
 
-    embed = discord.Embed(color=LIGHT_BLUE)
+    embed = nextcord.Embed(color=LIGHT_BLUE)
     embed.title = "Message edited"
     if len(before_message) > 950:
         before_message = before_message[0:950]
@@ -143,7 +143,7 @@ async def edited_embed(bot, payload):
 
 
 async def voice_embed(member, before, after):
-    embed = discord.Embed(color=PALE_BLUE)
+    embed = nextcord.Embed(color=PALE_BLUE)
     embed.title = "Voice channel update"
 
     if before and after:

@@ -1,5 +1,5 @@
-from discord.ext import commands, tasks
-import discord
+from nextcord.ext import commands, tasks
+import nextcord
 import asyncio
 import random
 import re
@@ -49,7 +49,7 @@ class Giveaways(commands.Cog):
         )
         end_time = now + delta
         embed = giveaway_embed(end_time, num_winners, ctx.author, title)
-        giveaway_channel = discord.utils.get(
+        giveaway_channel = nextcord.utils.get(
             ctx.guild.text_channels, name=GIVEAWAY_CHANNEL_NAME
         )
         giveaway = await giveaway_channel.send(embed=embed)
@@ -61,7 +61,9 @@ class Giveaways(commands.Cog):
 
         await ctx.message.delete()
 
-        channel = discord.utils.get(ctx.guild.text_channels, name=GIVEAWAY_CHANNEL_NAME)
+        channel = nextcord.utils.get(
+            ctx.guild.text_channels, name=GIVEAWAY_CHANNEL_NAME
+        )
 
         if id:
             id = "".join(id)
@@ -98,7 +100,9 @@ class Giveaways(commands.Cog):
             else:
                 number, id = int(id), number
 
-        channel = discord.utils.get(ctx.guild.text_channels, name=GIVEAWAY_CHANNEL_NAME)
+        channel = nextcord.utils.get(
+            ctx.guild.text_channels, name=GIVEAWAY_CHANNEL_NAME
+        )
         giveaway = None
 
         if id == "last":
@@ -171,7 +175,9 @@ class Giveaways(commands.Cog):
 
         await ctx.message.delete()
 
-        channel = discord.utils.get(ctx.guild.text_channels, name=GIVEAWAY_CHANNEL_NAME)
+        channel = nextcord.utils.get(
+            ctx.guild.text_channels, name=GIVEAWAY_CHANNEL_NAME
+        )
         giveaway = None
 
         if id:
@@ -218,7 +224,7 @@ class Giveaways(commands.Cog):
             pass
         if guild:
             channels = await guild.fetch_channels()
-            giveaway_channel = discord.utils.get(channels, name=GIVEAWAY_CHANNEL_NAME)
+            giveaway_channel = nextcord.utils.get(channels, name=GIVEAWAY_CHANNEL_NAME)
             if not giveaway_channel:
                 return
             await giveaway_lock.acquire()
@@ -246,7 +252,7 @@ async def who_reacted(message, emoji):
 
 
 async def giveaway_handler(bot, payload):
-    if isinstance(payload, discord.RawReactionActionEvent):
+    if isinstance(payload, nextcord.RawReactionActionEvent):
         channel = bot.get_channel(payload.channel_id)
         message = await channel.fetch_message(payload.message_id)
         if (
@@ -323,9 +329,9 @@ def is_finished_giveaway(message):
     )
 
 
-def giveaway_embed(end_time, winners, author, title) -> discord.Embed:
+def giveaway_embed(end_time, winners, author, title) -> nextcord.Embed:
 
-    embed = discord.Embed(color=LIGHT_BLUE)
+    embed = nextcord.Embed(color=LIGHT_BLUE)
     embed.title = ":tada:**   " + title.upper() + " GIVEAWAY   **:tada:"
     now = datetime.datetime.utcnow()
     remaining = delta_to_text(end_time - now)
@@ -380,4 +386,3 @@ def delta_to_text(delta) -> str:
 
 def setup(bot):
     bot.add_cog(Giveaways(bot))
-

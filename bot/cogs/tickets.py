@@ -1,5 +1,5 @@
-from discord.ext import commands
-import discord
+from nextcord.ext import commands
+import nextcord
 from cogs.error_handler import unhandled_error_embed
 from settings import *
 from inspect import Parameter
@@ -40,7 +40,7 @@ class Tickets(commands.Cog):
         self.bot = bot
 
     @commands.Cog.listener()
-    async def on_message(self, message: discord.Message):
+    async def on_message(self, message: nextcord.Message):
         if message.author.bot:
             return
         if (
@@ -50,7 +50,7 @@ class Tickets(commands.Cog):
             try:
                 await message.delete()
             except Exception as e:
-                channel = discord.utils.get(
+                channel = nextcord.utils.get(
                     message.guild.text_channels, name=ERROR_CHANNEL_NAME
                 )
                 if channel is not None:
@@ -84,7 +84,7 @@ class Tickets(commands.Cog):
 
         active_ticket_cat = await self.get_or_create_active_cat(ctx)
         overwrites = {
-            ctx.guild.default_role: discord.PermissionOverwrite(read_messages=False)
+            ctx.guild.default_role: nextcord.PermissionOverwrite(read_messages=False)
         }
 
         ticket_chnl = await active_ticket_cat.create_text_channel(
@@ -94,7 +94,7 @@ class Tickets(commands.Cog):
         )
         await ticket_chnl.set_permissions(ctx.message.author, read_messages=True)
         for x in MOD_ROLES:
-            role = discord.utils.get(ctx.guild.roles, name=x)
+            role = nextcord.utils.get(ctx.guild.roles, name=x)
             if role is not None:
                 await ticket_chnl.set_permissions(role, read_messages=True)
 
@@ -143,7 +143,7 @@ class Tickets(commands.Cog):
         await ctx.channel.delete()
 
     async def get_tickets_log_embed(self, message):
-        embed = discord.Embed(colour=DARK_BLUE)
+        embed = nextcord.Embed(colour=DARK_BLUE)
         if message.attachments:
             embed.set_image(url=message.attachments[0].url)
         content_msg = "[Empty message]"
@@ -152,7 +152,7 @@ class Tickets(commands.Cog):
             if len(content_msg) > 1800:
                 content_msg = content_msg[0:1800]
                 content_msg += " [Message too long to be logged]"
-        embed.set_thumbnail(url=message.author.avatar_url)
+        embed.set_thumbnail(url=message.author.avatar.url)
         embed.title = message.author.name
         embed.description = content_msg
         embed.add_field(name="Channel", value=message.channel.name)
@@ -163,19 +163,21 @@ class Tickets(commands.Cog):
         chnl = await cat.create_text_channel(
             name=CLAIMABLE_CHANNEL_NAME, reason="Making a claimable channel."
         )
-        muted_role = discord.utils.get(cat.guild.roles, name="Muted")
+        muted_role = nextcord.utils.get(cat.guild.roles, name="Muted")
         if muted_role:
             await chnl.set_permissions(muted_role, send_messages=True)
         await chnl.send(CLAIMABLE_CHANNEL_MESSAGE)
 
     async def get_or_create_tickets_log(self, ctx):
         resolved_cat = await self.get_or_create_resolved_cat(ctx)
-        tickets_log = discord.utils.get(
+        tickets_log = nextcord.utils.get(
             resolved_cat.channels, name=TICKETS_LOG_CHANNEL_NAME
         )
         if tickets_log is None:
             overwrites = {
-                ctx.guild.default_role: discord.PermissionOverwrite(read_messages=False)
+                ctx.guild.default_role: nextcord.PermissionOverwrite(
+                    read_messages=False
+                )
             }
 
             tickets_log = await resolved_cat.create_text_channel(
@@ -184,13 +186,13 @@ class Tickets(commands.Cog):
                 overwrites=overwrites,
             )
             for x in MOD_ROLES:
-                role = discord.utils.get(ctx.guild.roles, name=x)
+                role = nextcord.utils.get(ctx.guild.roles, name=x)
                 if role is not None:
                     await tickets_log.set_permissions(role, read_messages=True)
         return tickets_log
 
     async def get_or_create_claimable_cat(self, ctx):
-        claimable_ticket_cat = discord.utils.get(
+        claimable_ticket_cat = nextcord.utils.get(
             ctx.guild.categories, name=CLAIMABLE_TICKETS_CAT_NAME
         )
         if claimable_ticket_cat is None:
@@ -201,7 +203,7 @@ class Tickets(commands.Cog):
         return claimable_ticket_cat
 
     async def get_or_create_active_cat(self, ctx):
-        active_ticket_cat = discord.utils.get(
+        active_ticket_cat = nextcord.utils.get(
             ctx.guild.categories, name=ACTIVE_TICKETS_CAT_NAME
         )
         if active_ticket_cat is None:
@@ -212,7 +214,7 @@ class Tickets(commands.Cog):
         return active_ticket_cat
 
     async def get_or_create_resolved_cat(self, ctx):
-        resolved_ticket_cat = discord.utils.get(
+        resolved_ticket_cat = nextcord.utils.get(
             ctx.guild.categories, name=RESOLVED_TICKETS_CAT_NAME
         )
         if resolved_ticket_cat is None:

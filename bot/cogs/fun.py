@@ -1,5 +1,5 @@
-from discord.ext import commands
-import discord
+from nextcord.ext import commands
+import nextcord
 import random
 from utils.util_functions import *
 from settings import *
@@ -189,7 +189,7 @@ class Fun(commands.Cog):
 
     @commands.command(brief="Pay your respects")
     async def f(self, ctx, *target):
-        embed = discord.Embed()
+        embed = nextcord.Embed()
         embed.description = (
             f"**{ctx.author.name}** has paid their respects"
             + (f" to **{' '.join(target)}**" if target else "")
@@ -300,7 +300,7 @@ class Fun(commands.Cog):
         vanity_roles = get_vanity_roles(ctx.guild)
         vanity_roles.sort(key=lambda x: x.name)
 
-        embed = discord.Embed()
+        embed = nextcord.Embed()
         embed.title = "Currently available vanity roles:"
         embed.description = (
             ", ".join([role.mention for role in vanity_roles]) + 2 * "\n"
@@ -380,7 +380,7 @@ class Fun(commands.Cog):
         obj.seek(0)
 
         await ctx.send(
-            file=discord.File(obj, filename=f"{cmd}.png"),
+            file=nextcord.File(obj, filename=f"{cmd}.png"),
             reference=ctx.message.reference if ctx.message.reference else None,
         )
 

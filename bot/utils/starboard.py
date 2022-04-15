@@ -1,4 +1,4 @@
-import discord
+import nextcord
 import asyncpg
 import asyncio
 from db.db_func import ensure_usr_existence
@@ -20,8 +20,8 @@ async def get_starboard_sbid(bot, msg_id):
     )
 
 
-def starboard_embed(message, stars) -> discord.Embed:
-    embed = discord.Embed(colour=STARBOARD_COLOUR)
+def starboard_embed(message, stars) -> nextcord.Embed:
+    embed = nextcord.Embed(colour=STARBOARD_COLOUR)
     if message.attachments:
         embed.set_image(url=message.attachments[0].url)
     content_msg = "[Link to message]"
@@ -30,7 +30,7 @@ def starboard_embed(message, stars) -> discord.Embed:
         if len(content_msg) > 950:
             content_msg = content_msg[0:950]
             content_msg += " [Click the link to see more]"
-    embed.set_thumbnail(url=message.author.avatar_url)
+    embed.set_thumbnail(url=message.author.avatar.url)
     embed.title = message.author.name
     embed.description = f"[{content_msg}]({message.jump_url})"
     embed.add_field(name="Channel", value=message.channel.mention)
@@ -45,7 +45,7 @@ async def edit_stars(message, stars):
 
 
 async def starboard_handler(bot, payload):
-    if isinstance(payload, discord.RawReactionActionEvent):
+    if isinstance(payload, nextcord.RawReactionActionEvent):
         if payload.emoji.name == "⭐":
             chnl = bot.get_channel(payload.channel_id)
             msg = await chnl.fetch_message(payload.message_id)
@@ -86,7 +86,7 @@ async def starboard_handler(bot, payload):
                         )
             finally:
                 starboard_lock.release()
-    elif isinstance(payload, discord.RawReactionClearEvent):
+    elif isinstance(payload, nextcord.RawReactionClearEvent):
         # if exists in starboard, do something about it, otherwise don't care
         msg = await get_starboard_msg(bot, payload.message_id)
         if msg is not None:
@@ -99,7 +99,7 @@ async def starboard_handler(bot, payload):
             finally:
                 starboard_lock.release()
 
-    elif isinstance(payload, discord.RawReactionClearEmojiEvent):
+    elif isinstance(payload, nextcord.RawReactionClearEmojiEvent):
         if payload.emoji.name == "⭐":
             # if exists in starboard, do something about it, otherwise don't care
             msg = await get_starboard_msg(bot, payload.message_id)

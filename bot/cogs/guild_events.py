@@ -1,5 +1,5 @@
-import discord
-from discord.ext import commands
+import nextcord
+from nextcord.ext import commands
 from db.db_func import ensure_guild_existence
 
 
@@ -8,11 +8,11 @@ class GuildEvents(commands.Cog):
         self.bot = bot
 
     @commands.Cog.listener()
-    async def on_guild_join(self, guild: discord.Guild):
+    async def on_guild_join(self, guild: nextcord.Guild):
         await ensure_guild_existence(self.bot, guild.id)
 
     @commands.Cog.listener()
-    async def on_guild_update(self, before: discord.Guild, after: discord.Guild):
+    async def on_guild_update(self, before: nextcord.Guild, after: nextcord.Guild):
         await ensure_guild_existence(self.bot, after.id)
 
 

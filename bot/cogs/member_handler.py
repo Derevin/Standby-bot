@@ -1,5 +1,5 @@
-import discord
-from discord.ext import commands
+import nextcord
+from nextcord.ext import commands
 from cogs.rules import leave_message, welcome_message, level3_handler
 
 

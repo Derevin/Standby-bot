@@ -1,4 +1,4 @@
-import discord
+import nextcord
 import re
 import random
 import asyncio
@@ -11,7 +11,7 @@ regex_fun_phrases_commands = []
 ### random coin flips
 
 
-async def coinflip_resp(bot, message: discord.Message):
+async def coinflip_resp(bot, message: nextcord.Message):
     await message.channel.send("Heads" if random.randint(0, 1) == 1 else "Tails")
 
 
@@ -22,7 +22,7 @@ regex_fun_phrases_commands.append(
 ### mario
 
 
-async def mario_resp(bot, message: discord.Message):
+async def mario_resp(bot, message: nextcord.Message):
     await message.channel.send("Mario!")
 
 
@@ -34,7 +34,7 @@ regex_fun_phrases_commands.append(
 ### uh oh
 
 
-async def uhoh_resp(bot, message: discord.Message):
+async def uhoh_resp(bot, message: nextcord.Message):
     await message.channel.send("SpaghettiOs 😦")
     if random.randint(0, 1) == 1:
         await message.channel.send("..and stinky!")
@@ -47,7 +47,7 @@ regex_fun_phrases_commands.append(
 ### ahoy
 
 
-async def ahoy_resp(bot, message: discord.Message):
+async def ahoy_resp(bot, message: nextcord.Message):
     await message.channel.send("Ahoy Matey!")
     if message.guild.id == GUILD_ID:
         await message.add_reaction(":BlobWave:382606234148143115")
@@ -58,7 +58,7 @@ regex_fun_phrases_commands.append(("^.{0,2}(ahoy).{0,12}$", ahoy_resp, re.M | re
 ### spooky
 
 
-async def spooky_resp(bot, message: discord.Message):
+async def spooky_resp(bot, message: nextcord.Message):
     await message.channel.send("2spooky4me")
 
 
@@ -67,7 +67,7 @@ regex_fun_phrases_commands.append(("^.{0,12}spooky.{0,12}$", spooky_resp, re.M |
 ### wait a min
 
 
-async def wait_min_resp(bot, message: discord.Message):
+async def wait_min_resp(bot, message: nextcord.Message):
     if message.guild.id == GUILD_ID:
         await message.add_reaction(":Thonk:383190394457948181")
 
@@ -79,7 +79,7 @@ regex_fun_phrases_commands.append(
 ### wednesday
 
 
-async def wednesday_resp(bot, message: discord.Message):
+async def wednesday_resp(bot, message: nextcord.Message):
     await message.channel.send("my dudes")
     await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
 
@@ -89,7 +89,7 @@ regex_fun_phrases_commands.append(
 )
 
 
-async def mittwoch_resp(bot, message: discord.Message):
+async def mittwoch_resp(bot, message: nextcord.Message):
     await message.channel.send("meine Kerle")
     await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
 
@@ -99,7 +99,7 @@ regex_fun_phrases_commands.append(
 )
 
 
-async def sroda_resp(bot, message: discord.Message):
+async def sroda_resp(bot, message: nextcord.Message):
     await message.channel.send("o panowie")
     await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
 
@@ -109,7 +109,7 @@ regex_fun_phrases_commands.append(
 )
 
 
-async def woensdag_resp(bot, message: discord.Message):
+async def woensdag_resp(bot, message: nextcord.Message):
     await message.channel.send("mijn makkers")
     await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
 
@@ -119,7 +119,7 @@ regex_fun_phrases_commands.append(
 )
 
 
-async def szerda_resp(bot, message: discord.Message):
+async def szerda_resp(bot, message: nextcord.Message):
     await message.channel.send("felebarátaim")
     await message.channel.send("ááááááááááÁÁÁÁÁÁÁÁÁÁ**ÁÁÁÁÁ**")
 
@@ -129,7 +129,7 @@ regex_fun_phrases_commands.append(
 )
 
 
-async def streda_resp(bot, message: discord.Message):
+async def streda_resp(bot, message: nextcord.Message):
     await message.channel.send("kamoši moji")
     await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
 
@@ -139,7 +139,7 @@ regex_fun_phrases_commands.append(
 )
 
 
-async def srida_resp(bot, message: discord.Message):
+async def srida_resp(bot, message: nextcord.Message):
     await message.channel.send("moji ljudi")
     await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
 
@@ -149,7 +149,7 @@ regex_fun_phrases_commands.append(
 )
 
 
-async def mercredi_resp(bot, message: discord.Message):
+async def mercredi_resp(bot, message: nextcord.Message):
     await message.channel.send("mes mecs")
     await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
 
@@ -159,7 +159,7 @@ regex_fun_phrases_commands.append(
 )
 
 
-async def keskiviikko_resp(bot, message: discord.Message):
+async def keskiviikko_resp(bot, message: nextcord.Message):
     await message.channel.send("kaverit")
     await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
 
@@ -169,7 +169,7 @@ regex_fun_phrases_commands.append(
 )
 
 
-async def onsdag_resp(bot, message: discord.Message):
+async def onsdag_resp(bot, message: nextcord.Message):
     await message.channel.send("mina bekanta")
     await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
 
@@ -179,7 +179,7 @@ regex_fun_phrases_commands.append(
 )
 
 
-async def suiyobi_resp(bot, message: discord.Message):
+async def suiyobi_resp(bot, message: nextcord.Message):
     await message.channel.send("お前ら")
     await message.channel.send("ああああああ**ああああ**")
 
@@ -187,7 +187,7 @@ async def suiyobi_resp(bot, message: discord.Message):
 regex_fun_phrases_commands.append(("^.{0,4}水曜日だ\\W{0,4}$", suiyobi_resp, re.M | re.I))
 
 
-async def onsdag_resp_no(bot, message: discord.Message):
+async def onsdag_resp_no(bot, message: nextcord.Message):
     await message.channel.send("folkens")
     await message.channel.send("ææææææææææÆÆÆÆÆÆÆÆÆÆ**ÆÆÆÆÆ**")
 
@@ -197,7 +197,7 @@ regex_fun_phrases_commands.append(
 )
 
 
-async def miercoles_resp(bot, message: discord.Message):
+async def miercoles_resp(bot, message: nextcord.Message):
     await message.channel.send("mis amigos")
     await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
 
@@ -207,7 +207,7 @@ regex_fun_phrases_commands.append(
 )
 
 
-async def miercuri_resp(bot, message: discord.Message):
+async def miercuri_resp(bot, message: nextcord.Message):
     await message.channel.send("fraţii mei")
     await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
 
@@ -217,7 +217,7 @@ regex_fun_phrases_commands.append(
 )
 
 
-async def reviee_resp(bot, message: discord.Message):
+async def reviee_resp(bot, message: nextcord.Message):
     await message.channel.send("אחים שלי")
     await message.channel.send("אאאאאאאאאאאאאאאאה")
 
@@ -227,7 +227,7 @@ regex_fun_phrases_commands.append(
 )
 
 
-async def treciadienis_resp(bot, message: discord.Message):
+async def treciadienis_resp(bot, message: nextcord.Message):
     await message.channel.send("mano bičiuliai")
     await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
 
@@ -240,7 +240,7 @@ regex_fun_phrases_commands.append(
 ### tuesday
 
 
-async def tuesday_resp(bot, message: discord.Message):
+async def tuesday_resp(bot, message: nextcord.Message):
     await message.channel.send("Happy <@235055132843180032> appreciation day everyone!")
 
 
@@ -251,7 +251,7 @@ regex_fun_phrases_commands.append(
 ### yeee boiiii
 
 
-async def yeboi_resp(bot, message: discord.Message):
+async def yeboi_resp(bot, message: nextcord.Message):
     rsp = "BO" + "I" * (len(message.content) - 1)
     if len(rsp) > 2000:
         rsp = rsp[:1999]
@@ -263,7 +263,7 @@ regex_fun_phrases_commands.append(("^ye{3,}$", yeboi_resp, re.M | re.I))
 ### cough bless
 
 
-async def cough_bless_resp(bot, message: discord.Message):
+async def cough_bless_resp(bot, message: nextcord.Message):
     await message.channel.send("Bless you!")
 
 
@@ -275,7 +275,7 @@ regex_fun_phrases_commands.append(
 ### siege backwards
 
 
-async def egeis_resp(bot, message: discord.Message):
+async def egeis_resp(bot, message: nextcord.Message):
     await message.channel.send("👀?egeiS yas enoemos diD")
 
 
@@ -285,7 +285,7 @@ regex_fun_phrases_commands.append(("^.*egeis[^\\?]*$", egeis_resp, re.M | re.I))
 ### fuck me
 
 
-async def fme_resp(bot, message: discord.Message):
+async def fme_resp(bot, message: nextcord.Message):
     await message.channel.send("Don't mind if I do 👍")
 
 
@@ -294,7 +294,7 @@ regex_fun_phrases_commands.append(("^.{0,2}fuck me\\W{0,4}$", fme_resp, re.M | r
 ############ ayaya regex
 
 
-async def ayaya_resp(bot, message: discord.Message):
+async def ayaya_resp(bot, message: nextcord.Message):
     await message.channel.send("Ayaya!")
     if message.guild.id == GUILD_ID:
         await message.add_reaction(":Ayy:610479153937907733")
