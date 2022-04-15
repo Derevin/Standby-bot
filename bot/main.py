@@ -17,6 +17,8 @@ intents.presences = True
 
 bot = commands.Bot(command_prefix=PREFIX, intents=intents, case_insensitive=True)
 
+# Trying to force a heroku restart
+
 
 @bot.event
 async def on_ready():
