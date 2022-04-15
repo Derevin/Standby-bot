@@ -42,7 +42,6 @@ class Timers(commands.Cog):
                         continue
                     channel = self.bot.get_channel(params_dict["channel"])
                     if channel:
-                        print(type(rec["expires"]))
                         await channel.send(
                             f"<@{rec['usr_id']}> {dynamic_timestamp(rec['expires'],'long')}: {params_dict['msg']}"
                         )
