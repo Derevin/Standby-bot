@@ -1,5 +1,6 @@
-from nextcord.ext import commands, tasks
+from nextcord.ext import commands, tasks, application_checks
 import nextcord
+from nextcord import Interaction, SlashOption
 import asyncio
 import random
 import re
@@ -17,43 +18,36 @@ class Giveaways(commands.Cog):
     def cog_unload(self):
         self.check_giveaways.cancel()
 
-    @commands.command(brief="Starts a giveaway in the #giveaways channel")
-    @commands.has_any_role(*MOD_ROLES, "Raffler")
-    async def gstart(self, ctx, time, winners, *title):
+    @nextcord.slash_command(
+        guild_ids=[GUILD_ID], description="Start a giveaway in the #giveaways channel"
+    )
+    @application_checks.has_any_role(*MOD_ROLES, "Raffler")
+    async def giveaway(
+        self,
+        interaction: Interaction,
+        days: int = SlashOption(description="Days until the giveaway finishes"),
+        hours: int = SlashOption(description="Hours until the giveaway finishes"),
+        minutes: int = SlashOption(description="Minutes until the giveaway finishes"),
+        winners: int = SlashOption(description="Number of winners"),
+        title: str = SlashOption(description="The title of your giveaway"),
+    ):
 
-        await ctx.message.delete()
-
-        if not re.search(r"(\d+[dhms])+", time):
-            raise commands.errors.BadArgument("Invalid time format")
-        if not re.search(r"^([1-9]\d*)w?$", winners):
-            raise commands.errors.BadArgument("Invalid winner format")
-
-        days = re.search(r"(\d+)d", time)
-        days = int(days.group(1)) if days else 0
-        hours = re.search(r"(\d+)h", time)
-        hours = int(hours.group(1)) if hours else 0
-        minutes = re.search(r"(\d+)m", time)
-        minutes = int(minutes.group(1)) if minutes else 0
-        seconds = re.search(r"(\d+)s", time)
-        seconds = int(seconds.group(1)) if seconds else 0
-        if days + hours + minutes + seconds == 0:
-            raise commands.errors.BadArgument("Invalid time format")
-
-        num_winners = int(re.search(r"^(\d+)w?$", winners).group(1))
-
-        title = " ".join(title)
+        if days + hours + minutes == 0:
+            await interaction.send(
+                "Invalid time format, please try again", ephemeral=True
+            )
+            return
 
         now = nextcord.utils.utcnow()
-        delta = datetime.timedelta(
-            days=days, hours=hours, minutes=minutes, seconds=seconds
-        )
+        delta = datetime.timedelta(days=days, hours=hours, minutes=minutes)
         end_time = now + delta
-        embed = giveaway_embed(end_time, num_winners, ctx.author, title)
+        embed = giveaway_embed(end_time, winners, interaction.user, title)
         giveaway_channel = nextcord.utils.get(
-            ctx.guild.text_channels, name=GIVEAWAY_CHANNEL_NAME
+            interaction.guild.text_channels, name=GIVEAWAY_CHANNEL_NAME
         )
         giveaway = await giveaway_channel.send(embed=embed)
         await giveaway.add_reaction(TADA)
+        await interaction.send("Giveaway started!", ephemeral=True)
 
     @commands.command(brief="Manually end a giveaway")
     @commands.has_any_role(*MOD_ROLES)
