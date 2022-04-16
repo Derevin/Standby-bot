@@ -74,3 +74,15 @@ def int_to_month(num):
 def month_to_int(month):
     datetime_object = datetime.datetime.strptime(month, "%B")
     return datetime_object.month
+
+
+def get_mentioned_ids(text):
+    raw_ids = re.findall(r"<\D*\d+>", text)
+    ids = [int(re.sub(r"\D", "", id)) for id in raw_ids]
+    return ids
+
+
+async def get_mentiond_users(text, guild):
+    ids = get_mentioned_ids(text)
+    users = [await guild.fetch_member(id) for id in ids]
+    return users
