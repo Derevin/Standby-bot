@@ -1,5 +1,6 @@
-from nextcord.ext import commands
+from nextcord.ext import commands, application_checks
 import nextcord
+from nextcord import Interaction, SlashOption
 import random
 from utils.util_functions import *
 from settings import *
@@ -141,67 +142,66 @@ class Fun(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(brief="YEE")
-    async def yeeraw(self, ctx):
-        await ctx.channel.send(YEEE)
+    @nextcord.slash_command(guild_ids=[GUILD_ID], description="YEE")
+    async def yee(self, interaction):
+        await interaction.send(YEEE)
 
-    @commands.command(
-        brief="YEE screenshot",
-        aliases=[
-            "yeee",
-            "yeeee",
-            "yeeeee",
-            "yeeeeee",
-            "yeeeeeee",
-            "yeeeeeeee",
-            "yeepic",
-        ],
-    )
-    async def yee(self, ctx):
-        await ctx.channel.send(
-            "https://cdn.discordapp.com/attachments/738109782300557395/847974632551481384/unknown.png"
-        )
-
-    @commands.command(brief="Gives a user a hug")
-    async def hug(self, ctx, *user):
-        if ctx.message.mentions:
-            user = ctx.message.mentions[0]
-        elif ctx.message.reference:
-            msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
-            user = msg.author
+    @nextcord.slash_command(guild_ids=[GUILD_ID], description="Gives a user a hug")
+    async def hug(
+        self,
+        interaction: Interaction,
+        user: str = SlashOption(description="The user you want to send a hug to/h"),
+    ):
+        ids = get_mentioned_ids(user)
+        if ids:
+            user = await interaction.guild.fetch_member(ids[0])
         else:
-            user = get_user(ctx.guild, " ".join(user))
+            user = get_user(interaction.guild, user)
 
         if user:
-            if user == ctx.author:
-                await ctx.send(
+            if user == interaction.user:
+                await interaction.send(
                     "https://cdn.discordapp.com/attachments/744224801429782679/757549246533599292/selfhug.png"
                 )
             else:
-                await ctx.channel.send(
-                    f"{user.mention}, {ctx.author.mention} sent you a hug!"
+                await interaction.send(
+                    f"{user.mention}, {interaction.user.mention} sent you a hug!"
                 )
-                hug = get_emoji(ctx.guild, "BlobReachAndHug")
+                hug = get_emoji(interaction.guild, "BlobReachAndHug")
                 if hug:
-                    await ctx.channel.send(hug)
+                    await interaction.channel.send(hug)
+        else:
+            await interaction.send(
+                "Could not find a (unique) user - try again with a different search term.",
+                ephemeral=True,
+            )
 
-            await ctx.message.delete()
-
-    @commands.command(brief="Pay your respects")
-    async def f(self, ctx, *target):
+    @nextcord.slash_command(guild_ids=[GUILD_ID], description="Pay your respects")
+    async def f(self, interaction: Interaction, target):
         embed = nextcord.Embed()
         embed.description = (
-            f"**{ctx.author.name}** has paid their respects"
+            f"**{interaction.user.name}** has paid their respects"
             + (f" to **{' '.join(target)}**" if target else "")
             + "."
         )
-        rip = await ctx.channel.send(embed=embed)
+        await interaction.response.send_message(embed=embed)
+        rip = await interaction.original_message()
         await rip.add_reaction("🇫")
 
-    @commands.command(brief="Posts a meme", aliases=["memed"], help=help_text)
-    async def meme(self, ctx, *, query):
-
-        await ctx.message.delete()
+    @nextcord.slash_command(guild_ids=[GUILD_ID], description="Posts a meme.")
+    async def meme(
+        self,
+        interaction: Interaction,
+        query: str = SlashOption(
+            name="search_term",
+            description="Enter a search term for the meme you want to post",
+        ),
+    ):
+        if query == "help":
+            await interaction.response.send_message(
+                f"```{help_text}```", ephemeral=True
+            )
+            return
 
         matches = process.extractOne(
             query, list(memes.keys()), scorer=fuzz.token_set_ratio, score_cutoff=67
@@ -210,23 +210,27 @@ class Fun(commands.Cog):
             best_match = matches[0]
             link = (
                 memes[best_match][0]
-                if "horny" in query.lower() and ctx.author.id == JORM_ID
+                if "horny" in query.lower() and interaction.user.id == FEL_ID
                 else random.choice(memes[best_match])
                 if type(memes[best_match]) == list
                 else memes[best_match]
             )
-            await ctx.send(
-                link,
-                reference=ctx.message.reference,
-                mention_author=False,
-            )
+            await interaction.response.send_message(link)
+
         else:
-            await ctx.send(
-                f"No match found for {query} - type `+help meme` to see available memes."
+            await interaction.response.send_message(
+                f"No match found for '{query}' - use `/meme help` to see list of available memes.",
+                ephemeral=True,
             )
 
-    @commands.command(brief="Converts text into cyrillic", aliases=["cyrillic", "crlf"])
-    async def cyrillify(self, ctx, *text):
+    @nextcord.slash_command(
+        guild_ids=[GUILD_ID], description="Convert text into cyrillic"
+    )
+    async def cyrillify(
+        self,
+        interaction: Interaction,
+        text=SlashOption(description="Text to cyrillify"),
+    ):
         class ExampleLanguagePack(TranslitLanguagePack):
             language_code = "custom"
             language_name = "Custom"
@@ -257,47 +261,52 @@ class Fun(commands.Cog):
 
         registry.register(ExampleLanguagePack)
 
-        if not text:
-            text = "Lorem ipsum dolor sit amet."
-        else:
-            text = " ".join(text)
+        await interaction.send(translit(text, "custom"))
 
-        await ctx.send(translit(text, "custom"))
-
-    @commands.command(brief="Burger someone")
-    async def burger(self, ctx, target_mention):
-        burgered = get_role(ctx.guild, "Burgered")
-        if burgered and burgered in ctx.author.roles:
-            if ctx.message.mentions:
-                target = ctx.message.mentions[0]
-                if target == ctx.author:
-                    await ctx.send(
-                        "You can't burger yourself - you are already burgered!"
+    @nextcord.slash_command(guild_ids=[GUILD_ID], description="Burger someone")
+    async def burger(
+        self,
+        interaction: Interaction,
+        target=SlashOption(description="The person you want to burger"),
+    ):
+        burgered = get_role(interaction.guild, "Burgered")
+        if burgered and burgered in interaction.user.roles:
+            mentions = await get_mentiond_users(target, interaction.guild)
+            if mentions:
+                target = mentions[0]
+                if target == interaction.user:
+                    await interaction.send(
+                        "You can't burger yourself - you are already burgered!",
+                        ephemeral=True,
                     )
                 elif target.bot:
-                    await ctx.send(
-                        "Fool me once, shame on — shame on you. Fool me — you can't get fooled again."
+                    await interaction.send(
+                        "Fool me once, shame on — shame on you. Fool me — you can't get fooled again.",
+                        ephemeral=True,
                     )
                 else:
-                    await ctx.author.remove_roles(burgered)
+                    await interaction.user.remove_roles(burgered)
                     await target.add_roles(burgered)
-                    await ctx.send(target.mention)
-                    await ctx.send(
+                    await interaction.send(target.mention)
+                    await interaction.channel.send(
                         "https://cdn.discordapp.com/attachments/744224801429782679/893950953378705508/unknown.png"
                     )
 
         else:
-            await ctx.send("Only one who has been burgered may burger others.")
+            await interaction.send(
+                "Only one who has been burgered may burger others.", ephemeral=True
+            )
 
-    @commands.group(brief="Add or remove vanity roles")
-    async def vanity(self, ctx):
-        if ctx.invoked_subcommand is None:
-            await ctx.invoke(self.bot.get_command("vanity show"))
+    @nextcord.slash_command(
+        guild_ids=[GUILD_ID], description="Add or remove vanity roles"
+    )
+    async def vanity(self, interaction: Interaction):
+        pass
 
-    @vanity.command(brief="Show all available vanity roles")
-    async def show(self, ctx):
+    @vanity.subcommand(description="Show all available vanity roles")
+    async def show(self, interaction: Interaction):
 
-        vanity_roles = get_vanity_roles(ctx.guild)
+        vanity_roles = get_vanity_roles(interaction.guild)
         vanity_roles.sort(key=lambda x: x.name)
 
         embed = nextcord.Embed()
@@ -305,57 +314,57 @@ class Fun(commands.Cog):
         embed.description = (
             ", ".join([role.mention for role in vanity_roles]) + 2 * "\n"
         )
-        embed.description += (
-            "Type `+vanity pick [role]` or `+vanity remove` to change your vanity role"
-        )
-        await ctx.send(embed=embed)
+        embed.description += "Use `/vanity` to change your vanity role"
+        await interaction.send(embed=embed)
 
-    @vanity.command(brief="Pick a vanity role")
-    async def pick(self, ctx, *, role):
-        vanity_roles = get_vanity_roles(ctx.guild)
-        role = get_role(ctx.guild, role)
-
+    @vanity.subcommand(description="Pick a vanity role")
+    async def pick(self, interaction: Interaction, role):
+        vanity_roles = get_vanity_roles(interaction.guild)
+        role = get_role(interaction.guild, role)
         if role:
             if role in vanity_roles:
-                if role not in ctx.author.roles:
-                    await ctx.author.remove_roles(*vanity_roles)
-                    await ctx.author.add_roles(role)
+                if role not in interaction.user.roles:
+                    await interaction.user.remove_roles(*vanity_roles)
+                    await interaction.user.add_roles(role)
+                    await interaction.send(
+                        f"Your vanity role has been set to {role.name}"
+                    )
                 else:
-                    await ctx.send("You already have that role!")
+                    await interaction.send(
+                        "You already have that role!", ephemeral=True
+                    )
             else:
-                await ctx.send(
-                    "You can only pick a vanity role. Type `+vanity show` to see the full list."
+                await interaction.send(
+                    "You can only pick vanity roles. Use `/vanity show` to see the full list.",
+                    ephemeral=True,
                 )
         else:
-            await ctx.send(
-                "Please pick a valid vanity role. Type `+vanity show` to see the full list."
+            await interaction.send(
+                "Please pick a valid vanity role. Use `/vanity show` to see the full list.",
+                ephemeral=True,
             )
 
-    @vanity.command(brief="Remove your vanity role")
-    async def remove(self, ctx, *role):
-        vanity_roles = get_vanity_roles(ctx.guild)
-        if role:
-            role = get_role(ctx.guild, " ".join(role))
-            if not role:
-                await ctx.send(
-                    "Please pick a valid vanity role, or leave blank to remove your current one. "
-                    + "Type `+vanity show` to see the full list."
-                )
-            elif role in vanity_roles:
-                await ctx.author.remove_roles(role)
-            else:
-                await ctx.send("You can only remove vanity roles.")
-        else:
-            await ctx.author.remove_roles(*vanity_roles)
+    @vanity.subcommand(description="Remove your vanity role")
+    async def remove(self, interaction: Interaction):
+        vanity_roles = get_vanity_roles(interaction.guild)
+        await interaction.user.remove_roles(*vanity_roles)
+        await interaction.send("Your vanity role has been removed", ephemeral=True)
 
-    @commands.command(brief="Genererate a captioned meme", aliases=["megamind"])
-    async def farquaad(self, ctx, *caption):
+    @nextcord.slash_command(
+        guild_ids=[GUILD_ID], description="Genererate a captioned meme"
+    )
+    async def caption(
+        self,
+        interaction: Interaction,
+        template=SlashOption(
+            description="The base template to caption", choices=["Farquaad", "Megamind"]
+        ),
+        caption=SlashOption(description="The caption to use"),
+    ):
 
-        cmd = re.split(" ", ctx.message.content)[0][1:].lower()
-
-        if cmd == "farquaad":
+        if template == "Farquaad":
             query, font_size, align = "farquaad pointing", 100, "bottom"
-        elif cmd == "megamind":
+        elif template == "Megamind":
             query, font_size, align = "Megamind No bitches?", 125, "top"
 
         img = Image.open(requests.get(memes[query], stream=True).raw)
@@ -364,7 +373,7 @@ class Fun(commands.Cog):
         font_path = str(Path(__file__).parent.parent.parent) + r"/fonts/impact.ttf"
 
         font = ImageFont.truetype(font=font_path, size=font_size)
-        text = " ".join(caption).upper() if caption else ""
+        text = caption.upper()
         width, height = draw.textsize(text, font)
         x_coord = img.width / 2 - width / 2
         y_coord = img.height - height - 25 if align == "bottom" else 0
@@ -379,15 +388,16 @@ class Fun(commands.Cog):
         img.save(obj, "png")
         obj.seek(0)
 
-        await ctx.send(
-            file=nextcord.File(obj, filename=f"{cmd}.png"),
-            reference=ctx.message.reference if ctx.message.reference else None,
+        await interaction.send(
+            file=nextcord.File(obj, filename=f"{template}.png"),
         )
 
-    @commands.command(
-        name="8ball", brief="Provides a Magic 8-Ball answer to a yes/no question"
+    @nextcord.slash_command(
+        guild_ids=[GUILD_ID],
+        name="8ball",
+        description="Provides a Magic 8-Ball answer to a yes/no question",
     )
-    async def eightball(self, ctx, *question):
+    async def eightball(self, interaction: Interaction, question):
         answers = [
             "It is certain.",
             "It is decidedly so.",
@@ -410,46 +420,7 @@ class Fun(commands.Cog):
             "Outlook not so good.",
             "Very doubtful.",
         ]
-        await ctx.send(random.choice(answers))
-
-    @nextcord.slash_command(
-        name="meme",
-        guild_ids=[GUILD_ID],
-        description="Posts a meme.",
-    )
-    async def meme_slash(
-        self,
-        interaction: nextcord.Interaction,
-        query: str = nextcord.SlashOption(
-            name="search_term",
-            description="Enter a search term for the meme you want to post",
-        ),
-    ):
-        if query == "help":
-            await interaction.response.send_message(
-                f"```{help_text}```", ephemeral=True
-            )
-            return
-
-        matches = process.extractOne(
-            query, list(memes.keys()), scorer=fuzz.token_set_ratio, score_cutoff=67
-        )
-        if matches:
-            best_match = matches[0]
-            link = (
-                memes[best_match][0]
-                if "horny" in query.lower() and interaction.user.id == FEL_ID
-                else random.choice(memes[best_match])
-                if type(memes[best_match]) == list
-                else memes[best_match]
-            )
-            await interaction.response.send_message(link)
-
-        else:
-            await interaction.response.send_message(
-                f"No match found for {query}, use `/meme help` to see list of available memes.",
-                ephemeral=True,
-            )
+        await interaction.send(random.choice(answers))
 
 
 def get_vanity_roles(guild):
