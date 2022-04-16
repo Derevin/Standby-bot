@@ -1,7 +1,9 @@
 import asyncio
 from nextcord.ext import commands
+from nextcord import Interaction, SlashOption
 import random
 from utils.util_functions import *
+from settings import *
 
 
 class BingoCard:
@@ -139,158 +141,218 @@ class Bingo(
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(brief="Creates a Void Bingo lobby.")
-    async def bcreate(self, ctx):
+    async def create(self, interaction):
 
         if game.status == "Lobby open":
-            await ctx.send("A lobby is already open, type `+bjoin` to join.")
+            await interaction.send(
+                "A lobby is already open, use `/bingo` to join.",
+                ephemeral=True,
+            )
         elif game.status == "Active":
-            await ctx.send("A game is already running, please wait for the next one.")
+            await interaction.send(
+                "A game is already running, please wait for the next one.",
+                ephemeral=True,
+            )
         else:
-            game.setup(host=ctx.author, channel=ctx.channel)
-            await ctx.send("Lobby created, type `+bjoin` to join.")
+            game.setup(host=interaction.user, channel=interaction.channel)
+            await interaction.send("Lobby created, use `/bingo` to join.")
 
-    @commands.command(brief="Joins an open Void Bingo lobby.")
-    async def bjoin(self, ctx):
+    async def join(self, interaction):
 
         if game.status == "Inactive":
-            await ctx.send("No open lobby found - type `+bcreate` to create one.")
-        elif game.status == "Active":
-            await ctx.send("A game is already running, please wait for the next one.")
-        elif game.channel != ctx.channel:
-            await ctx.send(
-                f"Please head over to {game.channel.mention} to join the current lobby."
+            await interaction.send(
+                "No open lobby found - use `/bingo` to create one.", ephemeral=True
             )
-        elif ctx.author in game.players:
-            await ctx.send("You're already in this lobby.")
+        elif game.status == "Active":
+            await interaction.send(
+                "A game is already running, please wait for the next one.",
+                ephemeral=True,
+            )
+        elif game.channel != interaction.channel:
+            await interaction.send(
+                f"Please head over to {game.channel.mention} to join the current lobby.",
+                ephemeral=True,
+            )
+        elif interaction.user in game.players:
+            await interaction.send("You're already in this lobby.", ephemeral=True)
         else:
-            game.players.append(ctx.author)
-            await ctx.send(
-                f"""Welcome {ctx.author.display_name}. Players currently in lobby: {len(game.players)}. """
-                """The game host can type `+bstart` to start the game."""
+            game.players.append(interaction.user)
+            await interaction.send(
+                f"""Welcome {interaction.user.display_name}. Players currently in lobby: {len(game.players)}. """
+                """The game host can use `/bingo` to start the game."""
             )
 
-    @commands.command(brief="Begins a game of Void Bingo with the current lobby.")
-    async def bstart(self, ctx):
+    async def start(self, interaction):
 
         if game.status == "Inactive":
-            await ctx.send("No open lobby found - type `+bcreate` to create one.")
+            await interaction.send(
+                "No open lobby found - use `/bingo` to create one.", ephemeral=True
+            )
         elif game.status == "Active":
-            await ctx.send("A game is already running, please wait for the next one.")
+            await interaction.send(
+                "A game is already running, please wait for the next one.",
+                ephemeral=True,
+            )
         elif (
-            game.host != ctx.author
-            and get_role(ctx.guild, "Moderator") not in ctx.author.roles
-            and get_role(ctx.guild, "Guides of the Void") not in ctx.author.roles
+            game.host != interaction.user
+            and get_role(interaction.guild, "Moderator") not in interaction.user.roles
+            and get_role(interaction.guild, "Guides of the Void")
+            not in interaction.user.roles
         ):
-            await ctx.send("Only the person who created the lobby can start the game.")
-        elif game.channel != ctx.channel:
-            await ctx.send(
-                f"Please head over to {game.channel.mention} to start the game."
+            await interaction.send(
+                "Only the person who created the lobby can start the game.",
+                ephemeral=True,
+            )
+        elif game.channel != interaction.channel:
+            await interaction.send(
+                f"Please head over to {game.channel.mention} to start the game.",
+                ephemeral=True,
             )
         elif len(game.players) == 0:
-            await ctx.send("The lobby is empty, type `+bjoin` to join.")
+            await interaction.send("The lobby is empty, use `/bingo` to join.")
         else:
             await game.start()
-            await ctx.send("Void Bingo has begun! Type `+bdraw` to draw a number.")
+            await interaction.send(
+                "Void Bingo has begun! Type use `/bingo` to draw a number (or toggle the autodraw)."
+            )
 
-    @commands.command(brief="Aborts the current game of Void Bingo.")
-    async def bstop(self, ctx):
+    async def stop(self, interaction):
         global game
 
         if game.status != "Active":
-            await ctx.send("No active game found.")
+            await interaction.send("No active game found.", ephemeral=True)
         elif (
-            game.host != ctx.author
-            and get_role(ctx.guild, "Moderator") not in ctx.author.roles
-            and get_role(ctx.guild, "Guides of the Void") not in ctx.author.roles
+            game.host != interaction.user
+            and get_role(interaction.guild, "Moderator") not in interaction.user.roles
+            and get_role(interaction.guild, "Guides of the Void")
+            not in interaction.user.roles
         ):
-            await ctx.send("Only the person who started the game can stop it.")
+            await interaction.send(
+                "Only the person who started the game can stop it.", ephemeral=True
+            )
         elif len(game.winners) > 0:
-            await ctx.send(
-                "One or more players have Void Bingo - the game will automatically finish soon."
+            await interaction.send(
+                "One or more players have Void Bingo - the game will automatically finish soon.",
+                ephemeral=True,
             )
         else:
             game = BingoGame()
-            await ctx.send("Game stopped. Type `+bcreate` to start a new one")
+            await interaction.send("Game stopped. Use `/bingo` to start a new one")
 
-    @commands.command(brief="Draws a number.")
-    async def bdraw(self, ctx):
+    async def draw(self, interaction):
 
         if game.status != "Active":
-            await ctx.send("No active game found.")
+            await interaction.send("No active game found.", ephemeral=True)
         elif (
-            ctx.author != game.host
-            and get_role(ctx.guild, "Moderator") not in ctx.author.roles
-            and get_role(ctx.guild, "Guides of the Void") not in ctx.author.roles
+            interaction.user != game.host
+            and get_role(interaction.guild, "Moderator") not in interaction.user.roles
+            and get_role(interaction.guild, "Guides of the Void")
+            not in interaction.user.roles
         ):
-            await ctx.send("Only the person who started the game can draw numbers.")
-        elif game.channel != ctx.channel:
-            await ctx.send(
-                f"Numbers may only be drawn in the current game's channel, please head over to {game.channel.mention}."
+            await interaction.send(
+                "Only the person who started the game can draw numbers.", ephemeral=True
+            )
+        elif game.channel != interaction.channel:
+            await interaction.send(
+                f"Numbers may only be drawn in the current game's channel, please head over to {game.channel.mention}.",
+                ephemeral=True,
             )
         elif len(game.winners) > 0:
-            await ctx.send(
-                "One or more players have Bingo, no more numbers may be drawn."
+            await interaction.send(
+                "One or more players have Bingo, no more numbers may be drawn.",
+                ephemeral=True,
             )
         elif len(game.draws) == 0:
-            await ctx.send(
-                "All numbers have already been drawn - please check your cards."
+            await interaction.send(
+                "All numbers have already been drawn - please check your cards.",
             )
         else:
             await game.draw()
 
-    @commands.command(brief="Toggles automatic drawing on or off.")
-    async def bautodraw(self, ctx):
+    async def autodraw(self, interaction):
 
         if game.status != "Active":
-            await ctx.send("No active game found.")
+            await interaction.send("No active game found.", ephemeral=True)
         elif (
-            ctx.author != game.host
-            and get_role(ctx.guild, "Moderator") not in ctx.author.roles
-            and get_role(ctx.guild, "Guides of the Void") not in ctx.author.roles
+            interaction.user != game.host
+            and get_role(interaction.guild, "Moderator") not in interaction.user.roles
+            and get_role(interaction.guild, "Guides of the Void")
+            not in interaction.user.roles
         ):
-            await ctx.send("Only the person who started the game can draw numbers.")
-        elif game.channel != ctx.channel:
-            await ctx.send(
-                f"Numbers may only be drawn in the current game's channel, please head over to {game.channel.mention}."
+            await interaction.send(
+                "Only the person who started the game can draw numbers.", ephemeral=True
+            )
+        elif game.channel != interaction.channel:
+            await interaction.send(
+                f"Numbers may only be drawn in the current game's channel, please head over to {game.channel.mention}.",
+                ephemeral=True,
             )
         elif len(game.winners) > 0:
-            await ctx.send(
-                "One or more players have Bingo, no more numbers may be drawn."
+            await interaction.send(
+                "One or more players have Bingo, no more numbers may be drawn.",
+                ephemeral=True,
             )
         elif len(game.draws) == 0:
-            await ctx.send(
+            await interaction.send(
                 "All numbers have already been drawn - please check your cards."
             )
         else:
             game.autodraw = not game.autodraw
             if game.autodraw:
-                await ctx.send("Automatic drawing started.")
+                await interaction.send("Automatic drawing started.")
             else:
-                await ctx.send("Automatic drawing stopped.")
+                await interaction.send("Automatic drawing stopped.")
             while game.autodraw:
                 await game.draw()
                 await asyncio.sleep(15)
 
-    @commands.command(brief="Declare Void Bingo!")
-    async def bingo(self, ctx):
+    async def declare(self, interaction):
         global game
 
-        if game.status != "Active" or ctx.author not in game.players:
-            await ctx.send("You are not currently in a game.")
-        elif not game.cards[ctx.author].check():
-            await ctx.send(
-                "You don't have Void Bingo - check your card again.",
-                reference=ctx.message,
+        if game.status != "Active" or interaction.user not in game.players:
+            await interaction.send("You are not currently in a game.", ephemeral=True)
+        elif not game.cards[interaction.user].check():
+            await interaction.send(
+                "You don't have Void Bingo - check your card again.", ephemeral=True
             )
-        elif ctx.author.mention in game.winners:
-            await ctx.send(
-                "You have already declared Void Bingo.", reference=ctx.message
+        elif interaction.user.mention in game.winners:
+            await interaction.send(
+                "You have already declared Void Bingo.", ephemeral=True
             )
         else:
-            await ctx.send("VOID BINGO!", reference=ctx.message)
-            await game.bingo(winner=ctx.author)
+            await interaction.send("VOID BINGO!")
+            await game.bingo(winner=interaction.user)
             game = BingoGame()
+
+    @nextcord.slash_command(guild_ids=[GUILD_ID], description="Play Void Bingo")
+    async def bingo(
+        self,
+        interaction: Interaction,
+        action: str = SlashOption(
+            choices={
+                "Create a lobby": "create",
+                "Join the lobby": "join",
+                "Start the game": "start",
+                "Stop the game": "stop",
+                "Draw a number": "draw",
+                "Toggle autodraw": "autodraw",
+                "Declare Void Bingo!": "declare",
+            },
+            description="Choose the action you want to take",
+            name="action",
+        ),
+    ):
+        cmd_dict = {
+            "create": self.create,
+            "join": self.join,
+            "start": self.start,
+            "stop": self.stop,
+            "draw": self.draw,
+            "autodraw": self.autodraw,
+            "declare": self.declare,
+        }
+        cmd = cmd_dict[action]
+        await cmd(interaction)
 
 
 def setup(bot):
