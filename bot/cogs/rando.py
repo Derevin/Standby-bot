@@ -1,14 +1,27 @@
 import random
 import re
 from nextcord.ext import commands
+import nextcord
+from nextcord import Interaction, SlashOption
+from settings import *
 
 
 class Rando(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(brief="RPG format dice roller")
-    async def roll(self, ctx, *, dice_roll):
+    @nextcord.slash_command(
+        guild_ids=[GUILD_ID], name="rng", description="Use the Void RNG"
+    )
+    async def rng():
+        pass
+
+    @rng.subcommand(description="RPG format dice roller")
+    async def roll(
+        self,
+        interaction: Interaction,
+        dice_roll=SlashOption(description="Your dice roll"),
+    ):
         dice = re.sub(" ", "", dice_roll)
         rolls = re.split(r"\+", dice)
         results = []
@@ -32,26 +45,31 @@ class Rando(commands.Cog):
             output = re.sub(r"\[", "(", output)
             output = re.sub(r"\]", ")", output)
             output = re.sub(r"\),", ") +", output)
-            await ctx.send(output)
+            await interaction.send(output)
 
-    @commands.command(brief="Rolls a regular six-sided die")
-    async def dice(self, ctx):
-        await ctx.send(random.randrange(1, 7))
+    @rng.subcommand(description="Rolls a regular six-sided die")
+    async def dice(self, interaction: Interaction):
+        await interaction.send(random.randrange(1, 7))
 
-    @commands.command(aliases=["flip", "coinflip"], brief="Flips a coin")
-    async def coin(self, ctx):
+    @rng.subcommand(description="Flip a coin")
+    async def coin(self, interaction: Interaction):
         n = random.randint(0, 1)
-        await ctx.send("Heads" if n == 1 else "Tails")
+        await interaction.send("Heads" if n == 1 else "Tails")
 
-    @commands.command(aliases=["pick"], brief="Chooses from among the given options")
-    async def choose(self, ctx, *, choices):
+    @rng.subcommand(description="Chooses from among the given options")
+    async def choose(
+        self,
+        interaction: Interaction,
+        choices=SlashOption(name="options", description="The options to choose from"),
+    ):
 
         options = re.split(", ?", choices)
         if len(options) == 1:
-            await ctx.send(
+            await interaction.send(
                 f"Such a tough decision. I guess I'll have to go with {options[0]}"
             )
         else:
+            print(options)
             choice = random.choice(options)
             phrases = [
                 f"Let's go with {choice}",
@@ -63,7 +81,7 @@ class Rando(commands.Cog):
                 f"Obviously {choice}",
                 f"9 out of 10 dentists recommend {choice}",
             ]
-            await ctx.send(random.choice(phrases))
+            await interaction.send(random.choice(phrases))
 
 
 def setup(bot):
