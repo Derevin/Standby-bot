@@ -412,6 +412,45 @@ class Fun(commands.Cog):
         ]
         await ctx.send(random.choice(answers))
 
+    @nextcord.slash_command(
+        name="meme",
+        guild_ids=[GUILD_ID],
+        description="Posts a meme.",
+    )
+    async def meme_slash(
+        self,
+        interaction: nextcord.Interaction,
+        query: str = nextcord.SlashOption(
+            name="search_term",
+            description="Enter a search term for the meme you want to post",
+        ),
+    ):
+        if query == "help":
+            await interaction.response.send_message(
+                f"```{help_text}```", ephemeral=True
+            )
+            return
+
+        matches = process.extractOne(
+            query, list(memes.keys()), scorer=fuzz.token_set_ratio, score_cutoff=67
+        )
+        if matches:
+            best_match = matches[0]
+            link = (
+                memes[best_match][0]
+                if "horny" in query.lower() and interaction.user.id == FEL_ID
+                else random.choice(memes[best_match])
+                if type(memes[best_match]) == list
+                else memes[best_match]
+            )
+            await interaction.response.send_message(link)
+
+        else:
+            await interaction.response.send_message(
+                f"No match found for {query}, use `/meme help` to see list of available memes.",
+                ephemeral=True,
+            )
+
 
 def get_vanity_roles(guild):
     start, stop = [
