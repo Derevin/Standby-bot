@@ -64,3 +64,13 @@ def int_to_emoji(num):
 def dynamic_timestamp(time, frmat):
     mod = "t" if frmat == "short" else "R" if frmat == "delta" else "f"
     return f"<t:{int(datetime.datetime.timestamp(time))}:{mod}>"
+
+
+def int_to_month(num):
+    datetime_object = datetime.datetime.strptime(str(num), "%m")
+    return datetime_object.strftime("%B")
+
+
+def month_to_int(month):
+    datetime_object = datetime.datetime.strptime(month, "%B")
+    return datetime_object.month
