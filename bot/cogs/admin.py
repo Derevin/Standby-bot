@@ -258,7 +258,7 @@ class Admin(commands.Cog):
             return
 
         target = ctx.message.mentions[0]
-        avatar_url = target.avatar.url
+        avatar_url = target.avatar.url if target.avatar else ""
         avatar = Image.open(requests.get(avatar_url, stream=True).raw)
         avatar = avatar.convert("RGBA")
         border = Image.open(requests.get(GINNY_TRANSPARENT_URL, stream=True).raw)
@@ -329,7 +329,8 @@ def message_embed(msg, cmd, trigger_author) -> nextcord.Embed:
 
     embed = nextcord.Embed(color=PALE_BLUE)
     embed.title = embed_titles[cmd]
-    embed.set_thumbnail(url=msg.author.avatar.url)
+    if msg.author.avatar:
+        embed.set_thumbnail(url=msg.author.avatar.url)
     embed.description = msg.content
     embed.add_field(name="Channel", value=msg.channel.mention)
     timestamp = msg.created_at + datetime.timedelta(hours=2)

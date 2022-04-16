@@ -57,7 +57,9 @@ async def deleted_embed(payload, channel):
         if len(embed.description) > 950:
             embed.description = embed.description[0:950]
             embed.description += "[Message had to be shortened]"
-        embed.set_thumbnail(url=message.author.avatar.url)
+
+        if message.author.avatar:
+            embed.set_thumbnail(url=message.author.avatar.url)
         embed.add_field(name="Author", value=message.author.mention)
         embed.add_field(name="Channel", value=message.channel.mention)
         if message.attachments:
@@ -95,7 +97,7 @@ async def edited_embed(bot, payload):
 
         channel = before.channel
         jump_url = before.jump_url
-        avatar_url = before.author.avatar.url
+        avatar_url = before.author.avatar.url if before.author.avatar else ""
         attachment_url = before.attachments[0].url if before.attachments else None
 
     else:
@@ -114,7 +116,7 @@ async def edited_embed(bot, payload):
         channel = await bot.fetch_channel(channel_id)
         message = await channel.fetch_message(message_id)
         jump_url = message.jump_url
-        avatar_url = author.avatar.url
+        avatar_url = author.avatar.url if author.avatar else ""
         attachment_url = message.attachments[0].url if message.attachments else None
 
     embed = nextcord.Embed(color=LIGHT_BLUE)
@@ -134,7 +136,8 @@ async def edited_embed(bot, payload):
     embed.add_field(name="Author", value=author.mention)
     embed.add_field(name="Channel", value=channel.mention)
     embed.add_field(name="Link to Message", value=f"[Click here]({jump_url})")
-    embed.set_thumbnail(url=avatar_url)
+    if avatar_url:
+        embed.set_thumbnail(url=avatar_url)
     if attachment_url:
         embed.add_field(name="Attachment", value=f"[Click here]({attachment_url})")
     embed.timestamp = nextcord.utils.utcnow()

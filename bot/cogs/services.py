@@ -272,7 +272,7 @@ async def urban_handler(bot, payload):
 
 def avatar_embed(user: nextcord.User) -> nextcord.Embed:
     embed = nextcord.Embed(color=PALE_GREEN)
-    link = user.avatar.url
+    link = user.avatar.url if user.avatar else ""
     embed.set_image(url=link)
     embed.title = user.display_name + " (" + str(user) + ")"
     text = "Direct Link"
