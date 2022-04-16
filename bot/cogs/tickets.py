@@ -1,5 +1,6 @@
 from nextcord.ext import commands
 import nextcord
+from nextcord import Interaction, SlashOption
 from cogs.error_handler import unhandled_error_embed
 from settings import *
 from inspect import Parameter
@@ -12,7 +13,7 @@ RESOLVED_TICKETS_CAT_NAME = "Resolved tickets"
 TICKETS_LOG_CHANNEL_NAME = "tickets-log"
 CLAIMABLE_CHANNEL_MESSAGE = (
     "If you have an issue and want to talk to the mod team, this is the place!\n"
-    "Claim this channel by typing: ```+ticket claim```"
+    "Claim this channel by typing: ```/ticket claim```"
     " and then this channel will be restricted for your and mod-team eyes only.\n"
     "Disclaimer: It is recommended to mute this channel's category,"
     " otherwise you will get an unread message notification "
@@ -22,13 +23,13 @@ CLAIMED_MESSAGE = (
     "You have successfully claimed this channel, please type what is it that you want to discuss.\n"
     "You can make sure you're talking only to the mod team by looking "
     "at current member list of the channel (right side of discord).\n"
-    "Once this issue has been resolved, type: ```+ticket resolve```"
+    "Once this issue has been resolved, type: ```/ticket resolve```"
 )
 
 RESOLVED_MESSAGE = (
     "This issue has been marked as resolved."
-    " If this was a mistake, type: ```+ticket reopen``` otherwise open a new issue.\n"
-    "This issue can be scrapped with ```+ticket scrap``` by moderators.\n"
+    " If this was a mistake, type: ```/ticket reopen``` otherwise open a new issue.\n"
+    "This issue can be scrapped with ```+tscrap``` by moderators.\n"
     "Scrapping takes a while to complete."
 )
 
@@ -58,89 +59,98 @@ class Tickets(commands.Cog):
                         embed=unhandled_error_embed(message.content, message.channel, e)
                     )
 
-    @commands.group(brief="Ticketing system, see subhelp for further commands")
-    async def ticket(self, ctx):
-        if ctx.invoked_subcommand is None:
-            await ctx.send("Invalid ticket subcommand passed...")
+    @nextcord.slash_command(guild_ids=[GUILD_ID], description="Ticketing system")
+    async def ticket(self, interaction):
+        pass
 
-    @ticket.command(brief="Initiates ticket system - creates categories, channels etc")
+    @commands.command(
+        brief="Initiates ticket system - creates categories, channels etc"
+    )
     @commands.has_any_role(*MOD_ROLES)
-    async def init(self, ctx, *args):
-        claimable_ticket_cat = await self.get_or_create_claimable_cat(ctx)
+    async def tinit(self, interaction, *args):
+        claimable_ticket_cat = await self.get_or_create_claimable_cat(interaction)
         if not claimable_ticket_cat.channels:
             await self.create_claimable_channel(claimable_ticket_cat)
-        await self.get_or_create_active_cat(ctx)
-        await self.get_or_create_resolved_cat(ctx)
-        await self.get_or_create_tickets_log(ctx)
+        await self.get_or_create_active_cat(interaction)
+        await self.get_or_create_resolved_cat(interaction)
+        await self.get_or_create_tickets_log(interaction)
 
-    @ticket.command(aliases=["open"], brief="Claims the ticket channel")
-    async def claim(self, ctx, *args):
-        if ctx.channel.name != CLAIMABLE_CHANNEL_NAME:
-            raise commands.errors.UserInputError(
-                "This command can be used only in a claimable channel"
+    @ticket.subcommand(description="Claims the ticket channel")
+    async def claim(self, interaction: Interaction):
+        if interaction.channel.name != CLAIMABLE_CHANNEL_NAME:
+            await interaction.send(
+                "This command can be used only in a claimable channel", ephemeral=True
             )
+            return
 
-        issue_num = await self.get_highest_num(ctx) + 1
+        issue_num = await self.get_highest_num(interaction) + 1
 
-        active_ticket_cat = await self.get_or_create_active_cat(ctx)
+        active_ticket_cat = await self.get_or_create_active_cat(interaction)
         overwrites = {
-            ctx.guild.default_role: nextcord.PermissionOverwrite(read_messages=False)
+            interaction.guild.default_role: nextcord.PermissionOverwrite(
+                read_messages=False
+            )
         }
 
         ticket_chnl = await active_ticket_cat.create_text_channel(
-            name=f"{ctx.author.name}-{issue_num}",
+            name=f"{interaction.user.name}-{issue_num}",
             reason="Making a ticket.",
             overwrites=overwrites,
         )
-        await ticket_chnl.set_permissions(ctx.message.author, read_messages=True)
+        await ticket_chnl.set_permissions(interaction.user, read_messages=True)
         for x in MOD_ROLES:
-            role = nextcord.utils.get(ctx.guild.roles, name=x)
+            role = nextcord.utils.get(interaction.guild.roles, name=x)
             if role is not None:
                 await ticket_chnl.set_permissions(role, read_messages=True)
 
-        await ticket_chnl.send(f"<@{ctx.author.id}> {CLAIMED_MESSAGE}")
+        await ticket_chnl.send(f"<@{interaction.user.id}> {CLAIMED_MESSAGE}")
 
-    @ticket.command(aliases=["resolved"], brief="Marks your ticket as resolved")
-    async def resolve(self, ctx, *args):
-        if ctx.channel.category.name != ACTIVE_TICKETS_CAT_NAME:
-            raise commands.errors.UserInputError(
-                "This command can be used only in an active channel"
+    @ticket.subcommand(description="Marks your ticket as resolved")
+    async def resolve(self, interaction: Interaction):
+        if interaction.channel.category.name != ACTIVE_TICKETS_CAT_NAME:
+            await interaction.send(
+                "This command can be used only in an active channel", ephemeral=True
             )
+            return
 
-        resolved_ticket_cat = await self.get_or_create_resolved_cat(ctx)
-        await ctx.channel.edit(category=resolved_ticket_cat)
+        resolved_ticket_cat = await self.get_or_create_resolved_cat(interaction)
+        await interaction.channel.edit(category=resolved_ticket_cat)
 
-        await ctx.channel.send(RESOLVED_MESSAGE)
+        await interaction.send(RESOLVED_MESSAGE)
 
-    @ticket.command(brief="Reopens a resolved ticket")
-    async def reopen(self, ctx, *args):
-        if ctx.channel.category.name != RESOLVED_TICKETS_CAT_NAME:
-            raise commands.errors.UserInputError(
-                "This command can be used only in a resolved channel"
+    @ticket.subcommand(description="Reopens a resolved ticket")
+    async def reopen(self, interaction: Interaction):
+        if interaction.channel.category.name != RESOLVED_TICKETS_CAT_NAME:
+            await interaction.send(
+                "This command can be used only in a resolved channel", ephemeral=True
             )
+            return
 
-        active_ticket_cat = await self.get_or_create_active_cat(ctx)
-        await ctx.channel.edit(category=active_ticket_cat)
+        active_ticket_cat = await self.get_or_create_active_cat(interaction)
+        await interaction.channel.edit(category=active_ticket_cat)
 
-        await ctx.channel.send(REOPENED_MESSAGE)
+        await interaction.send(REOPENED_MESSAGE)
 
-    @ticket.command(
+    @commands.command(
         brief="Scraps a resolved ticket, logs the messages and deletes the channel"
     )
     @commands.has_any_role(*MOD_ROLES)
-    async def scrap(self, ctx, *args):
-        if ctx.channel.category.name != RESOLVED_TICKETS_CAT_NAME:
-            raise commands.errors.UserInputError(
-                "This command can be used only in a resolved channel"
+    async def tscrap(self, interaction):
+        if interaction.channel.category.name != RESOLVED_TICKETS_CAT_NAME:
+            await interaction.send(
+                "This command can be used only in a resolved channel", ephemeral=True
             )
+            return
 
-        tickets_log = await self.get_or_create_tickets_log(ctx)
-        msg_list = await ctx.channel.history(limit=500, oldest_first=True).flatten()
+        tickets_log = await self.get_or_create_tickets_log(interaction)
+        msg_list = await interaction.channel.history(
+            limit=500, oldest_first=True
+        ).flatten()
         for msg in msg_list:
             emb = await self.get_tickets_log_embed(msg)
             await tickets_log.send(embed=emb)
 
-        await ctx.channel.delete()
+        await interaction.channel.delete()
 
     async def get_tickets_log_embed(self, message):
         embed = nextcord.Embed(colour=DARK_BLUE)
@@ -152,7 +162,8 @@ class Tickets(commands.Cog):
             if len(content_msg) > 1800:
                 content_msg = content_msg[0:1800]
                 content_msg += " [Message too long to be logged]"
-        embed.set_thumbnail(url=message.author.avatar.url)
+        if message.author.avatar:
+            embed.set_thumbnail(url=message.author.avatar.url)
         embed.title = message.author.name
         embed.description = content_msg
         embed.add_field(name="Channel", value=message.channel.name)
@@ -168,14 +179,14 @@ class Tickets(commands.Cog):
             await chnl.set_permissions(muted_role, send_messages=True)
         await chnl.send(CLAIMABLE_CHANNEL_MESSAGE)
 
-    async def get_or_create_tickets_log(self, ctx):
-        resolved_cat = await self.get_or_create_resolved_cat(ctx)
+    async def get_or_create_tickets_log(self, interaction):
+        resolved_cat = await self.get_or_create_resolved_cat(interaction)
         tickets_log = nextcord.utils.get(
             resolved_cat.channels, name=TICKETS_LOG_CHANNEL_NAME
         )
         if tickets_log is None:
             overwrites = {
-                ctx.guild.default_role: nextcord.PermissionOverwrite(
+                interaction.guild.default_role: nextcord.PermissionOverwrite(
                     read_messages=False
                 )
             }
@@ -186,47 +197,47 @@ class Tickets(commands.Cog):
                 overwrites=overwrites,
             )
             for x in MOD_ROLES:
-                role = nextcord.utils.get(ctx.guild.roles, name=x)
+                role = nextcord.utils.get(interaction.guild.roles, name=x)
                 if role is not None:
                     await tickets_log.set_permissions(role, read_messages=True)
         return tickets_log
 
-    async def get_or_create_claimable_cat(self, ctx):
+    async def get_or_create_claimable_cat(self, interaction):
         claimable_ticket_cat = nextcord.utils.get(
-            ctx.guild.categories, name=CLAIMABLE_TICKETS_CAT_NAME
+            interaction.guild.categories, name=CLAIMABLE_TICKETS_CAT_NAME
         )
         if claimable_ticket_cat is None:
-            claimable_ticket_cat = await ctx.guild.create_category(
+            claimable_ticket_cat = await interaction.guild.create_category(
                 name=CLAIMABLE_TICKETS_CAT_NAME,
                 reason="Making a category for claimable tickets.",
             )
         return claimable_ticket_cat
 
-    async def get_or_create_active_cat(self, ctx):
+    async def get_or_create_active_cat(self, interaction):
         active_ticket_cat = nextcord.utils.get(
-            ctx.guild.categories, name=ACTIVE_TICKETS_CAT_NAME
+            interaction.guild.categories, name=ACTIVE_TICKETS_CAT_NAME
         )
         if active_ticket_cat is None:
-            active_ticket_cat = await ctx.guild.create_category(
+            active_ticket_cat = await interaction.guild.create_category(
                 name=ACTIVE_TICKETS_CAT_NAME,
                 reason="Making a category for claimable tickets.",
             )
         return active_ticket_cat
 
-    async def get_or_create_resolved_cat(self, ctx):
+    async def get_or_create_resolved_cat(self, interaction):
         resolved_ticket_cat = nextcord.utils.get(
-            ctx.guild.categories, name=RESOLVED_TICKETS_CAT_NAME
+            interaction.guild.categories, name=RESOLVED_TICKETS_CAT_NAME
         )
         if resolved_ticket_cat is None:
-            resolved_ticket_cat = await ctx.guild.create_category(
+            resolved_ticket_cat = await interaction.guild.create_category(
                 name=RESOLVED_TICKETS_CAT_NAME,
                 reason="Making a category for claimable tickets.",
             )
         return resolved_ticket_cat
 
-    async def get_highest_num(self, ctx):
-        active_ticket_cat = await self.get_or_create_active_cat(ctx)
-        resolved_ticket_cat = await self.get_or_create_resolved_cat(ctx)
+    async def get_highest_num(self, interaction):
+        active_ticket_cat = await self.get_or_create_active_cat(interaction)
+        resolved_ticket_cat = await self.get_or_create_resolved_cat(interaction)
 
         num = 0
         for x in active_ticket_cat.channels:
