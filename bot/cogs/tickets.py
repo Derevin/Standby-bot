@@ -59,7 +59,7 @@ class Tickets(commands.Cog):
                         embed=unhandled_error_embed(message.content, message.channel, e)
                     )
 
-    @nextcord.slash_command(guild_ids=[GUILD_ID], description="Ticketing system")
+    @nextcord.slash_command(guild_ids=[GUILD_ID])
     async def ticket(self, interaction):
         pass
 

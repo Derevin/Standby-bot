@@ -27,6 +27,8 @@ class Birthdays(commands.Cog):
         self,
         interaction: Interaction,
         month_name: str = SlashOption(
+            name="month",
+            description="Your birth month",
             choices=[
                 "January",
                 "February",
@@ -40,9 +42,11 @@ class Birthdays(commands.Cog):
                 "October",
                 "November",
                 "December",
-            ]
+            ],
         ),
-        day: int = SlashOption(min_value=1, max_value=31),
+        day: int = SlashOption(
+            min_value=1, max_value=31, description="Your birth date"
+        ),
     ):
         month = month_to_int(month_name)
         if (month in [2, 4, 6, 9, 11] and day == 31) or (month == 2 and day > 29):

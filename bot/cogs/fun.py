@@ -150,7 +150,7 @@ class Fun(commands.Cog):
     async def hug(
         self,
         interaction: Interaction,
-        user: str = SlashOption(description="The user you want to send a hug to/h"),
+        user: str = SlashOption(description="The user you want to send a hug to"),
     ):
         ids = get_mentioned_ids(user)
         if ids:
@@ -177,7 +177,11 @@ class Fun(commands.Cog):
             )
 
     @nextcord.slash_command(guild_ids=[GUILD_ID], description="Pay your respects")
-    async def f(self, interaction: Interaction, target):
+    async def f(
+        self,
+        interaction: Interaction,
+        target=SlashOption(description="What do you want to pay your respects to?"),
+    ):
         embed = nextcord.Embed()
         embed.description = (
             f"**{interaction.user.name}** has paid their respects"
@@ -297,9 +301,7 @@ class Fun(commands.Cog):
                 "Only one who has been burgered may burger others.", ephemeral=True
             )
 
-    @nextcord.slash_command(
-        guild_ids=[GUILD_ID], description="Add or remove vanity roles"
-    )
+    @nextcord.slash_command(guild_ids=[GUILD_ID])
     async def vanity(self, interaction: Interaction):
         pass
 
@@ -318,7 +320,11 @@ class Fun(commands.Cog):
         await interaction.send(embed=embed)
 
     @vanity.subcommand(description="Pick a vanity role")
-    async def pick(self, interaction: Interaction, role):
+    async def pick(
+        self,
+        interaction: Interaction,
+        role=SlashOption(description="The role you want"),
+    ):
         vanity_roles = get_vanity_roles(interaction.guild)
         role = get_role(interaction.guild, role)
         if role:
@@ -397,7 +403,11 @@ class Fun(commands.Cog):
         name="8ball",
         description="Provides a Magic 8-Ball answer to a yes/no question",
     )
-    async def eightball(self, interaction: Interaction, question):
+    async def eightball(
+        self,
+        interaction: Interaction,
+        question=SlashOption(description="What is your question?"),
+    ):
         answers = [
             "It is certain.",
             "It is decidedly so.",
