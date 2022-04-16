@@ -30,7 +30,7 @@ async def on_ready():
         reason_found = "unkown reason"
         async with aiohttp.ClientSession() as cs:
             async with cs.get(
-                "https://api.github.com/repos/Derevin/Standby-bot/commits/master"
+                "https://api.github.com/repos/Derevin/Standby-bot/commits/main"
             ) as r:
                 data = await r.json()
                 timenow = datetime.now()
