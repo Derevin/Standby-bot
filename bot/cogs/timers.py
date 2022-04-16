@@ -1,5 +1,6 @@
 from nextcord.ext import commands, tasks
 import nextcord
+from nextcord import Interaction, SlashOption
 import asyncio
 import random
 import re
@@ -55,55 +56,48 @@ class Timers(commands.Cog):
             traceback.print_exc(file=sys.stdout)
             return
 
-    @commands.command(
-        aliases=["remind", "reminder", "notifyme"],
-        brief="Reminds you after a specified time",
+    @nextcord.slash_command(
+        guild_ids=[GUILD_ID],
+        description="Reminds you after a specified time",
     )
-    async def remindme(self, ctx, time, *msg):
+    async def remindme(
+        self,
+        interaction: Interaction,
+        days: int = SlashOption(description="Days until the giveaway finishes"),
+        hours: int = SlashOption(description="Hours until the giveaway finishes"),
+        minutes: int = SlashOption(description="Minutes until the giveaway finishes"),
+        message=SlashOption(description="A message for the reminder"),
+    ):
 
-        if not re.search(r"(\d+[wdhms])+", time):
-            raise commands.errors.BadArgument("Invalid time format")
-
-        weeks = re.search(r"(\d+)w", time)
-        weeks = int(weeks.group(1)) if weeks else 0
-        days = re.search(r"(\d+)d", time)
-        days = int(days.group(1)) if days else 0
-        hours = re.search(r"(\d+)h", time)
-        hours = int(hours.group(1)) if hours else 0
-        minutes = re.search(r"(\d+)m", time)
-        minutes = int(minutes.group(1)) if minutes else 0
-        seconds = re.search(r"(\d+)s", time)
-        seconds = int(seconds.group(1)) if seconds else 0
-        if weeks + days + hours + minutes + seconds == 0:
-            raise commands.errors.BadArgument("Invalid time format")
+        if days + hours + minutes == 0:
+            await interaction.send("Invalid time format", ephemeral=True)
+            return
 
         timenow = datetime.now()
 
         tdelta = timedelta(
-            weeks=weeks, days=days, hours=hours, minutes=minutes, seconds=seconds
+            days=days,
+            hours=hours,
+            minutes=minutes,
         )
 
         tfuture = timenow + tdelta
         tfuture = tfuture.replace(microsecond=0)
 
-        await ensure_guild_existence(self.bot, ctx.guild.id)
-        await ensure_usr_existence(self.bot, ctx.author.id, ctx.guild.id)
+        await ensure_guild_existence(self.bot, interaction.guild.id)
+        await ensure_usr_existence(self.bot, interaction.user.id, interaction.guild.id)
 
-        joined = ""
-        if msg:
-            joined = " ".join(msg)
-        params_dict = {"msg": joined, "channel": ctx.channel.id}
+        params_dict = {"msg": message, "channel": interaction.channel.id}
         params_json = json.dumps(params_dict)
 
         await self.bot.pg_pool.execute(
             "INSERT INTO tmers (usr_id, expires, ttype, params) VALUES ($1, $2, $3, $4);",
-            ctx.author.id,
+            interaction.user.id,
             tfuture,
             DB_TMER_REMINDER,
             params_json,
         )
-        print(tfuture)
-        await ctx.channel.send(
+        await interaction.send(
             f"{dynamic_timestamp(timenow, 'short')}: Your reminder has been registered "
             f"and you will be reminded on {dynamic_timestamp(tfuture, 'long')}."
         )
