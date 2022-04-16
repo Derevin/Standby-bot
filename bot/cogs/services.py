@@ -1,5 +1,6 @@
 from nextcord.ext import commands
 import nextcord
+from nextcord import Interaction, SlashOption
 from settings import *
 from utils.util_functions import *
 from inspect import Parameter
@@ -32,156 +33,159 @@ class Services(commands.Cog):
         await ctx.message.delete()
         await msg.edit(content=message)
 
-    @commands.command(
-        aliases=["pfp"],
-        brief="Displays the profile picture of a user. Also works as +pfp",
+    @nextcord.slash_command(
+        guild_ids=[GUILD_ID],
+        description="Displays a user's profile picture.",
     )
-    async def avatar(self, ctx, *user):
+    async def avatar(
+        self,
+        interaction: Interaction,
+        query=SlashOption(
+            name="user",
+            description="The target user (skip to display your own)",
+            required=False,
+        ),
+    ):
+        if not query:
+            user = interaction.user
 
-        query = " ".join(user)
-
-        if not user:
-            if ctx.message.reference:
-                msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
-                user = msg.author
-            else:
-                user = ctx.author
-
-        elif ctx.message.mentions:
-            user = ctx.message.mentions[0]
+        elif mentions := await get_mentioned_users(query, interaction.guild):
+            user = mentions[0]
 
         else:
-            user = get_user(ctx.guild, query)
+            user = get_user(interaction.guild, query)
 
         if user:
             embed = avatar_embed(user)
-            await ctx.send(embed=embed)
+            await interaction.send(embed=embed)
 
         else:
-            raise commands.errors.BadArgument(
-                message="""Enter a unique identifier - mention, nickname or username (tag optional) - """
-                """or run the command in a reply. Leave empty to show your own avatar."""
+            await interaction.send(
+                "No (unique) user found. Enter a unique identifier - mention, nickname or username (tag optional)",
+                ephemeral=True,
             )
 
-    @commands.command(brief="Returns the Urban Dictionary definition of a word")
-    async def urban(self, ctx, *, query):
+    @nextcord.slash_command(
+        guild_ids=[GUILD_ID],
+        description="Returns the Urban Dictionary definition of a word or phrase",
+    )
+    async def urban(
+        self,
+        interaction: Interaction,
+        query=SlashOption(description="The word or phase to look up"),
+    ):
         response = await urban_embed(query, 1)
         if isinstance(response, nextcord.Embed):
-            message = await ctx.send(embed=response)
+            await interaction.send(embed=response)
+            message = await interaction.original_message()
             await message.add_reaction("⬅️")
             await message.add_reaction("➡️")
             await message.add_reaction("🇽")
         elif isinstance(response, str):
-            await ctx.send(response)
+            await interaction.send(response)
 
-    @commands.command(
-        aliases=["sleaderboard", "sleaderboards", "starboardl", "sbldr"],
-        brief="Displays the starboard leaderboards. '+help <command>' to view aliases.",
+    @nextcord.slash_command(
+        guild_ids=[GUILD_ID], description="Displays the leaderboards"
     )
-    async def sldr(self, ctx):
+    async def leaderboard(
+        self,
+        interaction: Interaction,
+        leaderboard=SlashOption(
+            description="The leaderboard to display",
+            choices=["Stars", "Thanks", "Skulls"],
+        ),
+    ):
+
+        args_dict = {
+            "Stars": (
+                "stars",
+                "starboard",
+                STARBOARD_COLOUR,
+                STARBOARD_LDR_STARS_HEADER,
+                STARBOARD_LDR_USER_HEADER,
+                STARBOARD_LDR_HEADER,
+            ),
+            "Thanks": (
+                "thanks",
+                "usr",
+                VIE_PURPLE,
+                THANKS_LDR_THANKS_HEADER,
+                THANKS_LDR_USER_HEADER,
+                THANKS_LDR_HEADER,
+            ),
+            "Skulls": (
+                "skulls",
+                "usr",
+                VIE_PURPLE,
+                SKULLS_LDR_SKULLS_HEADER,
+                SKULLS_LDR_USER_HEADER,
+                SKULLS_LDR_HEADER,
+            ),
+        }
+
+        (
+            resource,
+            table,
+            colour,
+            resource_header,
+            user_header,
+            leaderboard_header,
+        ) = args_dict[leaderboard]
+
         starboard_ldr = await self.bot.pg_pool.fetch(
-            f"SELECT usr_id, SUM(stars) as sum_stars "
-            f"FROM starboard "
+            f"SELECT usr_id, SUM({resource}) as total "
+            f"FROM {table} "
             f"WHERE usr_id IN "
-            f"(SELECT usr_id FROM usr WHERE guild_id = {ctx.guild.id}) "
+            f"(SELECT usr_id FROM usr WHERE guild_id = {interaction.guild.id}) "
             f"GROUP BY usr_id "
-            f"ORDER BY sum_stars DESC ;"
+            f"ORDER BY total DESC ;"
         )
+
         embed = await build_leaderboard_embed(
-            ctx,
+            interaction,
             starboard_ldr,
-            "sum_stars",
+            "total",
             "usr_id",
-            STARBOARD_COLOUR,
-            STARBOARD_LDR_STARS_HEADER,
-            STARBOARD_LDR_USER_HEADER,
-            STARBOARD_LDR_HEADER,
+            colour,
+            resource_header,
+            user_header,
+            leaderboard_header,
         )
-        await ctx.channel.send(embed=embed)
+        await interaction.send(embed=embed)
 
-    @commands.command(
-        aliases=[
-            "tleaderboard",
-            "thanksl",
-            "tleaderboards",
-            "thanksldr",
-            "tyldr",
-            "tyleaderboards",
-        ],
-        brief="Displays thanking leaderboard. '+help <command>' to view aliases.",
-    )
-    async def tldr(self, ctx):
-        thanks_ldr = await self.bot.pg_pool.fetch(
-            f"SELECT usr_id, SUM(thanks) as sum_thanks "
-            f"FROM usr "
-            f"WHERE guild_id = {ctx.guild.id} "
-            f"GROUP BY usr_id "
-            f"HAVING SUM(thanks) > 0 "
-            f"ORDER BY sum_thanks DESC ;"
-        )
+    @nextcord.slash_command(guild_ids=[GUILD_ID], description="Award a skull.")
+    async def skull(
+        self,
+        interaction: Interaction,
+        recipient=SlashOption(description="The user to award a skull to"),
+    ):
 
-        embed = await build_leaderboard_embed(
-            ctx,
-            thanks_ldr,
-            "sum_thanks",
-            "usr_id",
-            VIE_PURPLE,
-            THANKS_LDR_THANKS_HEADER,
-            THANKS_LDR_USER_HEADER,
-            THANKS_LDR_HEADER,
-        )
-        await ctx.channel.send(embed=embed)
-
-    @commands.command()
-    async def skull(self, ctx):
-
-        if not ctx.author.id == JORM_ID:
-            await ctx.send(
+        if not interaction.user.id == FEL_ID:
+            await interaction.send(
                 "https://cdn.discordapp.com/attachments/744224801429782679/805832792004755486/keiyb.png"
             )
             return
 
-        if not ctx.message.mentions:
-            await ctx.send("Please mention the user(s) you want to give skulls to.")
+        mentions = await get_mentioned_users(recipient, interaction.guild)
+
+        if not mentions:
+            await interaction.send(
+                "Please mention the user(s) you want to give skulls to.", ephemeral=True
+            )
             return
 
-        for guesser in ctx.message.mentions:
+        for guesser in mentions:
 
             await ensure_usr_existence(self.bot, guesser.id, guesser.guild.id)
 
             await self.bot.pg_pool.execute(
                 f"UPDATE usr SET skulls = skulls + 1 WHERE usr_id = {guesser.id}"
             )
-            await ctx.send(f"Gave a 💀 to {guesser.mention}")
-
-    @commands.command(
-        brief="Displays the skull leaderboard.",
-    )
-    async def skullboard(self, ctx):
-        skull_ldr = await self.bot.pg_pool.fetch(
-            f"SELECT usr_id, SUM(skulls) as sum_skulls "
-            f"FROM usr "
-            f"WHERE guild_id = {ctx.guild.id} "
-            f"GROUP BY usr_id "
-            f"HAVING SUM(skulls) > 0 "
-            f"ORDER BY sum_skulls DESC ;"
-        )
-
-        embed = await build_leaderboard_embed(
-            ctx,
-            skull_ldr,
-            "sum_skulls",
-            "usr_id",
-            VIE_PURPLE,
-            SKULLS_LDR_SKULLS_HEADER,
-            SKULLS_LDR_USER_HEADER,
-            SKULLS_LDR_HEADER,
-        )
-        await ctx.channel.send(embed=embed)
+            await interaction.send(f"Gave a 💀 to {guesser.mention}")
 
 
 async def build_leaderboard_embed(
-    ctx,
+    interaction,
     leaderboard,
     count_col_name,
     usr_col_name,
@@ -190,6 +194,7 @@ async def build_leaderboard_embed(
     header_user,
     header_title,
 ):
+
     if not leaderboard:
         return nextcord.Embed(color=color)
     ljust_num = len(str(header_count)) if str(header_count).isalnum() else 3
@@ -206,9 +211,9 @@ async def build_leaderboard_embed(
         if (
             keep_printing
             or prev_count == rec[count_col_name]
-            or ctx.message.author.id == rec[usr_col_name]
+            or interaction.user.id == rec[usr_col_name]
         ):
-            usr = ctx.guild.get_member(rec[usr_col_name])
+            usr = interaction.guild.get_member(rec[usr_col_name])
             if usr:
                 num_spaces = ljust_num - len(str(rec[count_col_name])) + 1
                 spaces = EMPTY2 * num_spaces
