@@ -271,7 +271,7 @@ class Fun(commands.Cog):
     ):
         burgered = get_role(interaction.guild, "Burgered")
         if burgered and burgered in interaction.user.roles:
-            mentions = await get_mentiond_users(target, interaction.guild)
+            mentions = await get_mentioned_users(target, interaction.guild)
             if mentions:
                 target = mentions[0]
                 if target == interaction.user:

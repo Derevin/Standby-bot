@@ -82,7 +82,7 @@ def get_mentioned_ids(text):
     return ids
 
 
-async def get_mentiond_users(text, guild):
+async def get_mentioned_users(text, guild):
     ids = get_mentioned_ids(text)
     users = [await guild.fetch_member(id) for id in ids]
     return users
