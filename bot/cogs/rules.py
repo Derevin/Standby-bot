@@ -233,7 +233,7 @@ class Rules(commands.Cog):
                     and get_role(member.guild, "Alliance") not in member.roles
                     and get_role(member.guild, "Community") not in member.roles
                 ):
-                    time = datetime.datetime.utcnow() - member.joined_at
+                    time = nextcord.utils.utcnow() - member.joined_at
                     if time.days >= 30:
                         try:
                             await member.send(
@@ -294,7 +294,7 @@ async def leave_message(bot, member):
         )
         if channel:
             name = member.name
-            time = datetime.datetime.utcnow()
+            time = nextcord.utils.utcnow()
             time = time.strftime("%b %d, %H:%M")
             embed = nextcord.Embed(color=GREY)
             embed.title = "The void grows smaller..."

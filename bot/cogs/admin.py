@@ -333,7 +333,7 @@ def message_embed(msg, cmd, trigger_author) -> nextcord.Embed:
     embed.description = msg.content
     embed.add_field(name="Channel", value=msg.channel.mention)
     timestamp = msg.created_at + datetime.timedelta(hours=2)
-    if (datetime.datetime.now() - timestamp).days > 11 * 30:
+    if (nextcord.utils.utcnow() - timestamp).days > 11 * 30:
         timestamp = timestamp.strftime("%b %d, %Y")
     else:
         timestamp = timestamp.strftime("%b %d, %H:%M")

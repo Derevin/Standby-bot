@@ -69,7 +69,7 @@ async def deleted_embed(payload, channel):
     else:
         embed.description = "[Message not found in cache]"
         embed.add_field(name="Channel", value=channel.mention)
-    embed.timestamp = datetime.datetime.utcnow()
+    embed.timestamp = nextcord.utils.utcnow()
     return embed
 
 
@@ -137,7 +137,7 @@ async def edited_embed(bot, payload):
     embed.set_thumbnail(url=avatar_url)
     if attachment_url:
         embed.add_field(name="Attachment", value=f"[Click here]({attachment_url})")
-    embed.timestamp = datetime.datetime.utcnow()
+    embed.timestamp = nextcord.utils.utcnow()
 
     return embed
 
@@ -161,7 +161,7 @@ async def voice_embed(member, before, after):
             f"{member.mention} ({member.name}#{member.discriminator}) joined"
             f" voice channel **#{after.name}**"
         )
-    embed.timestamp = datetime.datetime.utcnow()
+    embed.timestamp = nextcord.utils.utcnow()
     return embed
 
 

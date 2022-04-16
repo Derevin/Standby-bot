@@ -32,7 +32,7 @@ class Reposts(commands.Cog):
             channel = self.bot.get_channel(payload.channel_id)
             message = await channel.fetch_message(payload.message_id)
 
-            message_age = datetime.datetime.utcnow() - message.created_at
+            message_age = nextcord.utils.utcnow() - message.created_at
             if message_age > reposter_duration / 3:
                 return
 
@@ -73,7 +73,7 @@ class Reposts(commands.Cog):
                 f"SELECT * FROM tmers WHERE ttype={DB_TMER_REPOST}"
             )
             for rec in gtable:
-                timenow = datetime.datetime.utcnow()
+                timenow = nextcord.utils.utcnow()
                 if timenow <= rec["expires"]:
                     continue
 

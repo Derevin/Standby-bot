@@ -43,7 +43,7 @@ class Giveaways(commands.Cog):
 
         title = " ".join(title)
 
-        now = datetime.datetime.utcnow()
+        now = nextcord.utils.utcnow()
         delta = datetime.timedelta(
             days=days, hours=hours, minutes=minutes, seconds=seconds
         )
@@ -267,7 +267,7 @@ async def giveaway_handler(bot, payload):
 async def update_giveaway(giveaway):
     embed = giveaway.embeds[0]
     end_time = embed.timestamp
-    now = datetime.datetime.utcnow()
+    now = nextcord.utils.utcnow()
     delta = end_time - now
     if delta == datetime.timedelta(seconds=0) or delta.days < 0:
         await finish_giveaway(giveaway)
@@ -283,7 +283,7 @@ async def finish_giveaway(giveaway):
     embed.set_field_at(1, name=EMPTY, value=EMPTY)
     embed.set_field_at(2, name=EMPTY, value=EMPTY)
     embed.set_footer(text=re.sub("Ends", "Ended", embed.footer.text))
-    embed.timestamp = datetime.datetime.utcnow()
+    embed.timestamp = nextcord.utils.utcnow()
 
     num_winners = int(re.search("^(.+) winner", embed.footer.text).group(1))
     message = f"{giveaway.jump_url}\n"
@@ -333,7 +333,7 @@ def giveaway_embed(end_time, winners, author, title) -> nextcord.Embed:
 
     embed = nextcord.Embed(color=LIGHT_BLUE)
     embed.title = ":tada:**   " + title.upper() + " GIVEAWAY   **:tada:"
-    now = datetime.datetime.utcnow()
+    now = nextcord.utils.utcnow()
     remaining = delta_to_text(end_time - now)
     embed.description = EMPTY + "\nReact with :tada: to enter!\n" + EMPTY
 

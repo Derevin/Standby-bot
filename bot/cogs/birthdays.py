@@ -97,7 +97,7 @@ class Birthdays(commands.Cog):
     @tasks.loop(hours=1)
     async def check_bdays(self):
 
-        now = datetime.datetime.utcnow()
+        now = nextcord.utils.utcnow()
 
         if now.hour != 7:
             return
