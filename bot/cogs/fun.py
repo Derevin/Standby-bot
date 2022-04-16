@@ -385,7 +385,7 @@ class Fun(commands.Cog):
         )
 
     @commands.command(
-        brief="Provides a Magic 8-Ball answer to a yes/no question", aliases=["8ball"]
+        name="8ball", brief="Provides a Magic 8-Ball answer to a yes/no question"
     )
     async def eightball(self, ctx, *question):
         answers = [
