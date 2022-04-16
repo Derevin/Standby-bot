@@ -1,5 +1,6 @@
 from nextcord.ext import commands, tasks
 import nextcord
+from nextcord import Interaction, SlashOption
 import datetime
 from settings import *
 from utils.util_functions import *
@@ -16,83 +17,87 @@ class Birthdays(commands.Cog):
         pass
         self.check_bdays.cancel()
 
-    @commands.group(brief="Birthday commands", aliases=["bday"])
-    async def birthday(self, ctx):
-        if ctx.invoked_subcommand is None:
-            await ctx.send("Type `+help birthday` to see available subcommands.")
+    # @commands.group(brief="Birthday commands", aliases=["bday"])
+    @nextcord.slash_command(guild_ids=[GUILD_ID])
+    async def birthday(self, interaction: Interaction):
+        pass
 
-    @birthday.command(brief="Set your birthday")
-    async def set(self, ctx, day, month):
-
-        await ctx.message.delete()
-
-        months = [
-            "jan",
-            "feb",
-            "mar",
-            "apr",
-            "may",
-            "jun",
-            "jul",
-            "aug",
-            "sep",
-            "oct",
-            "nov",
-            "dec",
-        ]
-
-        try:
-
-            day = int(day)
-
-            if month[:3] in months:
-                month = months.index(month[:3]) + 1
-            else:
-                month = int(month)
-
-        except Exception:
-            day = 32
-            month = 13
-
-        if not (month <= 12 and day <= 31):
-            await ctx.send("Invalid date - please try again.")
+    @birthday.subcommand(description="Set your birthday")
+    async def set(
+        self,
+        interaction: Interaction,
+        month_name: str = SlashOption(
+            choices=[
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December",
+            ]
+        ),
+        day: int = SlashOption(min_value=1, max_value=31),
+    ):
+        month = month_to_int(month_name)
+        if (month in [2, 4, 6, 9, 11] and day == 31) or (month == 2 and day > 29):
+            await interaction.send("Invalid date - please try again.", ephemeral=True)
             return
 
-        await ensure_guild_existence(self.bot, ctx.guild.id)
-        await ensure_usr_existence(self.bot, ctx.author.id, ctx.guild.id)
+        await ensure_guild_existence(self.bot, interaction.guild.id)
+        await ensure_usr_existence(self.bot, interaction.user.id, interaction.guild.id)
 
         exists = await self.bot.pg_pool.fetch(
-            f"SELECT * FROM bdays WHERE usr_id = {ctx.author.id}"
+            f"SELECT * FROM bdays WHERE usr_id = {interaction.user.id}"
         )
 
         if exists:
             await self.bot.pg_pool.execute(
-                f"""UPDATE bdays SET month = {month}, day = {day} WHERE usr_id = {ctx.author.id}"""
+                f"""UPDATE bdays SET month = {month}, day = {day} WHERE usr_id = {interaction.user.id}"""
             )
         else:
             await self.bot.pg_pool.execute(
                 """INSERT INTO bdays (usr_id, month, day) """
                 """VALUES ($1, $2, $3);""",
-                ctx.author.id,
+                interaction.user.id,
                 month,
                 day,
             )
 
-        await ctx.send("Your birthday has been set.")
+        await interaction.send("Your birthday has been set.", ephemeral=True)
 
-    @birthday.command(brief="Remove your birthday", aliases=["clear"])
-    async def remove(self, ctx):
+    @birthday.subcommand(description="Remove your birthday")
+    async def remove(self, interaction):
 
         exists = await self.bot.pg_pool.fetch(
-            f"SELECT * FROM bdays WHERE usr_id = {ctx.author.id}"
+            f"SELECT * FROM bdays WHERE usr_id = {interaction.user.id}"
         )
         if not exists:
-            await ctx.send("You have not set your birthday.")
+            await interaction.send("You have not set your birthday.", ephemeral=True)
         else:
             await self.bot.pg_pool.execute(
-                f"DELETE FROM bdays WHERE usr_id = {ctx.author.id};"
+                f"DELETE FROM bdays WHERE usr_id = {interaction.user.id};"
             )
-            await ctx.send("Birthday removed.")
+            await interaction.send("Birthday removed.", ephemeral=True)
+
+    @birthday.subcommand(description="Check your birthday (only visible to you)")
+    async def check(self, interaction):
+
+        exists = await self.bot.pg_pool.fetch(
+            f"SELECT * FROM bdays WHERE usr_id = {interaction.user.id}"
+        )
+        if not exists:
+            await interaction.send("You have not set your birthday.", ephemeral=True)
+        else:
+            await interaction.send(
+                f"Your birthday is set to {int_to_month(exists[0]['month'])} {exists[0]['day']}.",
+                ephemeral=True,
+            )
 
     @tasks.loop(hours=1)
     async def check_bdays(self):
