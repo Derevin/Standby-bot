@@ -36,7 +36,7 @@ async def on_ready():
                 dt_commit_time = datetime.strptime(
                     data["commit"]["committer"]["date"], format
                 )
-                timepast = timenow - timedelta(minutes=5)
+                timepast = timenow - timedelta(minutes=15)
                 if timepast < dt_commit_time:
                     author = data["commit"]["committer"]["name"]
                     message = data["commit"]["message"]
