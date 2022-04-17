@@ -289,62 +289,67 @@ class Fun(commands.Cog):
                 "Only one who has been burgered may burger others.", ephemeral=True
             )
 
-    @nextcord.slash_command(guild_ids=[GUILD_ID])
-    async def vanity(self, interaction: Interaction):
-        pass
+    # @nextcord.slash_command(guild_ids=[GUILD_ID])
+    # async def vanity(self, interaction: Interaction):
+    #     pass
 
-    @vanity.subcommand(description="Show all available vanity roles")
-    async def show(self, interaction: Interaction):
+    # @vanity.subcommand(description="Show all available vanity roles")
+    # async def show(self, interaction: Interaction):
 
-        vanity_roles = get_vanity_roles(interaction.guild)
-        vanity_roles.sort(key=lambda x: x.name)
+    #     vanity_roles = get_vanity_roles(interaction.guild)
+    #     vanity_roles.sort(key=lambda x: x.name)
 
-        embed = nextcord.Embed()
-        embed.title = "Currently available vanity roles:"
-        embed.description = (
-            ", ".join([role.mention for role in vanity_roles]) + 2 * "\n"
+    #     embed = nextcord.Embed()
+    #     embed.title = "Currently available vanity roles:"
+    #     embed.description = (
+    #         ", ".join([role.mention for role in vanity_roles]) + 2 * "\n"
+    #     )
+    #     embed.description += "Use `/vanity` to change your vanity role"
+    #     await interaction.send(embed=embed)
+
+    class VanityView(nextcord.ui.View):
+        def __init__(self, creator):
+            super().__init__()
+            self.value = None
+            self.creator = creator
+
+        @nextcord.ui.select(placeholder="Pick a vanity role", min_values=0)
+        async def select_role(
+            self, select: nextcord.ui.Select, interaction: Interaction
+        ):
+            if self.creator == interaction.user and select.values:
+                self.value = select.values[0]
+
+        @nextcord.ui.button(
+            label="Pick",
+            style=nextcord.ButtonStyle.blurple,
         )
-        embed.description += "Use `/vanity` to change your vanity role"
-        await interaction.send(embed=embed)
+        async def press(self, button: nextcord.ui.Button, interaction=Interaction):
 
-    @vanity.subcommand(description="Pick a vanity role")
-    async def pick(
+            if self.creator == interaction.user and self.value:
+                self.stop()
+
+    @nextcord.slash_command(guild_ids=[GUILD_ID], description="Pick a vanity role")
+    async def vanity(
         self,
         interaction: Interaction,
-        role=SlashOption(
-            description="The role you want",  # choices=get_vanity_roles(bot.guild)
-        ),
     ):
+        view = self.VanityView(interaction.user)
         vanity_roles = get_vanity_roles(interaction.guild)
-        role = get_role(interaction.guild, role)
-        if role:
-            if role in vanity_roles:
-                if role not in interaction.user.roles:
-                    await interaction.user.remove_roles(*vanity_roles)
-                    await interaction.user.add_roles(role)
-                    await interaction.send(
-                        f"Your vanity role has been set to {role.name}"
-                    )
-                else:
-                    await interaction.send(
-                        "You already have that role!", ephemeral=True
-                    )
-            else:
-                await interaction.send(
-                    "You can only pick vanity roles. Use `/vanity show` to see the full list.",
-                    ephemeral=True,
-                )
-        else:
-            await interaction.send(
-                "Please pick a valid vanity role. Use `/vanity show` to see the full list.",
-                ephemeral=True,
-            )
-
-    @vanity.subcommand(description="Remove your vanity role")
-    async def remove(self, interaction: Interaction):
-        vanity_roles = get_vanity_roles(interaction.guild)
-        await interaction.user.remove_roles(*vanity_roles)
-        await interaction.send("Your vanity role has been removed", ephemeral=True)
+        for role in vanity_roles:
+            view.children[0].add_option(label=role.name)
+        view.children[0].add_option(label="Remove my vanity role", value="remove")
+        await interaction.send(view=view)
+        await view.wait()
+        if view.value:
+            await interaction.user.remove_roles(*vanity_roles)
+            text = "Your vanity role has been removed."
+            if view.value != "remove":
+                role = get_role(interaction.guild, view.value)
+                await interaction.user.add_roles(role)
+                text = f"You are now (a) {role.name}."
+            msg = await interaction.original_message()
+            await msg.edit(text, view=None, delete_after=10)
 
     @nextcord.slash_command(
         guild_ids=[GUILD_ID], description="Genererate a captioned meme"
