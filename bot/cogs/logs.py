@@ -14,12 +14,14 @@ class Logs(commands.Cog):
         channel = self.bot.get_channel(payload.channel_id)
         if channel.name == LOGS_CHANNEL_NAME:
             return
-        embed = await deleted_embed(payload, channel)
+        embed, files = await deleted_embed(payload, channel)
         if embed:
             guild = channel.guild
             logs = nextcord.utils.get(guild.text_channels, name=LOGS_CHANNEL_NAME)
             if logs:
-                await logs.send(embed=embed)
+                main = await logs.send(embed=embed)
+                for file in files:
+                    await logs.send(file=file, reference=main)
 
     @commands.Cog.listener()
     async def on_raw_message_edit(self, payload):
@@ -62,17 +64,22 @@ async def deleted_embed(payload, channel):
             embed.set_thumbnail(url=message.author.avatar.url)
         embed.add_field(name="Author", value=message.author.mention)
         embed.add_field(name="Channel", value=message.channel.mention)
+        files = []
         if message.attachments:
-            embed.add_field(
-                name="Attachment",
-                value=f"[Click here]({message.attachments[0].url})",
-                inline=False,
-            )
+            if len(message.attachments) == 1 and re.search(
+                r"\.(jpg|jpeg|png|gif|webp)$", message.attachments[0].url
+            ):
+                embed.set_image(url=message.attachments[0].url)
+            else:
+                for attachment in message.attachments:
+                    file = await attachment.to_file()
+                    files.append(file)
+            embed.add_field(name="Attachments", value="[See below]", inline=False)
     else:
         embed.description = "[Message not found in cache]"
         embed.add_field(name="Channel", value=channel.mention)
     embed.timestamp = nextcord.utils.utcnow()
-    return embed
+    return embed, files
 
 
 async def edited_embed(bot, payload):
