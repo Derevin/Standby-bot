@@ -86,3 +86,10 @@ async def get_mentioned_users(text, guild):
     ids = get_mentioned_ids(text)
     users = [await guild.fetch_member(id) for id in ids]
     return users
+
+
+def get_vanity_roles(guild):
+    start, stop = [
+        i for i in range(len(guild.roles)) if guild.roles[i].name == "Vanity"
+    ][0:2]
+    return guild.roles[start + 1 : stop]

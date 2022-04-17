@@ -433,12 +433,5 @@ class Fun(commands.Cog):
         await interaction.send(random.choice(answers))
 
 
-def get_vanity_roles(guild):
-    start, stop = [
-        i for i in range(len(guild.roles)) if guild.roles[i].name == "Vanity"
-    ][0:2]
-    return guild.roles[start + 1 : stop]
-
-
 def setup(bot):
     bot.add_cog(Fun(bot))
