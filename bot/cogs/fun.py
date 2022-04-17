@@ -289,31 +289,13 @@ class Fun(commands.Cog):
                 "Only one who has been burgered may burger others.", ephemeral=True
             )
 
-    # @nextcord.slash_command(guild_ids=[GUILD_ID])
-    # async def vanity(self, interaction: Interaction):
-    #     pass
-
-    # @vanity.subcommand(description="Show all available vanity roles")
-    # async def show(self, interaction: Interaction):
-
-    #     vanity_roles = get_vanity_roles(interaction.guild)
-    #     vanity_roles.sort(key=lambda x: x.name)
-
-    #     embed = nextcord.Embed()
-    #     embed.title = "Currently available vanity roles:"
-    #     embed.description = (
-    #         ", ".join([role.mention for role in vanity_roles]) + 2 * "\n"
-    #     )
-    #     embed.description += "Use `/vanity` to change your vanity role"
-    #     await interaction.send(embed=embed)
-
     class VanityView(nextcord.ui.View):
         def __init__(self, creator):
             super().__init__()
             self.value = None
             self.creator = creator
 
-        @nextcord.ui.select(placeholder="Pick a vanity role", min_values=0)
+        @nextcord.ui.select(placeholder="Pick a vanity role")
         async def select_role(
             self, select: nextcord.ui.Select, interaction: Interaction
         ):
