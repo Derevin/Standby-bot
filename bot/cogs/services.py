@@ -40,30 +40,11 @@ class Services(commands.Cog):
     async def avatar(
         self,
         interaction: Interaction,
-        query=SlashOption(
-            name="user",
-            description="The target user (skip to display your own)",
-            required=False,
+        user: nextcord.User = SlashOption(
+            description="The target user",
         ),
     ):
-        if not query:
-            user = interaction.user
-
-        elif mentions := await get_mentioned_users(query, interaction.guild):
-            user = mentions[0]
-
-        else:
-            user = get_user(interaction.guild, query)
-
-        if user:
-            embed = avatar_embed(user)
-            await interaction.send(embed=embed)
-
-        else:
-            await interaction.send(
-                "No (unique) user found. Enter a unique identifier - mention, nickname or username (tag optional)",
-                ephemeral=True,
-            )
+        await interaction.send(embed=avatar_embed(user))
 
     @nextcord.slash_command(
         guild_ids=[GUILD_ID],
@@ -157,31 +138,23 @@ class Services(commands.Cog):
     async def skull(
         self,
         interaction: Interaction,
-        recipient=SlashOption(description="The user to award a skull to"),
+        recipient: nextcord.User = SlashOption(
+            description="The user to award a skull to"
+        ),
     ):
 
-        if not interaction.user.id == FEL_ID:
+        if not interaction.user.id == JORM_ID:
             await interaction.send(
                 "https://cdn.discordapp.com/attachments/744224801429782679/805832792004755486/keiyb.png"
             )
             return
 
-        mentions = await get_mentioned_users(recipient, interaction.guild)
+        await ensure_usr_existence(self.bot, recipient.id, recipient.guild.id)
 
-        if not mentions:
-            await interaction.send(
-                "Please mention the user(s) you want to give skulls to.", ephemeral=True
-            )
-            return
-
-        for guesser in mentions:
-
-            await ensure_usr_existence(self.bot, guesser.id, guesser.guild.id)
-
-            await self.bot.pg_pool.execute(
-                f"UPDATE usr SET skulls = skulls + 1 WHERE usr_id = {guesser.id}"
-            )
-            await interaction.send(f"Gave a 💀 to {guesser.mention}")
+        await self.bot.pg_pool.execute(
+            f"UPDATE usr SET skulls = skulls + 1 WHERE usr_id = {recipient.id}"
+        )
+        await interaction.send(f"Gave a 💀 to {recipient.mention}")
 
 
 async def build_leaderboard_embed(

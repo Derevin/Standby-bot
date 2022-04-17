@@ -47,7 +47,6 @@ YEEE = """
 ░░░░░░░░░█░░░░░░░░░░░░█░░░░
 """
 
-
 memes = {
     "Invest": "https://cdn.discordapp.com/attachments/744224801429782679/799296186019741696/Invest_Button_Banner.png",
     "Chad yes": "https://cdn.discordapp.com/attachments/744224801429782679/799296476835610674/cover5.png",
@@ -150,31 +149,21 @@ class Fun(commands.Cog):
     async def hug(
         self,
         interaction: Interaction,
-        user: str = SlashOption(description="The user you want to send a hug to"),
+        user: nextcord.User = SlashOption(
+            description="The user you want to send a hug to"
+        ),
     ):
-        ids = get_mentioned_ids(user)
-        if ids:
-            user = await interaction.guild.fetch_member(ids[0])
-        else:
-            user = get_user(interaction.guild, user)
-
-        if user:
-            if user == interaction.user:
-                await interaction.send(
-                    "https://cdn.discordapp.com/attachments/744224801429782679/757549246533599292/selfhug.png"
-                )
-            else:
-                await interaction.send(
-                    f"{user.mention}, {interaction.user.mention} sent you a hug!"
-                )
-                hug = get_emoji(interaction.guild, "BlobReachAndHug")
-                if hug:
-                    await interaction.channel.send(hug)
+        if user == interaction.user:
+            await interaction.send(
+                "https://cdn.discordapp.com/attachments/744224801429782679/757549246533599292/selfhug.png"
+            )
         else:
             await interaction.send(
-                "Could not find a (unique) user - try again with a different search term.",
-                ephemeral=True,
+                f"{user.mention}, {interaction.user.mention} sent you a hug!"
             )
+            hug = get_emoji(interaction.guild, "BlobReachAndHug")
+            if hug:
+                await interaction.channel.send(hug)
 
     @nextcord.slash_command(guild_ids=[GUILD_ID], description="Pay your respects")
     async def f(
@@ -271,30 +260,29 @@ class Fun(commands.Cog):
     async def burger(
         self,
         interaction: Interaction,
-        target=SlashOption(description="The person you want to burger"),
+        target: nextcord.User = SlashOption(
+            description="The person you want to burger"
+        ),
     ):
         burgered = get_role(interaction.guild, "Burgered")
         if burgered and burgered in interaction.user.roles:
-            mentions = await get_mentioned_users(target, interaction.guild)
-            if mentions:
-                target = mentions[0]
-                if target == interaction.user:
-                    await interaction.send(
-                        "You can't burger yourself - you are already burgered!",
-                        ephemeral=True,
-                    )
-                elif target.bot:
-                    await interaction.send(
-                        "Fool me once, shame on — shame on you. Fool me — you can't get fooled again.",
-                        ephemeral=True,
-                    )
-                else:
-                    await interaction.user.remove_roles(burgered)
-                    await target.add_roles(burgered)
-                    await interaction.send(target.mention)
-                    await interaction.channel.send(
-                        "https://cdn.discordapp.com/attachments/744224801429782679/893950953378705508/unknown.png"
-                    )
+            if target == interaction.user:
+                await interaction.send(
+                    "You can't burger yourself - you are already burgered!",
+                    ephemeral=True,
+                )
+            elif target.bot:
+                await interaction.send(
+                    "Fool me once, shame on — shame on you. Fool me — you can't get fooled again.",
+                    ephemeral=True,
+                )
+            else:
+                await interaction.user.remove_roles(burgered)
+                await target.add_roles(burgered)
+                await interaction.send(target.mention)
+                await interaction.channel.send(
+                    "https://cdn.discordapp.com/attachments/744224801429782679/893950953378705508/unknown.png"
+                )
 
         else:
             await interaction.send(
@@ -323,7 +311,9 @@ class Fun(commands.Cog):
     async def pick(
         self,
         interaction: Interaction,
-        role=SlashOption(description="The role you want"),
+        role=SlashOption(
+            description="The role you want",  # choices=get_vanity_roles(bot.guild)
+        ),
     ):
         vanity_roles = get_vanity_roles(interaction.guild)
         role = get_role(interaction.guild, role)
