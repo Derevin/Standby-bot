@@ -26,7 +26,7 @@ class Services(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(brief="Makes the bot repeat a message")
+    @commands.command(brief="Makes the bot repeat a message", hidden=True)
     async def sayd(self, ctx, *, message):
 
         msg = await ctx.channel.send((message + " "))
