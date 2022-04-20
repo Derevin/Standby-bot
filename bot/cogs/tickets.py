@@ -4,7 +4,7 @@ from nextcord import Interaction, SlashOption
 from cogs.error_handler import unhandled_error_embed
 from settings import *
 from inspect import Parameter
-
+from utils.util_functions import *
 
 CLAIMABLE_TICKETS_CAT_NAME = "Talk to mods"
 CLAIMABLE_CHANNEL_NAME = "claim-this-channel"
@@ -59,27 +59,14 @@ class Tickets(commands.Cog):
                         embed=unhandled_error_embed(message.content, message.channel, e)
                     )
 
-    @nextcord.slash_command(guild_ids=[GUILD_ID])
-    async def ticket(self, interaction):
-        pass
+    async def claim(self, interaction):
 
-    @commands.command(
-        brief="Initiates ticket system - creates categories, channels etc"
-    )
-    @commands.has_any_role(*MOD_ROLES)
-    async def tinit(self, interaction, *args):
-        claimable_ticket_cat = await self.get_or_create_claimable_cat(interaction)
-        if not claimable_ticket_cat.channels:
-            await self.create_claimable_channel(claimable_ticket_cat)
-        await self.get_or_create_active_cat(interaction)
-        await self.get_or_create_resolved_cat(interaction)
-        await self.get_or_create_tickets_log(interaction)
+        claimable_channel = get_channel(interaction.guild, CLAIMABLE_CHANNEL_NAME)
+        if interaction.channel != claimable_channel:
 
-    @ticket.subcommand(description="Claims the ticket channel")
-    async def claim(self, interaction: Interaction):
-        if interaction.channel.name != CLAIMABLE_CHANNEL_NAME:
             await interaction.send(
-                "This command can be used only in a claimable channel", ephemeral=True
+                f"This command can be used only in {claimable_channel.mention}.",
+                ephemeral=True,
             )
             return
 
@@ -104,9 +91,12 @@ class Tickets(commands.Cog):
                 await ticket_chnl.set_permissions(role, read_messages=True)
 
         await ticket_chnl.send(f"<@{interaction.user.id}> {CLAIMED_MESSAGE}")
+        await interaction.send(
+            f"You can now head over to {ticket_chnl.mention}.", ephemeral=True
+        )
 
-    @ticket.subcommand(description="Marks your ticket as resolved")
-    async def resolve(self, interaction: Interaction):
+    # @ticket.subcommand(description="Marks your ticket as resolved")
+    async def resolve(self, interaction):
         if interaction.channel.category.name != ACTIVE_TICKETS_CAT_NAME:
             await interaction.send(
                 "This command can be used only in an active channel", ephemeral=True
@@ -118,11 +108,12 @@ class Tickets(commands.Cog):
 
         await interaction.send(RESOLVED_MESSAGE)
 
-    @ticket.subcommand(description="Reopens a resolved ticket")
-    async def reopen(self, interaction: Interaction):
+    # @ticket.subcommand(description="Reopens a resolved ticket")
+    async def reopen(self, interaction):
         if interaction.channel.category.name != RESOLVED_TICKETS_CAT_NAME:
             await interaction.send(
-                "This command can be used only in a resolved channel", ephemeral=True
+                "This command can be used only in a resolved channel",
+                ephemeral=True,
             )
             return
 
@@ -130,6 +121,42 @@ class Tickets(commands.Cog):
         await interaction.channel.edit(category=active_ticket_cat)
 
         await interaction.send(REOPENED_MESSAGE)
+
+    @nextcord.slash_command(
+        guild_ids=[GUILD_ID],
+        description="Create a ticket to discuss matters privately with the mod team",
+    )
+    async def ticket(
+        self,
+        interaction,
+        action=SlashOption(
+            description="Choose the action you want to take",
+            choices={
+                "Claim the ticket channel": "claim",
+                "Resolve the current ticket": "resolve",
+                "Reopen a resolved ticket": "reopen",
+            },
+        ),
+    ):
+        args_dict = {
+            "claim": self.claim,
+            "resolve": self.resolve,
+            "reopen": self.reopen,
+        }
+        command = args_dict[action]
+        await command(interaction)
+
+    @commands.command(
+        brief="Initiates ticket system - creates categories, channels etc"
+    )
+    @commands.has_any_role(*MOD_ROLES)
+    async def tinit(self, interaction, *args):
+        claimable_ticket_cat = await self.get_or_create_claimable_cat(interaction)
+        if not claimable_ticket_cat.channels:
+            await self.create_claimable_channel(claimable_ticket_cat)
+        await self.get_or_create_active_cat(interaction)
+        await self.get_or_create_resolved_cat(interaction)
+        await self.get_or_create_tickets_log(interaction)
 
     @commands.command(
         brief="Scraps a resolved ticket, logs the messages and deletes the channel"
