@@ -51,10 +51,11 @@ class Logs(commands.Cog):
 async def deleted_embed(payload, channel):
     embed = nextcord.Embed(color=SOFT_RED)
     embed.title = "Message deleted"
+    files = []
     if payload.cached_message is not None:
         message = payload.cached_message
         if message.author.bot or str(message.type) == "MessageType.pins_add":
-            return None
+            return None, None
         embed.description = message.content
         if len(embed.description) > 950:
             embed.description = embed.description[0:950]
@@ -64,16 +65,10 @@ async def deleted_embed(payload, channel):
             embed.set_thumbnail(url=message.author.avatar.url)
         embed.add_field(name="Author", value=message.author.mention)
         embed.add_field(name="Channel", value=message.channel.mention)
-        files = []
         if message.attachments:
-            if len(message.attachments) == 1 and re.search(
-                r"\.(jpg|jpeg|png|gif|webp)$", message.attachments[0].url
-            ):
-                embed.set_image(url=message.attachments[0].url)
-            else:
-                for attachment in message.attachments:
-                    file = await attachment.to_file()
-                    files.append(file)
+            for attachment in message.attachments:
+                file = await attachment.to_file()
+                files.append(file)
             embed.add_field(name="Attachments", value="[See below]", inline=False)
     else:
         embed.description = "[Message not found in cache]"
