@@ -31,11 +31,32 @@ CREATE TABLE IF NOT EXISTS "guild" (
 );
 """
 
-ALTER_USER = 'ALTER TABLE "usr" ADD CONSTRAINT "usr_fk0" FOREIGN KEY ("guild_id") REFERENCES "guild"("guild_id");'
-ALTER_USER_ADD_SKULLS = 'ALTER TABLE "usr" ADD "skulls" integer DEFAULT 0'
+ALTER_USER = """
+DO $$
+BEGIN
+IF NOT EXISTS (
+    SELECT * FROM information_schema.constraint_column_usage
+    WHERE table_name = 'guild' AND constraint_name = 'usr_fk0'
+) THEN
+ALTER TABLE "usr" ADD CONSTRAINT "usr_fk0" FOREIGN KEY ("guild_id") REFERENCES "guild"("guild_id");
+END IF;
+END;
+$$;
+"""
+
+ALTER_USER_ADD_SKULLS = 'ALTER TABLE "usr" ADD IF NOT EXISTS "skulls" integer DEFAULT 0'
 
 ALTER_STARBOARD = """
+DO $$
+BEGIN
+IF NOT EXISTS (
+    SELECT * FROM information_schema.constraint_column_usage
+    WHERE table_name = 'usr' AND constraint_name = 'starboard_fk0'
+) THEN
 ALTER TABLE "starboard" ADD CONSTRAINT "starboard_fk0" FOREIGN KEY ("usr_id") REFERENCES "usr"("usr_id");
+END IF;
+END;
+$$;
 """
 
 
@@ -52,12 +73,20 @@ CREATE TABLE IF NOT EXISTS "tmers" (
 """
 
 ALTER_TMERS = """
-ALTER TABLE "tmers" ADD CONSTRAINT "usr_fk0" FOREIGN KEY ("usr_id") REFERENCES "usr"("usr_id");
+DO $$
+BEGIN
+IF NOT EXISTS (
+    SELECT * FROM information_schema.constraint_column_usage
+    WHERE table_name = 'usr' AND constraint_name = 'tmers_fk0'
+) THEN
+ALTER TABLE "tmers" ADD CONSTRAINT "tmers_fk0" FOREIGN KEY ("usr_id") REFERENCES "usr"("usr_id");
+END IF;
+END;
+$$;
 """
 
-
 ALTER_GUILD_ADD_PERMS = """
-ALTER TABLE "guild" ADD "config" TEXT;
+ALTER TABLE "guild" ADD IF NOT EXISTS "config" TEXT;
 """
 
 CREATE_BDAYS = """
@@ -71,7 +100,16 @@ CREATE TABLE IF NOT EXISTS "bdays" (
 );
 """
 ALTER_BDAYS = """
-ALTER TABLE "bdays" ADD CONSTRAINT "usr_fk0" FOREIGN KEY ("usr_id") REFERENCES "usr"("usr_id");
+DO $$
+BEGIN
+IF NOT EXISTS (
+    SELECT * FROM information_schema.constraint_column_usage
+    WHERE table_name = 'usr' AND constraint_name = 'bdays_fk0'
+) THEN
+ALTER TABLE "bdays" ADD CONSTRAINT "bdays_fk0" FOREIGN KEY ("usr_id") REFERENCES "usr"("usr_id");
+END IF;
+END;
+$$;
 """
 
 
