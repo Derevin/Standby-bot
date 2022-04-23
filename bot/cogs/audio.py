@@ -2,12 +2,13 @@
 
 import asyncio
 import nextcord
-from nextcord.ext import commands
+from nextcord.ext import commands, tasks
 import youtube_dl
 import urllib
 import re
 from pathlib import Path
 from settings import *
+import datetime
 
 # Suppress noise about console usage from errors
 youtube_dl.utils.bug_reports_message = lambda: ""
@@ -61,6 +62,37 @@ class YTDLSource(nextcord.PCMVolumeTransformer):
 class Audio(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.last_activity = None
+        self.check_voice_activity.start()
+
+    def cog_unload(self):
+        self.check_voice_activity.cancel()
+
+    @tasks.loop(minutes=1)
+    async def check_voice_activity(self):
+
+        guild = None
+        try:
+            guild = await self.bot.fetch_guild(GUILD_ID)
+        except Exception:
+            pass
+
+        if not guild:
+            return
+
+        voice_client = nextcord.utils.get(self.bot.voice_clients, guild=guild)
+
+        if not voice_client:
+            return
+
+        if voice_client.is_playing():
+            self.last_activity = nextcord.utils.utcnow()
+        else:
+            if self.last_activity and (
+                nextcord.utils.utcnow() - self.last_activity
+                > datetime.timedelta(minutes=5)
+            ):
+                await voice_client.disconnect()
 
     # @commands.command()
     # async def join(self, ctx, *, channel: nextcord.VoiceChannel):
