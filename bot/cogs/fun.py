@@ -420,7 +420,7 @@ class Fun(commands.Cog):
             label="Yes",
             style=nextcord.ButtonStyle.green,
         )
-        async def yes(self, button: nextcord.ui.Button, interaction=Interaction):
+        async def yes_button(self, button: nextcord.ui.Button, interaction=Interaction):
 
             if interaction.user == self.intended_user:
                 self.yes = True
@@ -432,7 +432,7 @@ class Fun(commands.Cog):
                 )
 
         @nextcord.ui.button(label="No", style=nextcord.ButtonStyle.red)
-        async def no(self, button: nextcord.ui.Button, interaction=Interaction):
+        async def no_button(self, button: nextcord.ui.Button, interaction=Interaction):
 
             if interaction.user == self.intended_user:
                 self.yes = False
@@ -474,7 +474,7 @@ class Fun(commands.Cog):
         fen = await guild.fetch_member(FEN_ID)
         fel = await guild.fetch_member(FEL_ID)
 
-        general = self.bot.get_channel()
+        general = self.bot.get_channel(GENERAL_ID)
 
         view = self.YesOrNo(intended_user=fen)
 
