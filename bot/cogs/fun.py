@@ -409,6 +409,90 @@ class Fun(commands.Cog):
         ]
         await interaction.send(random.choice(answers))
 
+    class YesOrNo(nextcord.ui.View):
+        def __init__(self, intended_user):
+            super().__init__()
+            self.value = None
+            self.yes = None
+            self.intended_user = intended_user
+
+        @nextcord.ui.button(
+            label="Yes",
+            style=nextcord.ButtonStyle.green,
+        )
+        async def yes(self, button: nextcord.ui.Button, interaction=Interaction):
+
+            if interaction.user == self.intended_user:
+                self.yes = True
+                self.stop()
+            else:
+                await interaction.send(
+                    "https://tenor.com/view/king-of-the-hill-you-gif-5929698",
+                    ephemeral=True,
+                )
+
+        @nextcord.ui.button(label="No", style=nextcord.ButtonStyle.red)
+        async def no(self, button: nextcord.ui.Button, interaction=Interaction):
+
+            if interaction.user == self.intended_user:
+                self.yes = False
+                self.stop()
+            else:
+                await interaction.send(
+                    "https://tenor.com/view/king-of-the-hill-you-gif-5929698",
+                    ephemeral=True,
+                )
+
+    @commands.Cog.listener()
+    async def on_member_update(self, before, after):
+
+        if before.id != FEL_ID:
+            return
+
+        if before.display_name == after.display_name:
+            return
+
+        if not re.search("fel", after.display_name, re.I):
+            return
+
+        new_name = re.sub(
+            r"(?<=fe)l",
+            lambda l: "n" if l.group(0).islower() else "N",
+            after.display_name,
+            flags=re.I,
+        )
+
+        try:
+            guild = await self.bot.fetch_guild(GUILD_ID)
+        except Exception:
+            pass
+
+        if not guild:
+            return
+
+        FEN_ID = 292588333773750273
+        fen = await guild.fetch_member(FEN_ID)
+        fel = await guild.fetch_member(FEL_ID)
+
+        general = self.bot.get_channel()
+
+        view = self.YesOrNo(intended_user=fen)
+
+        ask = await general.send(
+            f"Hey {fen.mention}, do you want to change your name to match {fel.mention}?",
+            view=view,
+        )
+
+        await view.wait()
+        await ask.edit(view=None)
+        if view.yes:
+            aww = get_emoji(guild, "BlobAww")
+            await general.send(f"Twinsies!{' ' + aww if aww else ''}")
+            await fen.edit(nick=new_name)
+        else:
+            ok = get_emoji(guild, "JoxOK")
+            await general.send(ok if ok else "👍")
+
 
 def setup(bot):
     bot.add_cog(Fun(bot))
