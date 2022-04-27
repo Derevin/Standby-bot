@@ -26,6 +26,7 @@ def get_channel(guild, name):
             guild.text_channels + guild.threads, id=int(match.group(1))
         )
     else:
+        name = name.replace("#", "")
         channel = nextcord.utils.get(guild.text_channels, name=name)
         thread = nextcord.utils.get(guild.threads, name=name)
         return channel if channel else thread
