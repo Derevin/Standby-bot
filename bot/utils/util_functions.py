@@ -22,9 +22,13 @@ def mention_role(guild, name):
 def get_channel(guild, name):
     match = re.search(r"^<#(\d+)>$", name)
     if match:
-        return nextcord.utils.get(guild.text_channels, id=int(match.group(1)))
+        return nextcord.utils.get(
+            guild.text_channels + guild.threads, id=int(match.group(1))
+        )
     else:
-        return nextcord.utils.get(guild.text_channels, name=name)
+        channel = nextcord.utils.get(guild.text_channels, name=name)
+        thread = nextcord.utils.get(guild.threads, name=name)
+        return channel if channel else thread
 
 
 def get_user(guild, query):
