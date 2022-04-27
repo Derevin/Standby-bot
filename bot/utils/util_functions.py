@@ -28,8 +28,7 @@ def get_channel(guild, name):
     else:
         name = name.replace("#", "")
         channel = nextcord.utils.get(guild.text_channels, name=name)
-        thread = nextcord.utils.get(guild.threads, name=name)
-        return channel if channel else thread
+        return channel if channel else nextcord.utils.get(guild.threads, name=name)
 
 
 def get_user(guild, query):
