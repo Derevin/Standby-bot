@@ -47,6 +47,18 @@ class Logs(commands.Cog):
         if logs:
             await logs.send(embed=embed)
 
+    @commands.Cog.listener()
+    async def on_interaction(self, interaction):
+        if interaction.type != nextcord.InteractionType.application_command:
+            return
+
+        guild = interaction.guild
+        logs = nextcord.utils.get(guild.text_channels, name=LOGS_CHANNEL_NAME)
+
+        if logs:
+            embed = await slash_embed(interaction)
+            await logs.send(embed=embed)
+
 
 async def deleted_embed(payload, channel):
     embed = nextcord.Embed(color=SOFT_RED)
@@ -167,6 +179,38 @@ async def voice_embed(member, before, after):
             f" voice channel **#{after.name}**"
         )
     embed.timestamp = nextcord.utils.utcnow()
+    return embed
+
+
+async def slash_embed(interaction):
+
+    embed = nextcord.Embed(color=VIE_PURPLE)
+    embed.title = "Slash command triggered"
+    embed.add_field(name="User", value=interaction.user.mention)
+    embed.add_field(name="Channel", value=interaction.channel.mention)
+
+    embed.add_field(
+        name="Command",
+        value="/" + str(interaction.application_command),
+        inline=False,
+    )
+
+    if "options" in interaction.data:
+
+        arg_data = interaction.data["options"]
+        if "options" in arg_data[0]:
+            arg_data = arg_data[0]["options"]
+
+        for arg in arg_data:
+            embed.add_field(name=arg["name"], value=arg["value"])
+
+    avatar_url = interaction.user.avatar.url if interaction.user.avatar else ""
+
+    if avatar_url:
+        embed.set_thumbnail(url=avatar_url)
+
+    embed.timestamp = nextcord.utils.utcnow()
+
     return embed
 
 
