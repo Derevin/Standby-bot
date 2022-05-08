@@ -24,6 +24,7 @@ class Reposts(commands.Cog):
         reemoji = get_emoji(guild, REEPOSTER_EMOJI)
         reeposter = get_role(guild, REEPOSTER_NAME)
         reposter_duration = datetime.timedelta(days=1)
+        ree_threshold = 4
 
         if (
             isinstance(payload, nextcord.RawReactionActionEvent)
@@ -33,6 +34,7 @@ class Reposts(commands.Cog):
             message = await channel.fetch_message(payload.message_id)
 
             message_age = nextcord.utils.utcnow() - message.created_at
+
             if message_age > reposter_duration / 3:
                 return
 
@@ -41,13 +43,12 @@ class Reposts(commands.Cog):
                 if emoji.emoji == reemoji:
                     rees = emoji.count
 
-            if rees >= 4:
+            if rees >= ree_threshold:
 
                 await ensure_guild_existence(self.bot, message.guild.id)
                 await ensure_usr_existence(
                     self.bot, message.author.id, message.guild.id
                 )
-
                 await message.author.add_roles(reeposter)
 
                 exists = await self.bot.pg_pool.fetch(
@@ -56,7 +57,8 @@ class Reposts(commands.Cog):
 
                 if not exists:
                     expires = message.created_at + reposter_duration
-                    expires = expires.replace(microsecond=0)
+
+                    expires = expires.replace(microsecond=0, tzinfo=None)
 
                     await self.bot.pg_pool.execute(
                         """INSERT INTO tmers (usr_id, expires, ttype) """
@@ -73,8 +75,10 @@ class Reposts(commands.Cog):
                 f"SELECT * FROM tmers WHERE ttype={DB_TMER_REPOST}"
             )
             for rec in gtable:
+
                 timenow = nextcord.utils.utcnow()
-                if timenow <= rec["expires"]:
+
+                if timenow.replace(tzinfo=None) <= rec["expires"]:
                     continue
 
                 print(f"record expired: {rec}")
