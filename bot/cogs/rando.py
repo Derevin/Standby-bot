@@ -58,7 +58,10 @@ class Rando(commands.Cog):
     async def choose(
         self,
         interaction: Interaction,
-        choices=SlashOption(name="options", description="The options to choose from"),
+        choices=SlashOption(
+            name="options",
+            description="The options to choose from (separate with commas)",
+        ),
     ):
 
         options = re.split(", ?", choices)
