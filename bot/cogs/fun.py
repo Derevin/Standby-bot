@@ -277,9 +277,9 @@ class Fun(commands.Cog):
     ):
 
         if template == "Farquaad":
-            query, font_size, align = "farquaad pointing", 100, "bottom"
+            query, font_size, align = "Farquaad pointing", 100, "bottom"
         elif template == "Megamind":
-            query, font_size, align = "Megamind No bitches?", 125, "top"
+            query, font_size, align = "Megamind no bitches", 125, "top"
 
         img = Image.open(
             requests.get(GIT_STATIC_URL + f"/images/memes/{query}.png", stream=True).raw
