@@ -19,10 +19,13 @@ regex_uncategorized_commands.append(("\\**(cough *){2,}\\**", cough_resp, re.M |
 
 
 async def ping_resp(bot, message: nextcord.Message):
-    emoji = nextcord.utils.get(message.guild.emojis, name="Pingsock")
-    if emoji is not None:
-        await message.channel.send(emoji)
-    await message.channel.send(f"{message.author.mention}")
+    if message.author.id == DARKNESS_ID:
+        await message.channel.send(GIT_STATIC_URL + "/images/darkness.jpg")
+    else:
+        emoji = nextcord.utils.get(message.guild.emojis, name="Pingsock")
+        if emoji is not None:
+            await message.channel.send(emoji)
+        await message.channel.send(f"{message.author.mention}")
 
 
 regex_uncategorized_commands.append((f"{BOT_ID}", ping_resp, re.M | re.I))
@@ -304,6 +307,7 @@ async def now_resp(bot, message: nextcord.Message):
 
 
 regex_uncategorized_commands.append(("NOW\\W{0,4}$", now_resp, re.M))
+
 
 # async def cluttered_link_resp(bot, message: nextcord.Message):
 
