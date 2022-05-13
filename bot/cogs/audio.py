@@ -107,7 +107,7 @@ class Audio(commands.Cog):
     @commands.has_any_role(*MOD_ROLES)
     async def play(self, ctx, *, query):
         """Plays a file from the local filesystem"""
-        filepath = str(Path(__file__).parent.parent.parent) + f"/sounds/{query}.mp3"
+        filepath = GIT_STATIC_URL + f"/sounds/{query}.mp3"
         source = nextcord.PCMVolumeTransformer(nextcord.FFmpegPCMAudio(filepath))
         ctx.voice_client.play(
             source, after=lambda e: print(f"Player error: {e}") if e else None

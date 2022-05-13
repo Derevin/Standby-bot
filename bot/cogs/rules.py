@@ -27,9 +27,7 @@ class Rules(commands.Cog):
         await ctx.message.delete()
         vie = ctx.guild
         rules_ch = get_channel(vie, RULES_CHANNEL_NAME)
-        await rules_ch.send(
-            "https://cdn.discordapp.com/attachments/744224801429782679/748495451744894976/Ginny_Welcome.png"
-        )
+        await rules_ch.send(GIT_STATIC_URL + "/images/Ginny_Welcome.png")
         await asyncio.sleep(delay)
         rules_embed = nextcord.Embed(color=VIE_PURPLE)
         rules_embed.title = r"__RULES__"
@@ -298,9 +296,7 @@ async def leave_message(bot, member):
             time = time.strftime("%b %d, %H:%M")
             embed = nextcord.Embed(color=GREY)
             embed.title = "The void grows smaller..."
-            embed.set_thumbnail(
-                url="https://cdn.discordapp.com/attachments/744224801429782679/747945281248559184/grave.png"
-            )
+            embed.set_thumbnail(url=GIT_STATIC_URL + "images/grave.png")
             embed.description = f":rocket: {name} has left the void :rocket:"
             causes = [
                 "ded",

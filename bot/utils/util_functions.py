@@ -1,6 +1,7 @@
 import nextcord
 import re
 import datetime
+from pathlib import Path
 
 
 def get_emoji(guild, name):
@@ -99,3 +100,7 @@ def get_vanity_roles(guild):
     vanity_roles = guild.roles[start + 1 : stop]
     vanity_roles.sort(key=lambda role: role.name)
     return vanity_roles
+
+
+def get_local_static_path():
+    return str(Path(__file__).parent.parent.parent) + "/static"

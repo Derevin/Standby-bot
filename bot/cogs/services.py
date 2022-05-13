@@ -145,7 +145,7 @@ class Services(commands.Cog):
 
         if not interaction.user.id == JORM_ID:
             await interaction.send(
-                "https://cdn.discordapp.com/attachments/744224801429782679/805832792004755486/keiyb.png"
+                GIT_STATIC_URL + "/images/memes/You%20have%20no%20power%20here.png"
             )
             return
 

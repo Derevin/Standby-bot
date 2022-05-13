@@ -234,9 +234,7 @@ class Admin(commands.Cog):
                         await jail.send(
                             f"Welcome to horny jail, {offender.mention}. Do not enjoy your stay."
                         )
-                        await jail.send(
-                            "https://cdn.discordapp.com/attachments/744224801429782679/819163418258702336/46zenaxz1td61.png"
-                        )
+                        await jail.send(GIT_STATIC_URL + "/images/horny%20jail.png")
 
     @commands.command(brief="Releases people from horny jail")
     @commands.has_any_role(*MOD_ROLES)

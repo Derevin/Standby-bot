@@ -109,17 +109,6 @@ async def keto_resp(bot, message: nextcord.Message):
 
 regex_vftv_commands.append((".*", keto_resp, re.M | re.I))
 
-### Hek
-
-
-async def hek_resp(bot, message: nextcord.Message):
-    await message.channel.send(
-        "https://cdn.discordapp.com/attachments/731953366015541288/731953566658592888/med_1528926166_image.png"
-    )
-
-
-regex_vftv_commands.append(("^look\\W*brothers?\\W*$", hek_resp, re.M | re.I))
-
 ### Siege?
 
 
@@ -235,18 +224,14 @@ regex_vftv_commands.append(
 
 
 async def hms_resp(bot, message: nextcord.Message):
-    await message.channel.send(
-        "https://cdn.discordapp.com/attachments/744224801429782679/806231697728995358/unknown.png"
-    )
+    await message.channel.send(GIT_STATIC_URL + "/images/hms%20fucking.png")
 
 
 regex_vftv_commands.append(("welcome aboard the hms fucking", hms_resp, re.M | re.I))
 
 
 async def gramps_resp(bot, message: nextcord.Message):
-    await message.channel.send(
-        "https://tenor.com/view/markus-marcus-losmachen-g%C3%B6nnung-looosmachen-gif-20859211"
-    )
+    await message.channel.send(GIT_STATIC_URL + "/images/markus.gif")
     await message.channel.send(message.content)
 
 

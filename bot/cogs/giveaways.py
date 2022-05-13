@@ -6,6 +6,7 @@ import random
 import re
 import datetime
 from settings import *
+from utils.util_functions import *
 
 giveaway_lock = asyncio.Lock()
 
@@ -47,7 +48,9 @@ class Giveaways(commands.Cog):
         )
         giveaway = await giveaway_channel.send(embed=embed)
         await giveaway.add_reaction(TADA)
-        await interaction.send("Giveaway started!", ephemeral=True)
+        await interaction.send(
+            f"Giveaway started in {giveaway_channel.mention}! ", ephemeral=True
+        )
 
     @commands.command(brief="Manually end a giveaway")
     @commands.has_any_role(*MOD_ROLES)
@@ -340,9 +343,7 @@ def giveaway_embed(end_time, winners, author, title) -> nextcord.Embed:
     embed.add_field(name="Hosted by", value=author.mention)
     embed.add_field(name=EMPTY, value=EMPTY)
     embed.add_field(name="Time remaining", value=remaining)
-    embed.set_thumbnail(
-        url="https://cdn.discordapp.com/attachments/744224801429782679/747945291130601603/presents.png"
-    )
+    embed.set_thumbnail(GIT_STATIC_URL + "/images/presents.png")
     return embed
 
 

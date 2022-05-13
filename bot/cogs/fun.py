@@ -47,95 +47,6 @@ YEEE = """
 ░░░░░░░░░█░░░░░░░░░░░░█░░░░
 """
 
-memes = {
-    "Invest": "https://cdn.discordapp.com/attachments/744224801429782679/799296186019741696/Invest_Button_Banner.png",
-    "Chad yes": "https://cdn.discordapp.com/attachments/744224801429782679/799296476835610674/cover5.png",
-    "Pointing Spiderman": (
-        "https://cdn.discordapp.com/attachments/744224801429782679/799298056373534800/C-658VsXoAo3ovC.png"
-    ),
-    "Always has been": (
-        "https://cdn.discordapp.com/attachments/744224801429782679/802392943620915220/Always-Has-Been.png"
-    ),
-    "Stonks": (
-        "https://cdn.discordapp.com/attachments/744224801429782679/802547348940521492/Screen_Shot_2019-06-05_at_1.png"
-    ),
-    "Noted": "https://cdn.discordapp.com/attachments/744224801429782679/802549793913176074/kowalskicover.png",
-    "Big brain temple tap": (
-        "https://cdn.discordapp.com/attachments/744224801429782679/803778693624365066/highresrollsafe.png"
-    ),
-    "Spongebob aight imma head out": (
-        "https://cdn.discordapp.com/attachments/744224801429782679/803779170176991272/spongebob.png"
-    ),
-    "I am the senate": "https://cdn.discordapp.com/attachments/744224801429782679/803780347627044914/87d.png",
-    "DD stress cat": "https://cdn.discordapp.com/attachments/744224801429782679/803781720700485672/3mdb6pdclcr51.png",
-    "Understandable, have a great day": (
-        "https://cdn.discordapp.com/attachments/744224801429782679/828058522499416074/unknown.png"
-    ),
-    "You have no power here": "https://cdn.discordapp.com/attachments/744224801429782679/805832792004755486/keiyb.png",
-    "Well yes but actually no": (
-        "https://cdn.discordapp.com/attachments/744224801429782679/810929401322668062/unknown.png"
-    ),
-    "Unsee juice": "https://cdn.discordapp.com/attachments/744224801429782679/813170790971211786/df0.png",
-    "oof": "https://cdn.discordapp.com/attachments/744224801429782679/825175112420032562/unknown.png",
-    "Epic embed fail": [
-        "https://cdn.discordapp.com/attachments/744224801429782679/826115081027846144/embed.gif",
-        "https://cdn.discordapp.com/attachments/744224801429782679/829356227171581992/image0-4.png",
-    ],
-    "Pathetic": "https://cdn.discordapp.com/attachments/744224801429782679/826798511793373254/1t5np8.png",
-    "oh lmao rip": "https://cdn.discordapp.com/attachments/744224801429782679/827236052062175322/image0.png",
-    "I love democracy": "https://cdn.discordapp.com/attachments/744224801429782679/827236877328318474/palp.png",
-    "Shame (Mordor)": "https://cdn.discordapp.com/attachments/744224801429782679/838151854327463936/rwye5emkqe301.png",
-    "Shame (Hot Fuzz)": "https://tenor.com/view/shame-pity-reload-shotgun-gif-5160379",
-    "Same": "https://cdn.discordapp.com/attachments/744224801429782679/838169939784499230/r45ahkjo0ih41.png",
-    "Steve Buscemi": "https://cdn.discordapp.com/attachments/744224801429782679/838170137659834378/steve.png",
-    "False Shepherd Mark Edited": (
-        "https://cdn.discordapp.com/attachments/744224801429782679/845726754408497182/unknown.png"
-    ),
-    "Don't give me hope": "https://cdn.discordapp.com/attachments/744224801429782679/846529020266151977/5aszwj.png",
-    "Perfection": "https://cdn.discordapp.com/attachments/744224801429782679/846529089723957258/704.png",
-    "Mod abuse": "https://cdn.discordapp.com/attachments/744224801429782679/851077716274053120/unknown.png",
-    "Ironic": "https://cdn.discordapp.com/attachments/744224801429782679/851456678759104552/q9khzibd1x911.png",
-    "I'm in this photo and I don't like it": (
-        "https://cdn.discordapp.com/attachments/744224801429782679/851915990601433128/7a9.png"
-    ),
-    "Praise - le toucan has arrived": (
-        "https://cdn.discordapp.com/attachments/743071403447943269/756976939591270431/unknown.png"
-    ),
-    "Horny": [
-        "https://cdn.discordapp.com/attachments/620408411393228809/724613520318267422/ubil7fxr99551.png",
-        "https://cdn.discordapp.com/attachments/267554564838785024/667115013412225054/image0.jpg",
-        "https://i.kym-cdn.com/entries/icons/original/000/033/758/Screen_Shot_2020-04-28_at_12.21.48_PM.png",
-        "https://cdn.discordapp.com/attachments/267554564838785024/701271178790305852/horny.jpg",
-        "https://cdn.discordapp.com/attachments/267554564838785024/708425147064909944/x3x53kej4jr31.png",
-        "https://cdn.discordapp.com/attachments/258941607238172673/717436181901475990/anti_horny.jpg",
-        "https://cdn.discordapp.com/attachments/413861431906402334/"
-        "810260242494783488/149741269_3647325365384706_5138601859788440225_n.png",
-        "https://cdn.discordapp.com/attachments/744224801429782679/858313203402407936/E4s5y3gVUAIaSBX.png",
-    ],
-    "anime": "https://cdn.discordapp.com/attachments/744224801429782679/758417628544106546/4fmrlk.png",
-    "cringe": "https://cdn.discordapp.com/attachments/441286267548729345/709160523907989524/EVACI9dUcAQp2Mb.png",
-    "farquaad pointing": "https://cdn.discordapp.com/attachments/744224801429782679/897539202441433129/unknown.png",
-    "Silence, brand": "https://cdn.discordapp.com/attachments/744224801429782679/915240126190350416/unknown.png",
-    "I am looking away, I do not see it": (
-        "https://cdn.discordapp.com/attachments/744224801429782679/918249653412167690/unknown.png"
-    ),
-    "Chadoru": "https://cdn.discordapp.com/attachments/744224801429782679/919260111250280468/padoruchad.png",
-    "Jesse, what the fuck are you talking about": [
-        "https://cdn.discordapp.com/attachments/744224801429782679/934550870681595935/unknown.png",
-        "https://cdn.discordapp.com/attachments/744224801429782679/934551037761716234/unknown.png",
-    ],
-    "They hated Jesus because he told them the truth": (
-        "https://cdn.discordapp.com/attachments/744224801429782679/943556748734771260/unknown.png"
-    ),
-    "Megamind No bitches?": "https://cdn.discordapp.com/attachments/744224801429782679/950791113487319070/unknown.png",
-    "Live Kross reaction": "https://cdn.discordapp.com/attachments/744224801429782679/962417461192441896/kross.gif",
-}
-
-meme_names = "\n".join(sorted(list(memes.keys()), key=str.casefold))
-help_text = f"""
-Currently available memes:\n{meme_names}
-"""
-
 
 class Fun(commands.Cog):
     def __init__(self, bot):
@@ -154,9 +65,7 @@ class Fun(commands.Cog):
         ),
     ):
         if user == interaction.user:
-            await interaction.send(
-                "https://cdn.discordapp.com/attachments/744224801429782679/757549246533599292/selfhug.png"
-            )
+            await interaction.send(GIT_STATIC_URL + "/images/selfhug.png")
         else:
             await interaction.send(
                 f"{user.mention}, {interaction.user.mention} sent you a hug!"
@@ -190,31 +99,55 @@ class Fun(commands.Cog):
             description="Enter a search term for the meme you want to post",
         ),
     ):
+
         if query == "help":
+            all_memes = []
+            for filename in os.listdir("static/images/memes"):
+                parts = re.split(r"\.", filename)
+                name = "".join(parts[:-1])
+                extension = parts[-1]
+                if re.search(r" \(\d+\)$", name):
+                    stripped = re.split(r" \(\d+\)", name)[0]
+                    all_memes.append(stripped)
+                else:
+                    all_memes.append(name)
+            all_memes = list(set(all_memes))
+
+            meme_names = "\n".join(sorted(all_memes, key=str.casefold))
+            help_text = f"""Currently available memes:\n{meme_names}"""
             await interaction.response.send_message(
                 f"```{help_text}```", ephemeral=True
             )
             return
 
-        matches = process.extractOne(
-            query, list(memes.keys()), scorer=fuzz.token_set_ratio, score_cutoff=67
-        )
-        if matches:
-            best_match = matches[0]
-            link = (
-                memes[best_match][0]
-                if "horny" in query.lower() and interaction.user.id == FEL_ID
-                else random.choice(memes[best_match])
-                if type(memes[best_match]) == list
-                else memes[best_match]
-            )
+        elif "horny" in query.lower() and interaction.user.id == FEL_ID:
+            link = GIT_STATIC_URL + "/images/memes/Horny%20(2).png"
             await interaction.response.send_message(link)
 
         else:
-            await interaction.response.send_message(
-                f"No match found for '{query}' - use `/meme help` to see list of available memes.",
-                ephemeral=True,
-            )
+            matches = []
+            for filename in os.listdir("static/images/memes"):
+                parts = re.split(r"\.", filename)
+                name = "".join(parts[:-1])
+                extension = parts[-1]
+
+                if (
+                    extension in ["jpg", "jpeg", "png", "gif"]
+                    and fuzz.token_set_ratio(query, name) >= 67
+                ):
+                    matches.append((name, extension))
+
+            if matches:
+                meme = random.choice(matches)
+                filename = meme[0] + "." + meme[1]
+                link = GIT_STATIC_URL + "/images/memes/" + re.sub(" ", "%20", filename)
+                await interaction.response.send_message(link)
+
+            else:
+                await interaction.response.send_message(
+                    f"No match found for '{query}' - use `/meme help` to see list of available memes.",
+                    ephemeral=True,
+                )
 
     @nextcord.slash_command(
         guild_ids=[GUILD_ID], description="Convert text into cyrillic"
@@ -280,9 +213,7 @@ class Fun(commands.Cog):
                 await interaction.user.remove_roles(burgered)
                 await target.add_roles(burgered)
                 await interaction.send(target.mention)
-                await interaction.channel.send(
-                    "https://cdn.discordapp.com/attachments/744224801429782679/893950953378705508/unknown.png"
-                )
+                await interaction.channel.send(GIT_STATIC_URL + "/images/burgered.png")
 
         else:
             await interaction.send(
@@ -350,10 +281,12 @@ class Fun(commands.Cog):
         elif template == "Megamind":
             query, font_size, align = "Megamind No bitches?", 125, "top"
 
-        img = Image.open(requests.get(memes[query], stream=True).raw)
+        img = Image.open(
+            requests.get(GIT_STATIC_URL + f"/images/memes/{query}.png", stream=True).raw
+        )
         draw = ImageDraw.Draw(img)
 
-        font_path = str(Path(__file__).parent.parent.parent) + r"/fonts/impact.ttf"
+        font_path = get_local_static_path() + "/fonts/impact.ttf"
 
         font = ImageFont.truetype(font=font_path, size=font_size)
         text = caption.upper()
@@ -427,7 +360,7 @@ class Fun(commands.Cog):
                 self.stop()
             else:
                 await interaction.send(
-                    "https://tenor.com/view/king-of-the-hill-you-gif-5929698",
+                    GIT_STATIC_URL + "/images/bobby.gif",
                     ephemeral=True,
                 )
 
@@ -439,59 +372,59 @@ class Fun(commands.Cog):
                 self.stop()
             else:
                 await interaction.send(
-                    "https://tenor.com/view/king-of-the-hill-you-gif-5929698",
+                    GIT_STATIC_URL + "/images/bobby.gif",
                     ephemeral=True,
                 )
 
-    @commands.Cog.listener()
-    async def on_member_update(self, before, after):
+    # @commands.Cog.listener()
+    # async def on_member_update(self, before, after):
 
-        if before.id != FEL_ID:
-            return
+    #     if before.id != FEL_ID:
+    #         return
 
-        if before.display_name == after.display_name:
-            return
+    #     if before.display_name == after.display_name:
+    #         return
 
-        if not re.search("fel", after.display_name, re.I):
-            return
+    #     if not re.search("fel", after.display_name, re.I):
+    #         return
 
-        new_name = re.sub(
-            r"(?<=fe)l",
-            lambda l: "n" if l.group(0).islower() else "N",
-            after.display_name,
-            flags=re.I,
-        )
+    #     new_name = re.sub(
+    #         r"(?<=fe)l",
+    #         lambda l: "n" if l.group(0).islower() else "N",
+    #         after.display_name,
+    #         flags=re.I,
+    #     )
 
-        try:
-            guild = await self.bot.fetch_guild(GUILD_ID)
-        except Exception:
-            pass
+    #     try:
+    #         guild = await self.bot.fetch_guild(GUILD_ID)
+    #     except Exception:
+    #         pass
 
-        if not guild:
-            return
+    #     if not guild:
+    #         return
 
-        FEN_ID = 292588333773750273
-        fen = await guild.fetch_member(FEN_ID)
-        fel = await guild.fetch_member(FEL_ID)
+    #     FEN_ID = 292588333773750273
+    #     fen = await guild.fetch_member(FEN_ID)
+    #     fel = await guild.fetch_member(FEL_ID)
 
-        general = self.bot.get_channel(GENERAL_ID)
+    #     general = self.bot.get_channel(GENERAL_ID)
 
-        view = self.YesOrNo(intended_user=fen)
+    #     view = self.YesOrNo(intended_user=fen)
 
-        ask = await general.send(
-            f"Hey {fen.mention}, do you want to change your name to match {fel.mention}?",
-            view=view,
-        )
+    #     ask = await general.send(
+    #         f"Hey {fen.mention}, do you want to change your name to match {fel.mention}?",
+    #         view=view,
+    #     )
 
-        await view.wait()
-        await ask.edit(view=None)
-        if view.yes:
-            aww = get_emoji(guild, "BlobAww")
-            await general.send(f"Twinsies!{' ' + aww if aww else ''}")
-            await fen.edit(nick=new_name)
-        else:
-            ok = get_emoji(guild, "JoxOK")
-            await general.send(ok if ok else "👍")
+    #     await view.wait()
+    #     await ask.edit(view=None)
+    #     if view.yes:
+    #         aww = get_emoji(guild, "BlobAww")
+    #         await general.send(f"Twinsies!{' ' + aww if aww else ''}")
+    #         await fen.edit(nick=new_name)
+    #     else:
+    #         ok = get_emoji(guild, "JoxOK")
+    #         await general.send(ok if ok else "👍")
 
 
 def setup(bot):

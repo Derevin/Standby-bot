@@ -44,12 +44,15 @@ async def uwu_resp(bot, message: nextcord.Message):
             return
 
     n = len(re.findall("[rRlL]", msg))
-    txt = "https://cdn.discordapp.com/attachments/744224801429782679/942124592581996574/warning.mp4"
     if n > 4:
         txt = re.sub("[rRlL]", "w", msg)
+        await message.channel.send(txt)
     elif random.randint(1, 10) == 7:
         txt = "I'll let you off with just a warning this time but I'd better not see you doing it again."
-    await message.channel.send(txt)
+        await message.channel.send(txt)
+    else:
+        warning = nextcord.File(get_local_static_path() + "/videos/warning.mp4")
+        await message.channel.send(file=warning)
 
 
 regex_uncategorized_commands.append((r"^[^\/]*(o|u|0)[wv]\1.*$", uwu_resp, re.M | re.I))
@@ -80,10 +83,7 @@ async def kenobi_resp(bot, message: nextcord.Message):
     if random.randint(1, 2) == 1:
         await message.channel.send("General " + message.author.mention)
     else:
-        await message.channel.send(
-            "https://cdn.discordapp.com/attachments/355732809224028161/"
-            "628285103902294026/71829918_2663294270370835_6829001011412074496_n.png"
-        )
+        await message.channel.send(GIT_STATIC_URL + "/images/kenobi.png")
 
 
 regex_uncategorized_commands.append(("hello there", kenobi_resp, re.M | re.I))
@@ -104,18 +104,14 @@ regex_uncategorized_commands.append(("hello there", kenobi_resp, re.M | re.I))
 
 
 async def bell_resp(bot, message: nextcord.Message):
-    await message.channel.send(
-        "https://tenor.com/view/hell-hellsbells-acdc-wow-bell-gif-10835118"
-    )
+    await message.channel.send(GIT_STATIC_URL + "/images/bell.gif")
 
 
 regex_uncategorized_commands.append(("ringing my bell", bell_resp, re.M | re.I))
 
 
 async def no_u_resp(bot, message: nextcord.Message):
-    await message.channel.send(
-        "https://cdn.discordapp.com/attachments/731953366015541288/740259703623516170/0vp1zvhnugu21.png"
-    )
+    await message.channel.send(GIT_STATIC_URL + "/images/no_u.png")
 
 
 regex_uncategorized_commands.append(("^no u$", no_u_resp, re.M | re.I))
@@ -263,9 +259,7 @@ regex_uncategorized_commands.append((r"\[.*\]", mod_resp, re.M | re.I))
 
 
 async def x_is_x_resp(bot, message: nextcord.Message):
-    await message.channel.send(
-        "https://cdn.discordapp.com/attachments/744224801429782679/760882040492523530/X_is_X.png"
-    )
+    await message.channel.send(GIT_STATIC_URL + "/images/x%20is%20x.png")
 
 
 regex_uncategorized_commands.append(
@@ -306,9 +300,7 @@ regex_uncategorized_commands.append(
 
 
 async def now_resp(bot, message: nextcord.Message):
-    await message.channel.send(
-        "https://cdn.discordapp.com/attachments/744224801429782679/941400177296699463/unknown.png"
-    )
+    await message.channel.send(GIT_STATIC_URL + "/images/now.png")
 
 
 regex_uncategorized_commands.append(("NOW\\W{0,4}$", now_resp, re.M))
