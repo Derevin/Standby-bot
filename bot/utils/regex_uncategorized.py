@@ -19,8 +19,14 @@ regex_uncategorized_commands.append(("\\**(cough *){2,}\\**", cough_resp, re.M |
 
 
 async def ping_resp(bot, message: nextcord.Message):
-    if message.author.id == DARKNESS_ID:
-        await message.channel.send(GIT_STATIC_URL + "/images/darkness.jpg")
+
+    custom_responses = {
+        DARKNESS_ID: GIT_STATIC_URL + "/images/darkness.jpg",
+        AIRU_ID: GIT_STATIC_URL + "/images/airu.gif",
+    }
+
+    if message.author.id in custom_responses.keys():
+        await message.channel.send(custom_responses[message.author.id])
     else:
         emoji = nextcord.utils.get(message.guild.emojis, name="Pingsock")
         if emoji is not None:
