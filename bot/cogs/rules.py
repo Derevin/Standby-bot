@@ -296,7 +296,7 @@ async def leave_message(bot, member):
             time = time.strftime("%b %d, %H:%M")
             embed = nextcord.Embed(color=GREY)
             embed.title = "The void grows smaller..."
-            embed.set_thumbnail(url=GIT_STATIC_URL + "images/grave.png")
+            embed.set_thumbnail(url=GIT_STATIC_URL + "/images/grave.png")
             embed.description = f":rocket: {name} has left the void :rocket:"
             causes = [
                 "ded",

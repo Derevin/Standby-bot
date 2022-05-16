@@ -55,6 +55,6 @@ DER_ID = 295553857054834690
 JORM_ID = 168350377824092160
 BOT_SPAM_ID = 748506600880210452
 GENERAL_ID = 315247766739615745
-GIT_STATIC_URL = "https://raw.githubusercontent.com/Derevin/Standby-bot/main/static"
+GIT_STATIC_URL = "https://raw.githubusercontent.com/Derevin/Standby-bot/main/static/"
 DARKNESS_ID = 238021076406370304
 AIRU_ID = 378272190782504960
