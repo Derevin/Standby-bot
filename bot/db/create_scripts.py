@@ -135,6 +135,6 @@ async def create_tables(con):
     try:
         await con.execute(CREATE_BDAYS)
         await con.execute(ALTER_BDAYS)
-        print("succesfully ran db script batch 3")
+        print("successfully ran db script batch 3")
     except Exception as e:
         print("expected create exception 3:", e)
