@@ -78,14 +78,24 @@ class Fun(commands.Cog):
     async def f(
         self,
         interaction: Interaction,
-        target=SlashOption(description="What do you want to pay your respects to?"),
+        target=SlashOption(
+            description="What do you want to pay your respects to?", required=False
+        ),
     ):
         embed = nextcord.Embed()
-        embed.description = (
-            f"**{interaction.user.name}** has paid their respects"
-            + (f" to **{' '.join(target)}**" if target else "")
-            + "."
-        )
+
+        embed.description = f"{interaction.user.mention} has paid their respects."
+
+        if target:
+            text = target.split(" ")
+            for index, word in enumerate(text):
+                if not re.search(r"^<..?\d+>$", word):
+                    text[index] = " ".join(word)
+
+            bolded_text = "**" + "  ".join(text) + "**"
+
+            embed.description = embed.description[:-1] + f" to {bolded_text}."
+
         await interaction.response.send_message(embed=embed)
         rip = await interaction.original_message()
         await rip.add_reaction("🇫")
