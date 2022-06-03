@@ -35,6 +35,29 @@ class Admin(commands.Cog):
     async def ping(self, ctx):
         await ctx.send("Ponguu!")
 
+    @commands.command(brief="Print a variable")
+    @commands.has_any_role(*MOD_ROLES)
+    async def var(self, ctx, var):
+        var = re.split(r"\.", var)
+        obj = var[0]
+        attrs = var[1:]
+
+        if obj in locals():
+            obj = locals()[obj]
+        elif obj in globals():
+            var = globals(obj)
+        else:
+            await ctx.send("Variable not found")
+            return
+
+        for attr in attrs:
+            try:
+                obj = getattr(obj, attr)
+            except AttributeError:
+                await ctx.send(f"Attribute {attr} not found.")
+
+        await ctx.send(obj)
+
     @commands.command(brief="Sends a message through the bot to a chosen channel")
     @commands.has_any_role(*MOD_ROLES)
     async def say(self, ctx, channel_name, *, message):
