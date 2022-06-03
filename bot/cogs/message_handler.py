@@ -14,7 +14,7 @@ class MessageHandler(commands.Cog):
     async def on_message(self, message: nextcord.Message):
         if message.author.bot:
             return
-        if str(message.channel.type) in ["text", "public_thread"]:
+        if str(message.channel.type) in ["text", "public_thread", "voice"]:
             try:
                 await regex_handler(self.bot, message)
             except Exception as e:
