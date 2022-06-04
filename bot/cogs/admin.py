@@ -36,7 +36,7 @@ class Admin(commands.Cog):
         await ctx.send("Ponguu!")
 
     @commands.command(brief="Print a variable")
-    @commands.has_any_role(*MOD_ROLES)
+    @commands.check(lambda ctx: ctx.author.id == FEL_ID)
     async def var(self, ctx, var):
         var = re.split(r"\.", var)
         obj = var[0]
@@ -47,16 +47,19 @@ class Admin(commands.Cog):
         elif obj in globals():
             var = globals(obj)
         else:
-            await ctx.send("Variable not found")
+            print(f'Variable "{obj}" not found.')
             return
 
+        var_name = var[0]
         for attr in attrs:
             try:
                 obj = getattr(obj, attr)
+                var_name = var_name + "." + attr
             except AttributeError:
-                await ctx.send(f"Attribute {attr} not found.")
+                print(f'Variable "{var_name}" has no attribute "{attr}".')
+                break
 
-        await ctx.send(obj)
+        print(f'The value of "{var_name}" is "{obj}".')
 
     @commands.command(brief="Sends a message through the bot to a chosen channel")
     @commands.has_any_role(*MOD_ROLES)
