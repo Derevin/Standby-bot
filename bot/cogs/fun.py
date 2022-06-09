@@ -352,6 +352,10 @@ class Fun(commands.Cog):
         ]
         await interaction.send(random.choice(answers))
 
+    @nextcord.slash_command(guild_ids=[GUILD_ID], description="Praise toucan")
+    async def praise(self, interaction):
+        await interaction.send(TOUCAN_PRAISE)
+
     class YesOrNo(nextcord.ui.View):
         def __init__(self, intended_user):
             super().__init__()
