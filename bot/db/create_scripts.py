@@ -1,4 +1,5 @@
 import asyncpg
+from settings import *
 
 CREATE_USER = """
 CREATE TABLE IF NOT EXISTS "usr" (
@@ -45,6 +46,10 @@ $$;
 """
 
 ALTER_USER_ADD_SKULLS = 'ALTER TABLE "usr" ADD IF NOT EXISTS "skulls" integer DEFAULT 0'
+
+ALTER_USER_ADD_ROULETTE = (
+    'ALTER TABLE "usr" ADD IF NOT EXISTS "roulette_streak" integer DEFAULT 0;'
+)
 
 ALTER_STARBOARD = """
 DO $$
@@ -119,6 +124,7 @@ async def create_tables(con):
         await con.execute(CREATE_STARBOARD)
         await con.execute(CREATE_GUILD)
         await con.execute(ALTER_USER_ADD_SKULLS)
+        await con.execute(ALTER_USER_ADD_ROULETTE)
         await con.execute(ALTER_USER)
         await con.execute(ALTER_STARBOARD)
         print("successfully ran db script batch 1")

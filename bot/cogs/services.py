@@ -13,12 +13,19 @@ from db.db_func import ensure_usr_existence
 THANKS_LDR_HEADER = "Voids leaderboard"
 THANKS_LDR_THANKS_HEADER = "Voids"
 THANKS_LDR_USER_HEADER = "User"
+
 STARBOARD_LDR_HEADER = "Stars leaderboard"
 STARBOARD_LDR_STARS_HEADER = "Stars"
 STARBOARD_LDR_USER_HEADER = "User"
+
 SKULLS_LDR_HEADER = "Skulls leaderboard"
 SKULLS_LDR_SKULLS_HEADER = "💀"
 SKULLS_LDR_USER_HEADER = "Metalhead"
+
+ROULETTE_LDR_HEADER = "Roulette leaderboard"
+ROULETTE_LDR_ROUNDS_HEADER = "Rounds"
+ROULETTE_LDR_USER_HEADER = "User"
+
 MAX_LEADERBOARD_PRINT = 12
 
 
@@ -73,7 +80,7 @@ class Services(commands.Cog):
         interaction: Interaction,
         leaderboard=SlashOption(
             description="The leaderboard to display",
-            choices=["Stars", "Thanks", "Skulls"],
+            choices=["Stars", "Thanks", "Skulls", "Roulette"],
         ),
     ):
 
@@ -102,6 +109,14 @@ class Services(commands.Cog):
                 SKULLS_LDR_USER_HEADER,
                 SKULLS_LDR_HEADER,
             ),
+            "Roulette": (
+                "roulette_streak",
+                "usr",
+                VIE_PURPLE,
+                ROULETTE_LDR_ROUNDS_HEADER,
+                ROULETTE_LDR_USER_HEADER,
+                ROULETTE_LDR_HEADER,
+            ),
         }
 
         (
@@ -113,18 +128,19 @@ class Services(commands.Cog):
             leaderboard_header,
         ) = args_dict[leaderboard]
 
-        starboard_ldr = await self.bot.pg_pool.fetch(
+        leaderboard = await self.bot.pg_pool.fetch(
             f"SELECT usr_id, SUM({resource}) as total "
             f"FROM {table} "
             f"WHERE usr_id IN "
             f"(SELECT usr_id FROM usr WHERE guild_id = {interaction.guild.id}) "
             f"GROUP BY usr_id "
+            f"HAVING SUM({resource}) > 0"
             f"ORDER BY total DESC ;"
         )
 
         embed = await build_leaderboard_embed(
             interaction,
-            starboard_ldr,
+            leaderboard,
             "total",
             "usr_id",
             colour,
@@ -169,7 +185,9 @@ async def build_leaderboard_embed(
 ):
 
     if not leaderboard:
-        return nextcord.Embed(color=color)
+        return nextcord.Embed(
+            color=color, description=f"The {header_title} is currently empty."
+        )
     ljust_num = len(str(header_count)) if str(header_count).isalnum() else 3
     ldr = []
     cnt = 0

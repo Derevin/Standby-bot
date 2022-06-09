@@ -11,6 +11,7 @@ from PIL import Image, ImageDraw, ImageFont
 import requests
 import io
 from pathlib import Path
+import datetime
 
 TOUCAN_PRAISE = """
 ░░░░░░░░▄▄▄▀▀▀▄▄███▄░░░░░░░░░░░░░░
@@ -355,6 +356,61 @@ class Fun(commands.Cog):
     @nextcord.slash_command(guild_ids=[GUILD_ID], description="Praise toucan")
     async def praise(self, interaction):
         await interaction.send(TOUCAN_PRAISE)
+
+    @nextcord.slash_command(guild_ids=[GUILD_ID], description="Do you feel lucky?")
+    async def roulette(self, interaction):
+
+        await interaction.response.defer()
+
+        lose = random.randint(1, 6) == 6
+
+        exists = await self.bot.pg_pool.fetch(
+            f"SELECT * FROM usr WHERE usr_id = {interaction.user.id}"
+        )
+
+        if not exists:
+            await self.bot.pg_pool.execute(
+                f"""
+            INSERT INTO 'usr' (usr_id, guild_id, roulette_streak)
+            VALUES ({interaction.user.id}, {GUILD_ID}, 0)
+            """
+            )
+
+        if lose:
+
+            await self.bot.pg_pool.execute(
+                f"""
+            UPDATE usr
+            SET roulette_streak = 0
+            WHERE usr_id = {interaction.user.id}
+            """
+            )
+
+            message = f"Not all risks pay off, {interaction.user.mention}. Your streak has been reset."
+            try:
+                await interaction.user.timeout(datetime.timedelta(minutes=30))
+                message = message[:-1] + " and you have been timed out."
+            except nextcord.errors.Forbidden:
+                print("abc")
+                pass
+            await interaction.send(message)
+
+        else:
+
+            await self.bot.pg_pool.execute(
+                f"""
+            UPDATE usr
+            SET roulette_streak = roulette_streak + 1
+            WHERE usr_id = {interaction.user.id}
+            """
+            )
+
+            current_streak = exists[0]["roulette_streak"] + 1 if exists else 1
+            plural_suffix = "s" if current_streak > 1 else ""
+
+            await interaction.send(
+                f"Luck is on your side. You have now survived for {current_streak} round{plural_suffix} in a row."
+            )
 
     class YesOrNo(nextcord.ui.View):
         def __init__(self, intended_user):
