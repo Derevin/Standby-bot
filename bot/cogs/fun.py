@@ -360,6 +360,24 @@ class Fun(commands.Cog):
     @nextcord.slash_command(guild_ids=[GUILD_ID], description="Do you feel lucky?")
     async def roulette(self, interaction):
 
+        cooldown = await self.bot.pg_pool.fetch(
+            f"SELECT * FROM tmers WHERE usr_id = {interaction.user.id} AND ttype = {DB_TMER_ROULETTE}"
+        )
+
+        if cooldown:
+            expires = cooldown[0]["expires"]
+            if datetime.datetime.now() >= expires:
+                await self.bot.pg_pool.execute(
+                    f"DELETE FROM tmers WHERE usr_id = {interaction.user.id} AND ttype = {DB_TMER_ROULETTE}"
+                )
+            else:
+                await interaction.send(
+                    """You have been timed out from using this command. You will be able to use it again """
+                    f"""{dynamic_timestamp(expires, 'delta')}""",
+                    ephemeral=True,
+                )
+                return
+
         await interaction.response.defer()
 
         lose = random.randint(1, 6) == 6
@@ -391,7 +409,14 @@ class Fun(commands.Cog):
                 await interaction.user.timeout(datetime.timedelta(minutes=30))
                 message = message[:-1] + " and you have been timed out."
             except nextcord.errors.Forbidden:
-                pass
+                expires = datetime.datetime.now() + datetime.timedelta(minutes=30)
+                await self.bot.pg_pool.execute(
+                    """INSERT INTO tmers (usr_id, expires, ttype) VALUES ($1, $2, $3);""",
+                    interaction.user.id,
+                    expires,
+                    DB_TMER_ROULETTE,
+                )
+
             await interaction.send(message)
 
         else:
