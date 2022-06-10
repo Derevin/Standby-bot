@@ -22,7 +22,8 @@ SKULLS_LDR_HEADER = "Skulls leaderboard"
 SKULLS_LDR_SKULLS_HEADER = "💀"
 SKULLS_LDR_USER_HEADER = "Metalhead"
 
-ROULETTE_LDR_HEADER = "Roulette leaderboard"
+ROULETTE_CURRENT_LDR_HEADER = "Roulette leaderboard (current)"
+ROULETTE_ALLTIME_LDR_HEADER = "Roulette leaderboard (all-time)"
 ROULETTE_LDR_ROUNDS_HEADER = "Rounds"
 ROULETTE_LDR_USER_HEADER = "User"
 
@@ -80,7 +81,13 @@ class Services(commands.Cog):
         interaction: Interaction,
         leaderboard=SlashOption(
             description="The leaderboard to display",
-            choices=["Stars", "Thanks", "Skulls", "Roulette"],
+            choices=[
+                "Stars",
+                "Thanks",
+                "Skulls",
+                "Roulette (current)",
+                "Roulette (all-time)",
+            ],
         ),
     ):
 
@@ -109,13 +116,21 @@ class Services(commands.Cog):
                 SKULLS_LDR_USER_HEADER,
                 SKULLS_LDR_HEADER,
             ),
-            "Roulette": (
-                "roulette_streak",
+            "Roulette (current)": (
+                "current_roulette_streak",
                 "usr",
                 VIE_PURPLE,
                 ROULETTE_LDR_ROUNDS_HEADER,
                 ROULETTE_LDR_USER_HEADER,
-                ROULETTE_LDR_HEADER,
+                ROULETTE_CURRENT_LDR_HEADER,
+            ),
+            "Roulette (all-time)": (
+                "max_roulette_streak",
+                "usr",
+                VIE_PURPLE,
+                ROULETTE_LDR_ROUNDS_HEADER,
+                ROULETTE_LDR_USER_HEADER,
+                ROULETTE_ALLTIME_LDR_HEADER,
             ),
         }
 

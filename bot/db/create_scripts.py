@@ -47,9 +47,11 @@ $$;
 
 ALTER_USER_ADD_SKULLS = 'ALTER TABLE "usr" ADD IF NOT EXISTS "skulls" integer DEFAULT 0'
 
-ALTER_USER_ADD_ROULETTE = (
-    'ALTER TABLE "usr" ADD IF NOT EXISTS "roulette_streak" integer DEFAULT 0;'
-)
+ALTER_USER_ADD_ROULETTE = """
+ALTER TABLE "usr" RENAME COLUMN "roulette_streak" TO "current_roulette_streak";
+ALTER TABLE "usr" ADD IF NOT EXISTS "current_roulette_streak" integer DEFAULT 0;
+ALTER TABLE "usr" ADD IF NOT EXISTS "max_roulette_streak" integer DEFAULT 0;
+"""
 
 ALTER_STARBOARD = """
 DO $$

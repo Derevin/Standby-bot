@@ -371,8 +371,8 @@ class Fun(commands.Cog):
         if not exists:
             await self.bot.pg_pool.execute(
                 f"""
-            INSERT INTO 'usr' (usr_id, guild_id, roulette_streak)
-            VALUES ({interaction.user.id}, {GUILD_ID}, 0)
+            INSERT INTO 'usr' (usr_id, guild_id, current_roulette_streak, max_roulette_streak)
+            VALUES ({interaction.user.id}, {GUILD_ID}, 0, 0)
             """
             )
 
@@ -381,7 +381,7 @@ class Fun(commands.Cog):
             await self.bot.pg_pool.execute(
                 f"""
             UPDATE usr
-            SET roulette_streak = 0
+            SET current_roulette_streak = 0
             WHERE usr_id = {interaction.user.id}
             """
             )
@@ -391,26 +391,52 @@ class Fun(commands.Cog):
                 await interaction.user.timeout(datetime.timedelta(minutes=30))
                 message = message[:-1] + " and you have been timed out."
             except nextcord.errors.Forbidden:
-                print("abc")
                 pass
             await interaction.send(message)
 
         else:
 
+            current_streak = exists[0]["current_roulette_streak"] if exists else 0
+            max_streak = exists[0]["max_roulette_streak"] if exists else 0
+
+            server_current_max = await self.bot.pg_pool.fetch(
+                "SELECT MAX(current_roulette_streak) from usr"
+            )
+            server_current_max = server_current_max[0]["max"]
+
+            server_alltime_max = await self.bot.pg_pool.fetch(
+                "SELECT MAX(max_roulette_streak) from usr"
+            )
+            server_alltime_max = server_alltime_max[0]["max"]
+
             await self.bot.pg_pool.execute(
                 f"""
-            UPDATE usr
-            SET roulette_streak = roulette_streak + 1
-            WHERE usr_id = {interaction.user.id}
-            """
+                    UPDATE usr
+                    SET current_roulette_streak = current_roulette_streak + 1,
+                    max_roulette_streak = GREATEST(current_roulette_streak +1, max_roulette_streak)
+                    WHERE usr_id = {interaction.user.id}
+                    """
             )
+            current_streak += 1
 
-            current_streak = exists[0]["roulette_streak"] + 1 if exists else 1
             plural_suffix = "s" if current_streak > 1 else ""
 
-            await interaction.send(
-                f"Luck is on your side. You have now survived for {current_streak} round{plural_suffix} in a row."
-            )
+            message = f"Luck is on your side! You have now survived for {current_streak} round{plural_suffix} in a row"
+
+            if current_streak > server_alltime_max:
+                message += ", a new all-time record for the server!"
+            elif current_streak > server_current_max and current_streak > max_streak:
+                message += (
+                    ", the highest currently active streak and a new personal best!"
+                )
+            elif current_streak > server_current_max:
+                message += ", the highest currently active streak!"
+            elif current_streak > max_streak:
+                message += ", a new personal best!"
+            else:
+                message += "."
+
+            await interaction.send(message)
 
     class YesOrNo(nextcord.ui.View):
         def __init__(self, intended_user):
