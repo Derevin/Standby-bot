@@ -2,6 +2,7 @@ from nextcord.ext import commands, application_checks
 import nextcord
 from nextcord import Interaction, SlashOption
 import random
+from db.db_func import ensured_get_usr
 from utils.util_functions import *
 from settings import *
 from fuzzywuzzy import process, fuzz
@@ -380,19 +381,9 @@ class Fun(commands.Cog):
 
         await interaction.response.defer()
 
+        stats = await ensured_get_usr(self.bot, interaction.user.id, GUILD_ID)
+
         lose = random.randint(1, 6) == 6
-
-        exists = await self.bot.pg_pool.fetch(
-            f"SELECT * FROM usr WHERE usr_id = {interaction.user.id}"
-        )
-
-        if not exists:
-            await self.bot.pg_pool.execute(
-                f"""
-            INSERT INTO 'usr' (usr_id, guild_id, current_roulette_streak, max_roulette_streak)
-            VALUES ({interaction.user.id}, {GUILD_ID}, 0, 0)
-            """
-            )
 
         if lose:
 
@@ -421,8 +412,8 @@ class Fun(commands.Cog):
 
         else:
 
-            current_streak = exists[0]["current_roulette_streak"] if exists else 0
-            max_streak = exists[0]["max_roulette_streak"] if exists else 0
+            current_streak = stats[0]["current_roulette_streak"] if stats else 0
+            max_streak = stats[0]["max_roulette_streak"] if stats else 0
 
             server_current_max = await self.bot.pg_pool.fetch(
                 "SELECT MAX(current_roulette_streak) from usr"
