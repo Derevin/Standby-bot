@@ -5,7 +5,7 @@ import datetime
 from settings import *
 from utils.util_functions import *
 import json
-from db.db_func import ensure_guild_existence, ensure_usr_existence
+from db.db_func import ensure_guild_existence, ensured_get_usr
 
 
 class Birthdays(commands.Cog):
@@ -54,7 +54,7 @@ class Birthdays(commands.Cog):
             return
 
         await ensure_guild_existence(self.bot, interaction.guild.id)
-        await ensure_usr_existence(self.bot, interaction.user.id, interaction.guild.id)
+        await ensured_get_usr(self.bot, interaction.user.id, interaction.guild.id)
 
         exists = await self.bot.pg_pool.fetch(
             f"SELECT * FROM bdays WHERE usr_id = {interaction.user.id}"

@@ -1,6 +1,6 @@
 import re
 import nextcord
-from db.db_func import ensure_usr_existence
+from db.db_func import ensured_get_usr
 
 regex_reputation_command = []
 
@@ -22,7 +22,7 @@ async def reputation_resp(bot, message: nextcord.Message):
                 debugprint += "debug: self-thank message sent\n"
                 continue
             debugprint += "debug: not a self-thank\n"
-            await ensure_usr_existence(bot, x.id, x.guild.id)
+            await ensured_get_usr(bot, x.id, x.guild.id)
             debugprint += "debug: existence ensured\n"
             await bot.pg_pool.execute(
                 f"UPDATE usr SET thanks = thanks + 1 WHERE usr_id = {x.id}"
