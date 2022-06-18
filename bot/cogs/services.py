@@ -8,7 +8,7 @@ import re
 import aiohttp
 import random
 import datetime
-from db.db_func import ensured_get_usr
+from db.db_func import get_or_insert_usr
 
 THANKS_LDR_HEADER = "Voids leaderboard"
 THANKS_LDR_THANKS_HEADER = "Voids"
@@ -180,7 +180,7 @@ class Services(commands.Cog):
             )
             return
 
-        await ensured_get_usr(self.bot, recipient.id, recipient.guild.id)
+        await get_or_insert_usr(self.bot, recipient.id, recipient.guild.id)
 
         await self.bot.pg_pool.execute(
             f"UPDATE usr SET skulls = skulls + 1 WHERE usr_id = {recipient.id}"

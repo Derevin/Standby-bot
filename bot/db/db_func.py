@@ -11,7 +11,7 @@ async def ensure_guild_existence(bot, gid):
         await bot.pg_pool.execute("INSERT INTO guild (guild_id) VALUES ($1);", gid)
 
 
-async def ensured_get_usr(bot, uid, gid):
+async def get_or_insert_usr(bot, uid, gid):
     usr = await bot.pg_pool.fetch(
         "SELECT * FROM usr WHERE usr_id = $1 AND guild_id = $2;", uid, gid
     )
@@ -25,3 +25,8 @@ async def ensured_get_usr(bot, uid, gid):
         )
 
     return usr
+
+
+async def ensured_get_usr(bot, uid, gid):
+
+    return get_or_insert_usr(bot, uid, gid) or get_or_insert_usr(bot, uid, gid)

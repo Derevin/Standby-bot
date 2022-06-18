@@ -412,8 +412,8 @@ class Fun(commands.Cog):
 
         else:
 
-            current_streak = stats[0]["current_roulette_streak"] if stats else 0
-            max_streak = stats[0]["max_roulette_streak"] if stats else 0
+            current_streak = stats[0]["current_roulette_streak"]
+            max_streak = stats[0]["max_roulette_streak"]
 
             server_current_max = await self.bot.pg_pool.fetch(
                 "SELECT MAX(current_roulette_streak) from usr"

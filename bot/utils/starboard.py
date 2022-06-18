@@ -1,7 +1,7 @@
 import nextcord
 import asyncpg
 import asyncio
-from db.db_func import ensured_get_usr
+from db.db_func import get_or_insert_usr
 from settings import *
 
 STAR_TRESHOLD = 4
@@ -50,7 +50,7 @@ async def starboard_handler(bot, payload):
         if payload.emoji.name == "⭐":
             chnl = bot.get_channel(payload.channel_id)
             msg = await chnl.fetch_message(payload.message_id)
-            await ensured_get_usr(bot, msg.author.id, payload.guild_id)
+            await get_or_insert_usr(bot, msg.author.id, payload.guild_id)
             stars = 0
             sb_channel = bot.get_channel(STARBOARD_ID)
             for emoji in msg.reactions:

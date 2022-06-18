@@ -10,7 +10,7 @@ import traceback
 from datetime import datetime, timedelta
 from utils.util_functions import dynamic_timestamp
 from settings import *
-from db.db_func import ensure_guild_existence, ensured_get_usr
+from db.db_func import ensure_guild_existence, get_or_insert_usr
 
 
 class Timers(commands.Cog):
@@ -85,7 +85,7 @@ class Timers(commands.Cog):
         tfuture = tfuture.replace(microsecond=0)
 
         await ensure_guild_existence(self.bot, interaction.guild.id)
-        await ensured_get_usr(self.bot, interaction.user.id, interaction.guild.id)
+        await get_or_insert_usr(self.bot, interaction.user.id, interaction.guild.id)
 
         params_dict = {"msg": message, "channel": interaction.channel.id}
         params_json = json.dumps(params_dict)

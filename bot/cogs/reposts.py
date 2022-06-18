@@ -4,7 +4,7 @@ import datetime
 from settings import *
 from utils.util_functions import *
 import json
-from db.db_func import ensure_guild_existence, ensured_get_usr
+from db.db_func import ensure_guild_existence, get_or_insert_usr
 import sys
 import traceback
 
@@ -46,7 +46,7 @@ class Reposts(commands.Cog):
             if rees >= ree_threshold:
 
                 await ensure_guild_existence(self.bot, message.guild.id)
-                await ensured_get_usr(self.bot, message.author.id, message.guild.id)
+                await get_or_insert_usr(self.bot, message.author.id, message.guild.id)
                 await message.author.add_roles(reeposter)
 
                 exists = await self.bot.pg_pool.fetch(
