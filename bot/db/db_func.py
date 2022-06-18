@@ -28,5 +28,4 @@ async def get_or_insert_usr(bot, uid, gid):
 
 
 async def ensured_get_usr(bot, uid, gid):
-
-    return get_or_insert_usr(bot, uid, gid) or get_or_insert_usr(bot, uid, gid)
+    return await get_or_insert_usr(bot, uid, gid) or await get_or_insert_usr(bot, uid, gid)  # fmt: skip
