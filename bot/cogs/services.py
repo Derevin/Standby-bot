@@ -9,25 +9,56 @@ import aiohttp
 import random
 import datetime
 from db.db_func import get_or_insert_usr
+from dataclasses import dataclass
 
-THANKS_LDR_HEADER = "Voids leaderboard"
-THANKS_LDR_THANKS_HEADER = "Voids"
-THANKS_LDR_USER_HEADER = "User"
 
-STARBOARD_LDR_HEADER = "Stars leaderboard"
-STARBOARD_LDR_STARS_HEADER = "Stars"
-STARBOARD_LDR_USER_HEADER = "User"
+@dataclass
+class LeaderboardSettings:
+    title: str
+    stat_display_name: str
+    stat_col_name: str
+    user_name: str = "User"
+    color: str = VIE_PURPLE
+    table: str = "usr"
+    max_print: int = 12
 
-SKULLS_LDR_HEADER = "Skulls leaderboard"
-SKULLS_LDR_SKULLS_HEADER = "💀"
-SKULLS_LDR_USER_HEADER = "Metalhead"
 
-ROULETTE_CURRENT_LDR_HEADER = "Roulette leaderboard (current)"
-ROULETTE_ALLTIME_LDR_HEADER = "Roulette leaderboard (all-time)"
-ROULETTE_LDR_ROUNDS_HEADER = "Rounds"
-ROULETTE_LDR_USER_HEADER = "User"
+all_settings = {
+    "Stars": LeaderboardSettings(
+        title="Stars leaderboard",
+        stat_display_name="Stars",
+        stat_col_name="stars",
+        color=STARBOARD_COLOUR,
+        table="starboard",
+    ),
+    "Thanks": LeaderboardSettings(
+        title="Voids leaderboard", stat_display_name="Voids", stat_col_name="thanks"
+    ),
+    "Skulls": LeaderboardSettings(
+        title="Skulls leaderboard",
+        stat_display_name="💀",
+        stat_col_name="skulls",
+        user_name="Metalhead",
+    ),
+    "Roulette (current)": LeaderboardSettings(
+        title="Stars leaderboard",
+        stat_display_name="Rounds",
+        stat_col_name="current_roulette_streak",
+    ),
+    "Roulette (all-time)": LeaderboardSettings(
+        title="Stars leaderboard",
+        stat_display_name="Rounds",
+        stat_col_name="max_roulette_streak",
+    ),
+}
 
-MAX_LEADERBOARD_PRINT = 12
+user_statistics = [
+    "Stars",
+    "Thanks",
+    "Skulls",
+    "Roulette (current)",
+    "Roulette (all-time)",
+]
 
 
 class Services(commands.Cog):
@@ -79,90 +110,26 @@ class Services(commands.Cog):
     async def leaderboard(
         self,
         interaction: Interaction,
-        leaderboard=SlashOption(
+        stat=SlashOption(
+            name="leaderboard",
             description="The leaderboard to display",
-            choices=[
-                "Stars",
-                "Thanks",
-                "Skulls",
-                "Roulette (current)",
-                "Roulette (all-time)",
-            ],
+            choices=all_settings.keys(),
         ),
     ):
 
-        args_dict = {
-            "Stars": (
-                "stars",
-                "starboard",
-                STARBOARD_COLOUR,
-                STARBOARD_LDR_STARS_HEADER,
-                STARBOARD_LDR_USER_HEADER,
-                STARBOARD_LDR_HEADER,
-            ),
-            "Thanks": (
-                "thanks",
-                "usr",
-                VIE_PURPLE,
-                THANKS_LDR_THANKS_HEADER,
-                THANKS_LDR_USER_HEADER,
-                THANKS_LDR_HEADER,
-            ),
-            "Skulls": (
-                "skulls",
-                "usr",
-                VIE_PURPLE,
-                SKULLS_LDR_SKULLS_HEADER,
-                SKULLS_LDR_USER_HEADER,
-                SKULLS_LDR_HEADER,
-            ),
-            "Roulette (current)": (
-                "current_roulette_streak",
-                "usr",
-                VIE_PURPLE,
-                ROULETTE_LDR_ROUNDS_HEADER,
-                ROULETTE_LDR_USER_HEADER,
-                ROULETTE_CURRENT_LDR_HEADER,
-            ),
-            "Roulette (all-time)": (
-                "max_roulette_streak",
-                "usr",
-                VIE_PURPLE,
-                ROULETTE_LDR_ROUNDS_HEADER,
-                ROULETTE_LDR_USER_HEADER,
-                ROULETTE_ALLTIME_LDR_HEADER,
-            ),
-        }
-
-        (
-            resource,
-            table,
-            colour,
-            resource_header,
-            user_header,
-            leaderboard_header,
-        ) = args_dict[leaderboard]
+        settings = all_settings[stat]
 
         leaderboard = await self.bot.pg_pool.fetch(
-            f"SELECT usr_id, SUM({resource}) as total "
-            f"FROM {table} "
+            f"SELECT usr_id, SUM({settings.stat_col_name}) as total "
+            f"FROM {settings.table} "
             f"WHERE usr_id IN "
             f"(SELECT usr_id FROM usr WHERE guild_id = {interaction.guild.id}) "
             f"GROUP BY usr_id "
-            f"HAVING SUM({resource}) > 0"
+            f"HAVING SUM({settings.stat_col_name}) > 0"
             f"ORDER BY total DESC ;"
         )
 
-        embed = await build_leaderboard_embed(
-            interaction,
-            leaderboard,
-            "total",
-            "usr_id",
-            colour,
-            resource_header,
-            user_header,
-            leaderboard_header,
-        )
+        embed = await build_leaderboard_embed(interaction, leaderboard, settings)
         await interaction.send(embed=embed)
 
     @nextcord.slash_command(guild_ids=[GUILD_ID], description="Award a skull.")
@@ -189,21 +156,19 @@ class Services(commands.Cog):
 
 
 async def build_leaderboard_embed(
-    interaction,
-    leaderboard,
-    count_col_name,
-    usr_col_name,
-    color,
-    header_count,
-    header_user,
-    header_title,
+    interaction, leaderboard, settings, count_col_name="total", usr_col_name="usr_id"
 ):
 
     if not leaderboard:
         return nextcord.Embed(
-            color=color, description=f"The {header_title} is currently empty."
+            color=settings.color,
+            description=f"The {settings.title} is currently empty.",
         )
-    ljust_num = len(str(header_count)) if str(header_count).isalnum() else 3
+    ljust_num = (
+        len(str(settings.stat_display_name))
+        if str(settings.stat_display_name).isalnum()
+        else 3
+    )
     ldr = []
     cnt = 0
 
@@ -211,7 +176,7 @@ async def build_leaderboard_embed(
     keep_printing = True
     for rec in leaderboard:
         cnt += 1
-        if cnt > MAX_LEADERBOARD_PRINT:
+        if cnt > settings.max_print:
             keep_printing = False
 
         if (
@@ -229,15 +194,15 @@ async def build_leaderboard_embed(
             if keep_printing:
                 prev_count = rec[count_col_name]
 
-    header_merged = f"{header_count}\t{header_user}"
+    header_merged = f"{settings.stat_display_name}\t{settings.user_name}"
 
     merged_str = ""
     for line in ldr:
         merged_str += f"{line}\n"
 
-    embed = nextcord.Embed(color=color)
+    embed = nextcord.Embed(color=settings.color)
     embed.add_field(name=header_merged, value=merged_str)
-    embed.title = header_title
+    embed.title = settings.title
     return embed
 
 
