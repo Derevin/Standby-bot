@@ -20,7 +20,6 @@ class LeaderboardSettings:
     user_name: str = "User"
     color: str = VIE_PURPLE
     table: str = "usr"
-    max_print: int = 12
 
 
 all_settings = {
@@ -51,14 +50,6 @@ all_settings = {
         stat_col_name="max_roulette_streak",
     ),
 }
-
-user_statistics = [
-    "Stars",
-    "Thanks",
-    "Skulls",
-    "Roulette (current)",
-    "Roulette (all-time)",
-]
 
 
 class Services(commands.Cog):
@@ -119,17 +110,10 @@ class Services(commands.Cog):
 
         settings = all_settings[stat]
 
-        leaderboard = await self.bot.pg_pool.fetch(
-            f"SELECT usr_id, SUM({settings.stat_col_name}) as total "
-            f"FROM {settings.table} "
-            f"WHERE usr_id IN "
-            f"(SELECT usr_id FROM usr WHERE guild_id = {interaction.guild.id}) "
-            f"GROUP BY usr_id "
-            f"HAVING SUM({settings.stat_col_name}) > 0"
-            f"ORDER BY total DESC ;"
-        )
+        leaderboard = await create_leaderboard(self.bot, settings, interaction.guild.id)
 
-        embed = await build_leaderboard_embed(interaction, leaderboard, settings)
+        embed = build_leaderboard_embed(interaction, leaderboard, settings)
+
         await interaction.send(embed=embed)
 
     @nextcord.slash_command(guild_ids=[GUILD_ID], description="Award a skull.")
@@ -155,8 +139,28 @@ class Services(commands.Cog):
         await interaction.send(f"Gave a 💀 to {recipient.mention}")
 
 
-async def build_leaderboard_embed(
-    interaction, leaderboard, settings, count_col_name="total", usr_col_name="usr_id"
+async def create_leaderboard(bot, settings, guild_id=GUILD_ID):
+
+    leaderboard = await bot.pg_pool.fetch(
+        f"SELECT usr_id, SUM({settings.stat_col_name}) as total "
+        f"FROM {settings.table} "
+        f"WHERE usr_id IN "
+        f"(SELECT usr_id FROM usr WHERE guild_id = {guild_id}) "
+        f"GROUP BY usr_id "
+        f"HAVING SUM({settings.stat_col_name}) > 0"
+        f"ORDER BY total DESC ;"
+    )
+
+    return leaderboard
+
+
+def build_leaderboard_embed(
+    interaction,
+    leaderboard,
+    settings,
+    count_col_name="total",
+    usr_col_name="usr_id",
+    max_print=12,
 ):
 
     if not leaderboard:
