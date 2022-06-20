@@ -15,39 +15,45 @@ from dataclasses import dataclass
 @dataclass
 class LeaderboardSettings:
     title: str
-    stat_display_name: str
+    stat_name: str
     stat_col_name: str
     user_name: str = "User"
     color: str = VIE_PURPLE
     table: str = "usr"
+    stat_embed_header: str = None
 
 
 all_settings = {
     "Stars": LeaderboardSettings(
         title="Stars leaderboard",
-        stat_display_name="Stars",
+        stat_name="Stars",
         stat_col_name="stars",
         color=STARBOARD_COLOUR,
         table="starboard",
     ),
-    "Thanks": LeaderboardSettings(
-        title="Voids leaderboard", stat_display_name="Voids", stat_col_name="thanks"
+    "Voids": LeaderboardSettings(
+        title="Voids leaderboard",
+        stat_name="Voids",
+        stat_col_name="thanks",
     ),
     "Skulls": LeaderboardSettings(
         title="Skulls leaderboard",
-        stat_display_name="💀",
+        stat_name="Skulls",
         stat_col_name="skulls",
+        stat_embed_header="💀",
         user_name="Metalhead",
     ),
     "Roulette (current)": LeaderboardSettings(
         title="Stars leaderboard",
-        stat_display_name="Rounds",
+        stat_name="Current roulette streak",
         stat_col_name="current_roulette_streak",
+        stat_embed_header="Rounds",
     ),
     "Roulette (all-time)": LeaderboardSettings(
         title="Stars leaderboard",
-        stat_display_name="Rounds",
+        stat_name="All-time best roulette streak",
         stat_col_name="max_roulette_streak",
+        stat_embed_header="Rounds",
     ),
 }
 
@@ -138,19 +144,59 @@ class Services(commands.Cog):
         )
         await interaction.send(f"Gave a 💀 to {recipient.mention}")
 
+    @nextcord.slash_command(guild_ids=[GUILD_ID], description="Look up a user's stats")
+    async def stats(
+        self,
+        interaction,
+        user: nextcord.User = SlashOption(description="User to look up"),
+        stat=SlashOption(
+            description="Stat to look up", choices=["Everything", *all_settings.keys()]
+        ),
+    ):
 
-async def create_leaderboard(bot, settings, guild_id=GUILD_ID):
+        if stat != "Everything":
+            settings = all_settings[stat]
+            stats = await create_leaderboard(self.bot, settings, filter_by_user=user)
+            if not stats:
+                await interaction.send(
+                    f"{user.mention} currently has no {settings.stat_name.lower()}."
+                )
+            elif "Roulette" in stat:
+                await interaction.send(
+                    f"""{user.mention}'s {settings.stat_name.lower()} is {stats[0]['total']} rounds."""
+                )
+            else:
+                await interaction.send(
+                    f"{user.mention} currently has {stats[0]['total']} {settings.stat_name.lower()}."
+                )
+        else:
+            message = f"{user.mention}'s current stats are:\n"
+            for settings in all_settings.values():
+                stats = await create_leaderboard(
+                    self.bot, settings, filter_by_user=user
+                )
+                message += (
+                    f"{settings.stat_name}: {stats[0]['total'] if stats else 0}\n"
+                )
+            await interaction.send(message)
+            pass
+
+
+async def create_leaderboard(bot, settings, guild_id=GUILD_ID, filter_by_user=None):
+
+    filter_condition = (
+        "AND usr_id = " + str(filter_by_user.id) if filter_by_user else ""
+    )
 
     leaderboard = await bot.pg_pool.fetch(
         f"SELECT usr_id, SUM({settings.stat_col_name}) as total "
         f"FROM {settings.table} "
         f"WHERE usr_id IN "
-        f"(SELECT usr_id FROM usr WHERE guild_id = {guild_id}) "
+        f"(SELECT usr_id FROM usr WHERE guild_id = {guild_id}{filter_condition}) "
         f"GROUP BY usr_id "
         f"HAVING SUM({settings.stat_col_name}) > 0"
         f"ORDER BY total DESC ;"
     )
-
     return leaderboard
 
 
@@ -168,11 +214,7 @@ def build_leaderboard_embed(
             color=settings.color,
             description=f"The {settings.title} is currently empty.",
         )
-    ljust_num = (
-        len(str(settings.stat_display_name))
-        if str(settings.stat_display_name).isalnum()
-        else 3
-    )
+    ljust_num = len(str(settings.stat_name)) if str(settings.stat_name).isalnum() else 3
     ldr = []
     cnt = 0
 
@@ -180,7 +222,7 @@ def build_leaderboard_embed(
     keep_printing = True
     for rec in leaderboard:
         cnt += 1
-        if cnt > settings.max_print:
+        if cnt > max_print:
             keep_printing = False
 
         if (
@@ -198,7 +240,7 @@ def build_leaderboard_embed(
             if keep_printing:
                 prev_count = rec[count_col_name]
 
-    header_merged = f"{settings.stat_display_name}\t{settings.user_name}"
+    header_merged = f"{settings.stat_name}\t{settings.user_name}"
 
     merged_str = ""
     for line in ldr:
