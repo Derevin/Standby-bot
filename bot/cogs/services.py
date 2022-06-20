@@ -179,7 +179,6 @@ class Services(commands.Cog):
                     f"{settings.stat_name}: {stats[0]['total'] if stats else 0}\n"
                 )
             await interaction.send(message)
-            pass
 
 
 async def create_leaderboard(bot, settings, guild_id=GUILD_ID, filter_by_user=None):
