@@ -123,7 +123,6 @@ class Tickets(commands.Cog):
         await interaction.send(REOPENED_MESSAGE)
 
     @nextcord.slash_command(
-        guild_ids=[GUILD_ID],
         description="Create a ticket to discuss matters privately with the mod team",
     )
     async def ticket(

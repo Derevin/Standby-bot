@@ -69,10 +69,7 @@ class Services(commands.Cog):
         await ctx.message.delete()
         await msg.edit(content=message)
 
-    @nextcord.slash_command(
-        guild_ids=[GUILD_ID],
-        description="Displays a user's profile picture.",
-    )
+    @nextcord.slash_command(description="Displays a user's profile picture.")
     async def avatar(
         self,
         interaction: Interaction,
@@ -83,8 +80,7 @@ class Services(commands.Cog):
         await interaction.send(embed=avatar_embed(user))
 
     @nextcord.slash_command(
-        guild_ids=[GUILD_ID],
-        description="Returns the Urban Dictionary definition of a word or phrase",
+        description="Returns the Urban Dictionary definition of a word or phrase"
     )
     async def urban(
         self,
@@ -101,9 +97,7 @@ class Services(commands.Cog):
         elif isinstance(response, str):
             await interaction.send(response)
 
-    @nextcord.slash_command(
-        guild_ids=[GUILD_ID], description="Displays the leaderboards"
-    )
+    @nextcord.slash_command(description="Displays the leaderboards")
     async def leaderboard(
         self,
         interaction: Interaction,
@@ -122,7 +116,7 @@ class Services(commands.Cog):
 
         await interaction.send(embed=embed)
 
-    @nextcord.slash_command(guild_ids=[GUILD_ID], description="Award a skull.")
+    @nextcord.slash_command(description="Award a skull.")
     async def skull(
         self,
         interaction: Interaction,
@@ -144,7 +138,7 @@ class Services(commands.Cog):
         )
         await interaction.send(f"Gave a 💀 to {recipient.mention}")
 
-    @nextcord.slash_command(guild_ids=[GUILD_ID], description="Look up a user's stats")
+    @nextcord.slash_command(description="Look up a user's stats")
     async def stats(
         self,
         interaction,

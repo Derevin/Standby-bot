@@ -324,7 +324,7 @@ class Bingo(
             await game.bingo(winner=interaction.user)
             game = BingoGame()
 
-    @nextcord.slash_command(guild_ids=[GUILD_ID], description="Play Void Bingo")
+    @nextcord.slash_command(description="Play Void Bingo")
     async def bingo(
         self,
         interaction: Interaction,

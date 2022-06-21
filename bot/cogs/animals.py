@@ -10,9 +10,7 @@ class Animals(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @nextcord.slash_command(
-        guild_ids=[GUILD_ID], description="Posts a random animal image"
-    )
+    @nextcord.slash_command(description="Posts a random animal image")
     async def animal(
         self,
         interaction: Interaction,

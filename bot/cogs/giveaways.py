@@ -19,9 +19,7 @@ class Giveaways(commands.Cog):
     def cog_unload(self):
         self.check_giveaways.cancel()
 
-    @nextcord.slash_command(
-        guild_ids=[GUILD_ID], description="Start a giveaway in the #giveaways channel"
-    )
+    @nextcord.slash_command(description="Start a giveaway in the #giveaways channel")
     @application_checks.has_any_role(*MOD_ROLES, "Raffler")
     async def giveaway(
         self,

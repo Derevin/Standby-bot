@@ -54,11 +54,11 @@ class Fun(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @nextcord.slash_command(guild_ids=[GUILD_ID], description="YEE")
+    @nextcord.slash_command(description="YEE")
     async def yee(self, interaction):
         await interaction.send(YEEE)
 
-    @nextcord.slash_command(guild_ids=[GUILD_ID], description="Gives a user a hug")
+    @nextcord.slash_command(description="Gives a user a hug")
     async def hug(
         self,
         interaction: Interaction,
@@ -76,7 +76,7 @@ class Fun(commands.Cog):
             if hug:
                 await interaction.channel.send(hug)
 
-    @nextcord.slash_command(guild_ids=[GUILD_ID], description="Pay your respects")
+    @nextcord.slash_command(description="Pay your respects")
     async def f(
         self,
         interaction: Interaction,
@@ -102,7 +102,7 @@ class Fun(commands.Cog):
         rip = await interaction.original_message()
         await rip.add_reaction("🇫")
 
-    @nextcord.slash_command(guild_ids=[GUILD_ID], description="Posts a meme.")
+    @nextcord.slash_command(description="Posts a meme.")
     async def meme(
         self,
         interaction: Interaction,
@@ -161,9 +161,7 @@ class Fun(commands.Cog):
                     ephemeral=True,
                 )
 
-    @nextcord.slash_command(
-        guild_ids=[GUILD_ID], description="Convert text into cyrillic"
-    )
+    @nextcord.slash_command(description="Convert text into cyrillic")
     async def cyrillify(
         self,
         interaction: Interaction,
@@ -201,7 +199,7 @@ class Fun(commands.Cog):
 
         await interaction.send(translit(text, "custom"))
 
-    @nextcord.slash_command(guild_ids=[GUILD_ID], description="Burger someone")
+    @nextcord.slash_command(description="Burger someone")
     async def burger(
         self,
         interaction: Interaction,
@@ -254,7 +252,7 @@ class Fun(commands.Cog):
             if self.creator == interaction.user and self.value:
                 self.stop()
 
-    @nextcord.slash_command(guild_ids=[GUILD_ID], description="Pick a vanity role")
+    @nextcord.slash_command(description="Pick a vanity role")
     async def vanity(
         self,
         interaction: Interaction,
@@ -276,9 +274,7 @@ class Fun(commands.Cog):
             msg = await interaction.original_message()
             await msg.edit(text, view=None, delete_after=10)
 
-    @nextcord.slash_command(
-        guild_ids=[GUILD_ID], description="Genererate a captioned meme"
-    )
+    @nextcord.slash_command(description="Genererate a captioned meme")
     async def caption(
         self,
         interaction: Interaction,
@@ -321,7 +317,6 @@ class Fun(commands.Cog):
         )
 
     @nextcord.slash_command(
-        guild_ids=[GUILD_ID],
         name="8ball",
         description="Provides a Magic 8-Ball answer to a yes/no question",
     )
@@ -354,11 +349,11 @@ class Fun(commands.Cog):
         ]
         await interaction.send(random.choice(answers))
 
-    @nextcord.slash_command(guild_ids=[GUILD_ID], description="Praise toucan")
+    @nextcord.slash_command(description="Praise toucan")
     async def praise(self, interaction):
         await interaction.send(TOUCAN_PRAISE)
 
-    @nextcord.slash_command(guild_ids=[GUILD_ID], description="Do you feel lucky?")
+    @nextcord.slash_command(description="Do you feel lucky?")
     async def roulette(self, interaction):
 
         cooldown = await self.bot.pg_pool.fetch(

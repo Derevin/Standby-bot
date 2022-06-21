@@ -56,10 +56,7 @@ class Timers(commands.Cog):
             traceback.print_exc(file=sys.stdout)
             return
 
-    @nextcord.slash_command(
-        guild_ids=[GUILD_ID],
-        description="Reminds you after a specified time",
-    )
+    @nextcord.slash_command(description="Reminds you after a specified time")
     async def remindme(
         self,
         interaction: Interaction,

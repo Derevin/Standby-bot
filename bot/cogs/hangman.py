@@ -92,7 +92,7 @@ class Hangman(commands.Cog, name="Void Hangman"):
     def __init__(self, bot):
         self.bot = bot
 
-    @nextcord.slash_command(guild_ids=[GUILD_ID])
+    @nextcord.slash_command()
     async def hangman():
         pass
 
