@@ -104,3 +104,19 @@ def get_vanity_roles(guild):
 
 def get_local_static_path():
     return str(Path(__file__).parent.parent.parent) + "/static"
+
+
+def id_to_mention(id, id_type="user"):
+
+    id = str(id)
+
+    if id_type == "user":
+        return "<@" + id + ">"
+
+    if id_type == "channel":
+        return "<#" + id + ">"
+
+    if id_type == "role":
+        return "<@&" + id + ">"
+
+    return
