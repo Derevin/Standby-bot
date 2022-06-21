@@ -147,24 +147,28 @@ class Services(commands.Cog):
             description="Stat to look up", choices=["Everything", *all_settings.keys()]
         ),
     ):
+        if user == interaction.user:
+            subject, possessive, has = "You", "Your", "have"
+        else:
+            subject, possessive, has = user.mention, user.mention + "'s", "has"
 
         if stat != "Everything":
             settings = all_settings[stat]
             stats = await create_leaderboard(self.bot, settings, filter_by_user=user)
             if not stats:
                 await interaction.send(
-                    f"{user.mention} currently has no {settings.stat_name.lower()}."
+                    f"{subject} currently {has} no {settings.stat_name.lower()}."
                 )
             elif "Roulette" in stat:
                 await interaction.send(
-                    f"""{user.mention}'s {settings.stat_name.lower()} is {stats[0]['total']} rounds."""
+                    f"""{possessive} {settings.stat_name.lower()} is {stats[0]['total']} rounds."""
                 )
             else:
                 await interaction.send(
-                    f"{user.mention} currently has {stats[0]['total']} {settings.stat_name.lower()}."
+                    f"{subject} currently {has} {stats[0]['total']} {settings.stat_name.lower()}."
                 )
         else:
-            message = f"{user.mention}'s current stats are:\n"
+            message = f"{possessive} current stats are:\n"
             for settings in all_settings.values():
                 stats = await create_leaderboard(
                     self.bot, settings, filter_by_user=user
