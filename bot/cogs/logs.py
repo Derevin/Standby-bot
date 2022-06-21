@@ -202,7 +202,16 @@ async def slash_embed(interaction):
             arg_data = arg_data[0]["options"]
 
         for arg in arg_data:
-            embed.add_field(name=arg["name"], value=arg["value"])
+            if arg["type"] == 6:
+                formatted_value = id_to_mention(arg["value"], "user")
+            elif arg["type"] == 7:
+                formatted_value = id_to_mention(arg["value"], "channel")
+            elif arg["type"] == 8:
+                formatted_value = id_to_mention(arg["value"], "role")
+            else:
+                formatted_value = arg["value"]
+
+            embed.add_field(name=arg["name"], value=formatted_value)
 
     avatar_url = interaction.user.avatar.url if interaction.user.avatar else ""
 
