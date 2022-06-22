@@ -45,7 +45,7 @@ class Admin(commands.Cog):
         if obj in locals():
             obj = locals()[obj]
         elif obj in globals():
-            var = globals(obj)
+            obj = globals()[obj]
         else:
             print(f'Variable "{obj}" not found.')
             return
