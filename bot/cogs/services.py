@@ -237,7 +237,7 @@ def build_leaderboard_embed(
             if keep_printing:
                 prev_count = rec[count_col_name]
 
-    header_merged = f"{settings.stat_name}\t{settings.user_name}"
+    header_merged = f"{settings.stat_embed_header}\t{settings.user_name}"
 
     merged_str = ""
     for line in ldr:
