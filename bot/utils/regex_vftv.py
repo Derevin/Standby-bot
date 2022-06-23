@@ -155,6 +155,7 @@ async def offers_resp(bot, message: nextcord.Message):
         "ubi",
         "key",
         "code",
+        "sale",
     ]
 
     if (
