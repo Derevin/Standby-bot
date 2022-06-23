@@ -159,7 +159,7 @@ async def offers_resp(bot, message: nextcord.Message):
     ]
 
     if (
-        any([word in message.content for word in whitelist])
+        any([word in message.content.lower() for word in whitelist])
         or len(message.attachments) > 0
     ):
         return
