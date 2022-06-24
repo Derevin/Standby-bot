@@ -14,6 +14,7 @@ from db.db_main import init_db_connection
 intents = nextcord.Intents.default()
 intents.members = True
 intents.presences = True
+intents.message_content = True
 
 bot = commands.Bot(command_prefix=PREFIX, intents=intents, case_insensitive=True)
 
