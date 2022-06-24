@@ -28,6 +28,6 @@ fuzzywuzzy==0.18.0
 pillow==9.0.1
 transliterate==1.10.2
 GitPython==3.1.18
-nextcord==2.0.0a10
+nextcord==2.0.0rc2
 youtube-dl==2021.12.17
 PyNaCl==1.5.0
