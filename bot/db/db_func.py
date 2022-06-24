@@ -1,6 +1,3 @@
-import asyncpg
-
-
 async def ensure_guild_existence(bot, gid):
     guild = await bot.pg_pool.fetch(
         "SELECT * FROM guild WHERE guild.guild_id = $1;", gid

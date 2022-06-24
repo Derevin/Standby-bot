@@ -1,4 +1,3 @@
-import asyncpg
 from settings import *
 
 CREATE_USER = """

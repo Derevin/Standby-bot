@@ -1,5 +1,4 @@
 import nextcord
-import asyncpg
 import asyncio
 from db.db_func import get_or_insert_usr
 from settings import *
