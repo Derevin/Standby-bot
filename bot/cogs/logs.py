@@ -189,9 +189,15 @@ async def slash_embed(interaction):
     embed.add_field(name="User", value=interaction.user.mention)
     embed.add_field(name="Channel", value=interaction.channel.mention)
 
+    name = interaction.application_command.name
+    try:
+        parent_name = interaction.application_command.parent_cmd.name + " "
+    except AttributeError:
+        parent_name = ""
+
     embed.add_field(
         name="Command",
-        value="/" + str(interaction.application_command),
+        value="/" + parent_name + name,
         inline=False,
     )
 
