@@ -108,7 +108,12 @@ class Timers(commands.Cog):
         timenow = datetime.now()
         try:
             tfuture = datetime(
-                year=year, month=month, day=day, hour=hour, minute=minute
+                year=year,
+                month=month,
+                day=day,
+                hour=hour,
+                minute=minute,
+                tzinfo=timenow.tzinfo,
             )
         except ValueError:
             await interaction.send(
