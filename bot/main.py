@@ -33,7 +33,7 @@ async def on_ready():
             ) as r:
                 data = await r.json()
                 timenow = datetime.now().astimezone(BOT_TZ)
-                format = "%Y-%m-%dT%H:%M:%SZ"
+                format = "%Y-%m-%dT%H:%M:%S%z"
                 dt_commit_time = datetime.strptime(
                     data["commit"]["committer"]["date"], format
                 ).astimezone(BOT_TZ)
