@@ -44,13 +44,13 @@ all_settings = {
         user_name="Metalhead",
     ),
     "Roulette (current)": LeaderboardSettings(
-        title="Stars leaderboard",
+        title="Roulette leaderboard (current)",
         stat_name="Current roulette streak",
         stat_col_name="current_roulette_streak",
         stat_embed_header="Rounds",
     ),
     "Roulette (all-time)": LeaderboardSettings(
-        title="Stars leaderboard",
+        title="Roulette leaderboard (all-time)",
         stat_name="All-time best roulette streak",
         stat_col_name="max_roulette_streak",
         stat_embed_header="Rounds",
