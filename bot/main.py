@@ -36,7 +36,7 @@ async def on_ready():
                 format = "%Y-%m-%dT%H:%M:%SZ"
                 dt_commit_time = datetime.strptime(
                     data["commit"]["committer"]["date"], format
-                )
+                ).astimezone(BOT_TZ)
                 timepast = timenow - timedelta(minutes=15)
                 if timepast < dt_commit_time:
                     author = data["commit"]["committer"]["name"]

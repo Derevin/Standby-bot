@@ -1,5 +1,5 @@
 import os
-import settings_files.rules_contents
+import pytz
 
 PREFIX = "+"
 
@@ -12,13 +12,12 @@ GUILD_ID = int(os.getenv("GUILD_ID", False))
 STARBOARD_ID = int(os.getenv("STARBOARD_ID", False))
 GINNY_TRANSPARENT_URL = str(os.getenv("GINNY_TRANSPARENT_URL", False))
 GINNY_WHITE_URL = str(os.getenv("GINNY_WHITE_URL", False))
-
+BOT_TZ = pytz.timezone(os.getenv("TZ", pytz.utc))
 
 DB_TMER_REMINDER = 1
 DB_TMER_GIVEAWAY = 2
 DB_TMER_REPOST = 3
 DB_TMER_ROULETTE = 4
-
 
 ERROR_CHANNEL_NAME = "maintenance-channel"
 ERROR_CHANNEL_ID = 376031149371162635
