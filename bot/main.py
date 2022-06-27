@@ -32,7 +32,7 @@ async def on_ready():
                 "https://api.github.com/repos/Derevin/Standby-bot/commits/main"
             ) as r:
                 data = await r.json()
-                timenow = datetime.now()
+                timenow = datetime.now().astimezone(BOT_TZ)
                 format = "%Y-%m-%dT%H:%M:%SZ"
                 dt_commit_time = datetime.strptime(
                     data["commit"]["committer"]["date"], format
