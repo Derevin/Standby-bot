@@ -79,162 +79,162 @@ regex_fun_phrases_commands.append(
 ### wednesday
 
 
-async def wednesday_resp(bot, message: nextcord.Message):
-    await message.channel.send("my dudes")
-    await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
+# async def wednesday_resp(bot, message: nextcord.Message):
+#     await message.channel.send("my dudes")
+#     await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
 
 
-regex_fun_phrases_commands.append(
-    ("^.{0,4}It is wednesday\\W{0,4}$", wednesday_resp, re.M | re.I)
-)
+# regex_fun_phrases_commands.append(
+#     ("^.{0,4}It is wednesday\\W{0,4}$", wednesday_resp, re.M | re.I)
+# )
 
 
-async def mittwoch_resp(bot, message: nextcord.Message):
-    await message.channel.send("meine Kerle")
-    await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
+# async def mittwoch_resp(bot, message: nextcord.Message):
+#     await message.channel.send("meine Kerle")
+#     await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
 
 
-regex_fun_phrases_commands.append(
-    ("^.{0,4}Es ist Mittwoch\\W{0,4}$", mittwoch_resp, re.M | re.I)
-)
+# regex_fun_phrases_commands.append(
+#     ("^.{0,4}Es ist Mittwoch\\W{0,4}$", mittwoch_resp, re.M | re.I)
+# )
 
 
-async def sroda_resp(bot, message: nextcord.Message):
-    await message.channel.send("o panowie")
-    await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
+# async def sroda_resp(bot, message: nextcord.Message):
+#     await message.channel.send("o panowie")
+#     await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
 
 
-regex_fun_phrases_commands.append(
-    ("^.{0,4}jest [sś]roda\\W{0,4}$", sroda_resp, re.M | re.I)
-)
+# regex_fun_phrases_commands.append(
+#     ("^.{0,4}jest [sś]roda\\W{0,4}$", sroda_resp, re.M | re.I)
+# )
 
 
-async def woensdag_resp(bot, message: nextcord.Message):
-    await message.channel.send("mijn makkers")
-    await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
+# async def woensdag_resp(bot, message: nextcord.Message):
+#     await message.channel.send("mijn makkers")
+#     await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
 
 
-regex_fun_phrases_commands.append(
-    ("^.{0,4}het is woensdag\\W{0,4}$", woensdag_resp, re.M | re.I)
-)
+# regex_fun_phrases_commands.append(
+#     ("^.{0,4}het is woensdag\\W{0,4}$", woensdag_resp, re.M | re.I)
+# )
 
 
-async def szerda_resp(bot, message: nextcord.Message):
-    await message.channel.send("felebarátaim")
-    await message.channel.send("ááááááááááÁÁÁÁÁÁÁÁÁÁ**ÁÁÁÁÁ**")
+# async def szerda_resp(bot, message: nextcord.Message):
+#     await message.channel.send("felebarátaim")
+#     await message.channel.send("ááááááááááÁÁÁÁÁÁÁÁÁÁ**ÁÁÁÁÁ**")
 
 
-regex_fun_phrases_commands.append(
-    ("^.{0,4}szerda van\\W{0,4}$", szerda_resp, re.M | re.I)
-)
+# regex_fun_phrases_commands.append(
+#     ("^.{0,4}szerda van\\W{0,4}$", szerda_resp, re.M | re.I)
+# )
 
 
-async def streda_resp(bot, message: nextcord.Message):
-    await message.channel.send("kamoši moji")
-    await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
+# async def streda_resp(bot, message: nextcord.Message):
+#     await message.channel.send("kamoši moji")
+#     await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
 
 
-regex_fun_phrases_commands.append(
-    ("^.{0,4}je streda\\W{0,4}$", streda_resp, re.M | re.I)
-)
+# regex_fun_phrases_commands.append(
+#     ("^.{0,4}je streda\\W{0,4}$", streda_resp, re.M | re.I)
+# )
 
 
-async def srida_resp(bot, message: nextcord.Message):
-    await message.channel.send("moji ljudi")
-    await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
+# async def srida_resp(bot, message: nextcord.Message):
+#     await message.channel.send("moji ljudi")
+#     await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
 
 
-regex_fun_phrases_commands.append(
-    ("^.{0,4}sr(e|i(je)?)da je\\W{0,4}$", srida_resp, re.M | re.I)
-)
+# regex_fun_phrases_commands.append(
+#     ("^.{0,4}sr(e|i(je)?)da je\\W{0,4}$", srida_resp, re.M | re.I)
+# )
 
 
-async def mercredi_resp(bot, message: nextcord.Message):
-    await message.channel.send("mes mecs")
-    await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
+# async def mercredi_resp(bot, message: nextcord.Message):
+#     await message.channel.send("mes mecs")
+#     await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
 
 
-regex_fun_phrases_commands.append(
-    ("^.{0,4}c'?est mercredi\\W{0,4}$", mercredi_resp, re.M | re.I)
-)
+# regex_fun_phrases_commands.append(
+#     ("^.{0,4}c'?est mercredi\\W{0,4}$", mercredi_resp, re.M | re.I)
+# )
 
 
-async def keskiviikko_resp(bot, message: nextcord.Message):
-    await message.channel.send("kaverit")
-    await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
+# async def keskiviikko_resp(bot, message: nextcord.Message):
+#     await message.channel.send("kaverit")
+#     await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
 
 
-regex_fun_phrases_commands.append(
-    ("^.{0,4}se on keskiviikko\\W{0,4}$", keskiviikko_resp, re.M | re.I)
-)
+# regex_fun_phrases_commands.append(
+#     ("^.{0,4}se on keskiviikko\\W{0,4}$", keskiviikko_resp, re.M | re.I)
+# )
 
 
-async def onsdag_resp(bot, message: nextcord.Message):
-    await message.channel.send("mina bekanta")
-    await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
+# async def onsdag_resp(bot, message: nextcord.Message):
+#     await message.channel.send("mina bekanta")
+#     await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
 
 
-regex_fun_phrases_commands.append(
-    ("^.{0,4}det är (ons|fre)dag\\W{0,4}$", onsdag_resp, re.M | re.I)
-)
+# regex_fun_phrases_commands.append(
+#     ("^.{0,4}det är (ons|fre)dag\\W{0,4}$", onsdag_resp, re.M | re.I)
+# )
 
 
-async def suiyobi_resp(bot, message: nextcord.Message):
-    await message.channel.send("お前ら")
-    await message.channel.send("ああああああ**ああああ**")
+# async def suiyobi_resp(bot, message: nextcord.Message):
+#     await message.channel.send("お前ら")
+#     await message.channel.send("ああああああ**ああああ**")
 
 
-regex_fun_phrases_commands.append(("^.{0,4}水曜日だ\\W{0,4}$", suiyobi_resp, re.M | re.I))
+# regex_fun_phrases_commands.append(("^.{0,4}水曜日だ\\W{0,4}$", suiyobi_resp, re.M | re.I))
 
 
-async def onsdag_resp_no(bot, message: nextcord.Message):
-    await message.channel.send("folkens")
-    await message.channel.send("ææææææææææÆÆÆÆÆÆÆÆÆÆ**ÆÆÆÆÆ**")
+# async def onsdag_resp_no(bot, message: nextcord.Message):
+#     await message.channel.send("folkens")
+#     await message.channel.send("ææææææææææÆÆÆÆÆÆÆÆÆÆ**ÆÆÆÆÆ**")
 
 
-regex_fun_phrases_commands.append(
-    ("^.{0,4}det er onsdag\\W{0,4}$", onsdag_resp_no, re.M | re.I)
-)
+# regex_fun_phrases_commands.append(
+#     ("^.{0,4}det er onsdag\\W{0,4}$", onsdag_resp_no, re.M | re.I)
+# )
 
 
-async def miercoles_resp(bot, message: nextcord.Message):
-    await message.channel.send("mis amigos")
-    await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
+# async def miercoles_resp(bot, message: nextcord.Message):
+#     await message.channel.send("mis amigos")
+#     await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
 
 
-regex_fun_phrases_commands.append(
-    ("^.{0,4}es mi(e|é)rcoles\\W{0,4}$", miercoles_resp, re.M | re.I)
-)
+# regex_fun_phrases_commands.append(
+#     ("^.{0,4}es mi(e|é)rcoles\\W{0,4}$", miercoles_resp, re.M | re.I)
+# )
 
 
-async def miercuri_resp(bot, message: nextcord.Message):
-    await message.channel.send("fraţii mei")
-    await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
+# async def miercuri_resp(bot, message: nextcord.Message):
+#     await message.channel.send("fraţii mei")
+#     await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
 
 
-regex_fun_phrases_commands.append(
-    ("^.{0,4}(est|e|i|iî) miercuri\\W{0,4}$", miercuri_resp, re.M | re.I)
-)
+# regex_fun_phrases_commands.append(
+#     ("^.{0,4}(est|e|i|iî) miercuri\\W{0,4}$", miercuri_resp, re.M | re.I)
+# )
 
 
-async def reviee_resp(bot, message: nextcord.Message):
-    await message.channel.send("אחים שלי")
-    await message.channel.send("אאאאאאאאאאאאאאאאה")
+# async def reviee_resp(bot, message: nextcord.Message):
+#     await message.channel.send("אחים שלי")
+#     await message.channel.send("אאאאאאאאאאאאאאאאה")
 
 
-regex_fun_phrases_commands.append(
-    ("^.{0,4}היום יום רביעי\\W{0,4}$", reviee_resp, re.M | re.I)
-)
+# regex_fun_phrases_commands.append(
+#     ("^.{0,4}היום יום רביעי\\W{0,4}$", reviee_resp, re.M | re.I)
+# )
 
 
-async def treciadienis_resp(bot, message: nextcord.Message):
-    await message.channel.send("mano bičiuliai")
-    await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
+# async def treciadienis_resp(bot, message: nextcord.Message):
+#     await message.channel.send("mano bičiuliai")
+#     await message.channel.send("aaaaaaaaaaAAAAAAAAAA**AAAAA**")
 
 
-regex_fun_phrases_commands.append(
-    ("^.{0,4}jau tre[cč]iadienis\\W{0,4}$", treciadienis_resp, re.M | re.I)
-)
+# regex_fun_phrases_commands.append(
+#     ("^.{0,4}jau tre[cč]iadienis\\W{0,4}$", treciadienis_resp, re.M | re.I)
+# )
 
 
 ### tuesday
