@@ -152,6 +152,7 @@ class Tickets(commands.Cog):
         await self.get_or_create_active_cat(interaction)
         await self.get_or_create_resolved_cat(interaction)
         await self.get_or_create_tickets_log(interaction)
+        await interaction.send("Ticket system succesfully initiated", ephemeral=True)
 
     @nextcord.slash_command(
         description="Scraps a resolved ticket, logs the messages and deletes the channel",
