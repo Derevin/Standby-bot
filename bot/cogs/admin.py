@@ -36,9 +36,8 @@ class Admin(commands.Cog):
     @nextcord.slash_command(
         description="Pong!", default_member_permissions=MODS_AND_GUIDES
     )
-    async def ping(self, interaction, r: nextcord.Role):
-        print(f"This is {r}")
-        await interaction.send(f"This is {r}")
+    async def ping(self, interaction):
+        await interaction.send("Ponguu!")
 
     @nextcord.slash_command(
         description="Print a variable", default_member_permissions=MODS_AND_GUIDES
@@ -496,7 +495,7 @@ class Admin(commands.Cog):
             )
             return
 
-        avatar_url = target.avatar.url if target.avatar else ""
+        avatar_url = target.display_avatar.url if target.display_avatar else ""
         avatar = Image.open(requests.get(avatar_url, stream=True).raw)
         avatar = avatar.convert("RGBA")
         border = Image.open(requests.get(GINNY_TRANSPARENT_URL, stream=True).raw)
@@ -589,8 +588,8 @@ def message_embed(msg, cmd, trigger_author) -> nextcord.Embed:
 
     embed = nextcord.Embed(color=PALE_BLUE)
     embed.title = embed_titles[cmd]
-    if msg.author.avatar:
-        embed.set_thumbnail(url=msg.author.avatar.url)
+    if msg.author.display_avatar:
+        embed.set_thumbnail(url=msg.author.display_avatar.url)
     embed.description = msg.content
     embed.add_field(name="Channel", value=msg.channel.mention)
     timestamp = msg.created_at + datetime.timedelta(hours=2)
