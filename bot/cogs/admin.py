@@ -34,7 +34,8 @@ class Admin(commands.Cog):
         await interaction.send(embed=embed)
 
     @nextcord.slash_command(
-        description="Pong!", default_member_permissions=MODS_AND_GUIDES
+        description="Pong!",
+        default_member_permissions=MODS_AND_GUIDES,
     )
     async def ping(self, interaction):
         await interaction.send("Ponguu!")
@@ -96,7 +97,10 @@ class Admin(commands.Cog):
             f"Message successfully sent in {channel.mention}.", ephemeral=True
         )
 
-    @nextcord.slash_command(default_member_permissions=MODS_AND_GUIDES)
+    @nextcord.slash_command(
+        description="Commands to edit bot messages",
+        default_member_permissions=MODS_AND_GUIDES,
+    )
     async def edit():
         pass
 
@@ -435,7 +439,10 @@ class Admin(commands.Cog):
             await vote_msg.add_reaction("✅")
             await vote_msg.add_reaction("❌")
 
-    @nextcord.slash_command(default_member_permissions=MODS_AND_GUIDES)
+    @nextcord.slash_command(
+        description="Commands to put people in and remove them from horny jail",
+        default_member_permissions=MODS_AND_GUIDES,
+    )
     async def horny():
         pass
 

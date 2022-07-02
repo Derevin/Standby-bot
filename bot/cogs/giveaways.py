@@ -52,7 +52,10 @@ class Giveaways(commands.Cog):
             f"Giveaway started in {giveaway_channel.mention}! ", ephemeral=True
         )
 
-    @nextcord.slash_command(default_member_permissions=MODS_AND_GUIDES)
+    @nextcord.slash_command(
+        description="Mod commands for editing giveaways",
+        default_member_permissions=MODS_AND_GUIDES,
+    )
     async def giveaway_tools():
         pass
 

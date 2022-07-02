@@ -17,8 +17,7 @@ class Birthdays(commands.Cog):
         pass
         self.check_bdays.cancel()
 
-    # @commands.group(brief="Birthday commands", aliases=["bday"])
-    @nextcord.slash_command()
+    @nextcord.slash_command(description="Commands for accessing birthday functionality")
     async def birthday(self, interaction: Interaction):
         pass
 

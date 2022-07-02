@@ -10,7 +10,7 @@ class Rando(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @nextcord.slash_command(name="rng")
+    @nextcord.slash_command(description="RNG commands", name="rng")
     async def rng():
         pass
 

@@ -56,7 +56,7 @@ class Timers(commands.Cog):
             traceback.print_exc(file=sys.stdout)
             return
 
-    @nextcord.slash_command()
+    @nextcord.slash_command(description="Commands for setting reminders")
     async def remindme():
         pass
 

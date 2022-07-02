@@ -21,7 +21,10 @@ class Rules(commands.Cog):
     def cog_unload(self):
         self.kick_inactives.cancel()
 
-    @nextcord.slash_command(default_member_permissions=MODS_ONLY)
+    @nextcord.slash_command(
+        description="Commands for setting up and editing the #rules channel",
+        default_member_permissions=MODS_ONLY,
+    )
     async def rules():
         pass
 
