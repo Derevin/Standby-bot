@@ -1,5 +1,6 @@
 from nextcord.ext import commands, tasks
 import nextcord
+from nextcord import SlashOption
 import asyncio
 import random
 import re
@@ -20,13 +21,24 @@ class Rules(commands.Cog):
     def cog_unload(self):
         self.kick_inactives.cancel()
 
-    @commands.command(brief="Adds all posts to the rules channel")
-    @commands.has_role("Moderator")
-    async def create(self, ctx, delay=0.1):
+    @nextcord.slash_command(default_member_permissions=MODS_ONLY)
+    async def rules():
+        pass
 
-        await ctx.message.delete()
-        vie = ctx.guild
+    @rules.subcommand(description="Add all posts to the rules channel")
+    async def create(
+        self,
+        interaction,
+        delay: float = SlashOption(
+            description="Delay in seconds between each post", default=0.1
+        ),
+    ):
+        vie = interaction.guild
         rules_ch = get_channel(vie, RULES_CHANNEL_NAME)
+        await interaction.send(
+            f"Creation process starting in {rules_ch.mention}", ephemeral=True
+        )
+
         await rules_ch.send(GIT_STATIC_URL + "/images/Ginny_Welcome.png")
         await asyncio.sleep(delay)
         rules_embed = nextcord.Embed(color=VIE_PURPLE)
@@ -104,55 +116,68 @@ class Rules(commands.Cog):
             f"Why not pop over to {general.mention} and say hi? You probably have a few welcomes waiting already."
         )
 
-    @commands.command(brief="Adds a new role to a post")
-    @commands.has_role("Moderator")
-    async def addrole(self, ctx, msg_id, role, emoji):
+    @rules.subcommand(description="Add a new role to a post")
+    async def add_role(
+        self,
+        interaction,
+        id=SlashOption(description="ID of the message to add the role to"),
+        role: nextcord.Role = SlashOption(description="Role to add to the message"),
+        emoji=SlashOption(
+            description="Emote to use for the role (default set or from this server only)"
+        ),
+    ):
 
-        rules = get_channel(ctx.guild, RULES_CHANNEL_NAME)
-        message = await rules.fetch_message(msg_id)
+        rules = get_channel(interaction.guild, RULES_CHANNEL_NAME)
+        message = rules.get_message(id)
         if not message.embeds:
-            raise commands.errors.BadArgument("Cannot add roles to that message")
-        if role not in [guild_role.mention for guild_role in ctx.guild.roles]:
-            raise commands.errors.BadArgument("No role with that name found.")
+            await interaction.send("Cannot add roles to that message", ephemeral=True)
+            return
         new_text = f"React {emoji} for {role}\n"
         embed = message.embeds[0]
         embed.description += "\n" + new_text
         await message.edit(embed=embed)
         await message.add_reaction(emoji)
-        await ctx.message.delete()
+        await interaction.send("Role successfully added", ephemeral=True)
 
-    @commands.command(brief="Removes a role from a post")
-    @commands.has_role("Moderator")
-    async def removerole(self, ctx, msg_id, role):
+    @rules.subcommand(description="Remove a role from a post")
+    async def remove_role(
+        self,
+        interaction,
+        id=SlashOption(description="ID of the message to remove the role from"),
+        role: nextcord.Role = SlashOption(
+            description="Role to remove from the message"
+        ),
+    ):
 
-        rules = get_channel(ctx.guild, RULES_CHANNEL_NAME)
-        message = await rules.fetch_message(msg_id)
+        rules = get_channel(interaction.guild, RULES_CHANNEL_NAME)
+        message = rules.get_message(id)
         if not message.embeds:
-            raise commands.errors.BadArgument("No roles to remove in that message")
+            await interaction.send("No roles to remove in that message", ephemeral=True)
+            return
         embed = message.embeds[0]
-        row = rf"React (.*) for {role}\n?"
+        row = rf"React (.*) for {role.mention}\n?"
         match = re.search(row, embed.description)
         if not match:
-            raise commands.errors.BadArgument("No such role found in the message")
+            await interaction.send("No such role found in the message", ephemeral=True)
         emoji = match.group(1)
-        embed.description = re.sub(rf"React .* for {role}\n?", "", embed.description)
+        embed.description = re.sub(
+            rf"React .* for {role.mention}\n?", "", embed.description
+        )
         for reaction in message.reactions:
             if str(reaction.emoji) == emoji:
                 await reaction.clear()
         await message.edit(embed=embed)
-        await ctx.message.delete()
+        await interaction.send("Role successfully removed", ephemeral=True)
 
-    @commands.command(brief="Adds a new rule to the post")
-    @commands.has_role("Moderator")
-    async def addrule(self, ctx, *text):
-        rules_ch = get_channel(ctx.guild, RULES_CHANNEL_NAME)
-        rules_msg = await rules_ch.fetch_message(RULES_MESSAGE_ID)
+    @rules.subcommand(description="Add a new rule to the post")
+    async def add_rule(
+        self, interaction, text=SlashOption(description="The text of the rule")
+    ):
+        rules_ch = get_channel(interaction.guild, RULES_CHANNEL_NAME)
+        rules_msg = rules_ch.get_message(RULES_MESSAGE_ID)
         embed = rules_msg.embeds[0]
         rules = re.split(rf"\n{EMPTY}\n", embed.description)
         rules = [re.sub(r"^\d+\. ", "", rule) for rule in rules]
-
-        if not text:
-            raise commands.errors.UserInputError("Please enter the rule text")
 
         if re.match(r"^\d+$", text[-1]):
             text, number = " ".join(text[:-1]), int(text[-1])
@@ -165,55 +190,55 @@ class Rules(commands.Cog):
         rules = [str(rules.index(rule) + 1) + ". " + rule for rule in rules]
         embed.description = f"\n{EMPTY}\n".join(rules)
         await rules_msg.edit(embed=embed)
-        await ctx.message.delete()
+        await interaction.send("Rule successfully added")
 
-    @commands.command(brief="Removes a rule from the post")
-    @commands.has_role("Moderator")
-    async def removerule(self, ctx, number):
-        try:
-            number = int(number)
-        except Exception:
-            raise commands.errors.BadArgument("Please enter a rule number to remove.")
+    @rules.subcommand(description="Removes a rule from the post")
+    async def remove_rule(
+        self,
+        interaction,
+        number: int = SlashOption(
+            description="Number of the rule to remove", min_value=1
+        ),
+    ):
 
-        rules_ch = get_channel(ctx.guild, RULES_CHANNEL_NAME)
-        rules_msg = await rules_ch.fetch_message(RULES_MESSAGE_ID)
+        rules_ch = get_channel(interaction.guild, RULES_CHANNEL_NAME)
+        rules_msg = rules_ch.get_message(RULES_MESSAGE_ID)
         embed = rules_msg.embeds[0]
         rules = re.split(rf"\n{EMPTY}\n", embed.description)
-        if number > len(rules) or number < 1:
-            raise commands.errors.BadArgument("No rule with that number.")
+        if number > len(rules):
+            await interaction.send("No rule with that number.", ephemeral=True)
+            return
 
         rules = [re.sub(r"^\d+\. ", "", rule) for rule in rules]
         rules.pop(number - 1)
         rules = [str(rules.index(rule) + 1) + ". " + rule for rule in rules]
         embed.description = f"\n{EMPTY}\n".join(rules)
         await rules_msg.edit(embed=embed)
-        await ctx.message.delete()
+        await interaction.send("Rule successfully removed", ephemeral=True)
 
-    @commands.command(brief="Edits a rule")
-    @commands.has_role("Moderator")
-    async def editrule(self, ctx, number, *, text):
-        try:
-            number = int(number)
-        except Exception:
-            raise commands.errors.BadArgument("Please enter a rule number to remove.")
+    @rules.subcommand(description="Edit a rule")
+    async def edit_rule(
+        self,
+        interaction,
+        number: int = SlashOption(
+            description="Number of the rule to edit", min_value=1
+        ),
+        new_text=SlashOption(description="New text of the rule"),
+    ):
 
-        if not text:
-            raise commands.errors.UserInputError("Please enter the rule text")
-
-        rules_ch = get_channel(ctx.guild, RULES_CHANNEL_NAME)
-        rules_msg = await rules_ch.fetch_message(RULES_MESSAGE_ID)
+        rules_ch = get_channel(interaction.guild, RULES_CHANNEL_NAME)
+        rules_msg = rules_ch.get_message(RULES_MESSAGE_ID)
         embed = rules_msg.embeds[0]
         rules = re.split(rf"\n{EMPTY}\n", embed.description)
 
-        if number > len(rules) or number < 1:
-            raise commands.errors.BadArgument("No rule with that number.")
+        if number > len(rules):
+            await interaction.send("No rule with that number", ephemeral=True)
 
-        rules[number - 1] = f"{number}. {text}"
+        rules[number - 1] = f"{number}. {new_text}"
         embed.description = f"\n{EMPTY}\n".join(rules)
 
         await rules_msg.edit(embed=embed)
-        if not ctx.message.embeds:
-            await ctx.message.delete()
+        await interaction.send("Rule successfully edited", ephemeral=True)
 
     @tasks.loop(hours=8)
     async def kick_inactives(self):

@@ -5,6 +5,8 @@ import asyncio
 import random
 import re
 import datetime
+
+from traitlets import default
 from settings import *
 from utils.util_functions import *
 
@@ -20,7 +22,7 @@ class Giveaways(commands.Cog):
         self.check_giveaways.cancel()
 
     @nextcord.slash_command(description="Start a giveaway in the #giveaways channel")
-    @application_checks.has_any_role(*MOD_ROLES, "Raffler")
+    # Set permissions manually
     async def giveaway(
         self,
         interaction: Interaction,
@@ -50,25 +52,31 @@ class Giveaways(commands.Cog):
             f"Giveaway started in {giveaway_channel.mention}! ", ephemeral=True
         )
 
-    @commands.command(brief="Manually end a giveaway")
-    @commands.has_any_role(*MOD_ROLES)
-    async def gfinish(self, ctx, id=None):
+    @nextcord.slash_command(default_member_permissions=MODS_AND_GUIDES)
+    async def giveaway_tools():
+        pass
 
-        await ctx.message.delete()
+    @giveaway_tools.subcommand(description="Manually end a giveaway")
+    async def finish(
+        self,
+        interaction,
+        id=SlashOption(
+            description="ID of the giveaway (leave blank to use last active giveaway)",
+            default=0,
+        ),
+    ):
 
-        channel = nextcord.utils.get(
-            ctx.guild.text_channels, name=GIVEAWAY_CHANNEL_NAME
-        )
+        channel = get_channel(interaction.guild, GIVEAWAY_CHANNEL_NAME)
 
-        if id:
-            id = "".join(id)
+        if id != 0:
             try:
-                giveaway = await channel.fetch_message(id)
+                giveaway = channel.get_message(id)
                 if is_active_giveaway(giveaway):
                     await finish_giveaway(giveaway)
+                    await interaction.send("Giveaway finished", ephemeral=True)
             except Exception:
-                raise commands.errors.BadArgument(
-                    "No active giveaway found with that ID"
+                await interaction.send(
+                    "No active giveaway found with that ID", ephemeral=True
                 )
 
         else:
@@ -77,30 +85,26 @@ class Giveaways(commands.Cog):
                 async for message in channel.history(limit=50):
                     if is_active_giveaway(message):
                         await finish_giveaway(message)
+                        await interaction.send("Giveaway finished", ephemeral=True)
                         return
             finally:
                 giveaway_lock.release()
 
-    @commands.command(brief="Draw a new winner for a giveaway", aliases=["greroll"])
-    @commands.has_any_role(*MOD_ROLES)
-    async def gredraw(self, ctx, number=1, id="last"):
+    @giveaway_tools.subcommand(description="Draw a new winner for a giveaway")
+    async def redraw(
+        self,
+        interaction,
+        number: int = SlashOption(description="number of winners to redraw"),
+        id=SlashOption(
+            description="ID of the giveaway (leave blank to use the last giveaway)",
+            default=0,
+        ),
+    ):
 
-        await ctx.message.delete()
-
-        number = int(number)
-        if number > 1000:
-            if id == "last":
-                id = number
-                number = 1
-            else:
-                number, id = int(id), number
-
-        channel = nextcord.utils.get(
-            ctx.guild.text_channels, name=GIVEAWAY_CHANNEL_NAME
-        )
+        channel = get_channel(interaction.guild, GIVEAWAY_CHANNEL_NAME)
         giveaway = None
 
-        if id == "last":
+        if id == 0:
             async for message in channel.history():
                 if (
                     message.embeds
@@ -110,9 +114,8 @@ class Giveaways(commands.Cog):
                     giveaway = message
                     break
         else:
-            id = int(id)
             try:
-                message = await channel.fetch_message(id)
+                message = channel.get_message(id)
                 if (
                     message.embeds
                     and len(message.embeds[0].fields) >= 4
@@ -120,11 +123,13 @@ class Giveaways(commands.Cog):
                 ):
                     giveaway = message
                 else:
-                    raise commands.errors.BadArgument(
-                        "No finished giveaway found with that ID"
+                    await interaction.send(
+                        "No finished giveaway found with that ID", ephemeral=True
                     )
+                    return
             except Exception:
-                raise commands.errors.BadArgument("No message found with that ID")
+                await interaction.send("No message found with that ID", ephemeral=True)
+                return
 
         if giveaway is not None:
 
@@ -164,29 +169,36 @@ class Giveaways(commands.Cog):
                     f"{TADA} The new winners are {', '.join(new_winners[:-1])} and {new_winners[-1]}! Congratulations!"
                 )
 
-    @commands.command(brief="Edits the number of winners for a giveaway")
-    @commands.has_any_role(*MOD_ROLES)
-    async def gchange(self, ctx, change, *id):
+            await interaction.send("Winner(s) successfully redrawn", ephemeral=True)
 
-        await ctx.message.delete()
+    @giveaway_tools.subcommand(description="Edits the number of winners for a giveaway")
+    async def change(
+        self,
+        interaction,
+        new_number: int = SlashOption(
+            description="The number of winners the giveaway should have", min_value=1
+        ),
+        id=SlashOption(
+            description="ID of the giveaway (leave blank to use the last giveaway)",
+            default=0,
+        ),
+    ):
 
-        channel = nextcord.utils.get(
-            ctx.guild.text_channels, name=GIVEAWAY_CHANNEL_NAME
-        )
+        channel = get_channel(interaction.guild, GIVEAWAY_CHANNEL_NAME)
         giveaway = None
 
-        if id:
-            id = "".join(id)
+        if id != 0:
             try:
-                message = await channel.fetch_message(id)
+                message = channel.get_message(id)
                 if is_finished_giveaway(message):
                     giveaway = message
                 else:
-                    raise commands.errors.BadArgument(
-                        "No finished giveaway found with that ID"
+                    await interaction.send(
+                        "No finished giveaway found with that ID", ephemeral=True
                     )
+                    return
             except Exception:
-                raise commands.errors.BadArgument("No message found with that ID")
+                await interaction.send("No message found with that ID", ephemeral=True)
 
         else:
             async for message in channel.history():
@@ -198,16 +210,14 @@ class Giveaways(commands.Cog):
             embed = giveaway.embeds[0]
             text = embed.footer.text
             old_num = int(re.search(r"(\d+) winner", text).group(1))
-            new_num = old_num + int(change)
-            if new_num < 1:
-                raise commands.errors.BadArgument("Must have at least 1 winner")
-            text = re.sub(r"(\d+) winner", f"{str(new_num)} winner", text)
+            text = re.sub(r"(\d+) winner", f"{str(new_number)} winner", text)
             if old_num == 1:
                 text = re.sub("winner", "winners", text)
-            elif new_num == 1:
+            elif new_number == 1:
                 text = re.sub("winners", "winner", text)
             embed.set_footer(text=text)
             await giveaway.edit(embed=embed)
+            await interaction.send("Number of winners successfully changed")
 
     @tasks.loop(seconds=10)
     async def check_giveaways(self):
