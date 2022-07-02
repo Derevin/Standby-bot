@@ -73,8 +73,8 @@ async def deleted_embed(payload, channel):
             embed.description = embed.description[0:950]
             embed.description += "[Message had to be shortened]"
 
-        if message.author.avatar:
-            embed.set_thumbnail(url=message.author.avatar.url)
+        if message.author.display_avatar:
+            embed.set_thumbnail(url=message.author.display_avatar.url)
         embed.add_field(name="Author", value=message.author.mention)
         embed.add_field(name="Channel", value=message.channel.mention)
         if message.attachments:
@@ -111,7 +111,9 @@ async def edited_embed(bot, payload):
 
         channel = before.channel
         jump_url = before.jump_url
-        avatar_url = before.author.avatar.url if before.author.avatar else ""
+        avatar_url = (
+            before.author.display_avatar.url if before.author.display_avatar else ""
+        )
         attachment_url = before.attachments[0].url if before.attachments else None
 
     else:
@@ -130,7 +132,7 @@ async def edited_embed(bot, payload):
         channel = await bot.fetch_channel(channel_id)
         message = await channel.fetch_message(message_id)
         jump_url = message.jump_url
-        avatar_url = author.avatar.url if author.avatar else ""
+        avatar_url = author.display_avatar.url if author.display_avatar else ""
         attachment_url = message.attachments[0].url if message.attachments else None
 
     embed = nextcord.Embed(color=LIGHT_BLUE)
@@ -219,7 +221,9 @@ async def slash_embed(interaction):
 
             embed.add_field(name=arg["name"], value=formatted_value)
 
-    avatar_url = interaction.user.avatar.url if interaction.user.avatar else ""
+    avatar_url = (
+        interaction.user.display_avatar.url if interaction.user.display_avatar else ""
+    )
 
     if avatar_url:
         embed.set_thumbnail(url=avatar_url)

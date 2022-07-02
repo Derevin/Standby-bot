@@ -29,8 +29,8 @@ def starboard_embed(message, stars) -> nextcord.Embed:
         if len(content_msg) > 950:
             content_msg = content_msg[0:950]
             content_msg += " [Click the link to see more]"
-    if message.author.avatar:
-        embed.set_thumbnail(url=message.author.avatar.url)
+    if message.author.display_avatar:
+        embed.set_thumbnail(url=message.author.display_avatar.url)
     embed.title = message.author.name
     embed.description = f"[{content_msg}]({message.jump_url})"
     embed.add_field(name="Channel", value=message.channel.mention)

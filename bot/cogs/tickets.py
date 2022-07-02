@@ -188,8 +188,8 @@ class Tickets(commands.Cog):
             if len(content_msg) > 1800:
                 content_msg = content_msg[0:1800]
                 content_msg += " [Message too long to be logged]"
-        if message.author.avatar:
-            embed.set_thumbnail(url=message.author.avatar.url)
+        if message.author.display_avatar:
+            embed.set_thumbnail(url=message.author.display_avatar.url)
         embed.title = message.author.name
         embed.description = content_msg
         embed.add_field(name="Channel", value=message.channel.name)
