@@ -31,3 +31,4 @@ nextcord==2.0.0rc2
 youtube-dl==2021.12.17
 PyNaCl==1.5.0
 pytz==2022.1
+traitlets=5.3.0
