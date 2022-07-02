@@ -103,17 +103,17 @@ class Audio(commands.Cog):
 
     #     await channel.connect()
 
-    @commands.command()
-    @commands.has_any_role(*MOD_ROLES)
-    async def play(self, ctx, *, query):
-        """Plays a file from the local filesystem"""
-        filepath = GIT_STATIC_URL + f"/sounds/{query}.mp3"
-        source = nextcord.PCMVolumeTransformer(nextcord.FFmpegPCMAudio(filepath))
-        ctx.voice_client.play(
-            source, after=lambda e: print(f"Player error: {e}") if e else None
-        )
+    # @commands.command()
+    # @commands.has_any_role(*MOD_ROLES)
+    # async def play(self, ctx, *, query):
+    #     """Plays a file from the local filesystem"""
+    #     filepath = GIT_STATIC_URL + f"/sounds/{query}.mp3"
+    #     source = nextcord.PCMVolumeTransformer(nextcord.FFmpegPCMAudio(filepath))
+    #     ctx.voice_client.play(
+    #         source, after=lambda e: print(f"Player error: {e}") if e else None
+    #     )
 
-        await ctx.send(f"Now playing: {query}")
+    #     await ctx.send(f"Now playing: {query}")
 
     # @commands.command()
     # async def yt(self, ctx, *, url):
@@ -127,22 +127,22 @@ class Audio(commands.Cog):
 
     #     await ctx.send(f"Now playing: {player.title}")
 
-    @commands.command()
-    @commands.has_any_role(*MOD_ROLES)
-    async def stream(self, ctx, *, query):
+    # @commands.command()
+    # @commands.has_any_role(*MOD_ROLES)
+    # async def stream(self, ctx, *, query):
 
-        if not re.search(r"www\.youtube\.com/watch\?v=", query):
-            query = best_url(query)
+    #     if not re.search(r"www\.youtube\.com/watch\?v=", query):
+    #         query = best_url(query)
 
-        """Streams from a url (same as yt, but doesn't predownload)"""
+    #     """Streams from a url (same as yt, but doesn't predownload)"""
 
-        async with ctx.typing():
-            player = await YTDLSource.from_url(query, loop=self.bot.loop, stream=True)
-            ctx.voice_client.play(
-                player, after=lambda e: print(f"Player error: {e}") if e else None
-            )
+    #     async with ctx.typing():
+    #         player = await YTDLSource.from_url(query, loop=self.bot.loop, stream=True)
+    #         ctx.voice_client.play(
+    #             player, after=lambda e: print(f"Player error: {e}") if e else None
+    #         )
 
-        await ctx.send(f"Now playing: {player.title}")
+    #     await ctx.send(f"Now playing: {player.title}")
 
     # @commands.command()
     # async def volume(self, ctx, volume: int):
@@ -160,18 +160,18 @@ class Audio(commands.Cog):
 
     #     await ctx.voice_client.disconnect()
 
-    @play.before_invoke
-    # @yt.before_invoke
-    @stream.before_invoke
-    async def ensure_voice(self, ctx):
-        if ctx.voice_client is None:
-            if ctx.author.voice:
-                await ctx.author.voice.channel.connect()
-            else:
-                await ctx.send("You are not connected to a voice channel.")
-                raise commands.CommandError("Author not connected to a voice channel.")
-        elif ctx.voice_client.is_playing():
-            ctx.voice_client.stop()
+    # @play.before_invoke
+    # # @yt.before_invoke
+    # @stream.before_invoke
+    # async def ensure_voice(self, ctx):
+    #     if ctx.voice_client is None:
+    #         if ctx.author.voice:
+    #             await ctx.author.voice.channel.connect()
+    #         else:
+    #             await ctx.send("You are not connected to a voice channel.")
+    #             raise commands.CommandError("Author not connected to a voice channel.")
+    #     elif ctx.voice_client.is_playing():
+    #         ctx.voice_client.stop()
 
 
 def best_url(search):
