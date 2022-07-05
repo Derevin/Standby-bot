@@ -560,7 +560,8 @@ class Admin(commands.Cog):
                 await interaction.send(f"Table `{table}` is empty.", ephemeral=True)
 
     @nextcord.slash_command(
-        description="Emoji commands", default_member_permissions=MODS_AND_GUIDES
+        description="Emoji commands",
+        default_member_permissions=nextcord.Permissions(manage_emojis=True),
     )
     async def emoji():
         pass
