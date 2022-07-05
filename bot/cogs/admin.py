@@ -11,6 +11,7 @@ import io
 from settings import *
 from utils.util_functions import *
 import json
+import urllib
 
 
 class Admin(commands.Cog):
@@ -558,6 +559,71 @@ class Admin(commands.Cog):
             else:
                 await interaction.send(f"Table `{table}` is empty.", ephemeral=True)
 
+    @nextcord.slash_command(
+        description="Emoji commands", default_member_permissions=MODS_AND_GUIDES
+    )
+    async def emoji():
+        pass
+
+    @emoji.subcommand(description="Adds an external emoji to the server")
+    async def add(
+        self,
+        interaction,
+        emoji=SlashOption(
+            description="The emoji to add - can be the actual emoji (if you have Nitro), or a link to an image"
+        ),
+        name=SlashOption(description="The name to use for the emoji"),
+    ):
+
+        if new_emoji := await add_external_emoji(interaction, emoji, name):
+            await interaction.send(f"Successfully added {new_emoji}", ephemeral=True)
+        else:
+            await interaction.send("Invalid emoji source", ephemeral=True)
+
+    @emoji.subcommand(description="Removes an emoji from the server")
+    async def delete(
+        self,
+        interaction,
+        emoji=SlashOption(
+            description="The emoji to remove - can be the actual emoji or just the name"
+        ),
+    ):
+        if name := await delete_emoji(interaction, emoji):
+            await interaction.send(f":{name}: successfully deleted", ephemeral=True)
+        else:
+            await interaction.send("Invalid emoji", ephemeral=True)
+
+    @emoji.subcommand(description="Rename an emoji")
+    async def rename(
+        self,
+        interaction,
+        emoji=SlashOption(
+            description="The emoji to remove - can be the actual emoji or just the name"
+        ),
+        to=SlashOption(description="The new name for the emoji"),
+    ):
+        if match := re.search(r":(.*):", emoji):
+            name = match.group(1)
+        else:
+            name = emoji
+
+        if not (old_emoji := get_emoji(interaction.guild, name)):
+            await interaction.send("Invalid emoji", ephemeral=True)
+            return
+
+        added = await add_external_emoji(
+            interaction,
+            emoji=f"https://cdn.discordapp.com/emojis/{old_emoji.id}.png",
+            name=to,
+        )
+        if added:
+            await delete_emoji(interaction, emoji)
+            await interaction.send(
+                f"Emoji successfully renamed to {added}", ephemeral=True
+            )
+        else:
+            await interaction.send("Invalid emoji")
+
 
 async def move_or_copy_message(interaction, id, from_channel, to_channel):
     try:
@@ -629,6 +695,43 @@ def isLeaveMessage(message):
         and message.embeds
         and message.embeds[0].title == "The void grows smaller..."
     )
+
+
+async def add_external_emoji(interaction, emoji, name):
+    if "https" in emoji:
+        link = emoji
+    elif match := re.search(r"<:.*:(\d+)>", emoji):
+        id = match.group(1)
+        link = f"https://cdn.discordapp.com/emojis/{id}.png"
+    else:
+        id = emoji
+        link = f"https://cdn.discordapp.com/emojis/{id}.png"
+
+    try:
+        request = urllib.request.Request(link, headers={"User-Agent": "Mozilla/5.0"})
+        response = urllib.request.urlopen(request)
+    except:
+        return False
+    else:
+        try:
+            return await interaction.guild.create_custom_emoji(
+                name=name, image=response.read()
+            )
+        except:
+            return False
+
+
+async def delete_emoji(interaction, emoji):
+    if match := re.search(r":(.*):", emoji):
+        name = match.group(1)
+    else:
+        name = emoji
+    emoji = get_emoji(interaction.guild, name)
+    try:
+        await interaction.guild.delete_emoji(emoji)
+        return name
+    except:
+        return False
 
 
 def setup(bot):
