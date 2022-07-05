@@ -73,7 +73,7 @@ class Giveaways(commands.Cog):
 
         if id != 0:
             try:
-                giveaway = channel.get_message(id)
+                giveaway = await channel.fetch_message(id)
                 if is_active_giveaway(giveaway):
                     await finish_giveaway(giveaway)
                     await interaction.send("Giveaway finished", ephemeral=True)
@@ -118,7 +118,7 @@ class Giveaways(commands.Cog):
                     break
         else:
             try:
-                message = channel.get_message(id)
+                message = await channel.fetch_message(id)
                 if (
                     message.embeds
                     and len(message.embeds[0].fields) >= 4
@@ -192,7 +192,7 @@ class Giveaways(commands.Cog):
 
         if id != 0:
             try:
-                message = channel.get_message(id)
+                message = await channel.fetch_message(id)
                 if is_finished_giveaway(message):
                     giveaway = message
                 else:

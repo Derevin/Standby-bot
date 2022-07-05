@@ -131,7 +131,7 @@ class Rules(commands.Cog):
     ):
 
         rules = get_channel(interaction.guild, RULES_CHANNEL_NAME)
-        message = rules.get_message(id)
+        message = await rules.fetch_message(id)
         if not message.embeds:
             await interaction.send("Cannot add roles to that message", ephemeral=True)
             return
@@ -153,7 +153,7 @@ class Rules(commands.Cog):
     ):
 
         rules = get_channel(interaction.guild, RULES_CHANNEL_NAME)
-        message = rules.get_message(id)
+        message = await rules.fetch_message(id)
         if not message.embeds:
             await interaction.send("No roles to remove in that message", ephemeral=True)
             return
@@ -177,7 +177,7 @@ class Rules(commands.Cog):
         self, interaction, text=SlashOption(description="The text of the rule")
     ):
         rules_ch = get_channel(interaction.guild, RULES_CHANNEL_NAME)
-        rules_msg = rules_ch.get_message(RULES_MESSAGE_ID)
+        rules_msg = await rules_ch.fetch_message(RULES_MESSAGE_ID)
         embed = rules_msg.embeds[0]
         rules = re.split(rf"\n{EMPTY}\n", embed.description)
         rules = [re.sub(r"^\d+\. ", "", rule) for rule in rules]
@@ -205,7 +205,7 @@ class Rules(commands.Cog):
     ):
 
         rules_ch = get_channel(interaction.guild, RULES_CHANNEL_NAME)
-        rules_msg = rules_ch.get_message(RULES_MESSAGE_ID)
+        rules_msg = await rules_ch.fetch_message(RULES_MESSAGE_ID)
         embed = rules_msg.embeds[0]
         rules = re.split(rf"\n{EMPTY}\n", embed.description)
         if number > len(rules):
@@ -230,7 +230,7 @@ class Rules(commands.Cog):
     ):
 
         rules_ch = get_channel(interaction.guild, RULES_CHANNEL_NAME)
-        rules_msg = rules_ch.get_message(RULES_MESSAGE_ID)
+        rules_msg = await rules_ch.fetch_message(RULES_MESSAGE_ID)
         embed = rules_msg.embeds[0]
         rules = re.split(rf"\n{EMPTY}\n", embed.description)
 
