@@ -135,3 +135,6 @@ nodemon.json
 stbot.bat
 
 .vscode
+
+#Debug file
+/bot/cogs/debug.py
