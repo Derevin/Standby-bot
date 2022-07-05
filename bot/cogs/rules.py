@@ -135,7 +135,7 @@ class Rules(commands.Cog):
         if not message.embeds:
             await interaction.send("Cannot add roles to that message", ephemeral=True)
             return
-        new_text = f"React {emoji} for {role}\n"
+        new_text = f"React {emoji} for {role.mention}\n"
         embed = message.embeds[0]
         embed.description += "\n" + new_text
         await message.edit(embed=embed)
