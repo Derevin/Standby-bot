@@ -2,10 +2,8 @@ import nextcord
 from nextcord.ext import commands
 from settings import *
 import aiohttp
-from datetime import datetime, timedelta
 from utils.util_functions import *
-
-persistent_buttons = []
+from datetime import datetime, timedelta
 
 
 class Startup(commands.Cog):
