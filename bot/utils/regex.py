@@ -42,9 +42,6 @@ async def handle_wednesday_commands(bot, message):
 
 async def regex_handler(bot, message: nextcord.Message):
 
-    if message.content.startswith(PREFIX):
-        return
-
     await handle_commands(bot, message, prio_commands)
     await handle_commands(bot, message, prio_db_commands)
 
