@@ -65,22 +65,21 @@ async def reconnect_buttons(bot):
                 f"DELETE from buttons WHERE channel_id = {button['channel_id']} AND message_id = {button['message_id']}"
             )
         else:
-            view = createView(button["type"], channel)
-            await message.edit(view=view)
+            if not message.components[0].children[0].disabled:
+                view = createView(button["type"])
+                await message.edit(view=view)
 
 
-def createView(type_, channel):
+def createView(type_):
     if type_ == "open ticket":
         from cogs.tickets import OpenTicketButton
 
         return OpenTicketButton()
 
     elif type_ == "resolved ticket":
-        from cogs.tickets import ResolvedTicketButton, RESOLVED_TICKETS_CAT_NAME
+        from cogs.tickets import ResolvedTicketButton
 
-        return ResolvedTicketButton(
-            disabled=channel.category.name != RESOLVED_TICKETS_CAT_NAME
-        )
+        return ResolvedTicketButton()
 
     return None
 
