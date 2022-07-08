@@ -117,6 +117,16 @@ END;
 $$;
 """
 
+CREATE_BUTTONS = """
+CREATE TABLE IF NOT EXISTS "buttons" (
+    "type" TEXT,
+    "channel_id" BIGINT NOT NULL,
+    "message_id" BIGINT NOT NULL    
+) WITH (
+    OIDS=FALSE
+);
+"""
+
 
 async def create_tables(con):
     try:
@@ -144,3 +154,9 @@ async def create_tables(con):
         print("successfully ran db script batch 3")
     except Exception as e:
         print("expected create exception 3:", e)
+
+    try:
+        await con.execute(CREATE_BUTTONS)
+        print("successfully ran db script batch 4")
+    except Exception as e:
+        print("expected create exception 4:", e)
