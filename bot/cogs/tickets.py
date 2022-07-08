@@ -201,7 +201,7 @@ async def get_highest_num(interaction):
 
 class OpenTicketButton(nextcord.ui.View):
     def __init__(self):
-        super().__init__()
+        super().__init__(timeout=None)
 
     @nextcord.ui.button(style=nextcord.ButtonStyle.green, label="Open ticket")
     async def create(self, button, interaction):
@@ -243,7 +243,7 @@ class OpenTicketButton(nextcord.ui.View):
 
 class ResolvedTicketButton(nextcord.ui.View):
     def __init__(self, disabled=False):
-        super().__init__()
+        super().__init__(timeout=None)
         if disabled:
             self.reopen.disabled = True
             self.scrap.disabled = True
