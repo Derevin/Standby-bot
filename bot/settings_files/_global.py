@@ -2,8 +2,6 @@ import os
 import pytz
 import nextcord
 
-PREFIX = "+"
-
 NO_SSL = os.getenv("NO_SSL", False)
 NODB = os.getenv("NODB", False)
 BOT_TOKEN = str(os.getenv("BOT_TOKEN", False))
