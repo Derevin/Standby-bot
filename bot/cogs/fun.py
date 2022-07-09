@@ -283,6 +283,7 @@ class Fun(commands.Cog):
         ),
         caption=SlashOption(description="The caption to use"),
     ):
+        await interaction.response.defer()
 
         if template == "Farquaad":
             query, font_size, align = "Farquaad pointing", 100, "bottom"
