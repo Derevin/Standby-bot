@@ -83,7 +83,7 @@ class Rules(commands.Cog):
 
         opt_embed = nextcord.Embed(color=VIE_PURPLE)
         opt_embed.title = (
-            "Step 3 - Use the menu below if f you want to be notified for things like updates, "
+            "Step 3 - Use the menu below if you want to be notified for things like updates, "
             "events and giveaways, or to access certain opt-in channels."
         )
         view = OptInView(guild=vie)
