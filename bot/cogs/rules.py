@@ -416,11 +416,12 @@ class StepOneView(nextcord.ui.View):
 
         async def callback(self, interaction):
             await interaction.response.defer()
-            await interaction.user.remove_roles(alli)
-            await interaction.user.add_roles(comm)
 
             alli = get_role(interaction.guild, "Alliance")
             comm = get_role(interaction.guild, "Community")
+            await interaction.user.remove_roles(alli)
+            await interaction.user.add_roles(comm)
+
             all_clan_roles = get_roles_by_type(interaction.guild, CLAN_ROLES_DELIMITER)
 
             await interaction.user.remove_roles(*all_clan_roles)
