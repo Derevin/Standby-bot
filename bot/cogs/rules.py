@@ -42,44 +42,44 @@ class Rules(commands.Cog):
             f"Creation process starting in {rules_ch.mention}", ephemeral=True
         )
 
-        await rules_ch.send(GIT_STATIC_URL + "/images/Ginny_Welcome.png")
+        # await rules_ch.send(GIT_STATIC_URL + "/images/Ginny_Welcome.png")
 
-        await asyncio.sleep(delay)
+        # await asyncio.sleep(delay)
 
-        rules_embed = nextcord.Embed(color=VIE_PURPLE)
-        rules_embed.title = r"__RULES__"
-        rules_embed.description = f"\n{EMPTY}\n".join(RULES_LIST)
-        rules_embed.description
-        await rules_ch.send(embed=rules_embed)
-        info_embed = nextcord.Embed(color=VIE_PURPLE)
-        info_embed.title = r"__GENERAL INFO__"
-        info_embed.description = GENERAL_INFO
-        await rules_ch.send(embed=info_embed)
+        # rules_embed = nextcord.Embed(color=VIE_PURPLE)
+        # rules_embed.title = r"__RULES__"
+        # rules_embed.description = f"\n{EMPTY}\n".join(RULES_LIST)
+        # rules_embed.description
+        # await rules_ch.send(embed=rules_embed)
+        # info_embed = nextcord.Embed(color=VIE_PURPLE)
+        # info_embed.title = r"__GENERAL INFO__"
+        # info_embed.description = GENERAL_INFO
+        # await rules_ch.send(embed=info_embed)
 
-        await asyncio.sleep(delay)
+        # await asyncio.sleep(delay)
 
-        alli_embed = nextcord.Embed(color=VIE_PURPLE)
-        alli_embed.title = "Step 1 - How did you join us?"
-        alli_embed.description = f"""If you're part of a clan in the Warframe alliance, use the 'Warframe' button.
-        If you're coming from anywhere else, use the 'Elsewhere' button."""
-        view = StepOneView(guild=vie)
-        alli_msg = await rules_ch.send(
-            "__***Please carefully read the posts below or you will not gain full access to the server***__",
-            embed=alli_embed,
-            view=view,
-        )
-        await log_buttons(self.bot, view, rules_ch.id, alli_msg.id)
+        # alli_embed = nextcord.Embed(color=VIE_PURPLE)
+        # alli_embed.title = "Step 1 - How did you join us?"
+        # alli_embed.description = f"""If you're part of a clan in the Warframe alliance, use the 'Warframe' button.
+        # If you're coming from anywhere else, use the 'Elsewhere' button."""
+        # view = StepOneView(guild=vie)
+        # alli_msg = await rules_ch.send(
+        #     "__***Please carefully read the posts below or you will not gain full access to the server***__",
+        #     embed=alli_embed,
+        #     view=view,
+        # )
+        # await log_buttons(self.bot, view, rules_ch.id, alli_msg.id)
 
-        await asyncio.sleep(delay)
+        # await asyncio.sleep(delay)
 
-        clan_embed = nextcord.Embed(color=VIE_PURPLE)
+        # clan_embed = nextcord.Embed(color=VIE_PURPLE)
 
-        clan_embed.title = "Step 2 - If you're part of the Warframe alliance, use the menu below to select your clan."
-        view = ClanView(guild=vie)
-        clan_msg = await rules_ch.send(embed=clan_embed, view=view)
-        await log_buttons(self.bot, view, rules_ch.id, clan_msg.id)
+        # clan_embed.title = "Step 2 - If you're part of the Warframe alliance, use the menu below to select your clan."
+        # view = ClanView(guild=vie)
+        # clan_msg = await rules_ch.send(embed=clan_embed, view=view)
+        # await log_buttons(self.bot, view, rules_ch.id, clan_msg.id)
 
-        await asyncio.sleep(delay)
+        # await asyncio.sleep(delay)
 
         opt_embed = nextcord.Embed(color=VIE_PURPLE)
         opt_embed.title = (
