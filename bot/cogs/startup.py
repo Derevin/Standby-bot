@@ -4,6 +4,7 @@ from settings import *
 import aiohttp
 from utils.util_functions import *
 from datetime import datetime, timedelta
+import importlib
 
 
 class Startup(commands.Cog):
@@ -53,7 +54,7 @@ async def log_restart_reason(bot):
 
 async def reconnect_buttons(bot):
 
-    guild = await bot.fetch_guild(GUILD_ID)
+    guild = bot.get_guild(GUILD_ID)
 
     buttons = await bot.pg_pool.fetch(f"SELECT * FROM buttons")
     for button in buttons:
@@ -65,23 +66,18 @@ async def reconnect_buttons(bot):
                 f"DELETE from buttons WHERE channel_id = {button['channel_id']} AND message_id = {button['message_id']}"
             )
         else:
-            if not message.components[0].children[0].disabled:
-                view = createView(button["type"])
+            if not (message.components and message.components[0].children[0].disabled):
+                view = createView(button["type"], guild=guild)
                 await message.edit(view=view)
 
 
-def createView(type_):
-    if type_ == "open ticket":
-        from cogs.tickets import OpenTicketButton
+def createView(view_type, **params):
 
-        return OpenTicketButton()
+    package_name, view_name = view_type.split(" ")
 
-    elif type_ == "resolved ticket":
-        from cogs.tickets import ResolvedTicketButton
-
-        return ResolvedTicketButton()
-
-    return None
+    pkg = importlib.import_module(package_name)
+    View = getattr(pkg, view_name)
+    return View(**params)
 
 
 def setup(bot):

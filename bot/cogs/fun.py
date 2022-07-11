@@ -258,7 +258,7 @@ class Fun(commands.Cog):
         interaction: Interaction,
     ):
         view = self.VanityView(interaction.user)
-        vanity_roles = get_vanity_roles(interaction.guild)
+        vanity_roles = get_roles_by_type(interaction.guild, "Vanity")
         for role in vanity_roles:
             view.children[0].add_option(label=role.name)
         view.children[0].add_option(label="Remove my vanity role", value="remove")

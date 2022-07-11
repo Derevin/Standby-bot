@@ -93,13 +93,15 @@ async def get_mentioned_users(text, guild):
     return users
 
 
-def get_vanity_roles(guild):
+def get_roles_by_type(guild, type_):
     start, stop = [
-        i for i in range(len(guild.roles)) if guild.roles[i].name == "Vanity"
+        i
+        for i in range(len(guild.roles))
+        if guild.roles[i].name.lower() == type_.lower()
     ][0:2]
-    vanity_roles = guild.roles[start + 1 : stop]
-    vanity_roles.sort(key=lambda role: role.name)
-    return vanity_roles
+    roles = guild.roles[start + 1 : stop]
+    roles.sort(key=lambda role: role.name)
+    return roles
 
 
 def get_local_static_path():
@@ -120,3 +122,15 @@ def id_to_mention(id, id_type="user"):
         return "<@&" + id + ">"
 
     return
+
+
+async def log_buttons(bot, view, channel_id, message_id):
+
+    view_type = view.__class__.__module__ + " " + view.__class__.__name__
+    await bot.pg_pool.execute(
+        """INSERT INTO buttons (type, channel_id, message_id) """
+        """VALUES ($1, $2, $3);""",
+        view_type,
+        channel_id,
+        message_id,
+    )

@@ -27,14 +27,14 @@ class ReactionHandler(commands.Cog):
     async def on_raw_reaction_add(self, payload):
         await starboard_handler(self.bot, payload)
         await giveaway_handler(self.bot, payload)
-        await role_handler(self.bot, payload)
+        # await role_handler(self.bot, payload)
         await urban_handler(self.bot, payload)
 
     @commands.Cog.listener()
     @ignore_in_voice_channel
     async def on_raw_reaction_remove(self, payload):
         await starboard_handler(self.bot, payload)
-        await role_handler(self.bot, payload)
+        # await role_handler(self.bot, payload)
 
     @commands.Cog.listener()
     @ignore_in_voice_channel

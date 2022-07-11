@@ -1,6 +1,6 @@
 from nextcord.ext import commands, tasks
 import nextcord
-from nextcord import SlashOption
+from nextcord import SlashOption, SelectOption
 import asyncio
 import random
 import re
@@ -25,10 +25,10 @@ class Rules(commands.Cog):
         description="Commands for setting up and editing the #rules channel",
         default_member_permissions=MODS_ONLY,
     )
-    async def rules():
+    async def rule():
         pass
 
-    @rules.subcommand(description="Add all posts to the rules channel")
+    @rule.subcommand(description="Add all posts to the rules channel")
     async def create(
         self,
         interaction,
@@ -43,7 +43,9 @@ class Rules(commands.Cog):
         )
 
         await rules_ch.send(GIT_STATIC_URL + "/images/Ginny_Welcome.png")
+
         await asyncio.sleep(delay)
+
         rules_embed = nextcord.Embed(color=VIE_PURPLE)
         rules_embed.title = r"__RULES__"
         rules_embed.description = f"\n{EMPTY}\n".join(RULES_LIST)
@@ -53,64 +55,41 @@ class Rules(commands.Cog):
         info_embed.title = r"__GENERAL INFO__"
         info_embed.description = GENERAL_INFO
         await rules_ch.send(embed=info_embed)
+
         await asyncio.sleep(delay)
 
         alli_embed = nextcord.Embed(color=VIE_PURPLE)
-        alli_embed.title = "Step 1 - React to this post"
-        alli_embed.description = f"""If you're part of a clan in the Warframe alliance, react with {get_emoji(vie,'Alli')}.
-        If you're coming from anywhere else, react with {get_emoji(vie,'BlobWave')}."""
+        alli_embed.title = "Step 1 - How did you join us?"
+        alli_embed.description = f"""If you're part of a clan in the Warframe alliance, use the 'Warframe' button.
+        If you're coming from anywhere else, use the 'Elsewhere' button."""
+        view = StepOneView(guild=vie)
         alli_msg = await rules_ch.send(
             "__***Please carefully read the posts below or you will not gain full access to the server***__",
             embed=alli_embed,
+            view=view,
         )
-        await alli_msg.add_reaction(get_emoji(vie, "Alli"))
-        await alli_msg.add_reaction(get_emoji(vie, "BlobWave"))
+        await log_buttons(self.bot, view, rules_ch.id, alli_msg.id)
+
         await asyncio.sleep(delay)
 
         clan_embed = nextcord.Embed(color=VIE_PURPLE)
 
-        clan_embed.title = "Step 2 - If you're part of the Warframe alliance, react to this post with your clan's emoji"
-        clan_desc = ""
-        for clan in CLANS_PART_1:
-            clan_desc += f"React {get_emoji(vie,CLANS_PART_1[clan])} for {mention_role(vie,clan)}\n"
-        clan_embed.description = clan_desc
-        clan_msg = await rules_ch.send(embed=clan_embed)
-        for clan in CLANS_PART_1:
-            await clan_msg.add_reaction(get_emoji(vie, CLANS_PART_1[clan]))
-
-        clan_embed = nextcord.Embed(color=VIE_PURPLE)
-
-        clan_desc = ""
-        for clan in CLANS_PART_2:
-            clan_desc += f"React {get_emoji(vie,CLANS_PART_2[clan])} for {mention_role(vie,clan)}\n"
-        clan_embed.description = clan_desc
-        clan_msg = await rules_ch.send(embed=clan_embed)
-        for clan in CLANS_PART_2:
-            await clan_msg.add_reaction(get_emoji(vie, CLANS_PART_2[clan]))
+        clan_embed.title = "Step 2 - If you're part of the Warframe alliance, use the menu below to select your clan."
+        view = ClanView(guild=vie)
+        clan_msg = await rules_ch.send(embed=clan_embed, view=view)
+        await log_buttons(self.bot, view, rules_ch.id, clan_msg.id)
 
         await asyncio.sleep(delay)
 
         opt_embed = nextcord.Embed(color=VIE_PURPLE)
         opt_embed.title = (
-            "Step 3 - If you want to be notified for things like updates, events and giveaways,"
-            " or to access certain opt-in channels, react to this post"
+            "Step 3 - Use the menu below if f you want to be notified for things like updates, "
+            "events and giveaways, or to access certain opt-in channels."
         )
+        view = OptInView(guild=vie)
+        opt_msg = await rules_ch.send(embed=opt_embed, view=view)
+        await log_buttons(self.bot, view, rules_ch.id, opt_msg.id)
 
-        offers_channel = get_channel(vie, "offers")
-        opt_embed.description = (
-            f"React ⬆️ for {mention_role(vie,'UpdateSquad')} and be notified about alliance "
-            f"and server changes, giveaways, events, polls etc.\n"
-            f"React 💰 for {mention_role(vie,'Offers')} for news about free or"
-            f" discounted games in {offers_channel.mention}\n{EMPTY}\n"
-        )
-
-        for role in OPT_IN_ROLES:
-            opt_embed.description += f"React {get_emoji(vie, OPT_IN_ROLES[role])} for {mention_role(vie, role)}\n"
-        opt_msg = await rules_ch.send(embed=opt_embed)
-        await opt_msg.add_reaction("⬆️")
-        await opt_msg.add_reaction("💰")
-        for role in OPT_IN_ROLES:
-            await opt_msg.add_reaction(get_emoji(vie, OPT_IN_ROLES[role]))
         await asyncio.sleep(delay)
 
         general = get_channel(vie, "general")
@@ -119,61 +98,61 @@ class Rules(commands.Cog):
             f"Why not pop over to {general.mention} and say hi? You probably have a few welcomes waiting already."
         )
 
-    @rules.subcommand(description="Add a new role to a post")
-    async def add_role(
-        self,
-        interaction,
-        id=SlashOption(description="ID of the message to add the role to"),
-        role: nextcord.Role = SlashOption(description="Role to add to the message"),
-        emoji=SlashOption(
-            description="Emote to use for the role (default set or from this server only)"
-        ),
-    ):
+    # @rules.subcommand(description="Add a new role to a post")
+    # async def add_role(
+    #     self,
+    #     interaction,
+    #     id=SlashOption(description="ID of the message to add the role to"),
+    #     role: nextcord.Role = SlashOption(description="Role to add to the message"),
+    #     emoji=SlashOption(
+    #         description="Emote to use for the role (default set or from this server only)"
+    #     ),
+    # ):
 
-        rules = get_channel(interaction.guild, RULES_CHANNEL_NAME)
-        message = await rules.fetch_message(id)
-        if not message.embeds:
-            await interaction.send("Cannot add roles to that message", ephemeral=True)
-            return
-        new_text = f"React {emoji} for {role.mention}\n"
-        embed = message.embeds[0]
-        embed.description += "\n" + new_text
-        await message.edit(embed=embed)
-        await message.add_reaction(emoji)
-        await interaction.send("Role successfully added", ephemeral=True)
+    #     rules = get_channel(interaction.guild, RULES_CHANNEL_NAME)
+    #     message = await rules.fetch_message(id)
+    #     if not message.embeds:
+    #         await interaction.send("Cannot add roles to that message", ephemeral=True)
+    #         return
+    #     new_text = f"React {emoji} for {role.mention}\n"
+    #     embed = message.embeds[0]
+    #     embed.description += "\n" + new_text
+    #     await message.edit(embed=embed)
+    #     await message.add_reaction(emoji)
+    #     await interaction.send("Role successfully added", ephemeral=True)
 
-    @rules.subcommand(description="Remove a role from a post")
-    async def remove_role(
-        self,
-        interaction,
-        id=SlashOption(description="ID of the message to remove the role from"),
-        role: nextcord.Role = SlashOption(
-            description="Role to remove from the message"
-        ),
-    ):
+    # @rules.subcommand(description="Remove a role from a post")
+    # async def remove_role(
+    #     self,
+    #     interaction,
+    #     id=SlashOption(description="ID of the message to remove the role from"),
+    #     role: nextcord.Role = SlashOption(
+    #         description="Role to remove from the message"
+    #     ),
+    # ):
 
-        rules = get_channel(interaction.guild, RULES_CHANNEL_NAME)
-        message = await rules.fetch_message(id)
-        if not message.embeds:
-            await interaction.send("No roles to remove in that message", ephemeral=True)
-            return
-        embed = message.embeds[0]
-        row = rf"React (.*) for {role.mention}\n?"
-        match = re.search(row, embed.description)
-        if not match:
-            await interaction.send("No such role found in the message", ephemeral=True)
-        emoji = match.group(1)
-        embed.description = re.sub(
-            rf"React .* for {role.mention}\n?", "", embed.description
-        )
-        for reaction in message.reactions:
-            if str(reaction.emoji) == emoji:
-                await reaction.clear()
-        await message.edit(embed=embed)
-        await interaction.send("Role successfully removed", ephemeral=True)
+    #     rules = get_channel(interaction.guild, RULES_CHANNEL_NAME)
+    #     message = await rules.fetch_message(id)
+    #     if not message.embeds:
+    #         await interaction.send("No roles to remove in that message", ephemeral=True)
+    #         return
+    #     embed = message.embeds[0]
+    #     row = rf"React (.*) for {role.mention}\n?"
+    #     match = re.search(row, embed.description)
+    #     if not match:
+    #         await interaction.send("No such role found in the message", ephemeral=True)
+    #     emoji = match.group(1)
+    #     embed.description = re.sub(
+    #         rf"React .* for {role.mention}\n?", "", embed.description
+    #     )
+    #     for reaction in message.reactions:
+    #         if str(reaction.emoji) == emoji:
+    #             await reaction.clear()
+    #     await message.edit(embed=embed)
+    #     await interaction.send("Role successfully removed", ephemeral=True)
 
-    @rules.subcommand(description="Add a new rule to the post")
-    async def add_rule(
+    @rule.subcommand(description="Add a new rule to the post")
+    async def add(
         self, interaction, text=SlashOption(description="The text of the rule")
     ):
         rules_ch = get_channel(interaction.guild, RULES_CHANNEL_NAME)
@@ -195,8 +174,8 @@ class Rules(commands.Cog):
         await rules_msg.edit(embed=embed)
         await interaction.send("Rule successfully added")
 
-    @rules.subcommand(description="Removes a rule from the post")
-    async def remove_rule(
+    @rule.subcommand(description="Removes a rule from the post")
+    async def remove(
         self,
         interaction,
         number: int = SlashOption(
@@ -219,8 +198,8 @@ class Rules(commands.Cog):
         await rules_msg.edit(embed=embed)
         await interaction.send("Rule successfully removed", ephemeral=True)
 
-    @rules.subcommand(description="Edit a rule")
-    async def edit_rule(
+    @rule.subcommand(description="Edit a rule")
+    async def edit(
         self,
         interaction,
         number: int = SlashOption(
@@ -349,44 +328,47 @@ async def leave_message(bot, member):
 
 
 async def role_handler(bot, payload):
-    if payload.user_id != BOT_ID and isinstance(
-        payload, nextcord.RawReactionActionEvent
-    ):
-
-        channel = bot.get_channel(payload.channel_id)
-        message = await channel.fetch_message(payload.message_id)
-        user = await message.guild.fetch_member(payload.user_id)
-
-        if payload.message_id in ROLE_MESSAGE_IDS:
-
-            embed = message.embeds[0]
-
-            match = re.search(
-                rf"React <?:?{payload.emoji.name}:?\d*>? for <@&(\d*)>",
-                embed.description,
-            )
-            if match:
-                role_id = int(match.group(1))
-                role = nextcord.utils.get(message.guild.roles, id=role_id)
-                await toggle_role(user, role, payload.event_type)
-            else:
-                await message.remove_reaction(payload.emoji, user)
-        elif payload.message_id == UNLOCK_MESSAGE_ID:
-            if payload.emoji.name == "Alli":
-                alliance = get_role(message.guild, "Alliance")
-                await toggle_role(user, alliance, payload.event_type)
-            elif payload.emoji.name == "BlobWave":
-                community = get_role(message.guild, "Community")
-                await toggle_role(user, community, payload.event_type)
-            else:
-                await message.remove_reaction(payload.emoji, user)
+    pass
 
 
-async def toggle_role(member, role, event_type):
-    if event_type == "REACTION_ADD":
-        await member.add_roles(role)
-    elif event_type == "REACTION_REMOVE":
-        await member.remove_roles(role)
+#     if payload.user_id != BOT_ID and isinstance(
+#         payload, nextcord.RawReactionActionEvent
+#     ):
+
+#         channel = bot.get_channel(payload.channel_id)
+#         message = await channel.fetch_message(payload.message_id)
+#         user = await message.guild.fetch_member(payload.user_id)
+
+#         if payload.message_id in ROLE_MESSAGE_IDS:
+
+#             embed = message.embeds[0]
+
+#             match = re.search(
+#                 rf"React <?:?{payload.emoji.name}:?\d*>? for <@&(\d*)>",
+#                 embed.description,
+#             )
+#             if match:
+#                 role_id = int(match.group(1))
+#                 role = nextcord.utils.get(message.guild.roles, id=role_id)
+#                 await toggle_role(user, role, payload.event_type)
+#             else:
+#                 await message.remove_reaction(payload.emoji, user)
+#         elif payload.message_id == UNLOCK_MESSAGE_ID:
+#             if payload.emoji.name == "Alli":
+#                 alliance = get_role(message.guild, "Alliance")
+#                 await toggle_role(user, alliance, payload.event_type)
+#             elif payload.emoji.name == "BlobWave":
+#                 community = get_role(message.guild, "Community")
+#                 await toggle_role(user, community, payload.event_type)
+#             else:
+#                 await message.remove_reaction(payload.emoji, user)
+
+
+# async def toggle_role(member, role, event_type):
+#     if event_type == "REACTION_ADD":
+#         await member.add_roles(role)
+#     elif event_type == "REACTION_REMOVE":
+#         await member.remove_roles(role)
 
 
 async def level3_handler(before, after):
@@ -400,6 +382,151 @@ async def level3_handler(before, after):
     if lv3 not in before.roles and lv3 in after.roles and alliance in after.roles:
         giveaways = get_role(after.guild, "Giveaways")
         await after.add_roles(giveaways)
+
+
+class StepOneView(nextcord.ui.View):
+    def __init__(self, **params):
+        super().__init__(timeout=None)
+        guild = params["guild"]
+        self.add_item(self.WarframeButton(guild))
+        self.add_item(self.CommunityButton(guild))
+
+    class WarframeButton(nextcord.ui.Button):
+        def __init__(self, guild):
+            super().__init__(
+                label="Warframe",
+                style=nextcord.ButtonStyle.blurple,
+                emoji=get_emoji(guild, "Alli"),
+            )
+
+        async def callback(self, interaction):
+            alli = get_role(interaction.guild, "Alliance")
+            comm = get_role(interaction.guild, "Community")
+
+            await interaction.user.remove_roles(comm)
+            await interaction.user.add_roles(alli)
+
+    class CommunityButton(nextcord.ui.Button):
+        def __init__(self, guild):
+            super().__init__(
+                label="Elsewhere",
+                style=nextcord.ButtonStyle.blurple,
+                emoji=get_emoji(guild, "BlobWave"),
+            )
+
+        async def callback(self, interaction):
+            alli = get_role(interaction.guild, "Alliance")
+            comm = get_role(interaction.guild, "Community")
+            all_clan_roles = get_roles_by_type(interaction.guild, CLAN_ROLES_DELIMITER)
+
+            await interaction.user.remove_roles(alli, *all_clan_roles)
+            await interaction.user.add_roles(comm)
+
+
+class ClanView(nextcord.ui.View):
+    def __init__(self, **params):
+        super().__init__(timeout=None)
+        self.choice = None
+        guild = params["guild"]
+        all_clans = get_roles_by_type(guild, CLAN_ROLES_DELIMITER)
+        groups = [
+            all_clans[i : i + MAX_MENU_SIZE]
+            for i in range(0, len(all_clans), MAX_MENU_SIZE)
+        ]
+        for group in groups:
+            self.add_item(self.ClanSelect(group))
+        self.add_item(self.ClanConfirm())
+
+    class ClanSelect(nextcord.ui.Select):
+        def __init__(self, clans):
+            super().__init__(placeholder="Select your clan", min_values=0)
+            self.options = [
+                SelectOption(
+                    label=clan.name,
+                    description="Best clan in the server"
+                    if clan.name == "Vie for the Void"
+                    else None,
+                )
+                for clan in clans
+            ]
+
+        async def callback(self, interaction):
+            self.view.choice = self.values[0] if self.values else None
+
+    class ClanConfirm(nextcord.ui.Button):
+        def __init__(self):
+            super().__init__(style=nextcord.ButtonStyle.blurple, label="Choose clan")
+
+        async def callback(self, interaction):
+
+            await interaction.response.defer()
+            alli = get_role(interaction.guild, "Alliance")
+            if alli not in interaction.user.roles:
+                await interaction.send(
+                    "Please confirm you're part of the Warframe alliance in Step 1 before choosing a clan",
+                    ephemeral=True,
+                )
+                return
+            role = get_role(interaction.guild, self.view.choice)
+            all_clan_roles = get_roles_by_type(interaction.guild, CLAN_ROLES_DELIMITER)
+            if role:
+                await interaction.user.remove_roles(*all_clan_roles)
+                await interaction.user.add_roles(role)
+
+
+class OptInView(nextcord.ui.View):
+    def __init__(self, **params):
+        guild = params["guild"]
+        super().__init__(timeout=None)
+        opt_in_roles = get_roles_by_type(guild, OPT_IN_ROLES_DELIMITER)
+        groups = [
+            opt_in_roles[i : i + MAX_MENU_SIZE]
+            for i in range(0, len(opt_in_roles), MAX_MENU_SIZE)
+        ]
+        self.selected_roles = [[]] * len(groups)
+        for index, group in enumerate(groups):
+            self.add_item(self.OptInSelect(index, group))
+
+    class OptInSelect(nextcord.ui.Select):
+        def __init__(self, index, roles):
+            super().__init__(
+                placeholder="Select opt-in roles",
+                options=[
+                    SelectOption(
+                        label=role.name,
+                        description=ROLE_DESCRIPTIONS[role.name]
+                        if role.name in ROLE_DESCRIPTIONS
+                        else "",
+                    )
+                    for role in roles
+                ],
+                min_values=0,
+                max_values=len(roles),
+            )
+            self.index = index
+
+        async def callback(self, interaction):
+            self.view.selected_roles[self.index] = self.values
+
+    @nextcord.ui.button(
+        label="Choose selected roles", style=nextcord.ButtonStyle.blurple, row=4
+    )
+    async def choose_roles(self, button, interaction):
+        for role_list in self.selected_roles:
+            for role_name in role_list:
+                role = get_role(interaction.guild, role_name)
+                if role:
+                    await interaction.user.add_roles(role)
+
+    @nextcord.ui.button(
+        label="Remove selected roles", style=nextcord.ButtonStyle.red, row=4
+    )
+    async def remove_roles(self, button, interaction):
+        for role_list in self.selected_roles:
+            for role_name in role_list:
+                role = get_role(interaction.guild, role_name)
+                if role:
+                    await interaction.user.remove_roles(role)
 
 
 def setup(bot):

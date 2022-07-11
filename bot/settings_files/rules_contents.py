@@ -1,9 +1,9 @@
 RULES_CHANNEL_NAME = "rules"
 BOT_SPAM_ID = 343465942199828481
 GIVEAWAYS_ID = 366906148500275200
-TICKET_CHANNEL_ID = 746029789000892466
-ROLE_MESSAGE_IDS = [754466001881530431, 754466019010936932, 754468049280827484]
-UNLOCK_MESSAGE_ID = 754463985469751297
+TICKET_CHANNEL_ID = 994974670275223673
+# ROLE_MESSAGE_IDS = [754466001881530431, 754466019010936932, 754468049280827484]
+# UNLOCK_MESSAGE_ID = 754463985469751297
 RULES_MESSAGE_ID = 754461970488492032
 
 RULES_LIST = [
@@ -29,37 +29,10 @@ GENERAL_INFO = f"""Talking in the server awards XP - you need Level 3 to access 
         4 Warns = Banned for 7 days
         5 Warns = Permanent ban"""
 
-CLANS_PART_1 = {
-    "Vie for the Void": "VftV",
-    "Turian Sixth Fleet": "Turian",
-    "Ripoffchurch": "⛪",
-    "Mighty Midgets": "Ⓜ️",
-    "Steel and Magic": "🔥",
-    "Absolutely Nobody": "👽",
-    "Druzina": "👨‍👨‍👦‍👦",
-    "Deadly Enigma": "❓",
-    "Silver Cyborgs": "🤖",
-    "Aurum Vulpes": "AurumVulpes",
-}
+CLAN_ROLES_DELIMITER = "Clans"
+OPT_IN_ROLES_DELIMITER = "Opt-in"
 
-CLANS_PART_2 = {
-    "Clouds of Seasons": "🙃",
-    "DRILL Battalion": "drill",
-    "The Salt Within": "🦉",
-    "White tiger cove": "🐯",
-    "SleepNot": "💤",
-    "City of Fidelity": "♥",
-    "Pixie Stick Protectors": "🧚",
-    "Halls of Azure": "💎",
-    "New Yugoslavia Republic": "🇲🇪",
-    "Space Colony": "🍣",
-}
-
-OPT_IN_ROLES = {
-    "Heroes of the Storm": "🖱️",
-    "R6: Siege": "BlobCatGun",
-    "Starbase": "Starbase",
-    "Div2": "BlobSweatFire",
-    "DnD": "d20",
-    "Pokemon Go": "SurprisedPikachu",
+ROLE_DESCRIPTIONS = {
+    "Offers": "News about free or discounted games in #offers",
+    "UpdateSquad": "Get notified about server changes, giveaways, events, polls etc",
 }

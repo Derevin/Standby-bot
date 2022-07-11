@@ -535,7 +535,9 @@ class Admin(commands.Cog):
     async def printdb(
         self,
         interaction,
-        table=SlashOption(description="Table to print", choices=["bdays", "tmers"]),
+        table=SlashOption(
+            description="Table to print", choices=["bdays", "tmers", "buttons"]
+        ),
     ):
 
         try:
@@ -624,6 +626,12 @@ class Admin(commands.Cog):
             )
         else:
             await interaction.send("Invalid emoji")
+
+    @commands.Cog.listener()
+    async def on_guild_role_update(self, before, after):
+        from cogs.startup import reconnect_buttons
+
+        await reconnect_buttons(self.bot)
 
 
 async def move_or_copy_message(interaction, id, from_channel, to_channel):

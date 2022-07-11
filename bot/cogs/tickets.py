@@ -49,21 +49,16 @@ class Tickets(commands.Cog):
         await interaction.channel.edit(category=resolved_ticket_cat)
 
         claimable_channel = get_channel(interaction.guild, CLAIMABLE_CHANNEL_NAME)
+        view = ResolvedTicketView()
         await interaction.send(
             RESOLVED_MESSAGE.replace("XXX", claimable_channel.mention),
-            view=ResolvedTicketButton(),
+            view=view,
         )
         await interaction.channel.set_permissions(
             interaction.user, read_messages=True, send_messages=False
         )
         msg = await interaction.original_message()
-        await self.bot.pg_pool.execute(
-            """INSERT INTO buttons (type, channel_id, message_id) """
-            """VALUES ($1, $2, $3);""",
-            "resolved ticket",
-            interaction.channel.id,
-            msg.id,
-        )
+        await log_buttons(self.bot, view, interaction.channel.id, msg.id)
 
     @nextcord.slash_command(
         description="Initiates ticket system - creates categories, channels etc",
@@ -105,14 +100,9 @@ async def create_claimable_channel(bot, cat):
     muted_role = nextcord.utils.get(cat.guild.roles, name="Muted")
     if muted_role:
         await chnl.set_permissions(muted_role, send_messages=True)
-    msg = await chnl.send(CLAIMABLE_CHANNEL_MESSAGE, view=OpenTicketButton())
-    await bot.pg_pool.execute(
-        """INSERT INTO buttons (type, channel_id, message_id) """
-        """VALUES ($1, $2, $3);""",
-        "open ticket",
-        chnl.id,
-        msg.id,
-    )
+    view = OpenTicketView()
+    msg = await chnl.send(CLAIMABLE_CHANNEL_MESSAGE, view=view)
+    await log_buttons(bot, view, chnl.id, msg.id)
 
 
 async def get_or_create_tickets_log(interaction):
@@ -199,8 +189,8 @@ async def get_highest_num(interaction):
     return num
 
 
-class OpenTicketButton(nextcord.ui.View):
-    def __init__(self):
+class OpenTicketView(nextcord.ui.View):
+    def __init__(self, **params):
         super().__init__(timeout=None)
 
     @nextcord.ui.button(style=nextcord.ButtonStyle.green, label="Open ticket")
@@ -241,8 +231,8 @@ class OpenTicketButton(nextcord.ui.View):
         )
 
 
-class ResolvedTicketButton(nextcord.ui.View):
-    def __init__(self, disabled=False):
+class ResolvedTicketView(nextcord.ui.View):
+    def __init__(self, disabled=False, **params):
         super().__init__(timeout=None)
         if disabled:
             self.reopen.disabled = True
@@ -253,7 +243,7 @@ class ResolvedTicketButton(nextcord.ui.View):
 
         active_ticket_cat = await get_or_create_active_cat(interaction)
         await interaction.channel.edit(category=active_ticket_cat)
-        await interaction.edit(view=ResolvedTicketButton(disabled=True))
+        await interaction.edit(view=ResolvedTicketView(disabled=True))
         await interaction.send(REOPENED_MESSAGE)
         await interaction.channel.set_permissions(interaction.user, read_messages=True)
 
