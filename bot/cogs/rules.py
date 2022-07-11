@@ -415,12 +415,15 @@ class StepOneView(nextcord.ui.View):
             )
 
         async def callback(self, interaction):
+            await interaction.response.defer()
+            await interaction.user.remove_roles(alli)
+            await interaction.user.add_roles(comm)
+
             alli = get_role(interaction.guild, "Alliance")
             comm = get_role(interaction.guild, "Community")
             all_clan_roles = get_roles_by_type(interaction.guild, CLAN_ROLES_DELIMITER)
 
-            await interaction.user.remove_roles(alli, *all_clan_roles)
-            await interaction.user.add_roles(comm)
+            await interaction.user.remove_roles(*all_clan_roles)
 
 
 class ClanView(nextcord.ui.View):
@@ -443,8 +446,8 @@ class ClanView(nextcord.ui.View):
             self.options = [
                 SelectOption(
                     label=clan.name,
-                    description="Best clan in the server"
-                    if clan.name == "Vie for the Void"
+                    description=ROLE_DESCRIPTIONS[clan.name]
+                    if clan.name in ROLE_DESCRIPTIONS
                     else None,
                 )
                 for clan in clans
@@ -496,7 +499,7 @@ class OptInView(nextcord.ui.View):
                         label=role.name,
                         description=ROLE_DESCRIPTIONS[role.name]
                         if role.name in ROLE_DESCRIPTIONS
-                        else "",
+                        else None,
                     )
                     for role in roles
                 ],
