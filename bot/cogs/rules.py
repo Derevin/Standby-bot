@@ -287,7 +287,7 @@ async def welcome_message(bot, member):
             ):
                 await general.send(
                     f"Hey {member.mention} - I see you still haven't unlocked the full server. "
-                    f"Make sure you read {rules_ch.mention} and react to the post so you can "
+                    f"Make sure you read {rules_ch.mention} and use the buttons so you can "
                     "access all of our channels!"
                 )
 
