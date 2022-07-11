@@ -119,8 +119,11 @@ class Admin(commands.Cog):
         ),
         id=SlashOption(description="ID of the message to edit"),
         text=SlashOption(description="The new text of the message"),
-        edit_embed: bool = SlashOption(
-            description="Edit the description of the embed instead", default=False
+        type_: str = SlashOption(
+            name="in",
+            description="where to make the edit",
+            choices=["message body", "embed title", "embed description"],
+            default="message body",
         ),
     ):
         try:
@@ -128,14 +131,27 @@ class Admin(commands.Cog):
         except Exception:
             await interaction.send("No message found with that ID", ephemeral=True)
             return
-        if edit_embed:
+
+        if type_ == "embed description":
             try:
                 embed = message.embeds[0]
                 embed.description = text
                 await message.edit(embed=embed)
                 await interaction.send("Embed successfully edited", ephemeral=True)
             except:
-                await interaction.send("Could not edit embed", ephemeral=True)
+                await interaction.send(
+                    "Could not edit embed description", ephemeral=True
+                )
+
+        elif type_ == "embed title":
+            try:
+                embed: nextcord.Embed = message.embeds[0]
+                embed.title = text
+                await message.edit(embed=embed)
+                await interaction.send("Embed successfully edited", ephemeral=True)
+            except:
+                await interaction.send("Could not edit embed title", ephemeral=True)
+
         else:
             try:
                 await message.edit(content=text)
@@ -158,8 +174,11 @@ class Admin(commands.Cog):
         id=SlashOption(description="ID of the message to edit"),
         old=SlashOption(description="The phrase to remove"),
         new=SlashOption(description="The phrase to insert in its place"),
-        edit_embed: bool = SlashOption(
-            description="Edit the description of the embed instead", default=False
+        type_: str = SlashOption(
+            name="in",
+            description="Where to make the edit",
+            choices=["message body", "embed title", "embed description"],
+            default="message body",
         ),
     ):
         try:
@@ -167,14 +186,27 @@ class Admin(commands.Cog):
         except Exception:
             await interaction.send("No message found with that ID", ephemeral=True)
             return
-        if edit_embed:
+
+        if type_ == "embed description":
             try:
                 embed = message.embeds[0]
                 embed.description = embed.description.replace(old, new, 1)
                 await message.edit(embed=embed)
                 await interaction.send("Embed successfully edited", ephemeral=True)
             except:
-                await interaction.send("Could not edit embed", ephemeral=True)
+                await interaction.send(
+                    "Could not edit embed description", ephemeral=True
+                )
+
+        elif type_ == "embed title":
+            try:
+                embed = message.embeds[0]
+                embed.title = embed.title.replace(old, new, 1)
+                await message.edit(embed=embed)
+                await interaction.send("Embed successfully edited", ephemeral=True)
+            except:
+                await interaction.send("Could not edit embed title", ephemeral=True)
+
         else:
             try:
                 await message.edit(content=message.content.replace(old, new, 1))
