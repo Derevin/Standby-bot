@@ -336,10 +336,12 @@ class Admin(commands.Cog):
             description="Number of messages to delete", min_value=1, max_value=20
         ),
     ):
-        await interaction.send("Working... Do not dismiss this message", ephemeral=True)
+        deleted = 0
+        await interaction.send(
+            f"Working (0/{number})... Do not dismiss this message", ephemeral=True
+        )
         response = await interaction.original_message()
 
-        deleted = 0
         async for msg in interaction.channel.history(limit=25):
             if msg.id == response.id:
                 continue
@@ -347,6 +349,9 @@ class Admin(commands.Cog):
             deleted += 1
             if deleted == number:
                 break
+            await interaction.edit_original_message(
+                content=f"Working ({deleted}/{number})... Do not dismiss this message",
+            )
 
         await interaction.edit_original_message(
             content=f":white_check_mark: Deleted the last {deleted} messages! :white_check_mark:",
