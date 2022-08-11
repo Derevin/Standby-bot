@@ -39,7 +39,7 @@ languages = dict(
         trigger="szerda van",
         response="felebarátaim",
         scream="ááááááááááÁÁÁÁÁÁÁÁÁÁ**ÁÁÁÁÁ**",
-        wrong_day="Naptár eladó - kell egy.",
+        wrong_day="Szia uram, eladó naptár, érdekel?",
     ),
     slovak=WednesdayLanguage(
         trigger="je streda",
@@ -89,7 +89,7 @@ languages = dict(
     romanian=WednesdayLanguage(
         trigger="(est|e|i|iî) miercuri",
         response="fraţii mei",
-        wrong_day="Ar fi bine să iei un calendar înainte să trimit Aeggis după tine.",
+        wrong_day="Ar fi bine să-ți iei un calendar înainte să-l trimit pe Aeggis după tine",
     ),
     hebrew=WednesdayLanguage(
         trigger="היום יום רביעי",
@@ -100,6 +100,6 @@ languages = dict(
     lithuanian=WednesdayLanguage(
         trigger="jau tre[cč]iadienis",
         response="mano bičiuliai",
-        wrong_day="Ką, teutonų ordinas pavogė jūsų kalendorių?",
+        wrong_day="Ką, kryžiuočių ordinas pavogė tavo kalendorių?",
     ),
 )
