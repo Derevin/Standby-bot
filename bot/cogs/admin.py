@@ -18,6 +18,33 @@ class Admin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    @nextcord.slash_command(description="Temp", default_member_permissions=MODS_ONLY)
+    async def remove_slash_perms(self, interaction):
+        skipped = []
+        await interaction.response.defer(ephemeral=True)
+        for role in interaction.guild.roles:
+            if role.name not in [
+                "Alliance",
+                "Community",
+                "Guides of the Void",
+                "Moderator",
+                "Wonkistrator",
+                "PM for Help",
+            ]:
+                perms = role.permissions
+                perms.update(use_slash_commands=False)
+                try:
+                    await role.edit(permissions=perms)
+                except:
+                    skipped.append(role.name)
+
+        if skipped:
+            await interaction.send(
+                f"Edited all roles except {', '.join(skipped)}", ephemeral=True
+            )
+        else:
+            await interaction.send(f"Edited all roles successfully", ephemeral=True)
+
     @nextcord.slash_command(
         description="Displays basic server stats",
         default_member_permissions=MODS_AND_GUIDES,

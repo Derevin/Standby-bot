@@ -33,7 +33,7 @@ GIVEAWAY_CHANNEL_NAME = "giveaways"
 LOGS_CHANNEL_NAME = "mod-log"
 INVITE_LINK = "https://discord.gg/x7nsqEj"
 MOD_ROLES = ["Moderator", "Guides of the Void"]
-MODS_AND_GUIDES = nextcord.Permissions(manage_messages=True)
+MODS_AND_GUIDES = nextcord.Permissions(kick_members=True)
 MODS_ONLY = nextcord.Permissions(ban_members=True)
 REEPOSTER_NAME = "REE-poster"
 REEPOSTER_EMOJI = "FEELSREEE"
