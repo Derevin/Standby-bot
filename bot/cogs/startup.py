@@ -5,6 +5,7 @@ import aiohttp
 from utils.util_functions import *
 from datetime import datetime, timedelta
 import importlib
+import json
 
 
 class Startup(commands.Cog):
@@ -61,14 +62,29 @@ async def reconnect_buttons(bot):
         try:
             channel = await bot.fetch_channel(button["channel_id"])
             message = await channel.fetch_message(button["message_id"])
-        except nextcord.errors.NotFound:
+            message.components[0]
+        except (nextcord.errors.NotFound, IndexError):
             await bot.pg_pool.execute(
                 f"DELETE from buttons WHERE channel_id = {button['channel_id']} AND message_id = {button['message_id']}"
             )
         else:
-            if not (message.components and message.components[0].children[0].disabled):
-                view = createView(button["type"], guild=guild)
-                await message.edit(view=view)
+            all_disabled = True
+            for component in message.components:
+                for child in component.children:
+                    if not child.disabled:
+                        all_disabled = False
+                        break
+                else:
+                    continue
+                break
+
+            if all_disabled:
+                continue
+
+            params = json.loads(button["params"]) if button["params"] else {}
+
+            view = createView(button["type"], bot=bot, guild=guild, **params)
+            await message.edit(view=view)
 
 
 def createView(view_type, **params):
