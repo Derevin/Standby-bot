@@ -32,6 +32,8 @@ GENERAL_INFO = f"""Talking in the server awards XP - you need Level 3 to access 
 CLAN_ROLES_DELIMITER = "Clans"
 OPT_IN_ROLES_DELIMITER = "Opt-in"
 
+PRIO_ROLES = ["UpdateSquad", "Vie for the Void"]
+
 ROLE_DESCRIPTIONS = {
     "Offers": "News about free or discounted games in #offers",
     "UpdateSquad": "Get notified about server changes, giveaways, events, polls etc",

@@ -443,6 +443,16 @@ class ClanView(nextcord.ui.View):
 
     class ClanSelect(nextcord.ui.Select):
         def __init__(self, clans):
+            clans.sort(
+                key=lambda clan: (
+                    "0"
+                    if clan.name in PRIO_ROLES
+                    else "1"
+                    if clan.name in ROLE_DESCRIPTIONS.keys()
+                    else "2"
+                )
+                + clan.name
+            )
             super().__init__(placeholder="Select your clan", min_values=0)
             self.options = [
                 SelectOption(
@@ -493,6 +503,16 @@ class OptInView(nextcord.ui.View):
 
     class OptInSelect(nextcord.ui.Select):
         def __init__(self, index, roles):
+            roles.sort(
+                key=lambda role: (
+                    "0"
+                    if role.name in PRIO_ROLES
+                    else "1"
+                    if role.name in ROLE_DESCRIPTIONS.keys()
+                    else "2"
+                )
+                + role.name
+            )
             super().__init__(
                 placeholder="Select opt-in roles",
                 options=[
