@@ -1,6 +1,7 @@
 import os
 import pytz
 import nextcord
+import datetime
 
 NO_SSL = os.getenv("NO_SSL", False)
 NODB = os.getenv("NODB", False)
@@ -17,6 +18,7 @@ DB_TMER_REMINDER = 1
 DB_TMER_GIVEAWAY = 2
 DB_TMER_REPOST = 3
 DB_TMER_ROULETTE = 4
+DB_TMER_BURGER = 5
 
 ERROR_CHANNEL_NAME = "maintenance-channel"
 ERROR_CHANNEL_ID = 376031149371162635
@@ -60,3 +62,41 @@ GIT_STATIC_URL = "https://raw.githubusercontent.com/Derevin/Standby-bot/main/sta
 DARKNESS_ID = 238021076406370304
 AIRU_ID = 378272190782504960
 MAX_MENU_SIZE = 25
+ROULETTE_TIMEOUT = datetime.timedelta(minutes=30)
+
+BURGER_QUESTIONS = [
+    dict(
+        question="How much does the average American ambulance trip cost?",
+        correct=["$1200"],
+        wrong=[
+            "$200",
+            "$800",
+        ],
+    ),
+    dict(
+        question="How many Americans think the sun revolves around the earth?",
+        correct=["1 in 4"],
+        wrong=[
+            "1 in 2",
+            "1 in 3",
+            "1 in 5",
+        ],
+    ),
+    dict(
+        question="How many avocados do Americans eat a year combined?",
+        correct=["4.2 bn"],
+        wrong=[
+            "2 bn",
+            "6.5bn",
+        ],
+    ),
+    dict(
+        question="How many Americans get injuries related to a TV falling every year?",
+        correct=["11 800"],
+        wrong=[
+            "5 200",
+            "13 900",
+        ],
+    ),
+]
+BURGER_TIMEOUT = datetime.timedelta(weeks=1)

@@ -1,8 +1,8 @@
-from nextcord.ext import commands, application_checks
+from nextcord.ext import commands, tasks
 import nextcord
 from nextcord import Interaction, SlashOption
 import random
-from db.db_func import ensured_get_usr
+from db.db_func import ensured_get_usr, get_or_insert_usr
 from utils.util_functions import *
 from settings import *
 from fuzzywuzzy import process, fuzz
@@ -13,6 +13,9 @@ import requests
 import io
 from pathlib import Path
 import datetime
+import sys
+import traceback
+import json
 
 TOUCAN_PRAISE = """
 ░░░░░░░░▄▄▄▀▀▀▄▄███▄░░░░░░░░░░░░░░
@@ -53,6 +56,10 @@ YEEE = """
 class Fun(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.check_burger.start()
+
+    def cog_unload(self):
+        self.check_burger.cancel()
 
     @nextcord.slash_command(description="YEE")
     async def yee(self, interaction):
@@ -224,11 +231,94 @@ class Fun(commands.Cog):
                 await target.add_roles(burgered)
                 await interaction.send(target.mention)
                 await interaction.channel.send(GIT_STATIC_URL + "/images/burgered.png")
-
+                expires = datetime.datetime.now() + BURGER_TIMEOUT
+                await get_or_insert_usr(self.bot, target.id, interaction.guild.id)
+                await self.bot.pg_pool.execute(
+                    f"""DELETE FROM tmers WHERE ttype = {DB_TMER_BURGER};"""
+                )
+                await self.bot.pg_pool.execute(
+                    """INSERT INTO tmers (usr_id, expires, ttype) """
+                    """VALUES ($1, $2, $3);""",
+                    target.id,
+                    expires,
+                    DB_TMER_BURGER,
+                )
         else:
-            await interaction.send(
-                "Only one who has been burgered may burger others.", ephemeral=True
+            if burgered.members:
+                await interaction.send(
+                    f"{burgered.members[0].mention} holds the burger - only they may burger others.",
+                    ephemeral=True,
+                )
+            else:
+                general = get_channel(interaction.guild, "general")
+                await interaction.send(
+                    f"The burger is currently free for the taking - to burger others, you must first claim it by answering the question in {general.mention}.",
+                    ephemeral=True,
+                )
+
+    @tasks.loop(minutes=1)
+    async def check_burger(self):
+        try:
+            gtable = await self.bot.pg_pool.fetch(
+                f"SELECT * FROM tmers WHERE ttype = {DB_TMER_BURGER}"
             )
+            for rec in gtable:
+                if rec["ttype"] == DB_TMER_BURGER:
+                    timenow = datetime.datetime.now()
+                    if timenow <= rec["expires"]:
+                        continue
+
+                    print(f"record expired: {rec}")
+
+                    guild = self.bot.get_guild(GUILD_ID)
+
+                    if not guild:
+                        print("no guild")
+                        return
+
+                    general = await guild.fetch_channel(GENERAL_ID)
+                    user = await guild.fetch_member(rec["usr_id"])
+                    burgered = get_role(guild, "Burgered")
+                    if len(burgered.members) > 1:
+                        maint = await guild.fetch_channel(ERROR_CHANNEL_ID)
+                        await maint.send(
+                            f"Multiple burgers detected: {', '.join([usr.mention for usr in burgered.members])}"
+                        )
+
+                    await user.remove_roles(burgered)
+
+                    params = random.choice(BURGER_QUESTIONS)
+
+                    answers = [*params["correct"], *params["wrong"]]
+                    shuffled = answers.copy()
+                    random.shuffle(shuffled)
+                    params["ordering"] = [answers.index(elem) for elem in shuffled]
+                    params["attempted"] = []
+
+                    view = BurgerView(bot=self.bot, **params)
+                    msg = await general.send(
+                        (
+                            f"After fending off the mold in {user.mention}'s fridge for a full week, the burger yearns for freedom!\n"
+                            f"To claim it, answer the following question:\n \n{params['question']}"
+                        ),
+                        view=view,
+                    )
+                    await log_buttons(
+                        self.bot,
+                        view,
+                        general.id,
+                        msg.id,
+                        json.dumps(params),
+                    )
+                    await self.bot.pg_pool.execute(
+                        f"""DELETE FROM tmers WHERE ttype = {DB_TMER_BURGER};"""
+                    )
+
+        except AttributeError:  # bot hasn't loaded yet and pg_pool doesn't exist
+            return
+        except Exception:
+            traceback.print_exc(file=sys.stdout)
+            return
 
     class VanityView(nextcord.ui.View):
         def __init__(self, creator):
@@ -393,10 +483,10 @@ class Fun(commands.Cog):
 
             message = f"Not all risks pay off, {interaction.user.mention}. Your streak has been reset."
             try:
-                await interaction.user.timeout(datetime.timedelta(minutes=30))
+                await interaction.user.timeout(ROULETTE_TIMEOUT)
                 message = message[:-1] + " and you have been timed out."
             except nextcord.errors.Forbidden:
-                expires = datetime.datetime.now() + datetime.timedelta(minutes=30)
+                expires = datetime.datetime.now() + ROULETTE_TIMEOUT
                 await self.bot.pg_pool.execute(
                     """INSERT INTO tmers (usr_id, expires, ttype) VALUES ($1, $2, $3);""",
                     interaction.user.id,
@@ -482,6 +572,65 @@ class Fun(commands.Cog):
                 await interaction.send(
                     GIT_STATIC_URL + "/images/bobby.gif",
                     ephemeral=True,
+                )
+
+
+class BurgerView(nextcord.ui.View):
+    def __init__(self, **params):
+        super().__init__(timeout=None)
+        self.correct = params["correct"]
+        self.attempted = params["attempted"]
+        self.ordering = params["ordering"]
+        answers = [*params["correct"], *params["wrong"]]
+        bot = params["bot"]
+
+        for index in self.ordering:
+            self.add_item(self.BurgerButton(label=answers[index], bot=bot))
+
+    class BurgerButton(nextcord.ui.Button):
+        def __init__(self, label, bot):
+            super().__init__(style=nextcord.ButtonStyle.blurple, label=label)
+            self.bot = bot
+
+        async def callback(self, interaction):
+            if interaction.user.id in self.view.attempted:
+                await interaction.send(
+                    "You may only attempt to answer once", ephemeral=True
+                )
+                return
+
+            if self.label in self.view.correct:
+                burgered = get_role(interaction.guild, "Burgered")
+                await interaction.user.add_roles(burgered)
+                await interaction.edit(
+                    view=None,
+                )
+                await interaction.send(
+                    f"{interaction.user.mention} has claimed the burger! Now use it wisely."
+                )
+                await self.bot.pg_pool.execute(
+                    """INSERT INTO tmers (usr_id, expires, ttype) """
+                    """VALUES ($1, $2, $3);""",
+                    interaction.user.id,
+                    datetime.datetime.now() + BURGER_TIMEOUT,
+                    DB_TMER_BURGER,
+                )
+
+            else:
+                await interaction.send(
+                    f"{self.label} is not the correct answer - better luck next time!",
+                    ephemeral=True,
+                )
+                self.view.attempted.append(interaction.user.id)
+                records = await self.bot.pg_pool.fetch(
+                    f"SELECT params from buttons WHERE message_id = {interaction.message.id}"
+                )
+                params = records[0]["params"]
+                params = json.loads(params)
+                params["attempted"].append(interaction.user.id)
+                params = json.dumps(params)
+                await self.bot.pg_pool.execute(
+                    f"UPDATE buttons SET params = '{params}' WHERE message_id = {interaction.message.id}"
                 )
 
     # @commands.Cog.listener()
