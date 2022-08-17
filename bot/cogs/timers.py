@@ -8,7 +8,7 @@ import json
 import sys
 import traceback
 from datetime import datetime, timedelta
-from utils.util_functions import dynamic_timestamp
+from utils.util_functions import dynamic_timestamp, simpsons_error_image
 from settings import *
 from db.db_func import ensure_guild_existence, get_or_insert_usr
 
@@ -71,7 +71,14 @@ class Timers(commands.Cog):
     ):
 
         if days + hours + minutes == 0:
-            await interaction.send("Invalid time format", ephemeral=True)
+            await interaction.send(
+                file=simpsons_error_image(
+                    dad=interaction.guild.me,
+                    son=interaction.user,
+                    text="Invalid time format",
+                ),
+                ephemeral=True,
+            )
             return
 
         timenow = datetime.now()

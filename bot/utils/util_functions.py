@@ -2,6 +2,9 @@ import nextcord
 import re
 import datetime
 from pathlib import Path
+import io
+from PIL import Image, ImageDraw, ImageFont
+import requests
 
 
 def get_emoji(guild, name):
@@ -124,13 +127,103 @@ def id_to_mention(id, id_type="user"):
     return
 
 
-async def log_buttons(bot, view, channel_id, message_id):
+async def log_buttons(bot, view, channel_id, message_id, params=None):
 
     view_type = view.__class__.__module__ + " " + view.__class__.__name__
     await bot.pg_pool.execute(
-        """INSERT INTO buttons (type, channel_id, message_id) """
-        """VALUES ($1, $2, $3);""",
+        """INSERT INTO buttons (type, channel_id, message_id, params) """
+        """VALUES ($1, $2, $3, $4);""",
         view_type,
         channel_id,
         message_id,
+        params,
     )
+
+
+def simpsons_error_image(dad, son, text=None, filename="error.png"):
+
+    dad_url = dad.display_avatar.url
+    son_url = son.display_avatar.url
+
+    template_url = "https://cdn.discordapp.com/attachments/748296564362969168/997563015501197342/unknown.png"
+
+    template = Image.open(requests.get(template_url, stream=True).raw)
+
+    dad = (
+        Image.open(requests.get(dad_url, stream=True).raw)
+        .convert("RGBA")
+        .resize((300, 300))
+    )
+    son = (
+        Image.open(requests.get(son_url, stream=True).raw)
+        .convert("RGBA")
+        .resize((225, 225))
+        .rotate(-35, expand=True, fillcolor=(255, 255, 255, 0))
+    )
+
+    template.paste(dad, (310, 30), dad)
+    template.paste(son, (655, 344), son)
+
+    if text:
+
+        text = text.upper()
+
+        draw = ImageDraw.Draw(template)
+
+        font_path = get_local_static_path() + "/fonts/impact.ttf"
+        font = ImageFont.truetype(font=font_path, size=40)
+        width, height = get_text_dimensions(text, font)
+
+        if width <= 370:
+            x_coord = 565
+            y_coord = 280
+
+            draw.text((x_coord - 3, y_coord - 3), text, (0, 0, 0), font=font)
+            draw.text((x_coord + 3, y_coord - 3), text, (0, 0, 0), font=font)
+            draw.text((x_coord + 3, y_coord + 3), text, (0, 0, 0), font=font)
+            draw.text((x_coord - 3, y_coord + 3), text, (0, 0, 0), font=font)
+            draw.text((x_coord, y_coord), text, (255, 255, 255), font=font)
+
+        else:
+            rows = []
+            num_rows = width // 280 + 1
+            row_width = width / num_rows
+            curr_string = ""
+            curr_width = 0
+            for word in re.split(r"(\W+)", text):
+                curr_string += word
+                curr_width, _ = get_text_dimensions(curr_string, font)
+                # print(f"{curr_string} is {curr_width}")
+                if curr_width >= row_width:
+                    rows.append(curr_string)
+                    curr_string = ""
+
+            if curr_string:
+                rows.append(curr_string)
+
+            x_coord = 615
+            y_coord = 280
+
+            for row in reversed(rows):
+                draw.text((x_coord - 3, y_coord - 3), row, (0, 0, 0), font=font)
+                draw.text((x_coord + 3, y_coord - 3), row, (0, 0, 0), font=font)
+                draw.text((x_coord + 3, y_coord + 3), row, (0, 0, 0), font=font)
+                draw.text((x_coord - 3, y_coord + 3), row, (0, 0, 0), font=font)
+                draw.text((x_coord, y_coord), row, (255, 255, 255), font=font)
+
+                y_coord -= height + 5
+
+    obj = io.BytesIO()
+    template.save(obj, "png")
+    obj.seek(0)
+    return nextcord.File(obj, filename=filename)
+
+
+def get_text_dimensions(text, font):
+
+    ascent, descent = font.getmetrics()
+
+    width = font.getmask(text).getbbox()[2]
+    height = font.getmask(text).getbbox()[3] + descent
+
+    return (width, height)

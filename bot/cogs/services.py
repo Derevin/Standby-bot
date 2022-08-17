@@ -127,7 +127,13 @@ class Services(commands.Cog):
 
         if not interaction.user.id == JORM_ID:
             await interaction.send(
-                GIT_STATIC_URL + "/images/memes/You%20have%20no%20power%20here.png"
+                file=simpsons_error_image(
+                    dad_url=interaction.guild.me.display_avatar.url,
+                    son_url=interaction.user.display_avatar.url,
+                    text="You're not Jorm!",
+                    filename="jormonly.png",
+                )
+                # GIT_STATIC_URL + "/images/memes/You%20have%20no%20power%20here.png"
             )
             return
 
