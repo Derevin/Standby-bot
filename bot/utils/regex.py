@@ -21,6 +21,8 @@ prio_commands.extend(regex_prio_commands)
 prio_db_commands = []
 prio_db_commands.extend(regex_reputation_command)
 
+last_messages = {}
+
 
 async def handle_commands(bot, message: nextcord.Message, cmnds):
     for trig, resp, flags in cmnds:
@@ -40,6 +42,18 @@ async def handle_wednesday_commands(bot, message):
                 await message.channel.send(lang.wrong_day)
 
 
+# fmt: off
+async def handle_repeated_messages(bot, message):
+    if message.channel in last_messages and last_messages[message.channel][0] == message.content:
+        if message.content != "" and message.author == last_messages[message.channel][1]:
+            await message.channel.send(message.content)
+            last_messages.pop(message.channel)
+
+    else:
+        last_messages[message.channel] = [message.content, message.author]
+# fmt: on
+
+
 async def regex_handler(bot, message: nextcord.Message):
 
     await handle_commands(bot, message, prio_commands)
@@ -50,6 +64,7 @@ async def regex_handler(bot, message: nextcord.Message):
 
     await handle_commands(bot, message, regex_commands)
     await handle_wednesday_commands(bot, message)
+    await handle_repeated_messages(bot, message)
 
     if message.guild.id == GUILD_ID:
         await handle_commands(bot, message, regex_vftv_commands)
