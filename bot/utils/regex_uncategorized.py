@@ -315,6 +315,14 @@ async def now_resp(bot, message: nextcord.Message):
 regex_uncategorized_commands.append(("NOW\\W{0,4}$", now_resp, re.M))
 
 
+async def maybe_resp(bot, message: nextcord.Message):
+    await message.channel.send(
+        GIT_STATIC_URL + "/images/memes/Maybe%20I%20am%20a%20monster.png"
+    )
+
+
+regex_uncategorized_commands.append(("^maybe i am an?", maybe_resp, re.M | re.I))
+
 # async def cluttered_link_resp(bot, message: nextcord.Message):
 
 #     reee = get_emoji(message.channel.guild, "FEELSREEE")
