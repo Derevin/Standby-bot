@@ -42,16 +42,22 @@ async def handle_wednesday_commands(bot, message):
                 await message.channel.send(lang.wrong_day)
 
 
-# fmt: off
 async def handle_repeated_messages(bot, message):
-    if message.channel in last_messages and last_messages[message.channel][0] == message.content:
-        if message.content != "" and message.author == last_messages[message.channel][1]:
+    print(message.content)
+    if (
+        message.channel in last_messages
+        and last_messages[message.channel][0] == message.content
+    ):
+        if (
+            message.content != ""
+            and "<:BlobWave:" not in message.content
+            and message.author != last_messages[message.channel][1]
+        ):
             await message.channel.send(message.content)
             last_messages.pop(message.channel)
 
     else:
         last_messages[message.channel] = [message.content, message.author]
-# fmt: on
 
 
 async def regex_handler(bot, message: nextcord.Message):
