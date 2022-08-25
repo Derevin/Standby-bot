@@ -227,3 +227,20 @@ def get_text_dimensions(text, font):
     height = font.getmask(text).getbbox()[3] + descent
 
     return (width, height)
+
+
+async def get_db_note(bot, key):
+    notes = await bot.pg_pool.fetch(f"SELECT * FROM notes WHERE key = '{key}'")
+    return notes[0]["value"] if notes else ""
+
+
+async def log_or_update_db_note(bot, key, value):
+    note = await get_db_note(bot, key)
+    if note:
+        await bot.pg_pool.execute(
+            f"UPDATE notes SET value = '{value}' where key = '{key}'"
+        )
+    else:
+        await bot.pg_pool.execute(
+            f"INSERT INTO notes (key,  value) VALUES ('{key}', '{value}')"
+        )

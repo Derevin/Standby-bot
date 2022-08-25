@@ -127,6 +127,15 @@ CREATE TABLE IF NOT EXISTS "buttons" (
 );
 """
 
+CREATE_NOTES = """
+CREATE TABLE IF NOT EXISTS "notes" (
+    "key" TEXT,
+    "value" TEXT
+) WITH (
+    OIDS=FALSE
+);
+"""
+
 
 async def create_tables(con):
     try:
@@ -160,3 +169,9 @@ async def create_tables(con):
         print("successfully ran db script batch 4")
     except Exception as e:
         print("expected create exception 4:", e)
+
+    try:
+        await con.execute(CREATE_NOTES)
+        print("successfully ran db script batch 5")
+    except Exception as e:
+        print("expected create exception 5:", e)

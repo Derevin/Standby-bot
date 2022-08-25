@@ -10,6 +10,7 @@ import random
 import datetime
 from db.db_func import get_or_insert_usr
 from dataclasses import dataclass
+import json
 
 
 @dataclass
@@ -104,9 +105,22 @@ class Services(commands.Cog):
         stat=SlashOption(
             name="leaderboard",
             description="The leaderboard to display",
-            choices=all_settings.keys(),
+            choices=["Burger history", *all_settings.keys()],
         ),
     ):
+        if stat == "Burger history":
+            history = await get_db_note(self.bot, "burger history")
+            if history:
+                history = json.loads(history)
+                mentions = [f"<@{user_id}>" for user_id in history]
+                if len(mentions) == 1:
+                    msg = f"The last person to hold the burger is {mentions[0]}"
+                else:
+                    msg = f"The last people to hold the burger are {','.join(mentions[:-1]) + ' and ' + mentions[-1]}"
+            else:
+                msg = "Burger history has not yet been recorded."
+            await interaction.send(msg, ephemeral=True)
+            return
 
         settings = all_settings[stat]
 

@@ -243,6 +243,13 @@ class Fun(commands.Cog):
                     expires,
                     DB_TMER_BURGER,
                 )
+                history = await get_db_note(self.bot, "burger history")
+                if history:
+                    history = json.loads(history)
+                    history = [target.id, *history[:4]]
+                else:
+                    history = [target.id]
+                await log_or_update_db_note(self.bot, "burger history", history)
         else:
             if burgered.members:
                 await interaction.send(
@@ -600,14 +607,29 @@ class BurgerView(nextcord.ui.View):
                 return
 
             if self.label in self.view.correct:
+                await interaction.response.defer()
                 burgered = get_role(interaction.guild, "Burgered")
                 await interaction.user.add_roles(burgered)
+                for child in self.view.children:
+                    child.disabled = True
                 await interaction.edit(
-                    view=None,
+                    view=self.view,
                 )
                 await interaction.send(
                     f"{interaction.user.mention} has claimed the burger! Now use it wisely."
                 )
+                history = await get_db_note(self.bot, "burger history")
+                if history:
+                    history = json.loads(history)
+                    mentions = [f"<@{user_id}>" for user_id in history]
+                    if len(mentions) == 1:
+                        msg = f"The last person to hold the burger is {mentions[0]}"
+                    else:
+                        msg = f"The last people to hold the burger are {','.join(mentions[:-1]) + ' and ' + mentions[-1]}"
+                    await interaction.send(msg, ephemeral=True)
+                    history = [interaction.user.id, *history[:4]]
+                else:
+                    history = [interaction.user.id]
                 await self.bot.pg_pool.execute(
                     """INSERT INTO tmers (usr_id, expires, ttype) """
                     """VALUES ($1, $2, $3);""",
@@ -615,6 +637,7 @@ class BurgerView(nextcord.ui.View):
                     datetime.datetime.now() + BURGER_TIMEOUT,
                     DB_TMER_BURGER,
                 )
+                await log_or_update_db_note(self.bot, "burger history", history)
 
             else:
                 await interaction.send(
