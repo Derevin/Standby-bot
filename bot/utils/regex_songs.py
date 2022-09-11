@@ -124,6 +124,14 @@ async def deja_vu_resp(bot, message: nextcord.Message):
 
 regex_songs_commands.append(("^.{0,2}deja vu.{0,4}$", deja_vu_resp, re.M | re.I))
 
+
+async def higher_on_the_street_resp(bot, message: nextcord.Message):
+    await message.channel.send("*♬ And I know it's my time to go ♬*")
+
+
+regex_songs_commands.append(
+    ("^.{0,2}higher on the street.{0,4}$", higher_on_the_street_resp, re.M | re.I)
+)
 #### allstars
 
 
