@@ -43,7 +43,6 @@ async def handle_wednesday_commands(bot, message):
 
 
 async def handle_repeated_messages(bot, message):
-    print(message.content)
     if (
         message.channel in last_messages
         and last_messages[message.channel][0] == message.content
