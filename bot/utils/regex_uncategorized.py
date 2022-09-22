@@ -312,7 +312,7 @@ async def now_resp(bot, message: nextcord.Message):
     await message.channel.send(GIT_STATIC_URL + "/images/now.png")
 
 
-regex_uncategorized_commands.append(("NOW\\W{0,4}$", now_resp, re.M))
+regex_uncategorized_commands.append(("(^|\\W)NOW\\W{0,4}$", now_resp, re.M))
 
 
 async def maybe_resp(bot, message: nextcord.Message):
