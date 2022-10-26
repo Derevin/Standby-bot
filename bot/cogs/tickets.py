@@ -245,7 +245,8 @@ class ResolvedTicketView(nextcord.ui.View):
         await interaction.channel.edit(category=active_ticket_cat)
         await interaction.edit(view=ResolvedTicketView(disabled=True))
         await interaction.send(REOPENED_MESSAGE)
-        await interaction.channel.set_permissions(interaction.user, read_messages=True)
+        for user in interaction.channel.members:
+            await interaction.channel.set_permissions(user, send_messages=True)
 
     @nextcord.ui.button(style=nextcord.ButtonStyle.red, label="Scrap ticket")
     async def scrap(self, button, interaction):
