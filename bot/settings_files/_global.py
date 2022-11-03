@@ -87,7 +87,7 @@ BURGER_QUESTIONS = [
         correct=["4.2 bn"],
         wrong=[
             "2 bn",
-            "6.5bn",
+            "6.5 bn",
         ],
     ),
     dict(
