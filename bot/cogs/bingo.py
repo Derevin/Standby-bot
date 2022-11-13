@@ -1,9 +1,10 @@
 import asyncio
-from nextcord.ext import commands
-from nextcord import Interaction, SlashOption
 import random
-from utils.util_functions import *
+
+from nextcord import Interaction, SlashOption
+from nextcord.ext import commands
 from settings import *
+from utils.util_functions import *
 
 
 class BingoCard:

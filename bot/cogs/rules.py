@@ -1,16 +1,15 @@
-from nextcord.ext import commands, tasks
-import nextcord
-from nextcord import SlashOption, SelectOption
 import asyncio
 import random
 import re
-import datetime
-import aiohttp
-from io import BytesIO
+
+import nextcord
+from nextcord import SelectOption, SlashOption
+from nextcord.ext import commands, tasks
 from settings import *
 from settings_files.rules_contents import *
-from cogs.tickets import CLAIMABLE_CHANNEL_NAME
 from utils.util_functions import *
+
+from cogs.tickets import CLAIMABLE_CHANNEL_NAME
 
 
 class Rules(commands.Cog):

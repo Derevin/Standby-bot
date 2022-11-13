@@ -1,17 +1,16 @@
-from discord import SlashOption
-from nextcord.ext import commands
-import nextcord
 import asyncio
-import random
-import re
 import datetime
-from PIL import Image, ImageFilter
-import requests
 import io
+import re
+import urllib.request
+
+import nextcord
+import requests
+from nextcord import SlashOption
+from nextcord.ext import commands
+from PIL import Image
 from settings import *
 from utils.util_functions import *
-import json
-import urllib.request
 
 
 class Admin(commands.Cog):

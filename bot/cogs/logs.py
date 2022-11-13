@@ -1,8 +1,7 @@
-from nextcord.ext import commands
 import nextcord
+from nextcord.ext import commands
 from settings import *
 from utils.util_functions import *
-import datetime
 
 
 class Logs(commands.Cog):

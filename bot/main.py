@@ -1,17 +1,8 @@
-import os
-import subprocess
 import nextcord
-import asyncio
-import re
-import aiohttp
-from datetime import datetime, timedelta
-from nextcord.ext import commands
-
-from settings import *
-
-from db.db_main import init_db_connection
-
 from cogs.startup import *
+from db.db_main import init_db_connection
+from nextcord.ext import commands
+from settings import *
 
 intents = nextcord.Intents.default()
 intents.members = True

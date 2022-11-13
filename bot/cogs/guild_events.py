@@ -1,6 +1,6 @@
 import nextcord
-from nextcord.ext import commands
 from db.db_func import ensure_guild_existence
+from nextcord.ext import commands
 
 
 class GuildEvents(commands.Cog):

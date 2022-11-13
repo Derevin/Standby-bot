@@ -1,7 +1,4 @@
-import json
 import requests
-import re
-
 
 MODS_URL = (
     "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/json/Mods.json"

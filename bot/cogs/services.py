@@ -1,16 +1,14 @@
-from nextcord.ext import commands
+import json
+import re
+from dataclasses import dataclass
+
+import aiohttp
 import nextcord
+from db.db_func import get_or_insert_usr
 from nextcord import Interaction, SlashOption
+from nextcord.ext import commands
 from settings import *
 from utils.util_functions import *
-from inspect import Parameter
-import re
-import aiohttp
-import random
-import datetime
-from db.db_func import get_or_insert_usr
-from dataclasses import dataclass
-import json
 
 
 @dataclass

@@ -1,9 +1,9 @@
 import asyncio
-from nextcord.ext import commands
+import re
+
 import nextcord
 from nextcord import Interaction, SlashOption
-import re
-import random
+from nextcord.ext import commands
 from settings import *
 from utils.util_functions import *
 

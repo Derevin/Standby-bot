@@ -1,16 +1,14 @@
-from nextcord.ext import commands, tasks
-import nextcord
-from nextcord import Interaction, SlashOption
-import asyncio
-import random
-import re
 import json
 import sys
 import traceback
 from datetime import datetime, timedelta
-from utils.util_functions import dynamic_timestamp, simpsons_error_image
-from settings import *
+
+import nextcord
 from db.db_func import ensure_guild_existence, get_or_insert_usr
+from nextcord import Interaction, SlashOption
+from nextcord.ext import commands, tasks
+from settings import *
+from utils.util_functions import dynamic_timestamp, simpsons_error_image
 
 
 class Timers(commands.Cog):

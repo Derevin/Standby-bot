@@ -1,6 +1,5 @@
-import nextcord
+from cogs.rules import leave_message, level3_handler, welcome_message
 from nextcord.ext import commands
-from cogs.rules import leave_message, welcome_message, level3_handler
 
 
 class MemberHandler(commands.Cog):

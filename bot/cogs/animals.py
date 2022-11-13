@@ -1,8 +1,7 @@
 import aiohttp
-from nextcord.ext import commands
 import nextcord
 from nextcord import Interaction, SlashOption
-import random
+from nextcord.ext import commands
 from settings import *
 
 

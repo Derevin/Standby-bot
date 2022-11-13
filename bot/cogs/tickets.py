@@ -1,9 +1,6 @@
-from nextcord.ext import commands
 import nextcord
-from nextcord import Interaction, SlashOption
-from cogs.error_handler import unhandled_error_embed
+from nextcord.ext import commands
 from settings import *
-from inspect import Parameter
 from utils.util_functions import *
 
 CLAIMABLE_TICKETS_CAT_NAME = "Talk to mods"

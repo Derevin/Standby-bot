@@ -1,12 +1,11 @@
-from nextcord.ext import commands, tasks, application_checks
-import nextcord
-from nextcord import Interaction, SlashOption
 import asyncio
+import datetime
 import random
 import re
-import datetime
 
-from traitlets import default
+import nextcord
+from nextcord import Interaction, SlashOption
+from nextcord.ext import commands, tasks
 from settings import *
 from utils.util_functions import *
 

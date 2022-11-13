@@ -1,10 +1,9 @@
-import nextcord
+import functools
+
+from cogs.giveaways import giveaway_handler
+from cogs.services import urban_handler
 from nextcord.ext import commands
 from utils.starboard import starboard_handler
-from cogs.giveaways import giveaway_handler
-from cogs.rules import role_handler
-from cogs.services import urban_handler
-import functools
 
 
 class ReactionHandler(commands.Cog):

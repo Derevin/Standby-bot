@@ -1,11 +1,9 @@
-from nextcord.ext import commands, tasks
 import nextcord
+from db.db_func import ensure_guild_existence, get_or_insert_usr
 from nextcord import Interaction, SlashOption
-import datetime
+from nextcord.ext import commands, tasks
 from settings import *
 from utils.util_functions import *
-import json
-from db.db_func import ensure_guild_existence, get_or_insert_usr
 
 
 class Birthdays(commands.Cog):

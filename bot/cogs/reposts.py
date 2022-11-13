@@ -1,12 +1,12 @@
-from nextcord.ext import commands, tasks
-import nextcord
 import datetime
-from settings import *
-from utils.util_functions import *
-import json
-from db.db_func import ensure_guild_existence, get_or_insert_usr
 import sys
 import traceback
+
+import nextcord
+from db.db_func import ensure_guild_existence, get_or_insert_usr
+from nextcord.ext import commands, tasks
+from settings import *
+from utils.util_functions import *
 
 
 class Reposts(commands.Cog):

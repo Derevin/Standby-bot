@@ -1,21 +1,21 @@
-from nextcord.ext import commands, tasks
-import nextcord
-from nextcord import Interaction, SlashOption
-import random
-from db.db_func import ensured_get_usr, get_or_insert_usr
-from utils.util_functions import *
-from settings import *
-from fuzzywuzzy import process, fuzz
-from transliterate import translit
-from transliterate.base import TranslitLanguagePack, registry
-from PIL import Image, ImageDraw, ImageFont
-import requests
-import io
-from pathlib import Path
 import datetime
+import io
+import json
+import random
 import sys
 import traceback
-import json
+
+import nextcord
+import requests
+from db.db_func import ensured_get_usr, get_or_insert_usr
+from fuzzywuzzy import fuzz
+from nextcord import Interaction, SlashOption
+from nextcord.ext import commands, tasks
+from PIL import Image, ImageDraw, ImageFont
+from settings import *
+from transliterate import translit
+from transliterate.base import TranslitLanguagePack, registry
+from utils.util_functions import *
 
 TOUCAN_PRAISE = """
 ░░░░░░░░▄▄▄▀▀▀▄▄███▄░░░░░░░░░░░░░░
