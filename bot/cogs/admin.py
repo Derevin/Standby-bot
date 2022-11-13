@@ -11,7 +11,7 @@ import io
 from settings import *
 from utils.util_functions import *
 import json
-import urllib
+import urllib.request
 
 
 class Admin(commands.Cog):
@@ -110,13 +110,8 @@ class Admin(commands.Cog):
     async def say(
         self,
         interaction,
-        channel: nextcord.abc.GuildChannel = SlashOption(
+        channel: TEXT_CHANNEL_TYPE_HINT = SlashOption(
             description="The channel to send to",
-            channel_types=[
-                nextcord.ChannelType.text,
-                nextcord.ChannelType.public_thread,
-                nextcord.ChannelType.private_thread,
-            ],
         ),
         message=SlashOption(description="The message to send"),
     ):
@@ -136,13 +131,8 @@ class Admin(commands.Cog):
     async def full(
         self,
         interaction,
-        channel: nextcord.abc.GuildChannel = SlashOption(
+        channel: TEXT_CHANNEL_TYPE_HINT = SlashOption(
             description="The channel to send to",
-            channel_types=[
-                nextcord.ChannelType.text,
-                nextcord.ChannelType.public_thread,
-                nextcord.ChannelType.private_thread,
-            ],
         ),
         id=SlashOption(description="ID of the message to edit"),
         text=SlashOption(description="The new text of the message"),
@@ -190,13 +180,8 @@ class Admin(commands.Cog):
     async def part(
         self,
         interaction,
-        channel: nextcord.abc.GuildChannel = SlashOption(
+        channel: TEXT_CHANNEL_TYPE_HINT = SlashOption(
             description="The channel to send to",
-            channel_types=[
-                nextcord.ChannelType.text,
-                nextcord.ChannelType.public_thread,
-                nextcord.ChannelType.private_thread,
-            ],
         ),
         id=SlashOption(description="ID of the message to edit"),
         old=SlashOption(description="The phrase to remove"),
@@ -248,13 +233,8 @@ class Admin(commands.Cog):
     async def reply(
         self,
         interaction,
-        channel: nextcord.abc.GuildChannel = SlashOption(
+        channel: TEXT_CHANNEL_TYPE_HINT = SlashOption(
             description="The channel to send to",
-            channel_types=[
-                nextcord.ChannelType.text,
-                nextcord.ChannelType.public_thread,
-                nextcord.ChannelType.private_thread,
-            ],
         ),
         id=SlashOption(description="ID of the message to reply to"),
         message=SlashOption(description="The message to send"),
@@ -306,13 +286,8 @@ class Admin(commands.Cog):
     async def react(
         self,
         interaction,
-        channel: nextcord.abc.GuildChannel = SlashOption(
+        channel: TEXT_CHANNEL_TYPE_HINT = SlashOption(
             description="The channel of the message",
-            channel_types=[
-                nextcord.ChannelType.text,
-                nextcord.ChannelType.public_thread,
-                nextcord.ChannelType.private_thread,
-            ],
         ),
         id=SlashOption(description="ID of the message to react to"),
         emotes=SlashOption(description="Emotes to react with"),
@@ -392,23 +367,13 @@ class Admin(commands.Cog):
         self,
         interaction,
         id=SlashOption(description="ID of the message to edit"),
-        from_channel: nextcord.abc.GuildChannel = SlashOption(
+        from_channel: TEXT_CHANNEL_TYPE_HINT = SlashOption(
             name="from",
             description="Channel to move from",
-            channel_types=[
-                nextcord.ChannelType.text,
-                nextcord.ChannelType.public_thread,
-                nextcord.ChannelType.private_thread,
-            ],
         ),
-        to_channel: nextcord.abc.GuildChannel = SlashOption(
+        to_channel: TEXT_CHANNEL_TYPE_HINT = SlashOption(
             name="to",
             description="Channel to move to",
-            channel_types=[
-                nextcord.ChannelType.text,
-                nextcord.ChannelType.public_thread,
-                nextcord.ChannelType.private_thread,
-            ],
         ),
     ):
         await move_or_copy_message(interaction, id, from_channel, to_channel)
@@ -421,23 +386,13 @@ class Admin(commands.Cog):
         self,
         interaction,
         id=SlashOption(description="ID of the message to edit"),
-        from_channel: nextcord.abc.GuildChannel = SlashOption(
+        from_channel: TEXT_CHANNEL_TYPE_HINT = SlashOption(
             name="from",
             description="Channel to move from",
-            channel_types=[
-                nextcord.ChannelType.text,
-                nextcord.ChannelType.public_thread,
-                nextcord.ChannelType.private_thread,
-            ],
         ),
-        to_channel: nextcord.abc.GuildChannel = SlashOption(
+        to_channel: TEXT_CHANNEL_TYPE_HINT = SlashOption(
             name="to",
             description="Channel to move to",
-            channel_types=[
-                nextcord.ChannelType.text,
-                nextcord.ChannelType.public_thread,
-                nextcord.ChannelType.private_thread,
-            ],
         ),
     ):
         await move_or_copy_message(interaction, id, from_channel, to_channel)
@@ -449,13 +404,8 @@ class Admin(commands.Cog):
     async def obit(
         self,
         interaction,
-        channel: nextcord.abc.GuildChannel = SlashOption(
+        channel: TEXT_CHANNEL_TYPE_HINT = SlashOption(
             description="Channel to post in",
-            channel_types=[
-                nextcord.ChannelType.text,
-                nextcord.ChannelType.public_thread,
-                nextcord.ChannelType.private_thread,
-            ],
         ),
     ):
         maint = get_channel(interaction.guild, ERROR_CHANNEL_NAME)

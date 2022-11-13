@@ -2,6 +2,7 @@ import os
 import pytz
 import nextcord
 import datetime
+from typing import Union
 
 NO_SSL = os.getenv("NO_SSL", False)
 NODB = os.getenv("NODB", False)
@@ -100,3 +101,7 @@ BURGER_QUESTIONS = [
     ),
 ]
 BURGER_TIMEOUT = datetime.timedelta(weeks=1)
+
+TEXT_CHANNEL_TYPE_HINT = Union[
+    nextcord.TextChannel, nextcord.VoiceChannel, nextcord.Thread
+]
