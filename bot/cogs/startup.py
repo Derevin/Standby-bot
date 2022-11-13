@@ -48,7 +48,7 @@ async def log_restart_reason(bot):
                         f"commit from {author} with message `{message}`. Link: <{link}>"
                     )
                 else:
-                    reason_found = "Heroku restart or crash (most likely)."
+                    reason_found = "Heroku restart or crash."
 
         await channel.send(f"Reboot complete. Caused by {reason_found}")
 
