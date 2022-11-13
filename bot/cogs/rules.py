@@ -25,7 +25,7 @@ class Rules(commands.Cog):
         description="Commands for setting up and editing the #rules channel",
         default_member_permissions=MODS_ONLY,
     )
-    async def rule():
+    async def rule(self, interaction):
         pass
 
     @rule.subcommand(description="Add all posts to the rules channel")

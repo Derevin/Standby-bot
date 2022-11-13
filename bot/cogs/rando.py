@@ -11,7 +11,7 @@ class Rando(commands.Cog):
         self.bot = bot
 
     @nextcord.slash_command(description="RNG commands", name="rng")
-    async def rng():
+    async def rng(self, interaction):
         pass
 
     @rng.subcommand(description="RPG format dice roller")

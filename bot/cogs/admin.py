@@ -129,7 +129,7 @@ class Admin(commands.Cog):
         description="Commands to edit bot messages",
         default_member_permissions=MODS_AND_GUIDES,
     )
-    async def edit():
+    async def edit(self, interaction):
         pass
 
     @edit.subcommand(description="Edits the full text of a bot message")
@@ -508,7 +508,7 @@ class Admin(commands.Cog):
         description="Commands to put people in and remove them from horny jail",
         default_member_permissions=MODS_AND_GUIDES,
     )
-    async def horny():
+    async def horny(self, interaction):
         pass
 
     @horny.subcommand(
@@ -629,7 +629,7 @@ class Admin(commands.Cog):
         description="Emoji commands",
         default_member_permissions=nextcord.Permissions(manage_emojis=True),
     )
-    async def emoji():
+    async def emoji(self, interaction):
         pass
 
     @emoji.subcommand(description="Adds an external emoji to the server")

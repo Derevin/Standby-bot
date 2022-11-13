@@ -57,7 +57,7 @@ class Timers(commands.Cog):
             return
 
     @nextcord.slash_command(description="Commands for setting reminders")
-    async def remindme():
+    async def remindme(self, interaction):
         pass
 
     @remindme.subcommand(description="Reminds you after a specified time", name="in")

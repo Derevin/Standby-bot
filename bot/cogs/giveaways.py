@@ -56,7 +56,7 @@ class Giveaways(commands.Cog):
         description="Mod commands for editing giveaways",
         default_member_permissions=MODS_AND_GUIDES,
     )
-    async def giveaway_tools():
+    async def giveaway_tools(self, interaction):
         pass
 
     @giveaway_tools.subcommand(description="Manually end a giveaway")
