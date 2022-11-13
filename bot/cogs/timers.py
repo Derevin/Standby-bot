@@ -1,7 +1,7 @@
+import datetime
 import json
 import sys
 import traceback
-from datetime import datetime, timedelta
 
 import nextcord
 from db.db_func import ensure_guild_existence, get_or_insert_usr
@@ -27,7 +27,7 @@ class Timers(commands.Cog):
             )
             for rec in gtable:
                 if rec["ttype"] == DB_TMER_REMINDER:
-                    timenow = datetime.now()
+                    timenow = datetime.datetime.now()
                     if timenow <= rec["expires"]:
                         continue
 
@@ -79,9 +79,9 @@ class Timers(commands.Cog):
             )
             return
 
-        timenow = datetime.now()
+        timenow = datetime.datetime.now()
 
-        tdelta = timedelta(
+        tdelta = datetime.timedelta(
             days=days,
             hours=hours,
             minutes=minutes,
@@ -110,9 +110,9 @@ class Timers(commands.Cog):
         minute: int = SlashOption(description="Minute of the reminder"),
         message: str = SlashOption(description="A message for the reminder"),
     ):
-        timenow = datetime.now()
+        timenow = datetime.datetime.now()
         try:
-            tfuture = datetime(
+            tfuture = datetime.datetime(
                 year=year,
                 month=month,
                 day=day,

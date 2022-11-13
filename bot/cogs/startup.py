@@ -1,6 +1,6 @@
+import datetime
 import importlib
 import json
-from datetime import datetime, timedelta
 
 import aiohttp
 import nextcord
@@ -35,12 +35,12 @@ async def log_restart_reason(bot):
                 "https://api.github.com/repos/Derevin/Standby-bot/commits/main"
             ) as r:
                 data = await r.json()
-                timenow = datetime.now().astimezone(BOT_TZ)
+                timenow = datetime.datetime.now().astimezone(BOT_TZ)
                 format = "%Y-%m-%dT%H:%M:%S%z"
-                dt_commit_time = datetime.strptime(
+                dt_commit_time = datetime.datetime.strptime(
                     data["commit"]["committer"]["date"], format
                 ).astimezone(BOT_TZ)
-                timepast = timenow - timedelta(minutes=15)
+                timepast = timenow - datetime.timedelta(minutes=15)
                 if timepast < dt_commit_time:
                     author = data["commit"]["committer"]["name"]
                     message = data["commit"]["message"]
