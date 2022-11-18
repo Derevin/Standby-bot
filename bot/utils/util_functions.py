@@ -5,6 +5,8 @@ from pathlib import Path
 import io
 from PIL import Image, ImageDraw, ImageFont
 import requests
+import json
+from settings import *
 
 
 def get_emoji(guild, name):
@@ -244,3 +246,20 @@ async def log_or_update_db_note(bot, key, value):
         await bot.pg_pool.execute(
             f"INSERT INTO notes (key,  value) VALUES ('{key}', '{value}')"
         )
+
+
+def get_tweet_data(tweet_id):
+
+    request_url = (
+        f"https://api.twitter.com/2/tweets/{tweet_id}?tweet.fields=attachments"
+    )
+    tweet = requests.request(
+        "GET",
+        request_url,
+        headers={
+            "Authorization": "Bearer " + TWITTER_BEARER_TOKEN,
+            "User-Agent": "v2TweetLookupPython",
+        },
+    )
+    tweet_dict = json.loads(tweet.content.decode("utf-8"))
+    return tweet_dict["data"] if "data" in tweet_dict else {}

@@ -15,6 +15,7 @@ STARBOARD_ID = int(os.getenv("STARBOARD_ID", False))
 GINNY_TRANSPARENT_URL = str(os.getenv("GINNY_TRANSPARENT_URL", False))
 GINNY_WHITE_URL = str(os.getenv("GINNY_WHITE_URL", False))
 BOT_TZ = pytz.timezone(os.getenv("TZ", "UTC"))
+TWITTER_BEARER_TOKEN = os.getenv("TWITTER_BEARER_TOKEN", False)
 
 DB_TMER_REMINDER = 1
 DB_TMER_GIVEAWAY = 2

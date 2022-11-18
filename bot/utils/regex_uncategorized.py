@@ -323,6 +323,28 @@ async def maybe_resp(bot, message: nextcord.Message):
 
 regex_uncategorized_commands.append(("^maybe i am an?", maybe_resp, re.M | re.I))
 
+
+async def twitter_resp(bot, message: nextcord.Message):
+    tweet_id = re.search(
+        r"https:.*(vx|fx)?twitter\.com/.*/status/(?P<id>\d+)", message.content
+    ).groupdict()["id"]
+
+    data = get_tweet_data(tweet_id)
+
+    try:
+        num_pics = len(data["attachments"]["media_keys"])
+    except KeyError:
+        return
+
+    if num_pics > 1:
+        await message.add_reaction(int_to_emoji(num_pics))
+
+
+regex_uncategorized_commands.append(
+    (r"https:.*(vx|fx)?twitter\.com/.*/status/\d+", twitter_resp, re.M | re.I)
+)
+
+
 # async def cluttered_link_resp(bot, message: nextcord.Message):
 
 #     reee = get_emoji(message.channel.guild, "FEELSREEE")
