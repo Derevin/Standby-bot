@@ -17,32 +17,32 @@ class Admin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @nextcord.slash_command(description="Temp", default_member_permissions=MODS_ONLY)
-    async def remove_slash_perms(self, interaction):
-        skipped = []
-        await interaction.response.defer(ephemeral=True)
-        for role in interaction.guild.roles:
-            if role.name not in [
-                "Alliance",
-                "Community",
-                "Guides of the Void",
-                "Moderator",
-                "Wonkistrator",
-                "PM for Help",
-            ]:
-                perms = role.permissions
-                perms.update(use_slash_commands=False)
-                try:
-                    await role.edit(permissions=perms)
-                except:
-                    skipped.append(role.name)
+    # @nextcord.slash_command(description="Temp", default_member_permissions=MODS_ONLY)  # Deprecated
+    # async def remove_slash_perms(self, interaction):
+    #     skipped = []
+    #     await interaction.response.defer(ephemeral=True)
+    #     for role in interaction.guild.roles:
+    #         if role.name not in [
+    #             "Alliance",
+    #             "Community",
+    #             "Guides of the Void",
+    #             "Moderator",
+    #             "Wonkistrator",
+    #             "PM for Help",
+    #         ]:
+    #             perms = role.permissions
+    #             perms.update(use_slash_commands=False)
+    #             try:
+    #                 await role.edit(permissions=perms)
+    #             except:
+    #                 skipped.append(role.name)
 
-        if skipped:
-            await interaction.send(
-                f"Edited all roles except {', '.join(skipped)}", ephemeral=True
-            )
-        else:
-            await interaction.send(f"Edited all roles successfully", ephemeral=True)
+    #     if skipped:
+    #         await interaction.send(
+    #             f"Edited all roles except {', '.join(skipped)}", ephemeral=True
+    #         )
+    #     else:
+    #         await interaction.send(f"Edited all roles successfully", ephemeral=True)
 
     @nextcord.slash_command(
         description="Displays basic server stats",
@@ -278,6 +278,12 @@ class Admin(commands.Cog):
                 await ping.delete()
                 await asyncio.sleep(2)
 
+    @nextcord.user_command(
+        name="Punish", guild_ids=[GUILD_ID], default_member_permissions=MODS_AND_GUIDES
+    )
+    async def punish_context(self, interaction, user):
+        await invoke_slash_command("punish", self, interaction, user)
+
     @nextcord.slash_command(
         description="Reacts to a message (only emote from this server or default set)",
         default_member_permissions=MODS_AND_GUIDES,
@@ -453,22 +459,9 @@ class Admin(commands.Cog):
             await vote_msg.add_reaction("✅")
             await vote_msg.add_reaction("❌")
 
-    @nextcord.slash_command(
-        description="Commands to put people in and remove them from horny jail",
-        default_member_permissions=MODS_AND_GUIDES,
-    )
-    async def horny(self, interaction):
-        pass
-
-    @horny.subcommand(
-        description="Put someone in horny jail",
-    )
-    async def jail(
-        self,
-        interaction,
-        offender: nextcord.Member = SlashOption(description="Member to jail"),
-    ):
-        horny = get_role(interaction.guild, "horny")
+    @nextcord.user_command(name="Jail", default_member_permissions=MODS_AND_GUIDES)
+    async def jail(self, interaction, offender):
+        horny = get_role(interaction.guild, "")
         muted = get_role(interaction.guild, "Muted")
         jail = get_channel(interaction.guild, "horny-jail")
         if horny and muted:
@@ -485,12 +478,8 @@ class Admin(commands.Cog):
         else:
             await interaction.send("Error processing roles or channel", ephemeral=True)
 
-    @horny.subcommand(description="Release someone from horny jail")
-    async def release(
-        self,
-        interaction,
-        prisoner: nextcord.Member = SlashOption(description="Member to release"),
-    ):
+    @nextcord.user_command(name="Release")
+    async def release(self, interaction, prisoner):
         horny = get_role(interaction.guild, "horny")
         muted = get_role(interaction.guild, "Muted")
         if horny and muted:
@@ -498,6 +487,10 @@ class Admin(commands.Cog):
             await prisoner.remove_roles(muted)
             await interaction.send(
                 f"{prisoner.mention} has been released successfully", ephemeral=True
+            )
+        else:
+            await interaction.send(
+                f"{prisoner.mention} is not currently jailed", ephemeral=True
             )
 
     @nextcord.slash_command(

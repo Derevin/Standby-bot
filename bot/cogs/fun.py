@@ -83,6 +83,10 @@ class Fun(commands.Cog):
             if hug:
                 await interaction.channel.send(hug)
 
+    @nextcord.user_command(name="Hug")
+    async def hug_context(self, interaction, user):
+        await invoke_slash_command("hug", self, interaction, user)
+
     @nextcord.slash_command(description="Pay your respects")
     async def f(
         self,
@@ -262,6 +266,10 @@ class Fun(commands.Cog):
                     f"The burger is currently free for the taking - to burger others, you must first claim it by answering the question in {general.mention}.",
                     ephemeral=True,
                 )
+
+    @nextcord.user_command(name="Burger")
+    async def burger_context(self, interaction, user):
+        await invoke_slash_command("burger", self, interaction, user)
 
     @tasks.loop(minutes=1)
     async def check_burger(self):

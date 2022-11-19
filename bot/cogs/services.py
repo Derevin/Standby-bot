@@ -78,6 +78,10 @@ class Services(commands.Cog):
     ):
         await interaction.send(embed=avatar_embed(user))
 
+    @nextcord.user_command(name="Avatar")
+    async def avatar_context(self, interaction, user):
+        await invoke_slash_command("avatar", self, interaction, user)
+
     @nextcord.slash_command(
         description="Returns the Urban Dictionary definition of a word or phrase"
     )
@@ -140,8 +144,8 @@ class Services(commands.Cog):
         if not interaction.user.id == JORM_ID:
             await interaction.send(
                 file=simpsons_error_image(
-                    dad_url=interaction.guild.me.display_avatar.url,
-                    son_url=interaction.user.display_avatar.url,
+                    dad=interaction.guild.me,
+                    son=interaction.user,
                     text="You're not Jorm!",
                     filename="jormonly.png",
                 )
@@ -155,6 +159,10 @@ class Services(commands.Cog):
             f"UPDATE usr SET skulls = skulls + 1 WHERE usr_id = {recipient.id}"
         )
         await interaction.send(f"Gave a 💀 to {recipient.mention}")
+
+    @nextcord.user_command(name="Give skull", guild_ids=[GUILD_ID])
+    async def skull_context(self, interaction, user):
+        await invoke_slash_command("skull", self, interaction, user)
 
     @nextcord.slash_command(description="Look up a user's stats")
     async def stats(
