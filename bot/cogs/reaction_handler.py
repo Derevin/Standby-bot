@@ -10,7 +10,7 @@ class ReactionHandler(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    def ignore_in_voice_channel(func):
+    def ignore_in_voice_channel(func):  # Deprecated
         @functools.wraps(func)
         async def wrapper(*args):
             bot = args[0].bot
@@ -22,7 +22,6 @@ class ReactionHandler(commands.Cog):
         return wrapper
 
     @commands.Cog.listener()
-    @ignore_in_voice_channel
     async def on_raw_reaction_add(self, payload):
         await starboard_handler(self.bot, payload)
         await giveaway_handler(self.bot, payload)
@@ -30,18 +29,15 @@ class ReactionHandler(commands.Cog):
         await urban_handler(self.bot, payload)
 
     @commands.Cog.listener()
-    @ignore_in_voice_channel
     async def on_raw_reaction_remove(self, payload):
         await starboard_handler(self.bot, payload)
         # await role_handler(self.bot, payload)
 
     @commands.Cog.listener()
-    @ignore_in_voice_channel
     async def on_raw_reaction_clear(self, payload):
         await starboard_handler(self.bot, payload)
 
     @commands.Cog.listener()
-    @ignore_in_voice_channel
     async def on_raw_reaction_clear_emoji(self, payload):
         await starboard_handler(self.bot, payload)
 
