@@ -147,7 +147,7 @@ def simpsons_error_image(dad, son, text=None, filename="error.png"):
     dad_url = dad.display_avatar.url
     son_url = son.display_avatar.url
 
-    template_url = "https://cdn.discordapp.com/attachments/748296564362969168/997563015501197342/unknown.png"
+    template_url = GIT_STATIC_URL + "/images/simpsons.png"
 
     template = Image.open(requests.get(template_url, stream=True).raw)
 
@@ -263,3 +263,13 @@ def get_tweet_data(tweet_id):
     )
     tweet_dict = json.loads(tweet.content.decode("utf-8"))
     return tweet_dict["data"] if "data" in tweet_dict else {}
+
+
+async def invoke_slash_command(name, self, *args):
+
+    slash_command = [
+        command
+        for command in self.bot.get_all_application_commands()
+        if command.name == name
+    ][0]
+    await slash_command.invoke_callback(*args)
