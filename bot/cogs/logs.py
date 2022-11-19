@@ -55,7 +55,7 @@ class Logs(commands.Cog):
         logs = nextcord.utils.get(guild.text_channels, name=LOGS_CHANNEL_NAME)
 
         if logs:
-            embed = await slash_embed(interaction)
+            embed = await command_embed(interaction)
             await logs.send(embed=embed)
 
 
@@ -110,9 +110,8 @@ async def edited_embed(bot, payload):
 
         channel = before.channel
         jump_url = before.jump_url
-        avatar_url = (
-            before.author.display_avatar.url if before.author.display_avatar else ""
-        )
+        avatar_url = before.author.display_avatar.url
+
         attachment_url = before.attachments[0].url if before.attachments else None
 
     else:
@@ -131,7 +130,7 @@ async def edited_embed(bot, payload):
         channel = await bot.fetch_channel(channel_id)
         message = await channel.fetch_message(message_id)
         jump_url = message.jump_url
-        avatar_url = author.display_avatar.url if author.display_avatar else ""
+        avatar_url = author.display_avatar.url
         attachment_url = message.attachments[0].url if message.attachments else None
 
     embed = nextcord.Embed(color=LIGHT_BLUE)
@@ -183,26 +182,45 @@ async def voice_embed(member, before, after):
     return embed
 
 
-async def slash_embed(interaction):
+async def command_embed(interaction):
+
+    cmd_name = interaction.application_command.name
+    cmd_type = interaction.application_command.type
+    cmd_type = str(cmd_type).split(".")[-1].replace("chat_input", "Slash").title()
+    cmd_prefix = "/" if cmd_type == "Slash" else "Apps > "
 
     embed = nextcord.Embed(color=VIE_PURPLE)
-    embed.title = "Slash command triggered"
-    embed.add_field(name="User", value=interaction.user.mention)
-    embed.add_field(name="Channel", value=interaction.channel.mention)
+    embed.title = f"{cmd_type} command triggered"
 
-    name = interaction.application_command.name
     try:
         parent_name = interaction.application_command.parent_cmd.name + " "
     except AttributeError:
         parent_name = ""
 
     embed.add_field(
-        name="Command",
-        value="/" + parent_name + name,
-        inline=False,
+        name="Command", value=cmd_prefix + parent_name + cmd_name, inline=False
     )
+    embed.add_field(name="Triggered by", value=interaction.user.mention)
+    embed.add_field(name="In channel", value=interaction.channel.mention)
 
-    if "options" in interaction.data:
+    if cmd_type == "User":
+
+        embed.add_field(
+            name="Target user", value=id_to_mention(interaction.data["target_id"])
+        )
+
+    elif cmd_type == "Message":
+
+        message_id = interaction.data["target_id"]
+        message = await interaction.channel.fetch_message(message_id)
+
+        embed.add_field(
+            name="Target messsage", value=f"[Click here]({message.jump_url})"
+        )
+
+    elif "options" in interaction.data:  # Slash
+
+        embed.add_field(name=EMPTY, value=EMPTY)
 
         arg_data = interaction.data["options"]
         if "options" in arg_data[0]:
@@ -220,10 +238,8 @@ async def slash_embed(interaction):
 
             embed.add_field(name=arg["name"], value=formatted_value)
 
-    avatar_url = (
-        interaction.user.display_avatar.url if interaction.user.display_avatar else ""
-    )
-
+    print("AVATAR:", interaction.user.display_avatar)
+    avatar_url = interaction.user.display_avatar.url
     if avatar_url:
         embed.set_thumbnail(url=avatar_url)
 
