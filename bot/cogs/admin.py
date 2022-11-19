@@ -478,7 +478,7 @@ class Admin(commands.Cog):
         else:
             await interaction.send("Error processing roles or channel", ephemeral=True)
 
-    @nextcord.user_command(name="Release")
+    @nextcord.user_command(name="Release", default_member_permissions=MODS_AND_GUIDES)
     async def release(self, interaction, prisoner):
         horny = get_role(interaction.guild, "horny")
         muted = get_role(interaction.guild, "Muted")
