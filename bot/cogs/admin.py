@@ -633,6 +633,54 @@ class Admin(commands.Cog):
         else:
             await interaction.send("Invalid emoji")
 
+    @nextcord.message_command(
+        name="Steal emoji(s)",
+        default_member_permissions=nextcord.Permissions(manage_emojis=True),
+    )
+    async def steal(self, interaction, message: nextcord.Message):
+        emojis = re.findall("<a?:[^:]*:\d+>", message.content)
+
+        if not emojis:
+            await interaction.send("No emojis in message")
+            return
+
+        emojis = [
+            re.search(
+                "(?P<full_string><a?:(?P<name>[^:]*):(?P<id>\d+)>)", emoji
+            ).groupdict()
+            for emoji in emojis
+        ]
+
+        class ChooseEmojiView(nextcord.ui.View):
+            def __init__(self):
+                super().__init__()
+
+            @nextcord.ui.select(
+                placeholder="Choose emoji(s) to steal",
+                options=[
+                    nextcord.SelectOption(
+                        label=emoji["name"],
+                        emoji=emoji["full_string"],
+                        value=emoji["full_string"][2:-1],
+                    )
+                    for emoji in emojis
+                ],
+                max_values=len(emojis),
+            )
+            async def add_selected(self, select, interaction):
+                added = []
+                for emoji in select.values:
+                    name, id = emoji.split(":")
+                    added.append(await add_external_emoji(interaction, id, name))
+
+                await interaction.edit(
+                    content="Added "
+                    + " ".join([str(emoji) for emoji in added if emoji]),
+                    view=None,
+                )
+
+        await interaction.send(view=ChooseEmojiView(), ephemeral=True)
+
     @commands.Cog.listener()
     async def on_guild_role_update(self, before, after):
         from cogs.startup import reconnect_buttons
