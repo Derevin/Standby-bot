@@ -1,6 +1,7 @@
 import asyncio
 import datetime
 import io
+import random
 import re
 import urllib.request
 
@@ -460,18 +461,24 @@ class Admin(commands.Cog):
             await vote_msg.add_reaction("❌")
 
     @nextcord.user_command(name="Jail", default_member_permissions=MODS_AND_GUIDES)
-    async def jail(self, interaction, offender):
-        horny = get_role(interaction.guild, "")
-        muted = get_role(interaction.guild, "Muted")
-        jail = get_channel(interaction.guild, "horny-jail")
-        if horny and muted:
-            await offender.add_roles(horny)
-            await offender.add_roles(muted)
-            if jail:
-                await jail.send(
-                    f"Welcome to horny jail, {offender.mention}. Do not enjoy your stay."
+    async def jail(self, interaction, offender: nextcord.Member):
+        jailed_role = get_role(interaction.guild, "Jailed")
+        muted_role = get_role(interaction.guild, "Muted")
+        jail_channel = get_channel(interaction.guild, "jail")
+        if jailed_role and muted_role:
+            await offender.add_roles(jailed_role, muted_role)
+            if jail_channel:
+                public_lines = [
+                    "Stop right there, criminal scum! Nobody breaks the law on my watch! I'm confiscating your stolen memes.",
+                    "Stop! You violated the law. Your stolen memes are now forfeit.",
+                    "It's all over, lawbreaker! Your spree is at an end. I'll take any stolen memes you have.",
+                ]
+                await interaction.send(GIT_STATIC_URL + "/images/stop.jpg")
+                await interaction.channel.send(random.choice(public_lines))
+                await jail_channel.send(
+                    f"Serve your time peaceably, {offender.mention}, and pay your debt to the void."
                 )
-                await jail.send(GIT_STATIC_URL + "/images/horny%20jail.png")
+
                 await interaction.send(
                     f"{offender.mention} has been jailed successfully", ephemeral=True
                 )
@@ -480,11 +487,10 @@ class Admin(commands.Cog):
 
     @nextcord.user_command(name="Release", default_member_permissions=MODS_AND_GUIDES)
     async def release(self, interaction, prisoner):
-        horny = get_role(interaction.guild, "horny")
-        muted = get_role(interaction.guild, "Muted")
-        if horny and muted:
-            await prisoner.remove_roles(horny)
-            await prisoner.remove_roles(muted)
+        jailed_role = get_role(interaction.guild, "Jailed")
+        muted_role = get_role(interaction.guild, "Muted")
+        if jailed_role and muted_role:
+            await prisoner.remove_roles(jailed_role, muted_role)
             await interaction.send(
                 f"{prisoner.mention} has been released successfully", ephemeral=True
             )
