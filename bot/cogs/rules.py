@@ -1,15 +1,15 @@
 import asyncio
 import random
 import re
+from math import ceil
 
 import nextcord
+from cogs.tickets import CLAIMABLE_CHANNEL_NAME
 from nextcord import SelectOption, SlashOption
 from nextcord.ext import commands, tasks
 from settings import *
 from settings_files.rules_contents import *
 from utils.util_functions import *
-
-from cogs.tickets import CLAIMABLE_CHANNEL_NAME
 
 
 class Rules(commands.Cog):
@@ -432,27 +432,32 @@ class ClanView(nextcord.ui.View):
         self.choice = None
         guild = params["guild"]
         all_clans = get_roles_by_type(guild, CLAN_ROLES_DELIMITER)
+        all_clans.sort(
+            key=lambda clan: (
+                "0"
+                if clan.name in PRIO_ROLES
+                else "1"
+                if clan.name in ROLE_DESCRIPTIONS
+                else "2"
+            )
+            + clan.name
+        )
+        num_groups = ceil(len(all_clans) / MAX_MENU_SIZE)
+        group_size = ceil(len(all_clans) / num_groups)
         groups = [
-            all_clans[i : i + MAX_MENU_SIZE]
-            for i in range(0, len(all_clans), MAX_MENU_SIZE)
+            all_clans[(group_size * i) : (group_size * (i + 1))]
+            for i in range(num_groups)
         ]
-        for group in groups:
-            self.add_item(self.ClanSelect(group))
+        for idx, group in enumerate(groups):
+            self.add_item(self.ClanSelect(group, idx, num_groups))
         self.add_item(self.ClanConfirm())
 
     class ClanSelect(nextcord.ui.Select):
-        def __init__(self, clans):
-            clans.sort(
-                key=lambda clan: (
-                    "0"
-                    if clan.name in PRIO_ROLES
-                    else "1"
-                    if clan.name in ROLE_DESCRIPTIONS.keys()
-                    else "2"
-                )
-                + clan.name
-            )
-            super().__init__(placeholder="Select your clan", min_values=0)
+        def __init__(self, clans, idx, total):
+            text = "Select your clan"
+            if total > 1:
+                text += f" ({idx+1}/{total})"
+            super().__init__(placeholder=text, min_values=0)
             self.options = [
                 SelectOption(
                     label=clan.name,
@@ -507,7 +512,7 @@ class OptInView(nextcord.ui.View):
                     "0"
                     if role.name in PRIO_ROLES
                     else "1"
-                    if role.name in ROLE_DESCRIPTIONS.keys()
+                    if role.name in ROLE_DESCRIPTIONS
                     else "2"
                 )
                 + role.name
