@@ -25,7 +25,7 @@ async def ping_resp(bot, message: nextcord.Message):
         AIRU_ID: GIT_STATIC_URL + "/images/airu.gif",
     }
 
-    if message.author.id in custom_responses.keys():
+    if message.author.id in custom_responses:
         await message.channel.send(custom_responses[message.author.id])
     else:
         emoji = nextcord.utils.get(message.guild.emojis, name="Pingsock")
