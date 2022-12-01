@@ -325,19 +325,21 @@ regex_uncategorized_commands.append(("^maybe i am an?", maybe_resp, re.M | re.I)
 
 
 async def twitter_resp(bot, message: nextcord.Message):
-    tweet_id = re.search(
-        r"https:.*(vx|fx)?twitter\.com/.*/status/(?P<id>\d+)", message.content
-    ).groupdict()["id"]
+    matches = re.findall(
+        r"https://(www\.)?(vx|fx)?twitter\.com/\w+/status/(\d+)", message.content
+    )
+    tweet_ids = [m[2] for m in matches]
 
-    data = get_tweet_data(tweet_id)
+    num_pics = []
+    for tweet_id in tweet_ids:
+        data = get_tweet_data(tweet_id)
 
-    try:
-        num_pics = len(data["attachments"]["media_keys"])
-    except KeyError:
-        return
-
-    if num_pics > 1:
-        await message.add_reaction(int_to_emoji(num_pics))
+        try:
+            num_pics.append(len(data["attachments"]["media_keys"]))
+        except KeyError:
+            num_pics.append(0)
+    if max(num_pics) > 1:
+        await message.add_reaction(int_to_emoji(max(num_pics)))
 
 
 regex_uncategorized_commands.append(
