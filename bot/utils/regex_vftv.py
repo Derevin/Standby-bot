@@ -28,7 +28,7 @@ regex_vftv_commands.append(
 async def wave_resp(bot, message: nextcord.Message):
     if message.author.id == FEL_ID:
         reactions = [
-            ":BlobWave:382606234148143115",
+            "BlobWave:382606234148143115",
             "🇫",
             "🇪",
             "🇱",
@@ -37,12 +37,12 @@ async def wave_resp(bot, message: nextcord.Message):
             "🇭",
             "🇦",
             "🇳",
-            ":BlobAww:380182813300752395",
+            "BlobAww:380182813300752395",
         ]
         for x in reactions:
             await message.add_reaction(x)
     elif ":Whale" not in message.content:
-        await message.add_reaction(":BlobWave:382606234148143115")
+        await message.add_reaction("BlobWave:382606234148143115")
 
 
 regex_vftv_commands.append(
@@ -103,8 +103,8 @@ async def keto_resp(bot, message: nextcord.Message):
         and len(message.attachments) > 0
         and message.attachments[0].height is not None
     ):
-        await message.add_reaction(":ketoroll:634859950283161602")
-        await message.add_reaction(":ketoface:634852360514174976")
+        await message.add_reaction("ketoroll:634859950283161602")
+        await message.add_reaction("ketoface:634852360514174976")
 
 
 regex_vftv_commands.append((".*", keto_resp, re.M | re.I))
@@ -116,7 +116,7 @@ async def siegeQ_resp(bot, message: nextcord.Message):
     reactions = [
         "⏰",
         "2️⃣",
-        ":GlobCatGun:621700315376517122",
+        "BlobCatGun:621700315376517122",
         "🇸",
         "🇹",
         "🇷",
@@ -197,7 +197,7 @@ regex_vftv_commands.append((".*", streams_resp, re.M | re.I))
 
 
 async def good_bot_resp(bot, message: nextcord.Message):
-    await message.add_reaction(":BlobAww:380182813300752395")
+    await message.add_reaction("BlobAww:380182813300752395")
 
 
 regex_vftv_commands.append(
@@ -210,7 +210,7 @@ regex_vftv_commands.append(
 
 
 async def bad_bot_resp(bot, message: nextcord.Message):
-    await message.add_reaction(":BlobBan:438000257385889792")
+    await message.add_reaction("BlobBan:438000257385889792")
 
 
 regex_vftv_commands.append(

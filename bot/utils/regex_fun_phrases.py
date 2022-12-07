@@ -50,7 +50,7 @@ regex_fun_phrases_commands.append(
 async def ahoy_resp(bot, message: nextcord.Message):
     await message.channel.send("Ahoy Matey!")
     if message.guild.id == GUILD_ID:
-        await message.add_reaction(":BlobWave:382606234148143115")
+        await message.add_reaction("BlobWave:382606234148143115")
 
 
 regex_fun_phrases_commands.append(("^.{0,2}(ahoy).{0,12}$", ahoy_resp, re.M | re.I))
@@ -69,7 +69,7 @@ regex_fun_phrases_commands.append(("^.{0,12}spooky.{0,12}$", spooky_resp, re.M |
 
 async def wait_min_resp(bot, message: nextcord.Message):
     if message.guild.id == GUILD_ID:
-        await message.add_reaction(":Thonk:383190394457948181")
+        await message.add_reaction("Thonk:383190394457948181")
 
 
 regex_fun_phrases_commands.append(
@@ -297,8 +297,8 @@ regex_fun_phrases_commands.append(("^.{0,2}fuck me\\W{0,4}$", fme_resp, re.M | r
 async def ayaya_resp(bot, message: nextcord.Message):
     await message.channel.send("Ayaya!")
     if message.guild.id == GUILD_ID:
-        await message.add_reaction(":Ayy:610479153937907733")
-        await message.add_reaction(":Ayy2:470743166207787010")
+        await message.add_reaction("Ayy:610479153937907733")
+        await message.add_reaction("Ayy2:470743166207787010")
 
 
 regex_fun_phrases_commands.append(("^ayaya\\W{0,4}$", ayaya_resp, re.M | re.I))
