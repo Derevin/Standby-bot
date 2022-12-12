@@ -247,6 +247,9 @@ class Fun(commands.Cog):
                     expires,
                     DB_TMER_BURGER,
                 )
+                await self.bot.pg_pool.execute(
+                    f"UPDATE usr SET burgers = burgers + 1 WHERE usr_id = {target.id}"
+                )
                 history = await get_db_note(self.bot, "burger history")
                 if history:
                     history = json.loads(history)

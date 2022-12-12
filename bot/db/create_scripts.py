@@ -51,6 +51,10 @@ ALTER TABLE "usr" ADD IF NOT EXISTS "current_roulette_streak" integer DEFAULT 0;
 ALTER TABLE "usr" ADD IF NOT EXISTS "max_roulette_streak" integer DEFAULT 0;
 """
 
+ALTER_USER_ADD_BURGERS = (
+    'ALTER TABLE "usr" ADD IF NOT EXISTS "burgers" integer DEFAULT 0'
+)
+
 ALTER_STARBOARD = """
 DO $$
 BEGIN
@@ -144,6 +148,7 @@ async def create_tables(con):
         await con.execute(CREATE_GUILD)
         await con.execute(ALTER_USER_ADD_SKULLS)
         await con.execute(ALTER_USER_ADD_ROULETTE)
+        await con.execute(ALTER_USER_ADD_BURGERS)
         await con.execute(ALTER_USER)
         await con.execute(ALTER_STARBOARD)
         print("successfully ran db script batch 1")
