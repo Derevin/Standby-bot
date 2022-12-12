@@ -472,6 +472,19 @@ class Admin(commands.Cog):
         interaction,
         offender: nextcord.Member = SlashOption(description="The user to jail"),
     ):
+
+        roles = [role.name for role in offender.roles]
+        if any([mod_role in roles for mod_role in MOD_ROLES]):
+            await interaction.send(
+                file=simpsons_error_image(
+                    dad=interaction.guild.me,
+                    son=interaction.user,
+                    text="You can't jail mods!",
+                    filename="nope.png",
+                )
+            )
+            return
+
         jailed_role = get_role(interaction.guild, "Jailed")
         muted_role = get_role(interaction.guild, "Muted")
         jail_channel = get_channel(interaction.guild, "jail")
