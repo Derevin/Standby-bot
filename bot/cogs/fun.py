@@ -629,6 +629,14 @@ class BurgerView(nextcord.ui.View):
                 await interaction.send(
                     f"{interaction.user.mention} has claimed the burger! Now use it wisely."
                 )
+
+                await get_or_insert_usr(
+                    self.bot, interaction.user.id, interaction.guild.id
+                )
+                await self.bot.pg_pool.execute(
+                    f"UPDATE usr SET burgers = burgers + 1 WHERE usr_id = {interaction.user.id}"
+                )
+
                 history = await get_db_note(self.bot, "burger history")
                 if history:
                     history = json.loads(history)
