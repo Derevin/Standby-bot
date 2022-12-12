@@ -185,12 +185,20 @@ async def voice_embed(member, before, after):
 async def command_embed(interaction):
 
     cmd_name = interaction.application_command.name
-    cmd_type = interaction.application_command.type
-    cmd_type = str(cmd_type).split(".")[-1].replace("chat_input", "Slash").title()
-    cmd_prefix = "/" if cmd_type == "Slash" else "Apps > "
+    cmd_type = str(interaction.application_command.type).split(".")[-1]
+    if cmd_type == "chat_input":
+        cmd_type = "Slash command"
+    elif cmd_type == "sub_command":
+        cmd_type = "Slash subcommand"
+    elif cmd_type == "user_command":
+        cmd_type = "User command"
+    else:
+        cmd_type = "Message command"
+
+    cmd_prefix = "/" if "Slash" in cmd_type else "Apps > "
 
     embed = nextcord.Embed(color=VIE_PURPLE)
-    embed.title = f"{cmd_type} command triggered"
+    embed.title = f"{cmd_type} triggered"
 
     try:
         parent_name = interaction.application_command.parent_cmd.name + " "
@@ -238,7 +246,6 @@ async def command_embed(interaction):
 
             embed.add_field(name=arg["name"], value=formatted_value)
 
-    print("AVATAR:", interaction.user.display_avatar)
     avatar_url = interaction.user.display_avatar.url
     if avatar_url:
         embed.set_thumbnail(url=avatar_url)
