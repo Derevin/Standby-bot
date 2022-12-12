@@ -460,7 +460,9 @@ class Admin(commands.Cog):
             await vote_msg.add_reaction("✅")
             await vote_msg.add_reaction("❌")
 
-    @nextcord.user_command(name="Jail", default_member_permissions=MODS_AND_GUIDES)
+    @nextcord.slash_command(
+        description="Send a user to jail", default_member_permissions=MODS_AND_GUIDES
+    )
     async def jail(self, interaction, offender: nextcord.Member):
         jailed_role = get_role(interaction.guild, "Jailed")
         muted_role = get_role(interaction.guild, "Muted")
@@ -485,8 +487,15 @@ class Admin(commands.Cog):
         else:
             await interaction.send("Error processing roles or channel", ephemeral=True)
 
-    @nextcord.user_command(name="Release", default_member_permissions=MODS_AND_GUIDES)
-    async def release(self, interaction, prisoner):
+    @nextcord.user_command(name="Jail", default_member_permissions=MODS_AND_GUIDES)
+    async def jail_context(self, interaction, offender):
+        await invoke_slash_command("jail", self, interaction, offender)
+
+    @nextcord.slash_command(
+        description="Release a user from jail",
+        default_member_permissions=MODS_AND_GUIDES,
+    )
+    async def release(self, interaction, prisoner: nextcord.Member):
         jailed_role = get_role(interaction.guild, "Jailed")
         muted_role = get_role(interaction.guild, "Muted")
         if jailed_role and muted_role:
@@ -498,6 +507,10 @@ class Admin(commands.Cog):
             await interaction.send(
                 f"{prisoner.mention} is not currently jailed", ephemeral=True
             )
+
+    @nextcord.user_command(name="Release", default_member_permissions=MODS_AND_GUIDES)
+    async def release_context(self, interaction, prisoner):
+        await invoke_slash_command("release", self, interaction, prisoner)
 
     @nextcord.slash_command(
         description="Voidifies a user's avatar.",
