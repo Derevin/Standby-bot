@@ -252,7 +252,11 @@ class Admin(commands.Cog):
         description="Leaves several ghost pings for a user",
         default_member_permissions=MODS_AND_GUIDES,
     )
-    async def punish(self, interaction, user: nextcord.Member):
+    async def punish(
+        self,
+        interaction,
+        user: nextcord.Member = SlashOption(description="The user to punish"),
+    ):
         guild = interaction.guild
         ch_list = [
             "general",
@@ -463,7 +467,11 @@ class Admin(commands.Cog):
     @nextcord.slash_command(
         description="Send a user to jail", default_member_permissions=MODS_AND_GUIDES
     )
-    async def jail(self, interaction, offender: nextcord.Member):
+    async def jail(
+        self,
+        interaction,
+        offender: nextcord.Member = SlashOption(description="The user to jail"),
+    ):
         jailed_role = get_role(interaction.guild, "Jailed")
         muted_role = get_role(interaction.guild, "Muted")
         jail_channel = get_channel(interaction.guild, "jail")
@@ -495,7 +503,11 @@ class Admin(commands.Cog):
         description="Release a user from jail",
         default_member_permissions=MODS_AND_GUIDES,
     )
-    async def release(self, interaction, prisoner: nextcord.Member):
+    async def release(
+        self,
+        interaction,
+        prisoner: nextcord.Member = SlashOption(description="The user to release"),
+    ):
         jailed_role = get_role(interaction.guild, "Jailed")
         muted_role = get_role(interaction.guild, "Muted")
         if jailed_role and muted_role:
