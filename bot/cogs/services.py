@@ -26,6 +26,7 @@ all_settings = {
     "Stars": LeaderboardSettings(
         title="Stars leaderboard",
         stat_name="Stars",
+        stat_embed_header="⭐",
         stat_col_name="stars",
         color=STARBOARD_COLOUR,
         table="starboard",
@@ -33,6 +34,7 @@ all_settings = {
     "Voids": LeaderboardSettings(
         title="Voids leaderboard",
         stat_name="Voids",
+        stat_embed_header="Voids",
         stat_col_name="thanks",
     ),
     "Skulls": LeaderboardSettings(
@@ -53,6 +55,12 @@ all_settings = {
         stat_name="All-time best roulette streak",
         stat_col_name="max_roulette_streak",
         stat_embed_header="Rounds",
+    ),
+    "Burgers": LeaderboardSettings(
+        title="Burger leaderboard",
+        stat_name="Burgers",
+        stat_col_name="burgers",
+        stat_embed_header="🍔",
     ),
 }
 
@@ -107,7 +115,7 @@ class Services(commands.Cog):
         stat=SlashOption(
             name="leaderboard",
             description="The leaderboard to display",
-            choices=["Burger history", *all_settings.keys()],
+            choices=sorted(["Burger history", *all_settings.keys()]),
         ),
     ):
         if stat == "Burger history":
@@ -231,48 +239,83 @@ def build_leaderboard_embed(
     usr_col_name="usr_id",
     max_print=12,
 ):
-
     if not leaderboard:
         return nextcord.Embed(
             color=settings.color,
             description=f"The {settings.title} is currently empty.",
         )
-    ljust_num = len(str(settings.stat_name)) if str(settings.stat_name).isalnum() else 3
-    ldr = []
-    cnt = 0
 
-    prev_count = -1
-    keep_printing = True
+    users = []
+    scores = []
+
     for rec in leaderboard:
-        cnt += 1
-        if cnt > max_print:
-            keep_printing = False
-
         if (
-            keep_printing
-            or prev_count == rec[count_col_name]
-            or interaction.user.id == rec[usr_col_name]
+            len(users) < max_print
+            or rec[count_col_name] == scores[-1]
+            or rec[usr_col_name] == interaction.user.id
         ):
-            usr = interaction.guild.get_member(rec[usr_col_name])
-            if usr:
-                num_spaces = ljust_num - len(str(rec[count_col_name])) + 1
-                spaces = EMPTY2 * num_spaces
-                ldr.append(
-                    f"{rec[count_col_name]}{spaces} {usr.name}#{usr.discriminator}"
-                )
-            if keep_printing:
-                prev_count = rec[count_col_name]
-
-    header_merged = f"{settings.stat_embed_header}\t{settings.user_name}"
-
-    merged_str = ""
-    for line in ldr:
-        merged_str += f"{line}\n"
+            # user = interaction.guild.get_member(rec[usr_col_name])
+            # users.append(f"{user.name}#{user.discriminator}")
+            users.append(id_to_mention(rec[usr_col_name]))
+            scores.append(str(rec[count_col_name]))
 
     embed = nextcord.Embed(color=settings.color)
-    embed.add_field(name=header_merged, value=merged_str)
+    embed.add_field(name=settings.stat_embed_header, value="\n".join(scores))
+    embed.add_field(name=settings.user_name, value="\n".join(users))
     embed.title = settings.title
     return embed
+
+
+# def build_leaderboard_embed(
+#     interaction,
+#     leaderboard,
+#     settings,
+#     count_col_name="total",
+#     usr_col_name="usr_id",
+#     max_print=12,
+# ):
+
+#     if not leaderboard:
+#         return nextcord.Embed(
+#             color=settings.color,
+#             description=f"The {settings.title} is currently empty.",
+#         )
+#     ljust_num = len(str(settings.stat_name)) if str(settings.stat_name).isalnum() else 3
+#     ldr = []
+#     cnt = 0
+
+#     prev_count = -1
+#     keep_printing = True
+#     for rec in leaderboard:
+#         cnt += 1
+#         if cnt > max_print:
+#             keep_printing = False
+
+#         if (
+#             keep_printing
+#             or prev_count == rec[count_col_name]
+#             or interaction.user.id == rec[usr_col_name]
+#         ):
+#             usr = interaction.guild.get_member(rec[usr_col_name])
+#             if usr:
+#                 num_spaces = ljust_num - len(str(rec[count_col_name])) + 1
+#                 spaces = EMPTY2 * num_spaces
+#                 ldr.append(
+#                     f"{rec[count_col_name]}{spaces} {usr.name}#{usr.discriminator}"
+#                 )
+#             if keep_printing:
+#                 prev_count = rec[count_col_name]
+
+#     header_merged = f"{settings.stat_embed_header}\t{settings.user_name}"
+
+#     merged_str = ""
+#     for line in ldr:
+#         merged_str += f"{line}\n"
+
+#     embed = nextcord.Embed(color=settings.color)
+#     embed.add_field(name=header_merged, value=merged_str)
+#     embed.title = settings.title
+#     return embed
 
 
 async def urban_handler(bot, payload):
