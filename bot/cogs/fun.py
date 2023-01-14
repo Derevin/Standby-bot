@@ -16,6 +16,7 @@ from settings import *
 from transliterate import translit
 from transliterate.base import TranslitLanguagePack, registry
 from utils.util_functions import *
+from itertools import combinations, permutations
 
 TOUCAN_PRAISE = """
 ░░░░░░░░▄▄▄▀▀▀▄▄███▄░░░░░░░░░░░░░░
@@ -51,6 +52,76 @@ YEEE = """
 ░░░░░░░░▀▀█▀▀▀▀░░░░░░█░░░░░
 ░░░░░░░░░█░░░░░░░░░░░░█░░░░
 """
+
+
+
+
+def add(lhs : int, rhs : int, pstr : str):
+    return (lhs + rhs, pstr + "+" + str(rhs))
+    
+def sub(lhs : int, rhs : int, pstr : str):
+    return (lhs - rhs, pstr + "-" +  str(rhs))
+    
+def mult(lhs : int, rhs : int, pstr : str):
+    if rhs == 0:
+        return (0, "")
+    return (lhs * rhs, "(" + pstr + ")*" + str(rhs))
+    
+def div(lhs : int, rhs : int, pstr : str):
+    return (lhs / rhs, "(" + pstr + ")/" +  str(rhs))
+
+operations = [add, sub, mult, div]
+
+
+def create_concat_combinations(digits):
+    combs = [digits.copy()]
+    for tupling_sz in range(2, len(digits) + 1):
+        for num_tupling in range(1, int(len(digits) / tupling_sz ) + 1):
+            perms = permutations(digits)
+            for perm in perms:
+                out = list(perm).copy()
+                coupled = []
+                for i in range(num_tupling):
+                    to_merge = perm[i*tupling_sz:i*tupling_sz+tupling_sz]
+                    merged = int("".join(map(str, to_merge)))
+                    coupled.append(merged)
+                    out = out[i*tupling_sz+tupling_sz:]
+                out.extend(coupled)
+                combs.append(out)
+                
+    for i in range(len(combs)):
+        combs[i] = sorted(combs[i])
+    
+    filtered_combs = []
+    for comb in combs:
+        if comb not in filtered_combs:
+            filtered_combs.append(comb)
+    return filtered_combs
+
+    
+async def dfs(target, current_target, current_digits, current_str):
+        # print (len(current_digits), "DFS", current_target, current_digits, current_str)
+        if current_target == target:
+            return current_str
+        
+        if not current_digits:
+            return ""
+            
+        for dig in current_digits:
+            new_digits = current_digits.copy()
+            new_digits.remove(dig)
+            for op in operations:
+                if op == div and dig == 0:
+                    continue
+                new_target, new_str = op(current_target, dig, current_str)
+                if op == div and not new_target.is_integer():
+                    continue
+                # print(new_target, new_str, op)
+                res = await dfs(target, int(new_target), new_digits, new_str)
+                if res:
+                    return res
+                    
+        return ""
 
 
 class Fun(commands.Cog):
@@ -557,6 +628,45 @@ class Fun(commands.Cog):
                 message += "."
 
             await interaction.send(message)
+
+    @nextcord.slash_command(description="Calculates how to 'math' a target number from given digits")
+    async def fabricate_number(self, interaction, wanted_result, comma_separated_digits):
+        try:
+            target = int(wanted_result)
+            digits = [int(i) for i in comma_separated_digits.split(',')]
+        except Exception as e:
+            await interaction.send(f"Bad input {e}")
+            return
+
+        if not digits or target == 0:
+            await interaction.send("Bad input - target must be non-zero and at least one digit must be provided")
+            return
+
+        await interaction.response.defer()
+
+        concatenations = create_concat_combinations(digits)
+        num_digit_combinations = len(concatenations)
+        did_cut = False
+        attempt_limit = 50000
+        if num_digit_combinations > attempt_limit: # make sure someone doesn't super bomb it
+            concatenations = concatenations[:attempt_limit]
+            did_cut = True
+        
+        for concat_digits in concatenations:
+            # print("testing", concat_digits)
+            for dig in concat_digits:
+                new_digits = concat_digits.copy()
+                new_digits.remove(dig)
+                res = await dfs(target, dig, new_digits, str(dig))
+                if res:
+                    msg = f"`{target}` from `{digits}` can be 'mathed' out this way:`{res}`"
+                    await interaction.send(msg)
+                    return 
+        
+        if did_cut:
+            await interaction.send(f"Nothing found in {attempt_limit}/{num_digit_combinations} combinations")
+        else:
+            await interaction.send(f"Nothing found in {num_digit_combinations} combinations")
 
     class YesOrNo(nextcord.ui.View):
         def __init__(self, intended_user):
