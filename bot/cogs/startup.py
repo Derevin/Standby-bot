@@ -42,7 +42,7 @@ async def log_restart_reason(bot):
                 ).astimezone(BOT_TZ)
                 timepast = timenow - datetime.timedelta(minutes=15)
                 if timepast < dt_commit_time:
-                    author = data["commit"]["committer"]["name"]
+                    author = data["author"]["login"]
                     message = data["commit"]["message"]
                     link = data["html_url"]
                     reason_found = (
