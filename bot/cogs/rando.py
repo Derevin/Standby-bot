@@ -85,6 +85,29 @@ class Rando(commands.Cog):
             ]
             await interaction.send(random.choice(phrases))
 
+    @rng.subcommand(description="Roll 4d6 drop lowest and repeat 6 times")
+    async def array(
+        self,
+        interaction: Interaction,
+    ):
+
+        message = "Rolling 4d6 drop lowest:"
+        final_array = []
+
+        for i in range(6):
+            res = [random.randint(1, 6) for i in range(4)]
+            m = str(min(res))
+            final_array.append(sum(res) - min(res))
+            formatted = "(" + re.sub(m, "~~" + m + "~~", str(res), 1)[1:-1] + ")"
+            message += f"\nRoll {i+1}:\t{formatted} = {final_array[-1]}"
+
+        final_array = map(str, final_array)
+        message += (
+            "\nFinal array: (" + ", ".join(list(reversed(sorted(final_array)))) + ")"
+        )
+
+        await interaction.send(message)
+
 
 def setup(bot):
     bot.add_cog(Rando(bot))
