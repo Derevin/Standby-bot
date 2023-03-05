@@ -60,8 +60,11 @@ async def uwu_resp(bot, message: nextcord.Message):
         txt = "I'll let you off with just a warning this time but I'd better not see you doing it again."
         await message.channel.send(txt)
     else:
-        warning = nextcord.File(get_local_static_path() + "/videos/warning.mp4")
-        await message.channel.send(file=warning)
+        if random.randint(1,2) == 1:
+            warning = nextcord.File(get_local_static_path() + "/videos/warning.mp4")
+            await message.channel.send(file=warning)
+        else:
+            await message.channel.send(get_local_static_path() + "/images/uwu.png")
 
 
 regex_uncategorized_commands.append((r"^[^\/]*(o|u|0)[wv]\1.*$", uwu_resp, re.M | re.I))
