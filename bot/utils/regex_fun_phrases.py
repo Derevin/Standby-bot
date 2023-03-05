@@ -76,6 +76,14 @@ regex_fun_phrases_commands.append(
     ("^.{0,2}wait (a )?minute.{0,4}$", wait_min_resp, re.M | re.I)
 )
 
+
+async def easy_peasy_resp(bot, message: nextcord.Message):
+    await message.channel.send("Lemon squeezy!")
+
+
+regex_fun_phrases_commands.append(
+    ("^\\W{0,4}easy peasy\\W{0,4}$", easy_peasy_resp, re.M | re.I)
+)
 ### wednesday
 
 
