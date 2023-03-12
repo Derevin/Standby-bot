@@ -1,8 +1,10 @@
 import json
+from math import ceil
 
 import nextcord
 import requests
 from nextcord.ext import commands
+from nextcord import SlashOption
 from settings import *
 
 
@@ -10,8 +12,10 @@ class GPT(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @nextcord.slash_command()
-    async def voidgpt(self, interaction, prompt):
+    @nextcord.slash_command(description="Ask, and the Void shall answer.")
+    async def voidgpt(
+        self, interaction, prompt=SlashOption(description="Your question")
+    ):
         await interaction.response.defer()
         resp = requests.request(
             "POST",
