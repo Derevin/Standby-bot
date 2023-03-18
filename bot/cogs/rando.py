@@ -101,10 +101,8 @@ class Rando(commands.Cog):
             formatted = "(" + re.sub(m, "~~" + m + "~~", str(res), 1)[1:-1] + ")"
             message += f"\nRoll {i+1}:\t{formatted} = {final_array[-1]}"
 
-        final_array = map(str, final_array)
-        message += (
-            "\nFinal array: (" + ", ".join(list(reversed(sorted(final_array)))) + ")"
-        )
+        final_array = map(str, sorted(final_array, reverse=True))
+        message += "\nFinal array: (" + ", ".join((final_array)) + ")"
 
         await interaction.send(message)
 
