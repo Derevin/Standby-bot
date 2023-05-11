@@ -138,7 +138,7 @@ async def log_buttons(bot, view, channel_id, message_id, params=None):
         view_type,
         channel_id,
         message_id,
-        json.dumps(params) if params else None,
+        json.dumps(params).replace("'", "''") if params else None,
     )
 
 

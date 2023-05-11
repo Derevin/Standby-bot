@@ -346,7 +346,7 @@ class Fun(commands.Cog):
     async def burger_context(self, interaction, user):
         await invoke_slash_command("burger", self, interaction, user)
 
-    @tasks.loop(minutes=1)
+    @tasks.loop(seconds=15)
     async def check_burger(self):
         try:
             gtable = await self.bot.pg_pool.fetch(
@@ -395,8 +395,9 @@ class Fun(commands.Cog):
                     random.shuffle(shuffled)
                     params["ordering"] = [answers.index(elem) for elem in shuffled]
                     params["attempted"] = []
+                    params["last_owner_id"] = user.id
 
-                    view = BurgerView(bot=self.bot, last_owner=user, **params)
+                    view = BurgerView(bot=self.bot, **params)
                     msg = await general.send(
                         (
                             f"After fending off the mold in {user.mention}'s fridge for a full week, the burger yearns for freedom!\n"
@@ -722,9 +723,9 @@ class Fun(commands.Cog):
 
 
 class BurgerView(nextcord.ui.View):
-    def __init__(self, last_owner, **params):
+    def __init__(self, **params):
         super().__init__(timeout=None)
-        self.last_owner = last_owner
+        self.last_owner_id = params["last_owner_id"]
         self.correct = params["correct"]
         self.attempted = params["attempted"]
         self.ordering = params["ordering"]
@@ -740,16 +741,17 @@ class BurgerView(nextcord.ui.View):
             self.bot = bot
 
         async def callback(self, interaction):
-            if interaction.user == self.last_owner:
-                await interaction.send(
-                    "The burger refuses to be held hostage any longer!", ephemeral=True
-                )
-                return
-            if interaction.user.id in self.view.attempted:
-                await interaction.send(
-                    "You may only attempt to answer once", ephemeral=True
-                )
-                return
+            # if interaction.user.id == self.view.last_owner_id:
+            #     await interaction.send(
+            #         "The burger refuses to be held hostage by you any longer!",
+            #         ephemeral=True,
+            #     )
+            #     return
+            # if interaction.user.id in self.view.attempted:
+            #     await interaction.send(
+            #         "You may only attempt to answer once", ephemeral=True
+            #     )
+            #     return
 
             if self.label in self.view.correct:
                 await interaction.response.defer()
@@ -804,7 +806,8 @@ class BurgerView(nextcord.ui.View):
                 params = records[0]["params"]
                 params = json.loads(params)
                 params["attempted"].append(interaction.user.id)
-                params = json.dumps(params)
+                params = json.dumps(params).replace("'", "''")
+                print(params)
                 await self.bot.pg_pool.execute(
                     f"UPDATE buttons SET params = '{params}' WHERE message_id = {interaction.message.id}"
                 )
