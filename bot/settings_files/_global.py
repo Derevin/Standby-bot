@@ -65,7 +65,7 @@ GENERAL_ID = 315247766739615745
 GIT_STATIC_URL = "https://raw.githubusercontent.com/Derevin/Standby-bot/main/static/"
 DARKNESS_ID = 238021076406370304
 AIRU_ID = 378272190782504960
-MAX_MENU_SIZE = 25
+MAX_MENU_SIZE = 24
 ROULETTE_TIMEOUT = datetime.timedelta(minutes=30)
 
 BURGER_QUESTIONS = [

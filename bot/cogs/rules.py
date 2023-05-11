@@ -481,6 +481,7 @@ class RoleChoiceView(nextcord.ui.View):
                 )
                 for role in roles
             ]
+            self.options.append(SelectOption(label="None"))
 
         async def callback(self, interaction):
             self.view.choice = self.values[0] if self.values else None
@@ -494,7 +495,7 @@ class RoleChoiceView(nextcord.ui.View):
 
         async def callback(self, interaction):
             await interaction.response.defer()
-            if self.role_type == "clan":
+            if self.role_type == "clan" and self.view.choice != "None":
                 alli = get_role(interaction.guild, "Alliance")
                 if alli not in interaction.user.roles:
                     await interaction.send(
@@ -502,13 +503,13 @@ class RoleChoiceView(nextcord.ui.View):
                         ephemeral=True,
                     )
                     return
-            role = get_role(interaction.guild, self.view.choice)
 
-            if role:
-                all_roles_of_type = get_roles_by_type(
-                    interaction.guild, DELIMITERS[self.role_type]
-                )
-                await interaction.user.remove_roles(*all_roles_of_type)
+            all_roles_of_type = get_roles_by_type(
+                interaction.guild, DELIMITERS[self.role_type]
+            )
+            await interaction.user.remove_roles(*all_roles_of_type)
+            if self.view.choice != "None":
+                role = get_role(interaction.guild, self.view.choice)
                 await interaction.user.add_roles(role)
 
 
