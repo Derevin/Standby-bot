@@ -54,21 +54,23 @@ YEEE = """
 """
 
 
-
-
-def add(lhs : int, rhs : int, pstr : str):
+def add(lhs: int, rhs: int, pstr: str):
     return (lhs + rhs, pstr + "+" + str(rhs))
-    
-def sub(lhs : int, rhs : int, pstr : str):
-    return (lhs - rhs, pstr + "-" +  str(rhs))
-    
-def mult(lhs : int, rhs : int, pstr : str):
+
+
+def sub(lhs: int, rhs: int, pstr: str):
+    return (lhs - rhs, pstr + "-" + str(rhs))
+
+
+def mult(lhs: int, rhs: int, pstr: str):
     if rhs == 0:
         return (0, "")
     return (lhs * rhs, "(" + pstr + ")*" + str(rhs))
-    
-def div(lhs : int, rhs : int, pstr : str):
-    return (lhs / rhs, "(" + pstr + ")/" +  str(rhs))
+
+
+def div(lhs: int, rhs: int, pstr: str):
+    return (lhs / rhs, "(" + pstr + ")/" + str(rhs))
+
 
 operations = [add, sub, mult, div]
 
@@ -76,52 +78,52 @@ operations = [add, sub, mult, div]
 def create_concat_combinations(digits):
     combs = [digits.copy()]
     for tupling_sz in range(2, len(digits) + 1):
-        for num_tupling in range(1, int(len(digits) / tupling_sz ) + 1):
+        for num_tupling in range(1, int(len(digits) / tupling_sz) + 1):
             perms = permutations(digits)
             for perm in perms:
                 out = list(perm).copy()
                 coupled = []
                 for i in range(num_tupling):
-                    to_merge = perm[i*tupling_sz:i*tupling_sz+tupling_sz]
+                    to_merge = perm[i * tupling_sz : i * tupling_sz + tupling_sz]
                     merged = int("".join(map(str, to_merge)))
                     coupled.append(merged)
-                    out = out[i*tupling_sz+tupling_sz:]
+                    out = out[i * tupling_sz + tupling_sz :]
                 out.extend(coupled)
                 combs.append(out)
-                
+
     for i in range(len(combs)):
         combs[i] = sorted(combs[i])
-    
+
     filtered_combs = []
     for comb in combs:
         if comb not in filtered_combs:
             filtered_combs.append(comb)
     return filtered_combs
 
-    
+
 async def dfs(target, current_target, current_digits, current_str):
-        # print (len(current_digits), "DFS", current_target, current_digits, current_str)
-        if current_target == target:
-            return current_str
-        
-        if not current_digits:
-            return ""
-            
-        for dig in current_digits:
-            new_digits = current_digits.copy()
-            new_digits.remove(dig)
-            for op in operations:
-                if op == div and dig == 0:
-                    continue
-                new_target, new_str = op(current_target, dig, current_str)
-                if op == div and not new_target.is_integer():
-                    continue
-                # print(new_target, new_str, op)
-                res = await dfs(target, int(new_target), new_digits, new_str)
-                if res:
-                    return res
-                    
+    # print (len(current_digits), "DFS", current_target, current_digits, current_str)
+    if current_target == target:
+        return current_str
+
+    if not current_digits:
         return ""
+
+    for dig in current_digits:
+        new_digits = current_digits.copy()
+        new_digits.remove(dig)
+        for op in operations:
+            if op == div and dig == 0:
+                continue
+            new_target, new_str = op(current_target, dig, current_str)
+            if op == div and not new_target.is_integer():
+                continue
+            # print(new_target, new_str, op)
+            res = await dfs(target, int(new_target), new_digits, new_str)
+            if res:
+                return res
+
+    return ""
 
 
 class Fun(commands.Cog):
@@ -193,7 +195,6 @@ class Fun(commands.Cog):
             description="Enter a search term for the meme you want to post",
         ),
     ):
-
         if query == "help":
             all_memes = []
             for filename in os.listdir("static/images/memes"):
@@ -376,7 +377,18 @@ class Fun(commands.Cog):
 
                     await user.remove_roles(burgered)
 
-                    params = random.choice(BURGER_QUESTIONS)
+                    try:
+                        response = requests.get(
+                            "https://the-trivia-api.com/v2/questions?limit=1"
+                        )
+                        data = json.loads(response.text)[0]
+                        params = {
+                            "question": data["question"]["text"],
+                            "correct": [data["correctAnswer"]],
+                            "wrong": data["incorrectAnswers"],
+                        }
+                    except Exception:
+                        params = random.choice(BURGER_QUESTIONS)
 
                     answers = [*params["correct"], *params["wrong"]]
                     shuffled = answers.copy()
@@ -384,7 +396,7 @@ class Fun(commands.Cog):
                     params["ordering"] = [answers.index(elem) for elem in shuffled]
                     params["attempted"] = []
 
-                    view = BurgerView(bot=self.bot, **params)
+                    view = BurgerView(bot=self.bot, last_owner=user, **params)
                     msg = await general.send(
                         (
                             f"After fending off the mold in {user.mention}'s fridge for a full week, the burger yearns for freedom!\n"
@@ -397,7 +409,7 @@ class Fun(commands.Cog):
                         view,
                         general.id,
                         msg.id,
-                        json.dumps(params),
+                        params,
                     )
                     await self.bot.pg_pool.execute(
                         f"""DELETE FROM tmers WHERE ttype = {DB_TMER_BURGER};"""
@@ -427,7 +439,6 @@ class Fun(commands.Cog):
             style=nextcord.ButtonStyle.blurple,
         )
         async def press(self, button: nextcord.ui.Button, interaction=Interaction):
-
             if self.creator == interaction.user and self.value:
                 self.stop()
 
@@ -535,7 +546,6 @@ class Fun(commands.Cog):
 
     @nextcord.slash_command(description="Do you feel lucky?")
     async def roulette(self, interaction):
-
         cooldown = await self.bot.pg_pool.fetch(
             f"SELECT * FROM tmers WHERE usr_id = {interaction.user.id} AND ttype = {DB_TMER_ROULETTE}"
         )
@@ -561,7 +571,6 @@ class Fun(commands.Cog):
         lose = random.randint(1, 6) == 6
 
         if lose:
-
             await self.bot.pg_pool.execute(
                 f"""
             UPDATE usr
@@ -586,7 +595,6 @@ class Fun(commands.Cog):
             await interaction.send(message)
 
         else:
-
             current_streak = stats[0]["current_roulette_streak"]
             max_streak = stats[0]["max_roulette_streak"]
 
@@ -629,17 +637,23 @@ class Fun(commands.Cog):
 
             await interaction.send(message)
 
-    @nextcord.slash_command(description="Calculates how to 'math' a target number from given digits")
-    async def fabricate_number(self, interaction, wanted_result, comma_separated_digits):
+    @nextcord.slash_command(
+        description="Calculates how to 'math' a target number from given digits"
+    )
+    async def fabricate_number(
+        self, interaction, wanted_result, comma_separated_digits
+    ):
         try:
             target = int(wanted_result)
-            digits = [int(i) for i in comma_separated_digits.split(',')]
+            digits = [int(i) for i in comma_separated_digits.split(",")]
         except Exception as e:
             await interaction.send(f"Bad input {e}")
             return
 
         if not digits or target == 0:
-            await interaction.send("Bad input - target must be non-zero and at least one digit must be provided")
+            await interaction.send(
+                "Bad input - target must be non-zero and at least one digit must be provided"
+            )
             return
 
         await interaction.response.defer()
@@ -648,10 +662,12 @@ class Fun(commands.Cog):
         num_digit_combinations = len(concatenations)
         did_cut = False
         attempt_limit = 50000
-        if num_digit_combinations > attempt_limit: # make sure someone doesn't super bomb it
+        if (
+            num_digit_combinations > attempt_limit
+        ):  # make sure someone doesn't super bomb it
             concatenations = concatenations[:attempt_limit]
             did_cut = True
-        
+
         for concat_digits in concatenations:
             # print("testing", concat_digits)
             for dig in concat_digits:
@@ -661,12 +677,16 @@ class Fun(commands.Cog):
                 if res:
                     msg = f"`{target}` from `{digits}` can be 'mathed' out this way:`{res}`"
                     await interaction.send(msg)
-                    return 
-        
+                    return
+
         if did_cut:
-            await interaction.send(f"Nothing found in {attempt_limit}/{num_digit_combinations} combinations")
+            await interaction.send(
+                f"Nothing found in {attempt_limit}/{num_digit_combinations} combinations"
+            )
         else:
-            await interaction.send(f"Nothing found in {num_digit_combinations} combinations")
+            await interaction.send(
+                f"Nothing found in {num_digit_combinations} combinations"
+            )
 
     class YesOrNo(nextcord.ui.View):
         def __init__(self, intended_user):
@@ -680,7 +700,6 @@ class Fun(commands.Cog):
             style=nextcord.ButtonStyle.green,
         )
         async def yes_button(self, button: nextcord.ui.Button, interaction=Interaction):
-
             if interaction.user == self.intended_user:
                 self.yes = True
                 self.stop()
@@ -692,7 +711,6 @@ class Fun(commands.Cog):
 
         @nextcord.ui.button(label="No", style=nextcord.ButtonStyle.red)
         async def no_button(self, button: nextcord.ui.Button, interaction=Interaction):
-
             if interaction.user == self.intended_user:
                 self.yes = False
                 self.stop()
@@ -704,8 +722,9 @@ class Fun(commands.Cog):
 
 
 class BurgerView(nextcord.ui.View):
-    def __init__(self, **params):
+    def __init__(self, last_owner, **params):
         super().__init__(timeout=None)
+        self.last_owner = last_owner
         self.correct = params["correct"]
         self.attempted = params["attempted"]
         self.ordering = params["ordering"]
@@ -721,6 +740,11 @@ class BurgerView(nextcord.ui.View):
             self.bot = bot
 
         async def callback(self, interaction):
+            if interaction.user == self.last_owner:
+                await interaction.send(
+                    "The burger refuses to be held hostage any longer!", ephemeral=True
+                )
+                return
             if interaction.user.id in self.view.attempted:
                 await interaction.send(
                     "You may only attempt to answer once", ephemeral=True
