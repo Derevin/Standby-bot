@@ -38,7 +38,6 @@ def get_channel(guild, name):
 
 
 def get_user(guild, query):
-
     if re.search(r".*#\d{4}$", query):
         query, tag = re.split(" ?#", query)
     else:
@@ -99,11 +98,14 @@ async def get_mentioned_users(text, guild):
 
 
 def get_roles_by_type(guild, type_):
-    start, stop = [
-        i
-        for i in range(len(guild.roles))
-        if guild.roles[i].name.lower() == type_.lower()
-    ][0:2]
+    try:
+        start, stop = [
+            i
+            for i in range(len(guild.roles))
+            if guild.roles[i].name.lower() == type_.lower()
+        ][0:2]
+    except ValueError:
+        return []
     roles = guild.roles[start + 1 : stop]
     roles.sort(key=lambda role: role.name)
     return roles
@@ -114,7 +116,6 @@ def get_local_static_path():
 
 
 def id_to_mention(id, id_type="user"):
-
     id = str(id)
 
     if id_type == "user":
@@ -130,7 +131,6 @@ def id_to_mention(id, id_type="user"):
 
 
 async def log_buttons(bot, view, channel_id, message_id, params=None):
-
     view_type = view.__class__.__module__ + " " + view.__class__.__name__
     await bot.pg_pool.execute(
         """INSERT INTO buttons (type, channel_id, message_id, params) """
@@ -138,12 +138,11 @@ async def log_buttons(bot, view, channel_id, message_id, params=None):
         view_type,
         channel_id,
         message_id,
-        params,
+        json.dumps(params) if params else None,
     )
 
 
 def simpsons_error_image(dad, son, text=None, filename="error.png"):
-
     dad_url = dad.display_avatar.url
     son_url = son.display_avatar.url
 
@@ -167,7 +166,6 @@ def simpsons_error_image(dad, son, text=None, filename="error.png"):
     template.paste(son, (655, 344), son)
 
     if text:
-
         text = text.upper()
 
         draw = ImageDraw.Draw(template)
@@ -222,7 +220,6 @@ def simpsons_error_image(dad, son, text=None, filename="error.png"):
 
 
 def get_text_dimensions(text, font):
-
     ascent, descent = font.getmetrics()
 
     width = font.getmask(text).getbbox()[2]
@@ -249,7 +246,6 @@ async def log_or_update_db_note(bot, key, value):
 
 
 def get_tweet_data(tweet_id):
-
     request_url = (
         f"https://api.twitter.com/2/tweets/{tweet_id}?tweet.fields=attachments"
     )
@@ -266,7 +262,6 @@ def get_tweet_data(tweet_id):
 
 
 async def invoke_slash_command(name, self, *args):
-
     slash_command = [
         command
         for command in self.bot.get_all_application_commands()

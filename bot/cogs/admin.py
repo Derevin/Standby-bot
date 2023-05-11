@@ -68,6 +68,22 @@ class Admin(commands.Cog):
     async def ping(self, interaction):
         await interaction.send("Ponguu!")
 
+        # REMOVE
+        if interaction.user.id == FEL_ID:
+            from cogs.rules import RoleChoiceView
+
+            color_embed = nextcord.Embed(color=VIE_PURPLE)
+            color_embed.title = (
+                "Step 4 - Use the menu below if you want a different display color "
+                "than the one provided by your clan"
+            )
+            view = RoleChoiceView(guild=interaction.guild, role_type="color")
+            rules_ch = get_channel(interaction.guild, "rules")
+            color_msg = await rules_ch.send(embed=color_embed, view=view)
+            await log_buttons(
+                self.bot, view, rules_ch.id, color_msg.id, {"role_type": "color"}
+            )
+
     @nextcord.slash_command(
         description="Print a variable", default_member_permissions=MODS_AND_GUIDES
     )
@@ -302,7 +318,6 @@ class Admin(commands.Cog):
         id=SlashOption(description="ID of the message to react to"),
         emotes=SlashOption(description="Emotes to react with"),
     ):
-
         try:
             msg = await channel.fetch_message(id)
         except:
@@ -472,7 +487,6 @@ class Admin(commands.Cog):
         interaction,
         offender: nextcord.Member = SlashOption(description="The user to jail"),
     ):
-
         roles = [role.name for role in offender.roles]
         if any([mod_role in roles for mod_role in MOD_ROLES]):
             await interaction.send(
@@ -546,7 +560,6 @@ class Admin(commands.Cog):
         interaction,
         target: nextcord.Member = SlashOption(description="The user to be voidified"),
     ):
-
         if interaction.user.id != JORM_ID:
             await interaction.send(
                 "Jorm alone controls the void. Access denied.", ephemeral=True
@@ -589,7 +602,6 @@ class Admin(commands.Cog):
             description="Table to print", choices=["bdays", "tmers", "buttons"]
         ),
     ):
-
         try:
             gtable = await self.bot.pg_pool.fetch(f"SELECT * FROM {table}")
         except Exception:
@@ -627,7 +639,6 @@ class Admin(commands.Cog):
         ),
         name=SlashOption(description="The name to use for the emoji"),
     ):
-
         if new_emoji := await add_external_emoji(interaction, emoji, name):
             await interaction.send(f"Successfully added {new_emoji}", ephemeral=True)
         else:
@@ -753,7 +764,6 @@ async def move_or_copy_message(interaction, id, from_channel, to_channel):
 
 
 def message_embed(msg, cmd, trigger_author) -> nextcord.Embed:
-
     embed_titles = {
         "copy": "Copied message",
         "move": "Moved message",

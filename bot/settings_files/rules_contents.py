@@ -1,4 +1,4 @@
-RULES_CHANNEL_NAME = "rules"
+RULES_CHANNEL_NAME = "getting-started"
 BOT_SPAM_ID = 343465942199828481
 GIVEAWAYS_ID = 366906148500275200
 TICKET_CHANNEL_ID = 994974670275223673
@@ -27,8 +27,7 @@ GENERAL_INFO = f"""Talking in the server awards XP - you need Level 3 to access 
         4 Warns = Banned for 7 days
         5 Warns = Permanent ban"""
 
-CLAN_ROLES_DELIMITER = "Clans"
-OPT_IN_ROLES_DELIMITER = "Opt-in"
+DELIMITERS = {"clan": "Clans", "opt-in": "Opt-in", "color": "Colors"}
 
 PRIO_ROLES = ["UpdateSquad", "Vie for the Void"]
 

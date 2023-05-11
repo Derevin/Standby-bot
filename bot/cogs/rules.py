@@ -21,13 +21,13 @@ class Rules(commands.Cog):
         self.kick_inactives.cancel()
 
     @nextcord.slash_command(
-        description="Commands for setting up and editing the #rules channel",
+        description=f"Commands for setting up and editing the #{RULES_CHANNEL_NAME} channel",
         default_member_permissions=MODS_ONLY,
     )
     async def rule(self, interaction):
         pass
 
-    @rule.subcommand(description="Add all posts to the rules channel")
+    @rule.subcommand(description=f"Add all posts to the #{RULES_CHANNEL_NAME} channel")
     async def create(
         self,
         interaction,
@@ -74,9 +74,11 @@ class Rules(commands.Cog):
         clan_embed = nextcord.Embed(color=VIE_PURPLE)
 
         clan_embed.title = "Step 2 - If you're part of the Warframe alliance, use the menu below to select your clan."
-        view = ClanView(guild=vie)
+        view = RoleChoiceView(guild=vie, role_type="clan")
         clan_msg = await rules_ch.send(embed=clan_embed, view=view)
-        await log_buttons(self.bot, view, rules_ch.id, clan_msg.id)
+        await log_buttons(
+            self.bot, view, rules_ch.id, clan_msg.id, {"role_type": "clan"}
+        )
 
         await asyncio.sleep(delay)
 
@@ -88,6 +90,17 @@ class Rules(commands.Cog):
         view = OptInView(guild=vie)
         opt_msg = await rules_ch.send(embed=opt_embed, view=view)
         await log_buttons(self.bot, view, rules_ch.id, opt_msg.id)
+
+        color_embed = nextcord.Embed(color=VIE_PURPLE)
+        color_embed.title = (
+            "Step 4 - Use the menu below if you want a different display color "
+            "than the one provided by your clan"
+        )
+        view = RoleChoiceView(guild=vie, role_type="color")
+        color_msg = await rules_ch.send(embed=color_embed, view=view)
+        await log_buttons(
+            self.bot, view, rules_ch.id, color_msg.id, {"role_type": "color"}
+        )
 
         await asyncio.sleep(delay)
 
@@ -181,7 +194,6 @@ class Rules(commands.Cog):
             description="Number of the rule to remove", min_value=1
         ),
     ):
-
         rules_ch = get_channel(interaction.guild, RULES_CHANNEL_NAME)
         rules_msg = await rules_ch.fetch_message(RULES_MESSAGE_ID)
         embed = rules_msg.embeds[0]
@@ -206,7 +218,6 @@ class Rules(commands.Cog):
         ),
         new_text=SlashOption(description="New text of the rule"),
     ):
-
         rules_ch = get_channel(interaction.guild, RULES_CHANNEL_NAME)
         rules_msg = await rules_ch.fetch_message(RULES_MESSAGE_ID)
         embed = rules_msg.embeds[0]
@@ -267,13 +278,15 @@ class Rules(commands.Cog):
 async def welcome_message(bot, member):
     if member.guild.id == GUILD_ID:
         general = nextcord.utils.get(member.guild.text_channels, name="general")
-        rules_ch = nextcord.utils.get(member.guild.text_channels, name="rules")
-        rules_text = rules_ch.mention if rules_ch else "rules"
+        rules_ch = nextcord.utils.get(
+            member.guild.text_channels, name=RULES_CHANNEL_NAME
+        )
+        rules_text = rules_ch.mention if rules_ch else f"#{RULES_CHANNEL_NAME}"
         if general:
             message = (
                 f"Welcome {member.mention}!\n"
                 "Wondering why the server seems so void of channels?\n"
-                f"Please read the {rules_text} to unlock the full server!\n"
+                f"Please read the rules in {rules_text} to unlock the full server!\n"
                 "https://www.youtube.com/watch?v=67h8GyNgEmA"
             )
             await general.send(message)
@@ -371,7 +384,6 @@ async def role_handler(bot, payload):
 
 
 async def level3_handler(before, after):
-
     if len(after.roles) - len(before.roles) != 1:
         return
 
@@ -421,74 +433,82 @@ class StepOneView(nextcord.ui.View):
             await interaction.user.remove_roles(alli)
             await interaction.user.add_roles(comm)
 
-            all_clan_roles = get_roles_by_type(interaction.guild, CLAN_ROLES_DELIMITER)
+            all_clan_roles = get_roles_by_type(interaction.guild, DELIMITERS["clan"])
 
             await interaction.user.remove_roles(*all_clan_roles)
 
 
-class ClanView(nextcord.ui.View):
+class RoleChoiceView(nextcord.ui.View):
     def __init__(self, **params):
         super().__init__(timeout=None)
         self.choice = None
         guild = params["guild"]
-        all_clans = get_roles_by_type(guild, CLAN_ROLES_DELIMITER)
-        all_clans.sort(
-            key=lambda clan: (
+        role_type = params.get("role_type", "clan")
+        type_delimiter = DELIMITERS[role_type]
+        all_roles = get_roles_by_type(guild, type_delimiter)
+        all_roles.sort(
+            key=lambda role: (
                 "0"
-                if clan.name in PRIO_ROLES
+                if role.name in PRIO_ROLES
                 else "1"
-                if clan.name in ROLE_DESCRIPTIONS
+                if role.name in ROLE_DESCRIPTIONS
                 else "2"
             )
-            + clan.name
+            + role.name
         )
-        num_groups = ceil(len(all_clans) / MAX_MENU_SIZE)
-        group_size = ceil(len(all_clans) / num_groups)
+        num_groups = ceil(len(all_roles) / MAX_MENU_SIZE)
+        group_size = ceil(len(all_roles) / num_groups)
         groups = [
-            all_clans[(group_size * i) : (group_size * (i + 1))]
+            all_roles[(group_size * i) : (group_size * (i + 1))]
             for i in range(num_groups)
         ]
         for idx, group in enumerate(groups):
-            self.add_item(self.ClanSelect(group, idx, num_groups))
-        self.add_item(self.ClanConfirm())
+            self.add_item(self.RoleSelect(role_type, group, idx, num_groups))
+        self.add_item(self.RoleConfirm(role_type))
 
-    class ClanSelect(nextcord.ui.Select):
-        def __init__(self, clans, idx, total):
-            text = "Select your clan"
+    class RoleSelect(nextcord.ui.Select):
+        def __init__(self, role_type, roles, idx, total):
+            text = f"Select your {role_type}"
             if total > 1:
                 text += f" ({idx+1}/{total})"
             super().__init__(placeholder=text, min_values=0)
             self.options = [
                 SelectOption(
-                    label=clan.name,
-                    description=ROLE_DESCRIPTIONS[clan.name]
-                    if clan.name in ROLE_DESCRIPTIONS
+                    label=role.name,
+                    description=ROLE_DESCRIPTIONS[role.name]
+                    if role.name in ROLE_DESCRIPTIONS
                     else None,
                 )
-                for clan in clans
+                for role in roles
             ]
 
         async def callback(self, interaction):
             self.view.choice = self.values[0] if self.values else None
 
-    class ClanConfirm(nextcord.ui.Button):
-        def __init__(self):
-            super().__init__(style=nextcord.ButtonStyle.blurple, label="Choose clan")
+    class RoleConfirm(nextcord.ui.Button):
+        def __init__(self, role_type):
+            self.role_type = role_type
+            super().__init__(
+                style=nextcord.ButtonStyle.blurple, label=f"Choose  {role_type}"
+            )
 
         async def callback(self, interaction):
-
             await interaction.response.defer()
-            alli = get_role(interaction.guild, "Alliance")
-            if alli not in interaction.user.roles:
-                await interaction.send(
-                    "Please confirm you're part of the Warframe alliance in Step 1 before choosing a clan",
-                    ephemeral=True,
-                )
-                return
+            if self.role_type == "clan":
+                alli = get_role(interaction.guild, "Alliance")
+                if alli not in interaction.user.roles:
+                    await interaction.send(
+                        "Please confirm you're part of the Warframe alliance in Step 1 before choosing a clan",
+                        ephemeral=True,
+                    )
+                    return
             role = get_role(interaction.guild, self.view.choice)
-            all_clan_roles = get_roles_by_type(interaction.guild, CLAN_ROLES_DELIMITER)
+
             if role:
-                await interaction.user.remove_roles(*all_clan_roles)
+                all_roles_of_type = get_roles_by_type(
+                    interaction.guild, DELIMITERS[self.role_type]
+                )
+                await interaction.user.remove_roles(*all_roles_of_type)
                 await interaction.user.add_roles(role)
 
 
@@ -496,7 +516,7 @@ class OptInView(nextcord.ui.View):
     def __init__(self, **params):
         guild = params["guild"]
         super().__init__(timeout=None)
-        opt_in_roles = get_roles_by_type(guild, OPT_IN_ROLES_DELIMITER)
+        opt_in_roles = get_roles_by_type(guild, DELIMITERS["opt-in"])
         groups = [
             opt_in_roles[i : i + MAX_MENU_SIZE]
             for i in range(0, len(opt_in_roles), MAX_MENU_SIZE)
