@@ -24,7 +24,6 @@ class Logs(commands.Cog):
 
     @commands.Cog.listener()
     async def on_raw_message_edit(self, payload):
-
         embed = await edited_embed(self.bot, payload)
         if embed:
             channel = self.bot.get_channel(payload.channel_id)
@@ -35,7 +34,6 @@ class Logs(commands.Cog):
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
-
         if before.channel == after.channel:
             return
 
@@ -48,15 +46,21 @@ class Logs(commands.Cog):
 
     @commands.Cog.listener()
     async def on_interaction(self, interaction):
-        if interaction.type != nextcord.InteractionType.application_command:
-            return
-
         guild = interaction.guild
         logs = nextcord.utils.get(guild.text_channels, name=LOGS_CHANNEL_NAME)
 
         if logs:
-            embed = await command_embed(interaction)
-            await logs.send(embed=embed)
+            if interaction.type == nextcord.InteractionType.application_command:
+                embed = await command_embed(interaction)
+                await logs.send(embed=embed)
+
+            elif interaction.type == nextcord.InteractionType.component:
+                embed = await component_embed(interaction)
+                await logs.send(embed=embed)
+            else:
+                await logs.send(
+                    f"Unknown interaction in {interaction.channel.mention}."
+                )
 
 
 async def deleted_embed(payload, channel):
@@ -89,7 +93,6 @@ async def deleted_embed(payload, channel):
 
 
 async def edited_embed(bot, payload):
-
     before = payload.cached_message
     after = payload.data
     if "content" in after:
@@ -99,7 +102,6 @@ async def edited_embed(bot, payload):
     attachment_url = None
 
     if before:
-
         author = before.author
         if author.bot:
             return None
@@ -115,7 +117,6 @@ async def edited_embed(bot, payload):
         attachment_url = before.attachments[0].url if before.attachments else None
 
     else:
-
         before_message = "[Message not found in cache]"
 
         guild_id = after["guild_id"]
@@ -183,7 +184,6 @@ async def voice_embed(member, before, after):
 
 
 async def command_embed(interaction):
-
     cmd_name = interaction.application_command.name
     cmd_type = str(interaction.application_command.type).split(".")[-1]
     if cmd_type == "chat_input":
@@ -212,13 +212,11 @@ async def command_embed(interaction):
     embed.add_field(name="In channel", value=interaction.channel.mention)
 
     if cmd_type == "User":
-
         embed.add_field(
             name="Target user", value=id_to_mention(interaction.data["target_id"])
         )
 
     elif cmd_type == "Message":
-
         message_id = interaction.data["target_id"]
         message = await interaction.channel.fetch_message(message_id)
 
@@ -227,7 +225,6 @@ async def command_embed(interaction):
         )
 
     elif "options" in interaction.data:  # Slash
-
         embed.add_field(name=EMPTY, value=EMPTY)
 
         arg_data = interaction.data["options"]
@@ -251,6 +248,38 @@ async def command_embed(interaction):
         embed.set_thumbnail(url=avatar_url)
 
     embed.timestamp = nextcord.utils.utcnow()
+
+    return embed
+
+
+async def component_embed(interaction):
+    embed = nextcord.Embed(color=VIE_PURPLE)
+    avatar_url = interaction.user.display_avatar.url
+    if avatar_url:
+        embed.set_thumbnail(url=avatar_url)
+    data = interaction.data
+    if data["component_type"] == 2:  # Button
+        embed.title = f"Button pressed"
+        embed.add_field(name="Pressed by", value=interaction.user.mention)
+        embed.add_field(name="In channel", value=interaction.channel.mention)
+    elif data["component_type"] == 3:  # Select
+        embed.title = "Dropdown menu used"
+        embed.add_field(name="Used by", value=interaction.user.mention)
+        embed.add_field(name="In channel", value=interaction.channel.mention)
+        name = "Value" + ("s" if len(data["values"]) > 1 else "")
+        value = ", ".join(data["values"])
+        if not value:
+            value = "[Menu cleared]"
+        embed.add_field(name=name, value=value)
+    else:
+        embed.title = f"Unknown component type {data['component_type']}"
+        embed.add_field(name="Used by", value=interaction.user.mention)
+        embed.add_field(name="In channel", value=interaction.channel.mention)
+    embed.add_field(
+        name="Link to message",
+        value=f"[Click here]({interaction.message.jump_url})",
+        inline=False,
+    )
 
     return embed
 
