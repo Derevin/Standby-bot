@@ -68,22 +68,6 @@ class Admin(commands.Cog):
     async def ping(self, interaction):
         await interaction.send("Ponguu!")
 
-        # REMOVE
-        if interaction.user.id == FEL_ID:
-            from cogs.rules import RoleChoiceView
-
-            color_embed = nextcord.Embed(color=VIE_PURPLE)
-            color_embed.title = (
-                "Step 4 - Use the menu below if you want a different display color "
-                "than the one provided by your clan"
-            )
-            view = RoleChoiceView(guild=interaction.guild, role_type="color")
-            rules_ch = get_channel(interaction.guild, "rules")
-            color_msg = await rules_ch.send(embed=color_embed, view=view)
-            await log_buttons(
-                self.bot, view, rules_ch.id, color_msg.id, {"role_type": "color"}
-            )
-
     @nextcord.slash_command(
         description="Print a variable", default_member_permissions=MODS_AND_GUIDES
     )
