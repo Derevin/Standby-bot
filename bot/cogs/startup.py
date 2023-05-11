@@ -55,7 +55,6 @@ async def log_restart_reason(bot):
 
 
 async def reconnect_buttons(bot):
-
     guild = bot.get_guild(GUILD_ID)
 
     buttons = await bot.pg_pool.fetch(f"SELECT * FROM buttons")
@@ -84,12 +83,11 @@ async def reconnect_buttons(bot):
 
             params = json.loads(button["params"]) if button["params"] else {}
 
-            view = createView(button["type"], bot=bot, guild=guild, **params)
+            view = create_view(button["type"], bot=bot, guild=guild, **params)
             await message.edit(view=view)
 
 
-def createView(view_type, **params):
-
+def create_view(view_type, **params):
     package_name, view_name = view_type.split(" ")
 
     pkg = importlib.import_module(package_name)
