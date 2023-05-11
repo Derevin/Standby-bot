@@ -132,7 +132,7 @@ CREATE TABLE IF NOT EXISTS "buttons" (
 """
 
 ALTER_BUTTONS = """
-ALTER TABLE "buttons"  SET type = REPLACE(type, 'ClanView', 'RoleChoiceView')
+UPDATE "buttons"  SET type = REPLACE(type, 'ClanView', 'RoleChoiceView')
 """
 
 
