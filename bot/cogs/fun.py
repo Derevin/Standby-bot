@@ -353,68 +353,67 @@ class Fun(commands.Cog):
                 f"SELECT * FROM tmers WHERE ttype = {DB_TMER_BURGER}"
             )
             for rec in gtable:
-                if rec["ttype"] == DB_TMER_BURGER:
-                    timenow = datetime.datetime.now()
-                    if timenow <= rec["expires"]:
-                        continue
+                timenow = datetime.datetime.now()
+                if timenow <= rec["expires"]:
+                    continue
 
-                    print(f"record expired: {rec}")
+                print(f"record expired: {rec}")
 
-                    guild = self.bot.get_guild(GUILD_ID)
+                guild = self.bot.get_guild(GUILD_ID)
 
-                    if not guild:
-                        print("no guild")
-                        return
+                if not guild:
+                    print("no guild")
+                    return
 
-                    general = await guild.fetch_channel(GENERAL_ID)
-                    user = await guild.fetch_member(rec["usr_id"])
-                    burgered = get_role(guild, "Burgered")
-                    if len(burgered.members) > 1:
-                        maint = await guild.fetch_channel(ERROR_CHANNEL_ID)
-                        await maint.send(
-                            f"Multiple burgers detected: {', '.join([usr.mention for usr in burgered.members])}"
-                        )
-
-                    await user.remove_roles(burgered)
-
-                    try:
-                        response = requests.get(
-                            "https://the-trivia-api.com/v2/questions?limit=1"
-                        )
-                        data = json.loads(response.text)[0]
-                        params = {
-                            "question": data["question"]["text"],
-                            "correct": [data["correctAnswer"]],
-                            "wrong": data["incorrectAnswers"],
-                        }
-                    except Exception:
-                        params = random.choice(BURGER_QUESTIONS)
-
-                    answers = [*params["correct"], *params["wrong"]]
-                    shuffled = answers.copy()
-                    random.shuffle(shuffled)
-                    params["ordering"] = [answers.index(elem) for elem in shuffled]
-                    params["attempted"] = []
-                    params["last_owner_id"] = user.id
-
-                    view = BurgerView(bot=self.bot, **params)
-                    msg = await general.send(
-                        (
-                            f"After fending off the mold in {user.mention}'s fridge for a full week, the burger yearns for freedom!\n"
-                            f"To claim it, answer the following question:\n \n{params['question']}"
-                        ),
-                        view=view,
+                general = await guild.fetch_channel(GENERAL_ID)
+                user = await guild.fetch_member(rec["usr_id"])
+                burgered = get_role(guild, "Burgered")
+                if len(burgered.members) > 1:
+                    maint = await guild.fetch_channel(ERROR_CHANNEL_ID)
+                    await maint.send(
+                        f"Multiple burgers detected: {', '.join([usr.mention for usr in burgered.members])}"
                     )
-                    await log_buttons(
-                        self.bot,
-                        view,
-                        general.id,
-                        msg.id,
-                        params,
+
+                await user.remove_roles(burgered)
+
+                try:
+                    response = requests.get(
+                        "https://the-trivia-api.com/v2/questions?limit=1"
                     )
-                    await self.bot.pg_pool.execute(
-                        f"""DELETE FROM tmers WHERE ttype = {DB_TMER_BURGER};"""
-                    )
+                    data = json.loads(response.text)[0]
+                    params = {
+                        "question": data["question"]["text"],
+                        "correct": [data["correctAnswer"]],
+                        "wrong": data["incorrectAnswers"],
+                    }
+                except Exception:
+                    params = random.choice(BURGER_QUESTIONS)
+
+                answers = [*params["correct"], *params["wrong"]]
+                shuffled = answers.copy()
+                random.shuffle(shuffled)
+                params["ordering"] = [answers.index(elem) for elem in shuffled]
+                params["attempted"] = []
+                params["last_owner_id"] = user.id
+
+                view = BurgerView(bot=self.bot, **params)
+                msg = await general.send(
+                    (
+                        f"After fending off the mold in {user.mention}'s fridge for a full week, the burger yearns for freedom!\n"
+                        f"To claim it, answer the following question:\n \n{params['question']}"
+                    ),
+                    view=view,
+                )
+                await log_buttons(
+                    self.bot,
+                    view,
+                    general.id,
+                    msg.id,
+                    params,
+                )
+                await self.bot.pg_pool.execute(
+                    f"""DELETE FROM tmers WHERE ttype = {DB_TMER_BURGER};"""
+                )
 
         except AttributeError:  # bot hasn't loaded yet and pg_pool doesn't exist
             return
@@ -764,6 +763,12 @@ class BurgerView(nextcord.ui.View):
                 )
                 await interaction.send(
                     f"{interaction.user.mention} has claimed the burger! Now use it wisely."
+                )
+                await self.bot.pg_pool.execute(
+                    (
+                        f"DELETE from buttons WHERE channel_id = {interaction.channel.id}"
+                        f" AND message_id = {interaction.message.id}"
+                    )
                 )
 
                 await get_or_insert_usr(
