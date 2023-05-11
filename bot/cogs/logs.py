@@ -260,6 +260,15 @@ async def component_embed(interaction):
     data = interaction.data
     if data["component_type"] == 2:  # Button
         embed.title = f"Button pressed"
+        labels = [
+            child.label
+            for row in interaction.message.components
+            for child in row.children
+            if child.custom_id == data["custom_id"]
+        ]
+        embed.add_field(
+            name="Button", value=labels[0] if len(labels) == 1 else "Unknown"
+        )
         embed.add_field(name="Pressed by", value=interaction.user.mention)
         embed.add_field(name="In channel", value=interaction.channel.mention)
     elif data["component_type"] == 3:  # Select
