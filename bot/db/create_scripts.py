@@ -176,7 +176,6 @@ async def create_tables(con):
 
     try:
         await con.execute(CREATE_BUTTONS)
-        await con.exevcute(ALTER_BUTTONS)
         print("successfully ran db script batch 4")
     except Exception as e:
         print("expected create exception 4:", e)
