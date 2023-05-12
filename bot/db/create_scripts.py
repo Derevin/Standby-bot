@@ -131,11 +131,6 @@ CREATE TABLE IF NOT EXISTS "buttons" (
 );
 """
 
-ALTER_BUTTONS = """
-UPDATE "buttons"  SET type = REPLACE(type, 'ClanView', 'RoleChoiceView')
-"""
-
-
 CREATE_NOTES = """
 CREATE TABLE IF NOT EXISTS "notes" (
     "key" TEXT,
