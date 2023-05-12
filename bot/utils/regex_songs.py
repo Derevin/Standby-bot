@@ -330,3 +330,10 @@ async def click_click_resp(bot, message: nextcord.Message):
 regex_songs_commands.append(
     ("^.{0,2}click click.{0,4}$", click_click_resp, re.M | re.I)
 )
+
+
+async def blue_resp(bot, message: nextcord.Message):
+    await message.channel.send("♬ Da ba dee da ba di ♬")
+
+
+regex_songs_commands.append(("^.{0,2}I('| a)?m blue{0,4}$", blue_resp, re.M | re.I))
