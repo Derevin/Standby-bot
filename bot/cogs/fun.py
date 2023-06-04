@@ -720,6 +720,20 @@ class Fun(commands.Cog):
                     ephemeral=True,
                 )
 
+    @nextcord.user_command(name="Thank", guild_ids=[GUILD_ID])
+    async def thank_context(self, interaction, user):
+        if user == interaction.user:
+            await interaction.send(
+                "Thanking yourself gives no reputation.", ephemeral=True
+            )
+            return
+
+        await get_or_insert_usr(self.bot, user.id, interaction.guild.id)
+        await self.bot.pg_pool.execute(
+            f"UPDATE usr SET thanks = thanks + 1 WHERE usr_id = {user.id}"
+        )
+        await interaction.send(f"Gave +1 {THANK_TYPE} to {user.mention}")
+
 
 class BurgerView(nextcord.ui.View):
     def __init__(self, **params):

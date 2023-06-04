@@ -1,10 +1,10 @@
 import re
+
 import nextcord
 from db.db_func import get_or_insert_usr
+from settings import THANK_TYPE
 
 regex_reputation_command = []
-
-THANK_TYPE = "Void"
 
 
 async def reputation_resp(bot, message: nextcord.Message):
