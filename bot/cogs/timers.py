@@ -41,9 +41,15 @@ class Timers(commands.Cog):
                         continue
                     channel = self.bot.get_channel(params_dict["channel"])
                     if channel:
-                        await channel.send(
-                            f"<@{rec['usr_id']}> {dynamic_timestamp(rec['expires'],'long')}: {params_dict['msg']}"
-                        )
+                        message = f"<@{rec['usr_id']}> {dynamic_timestamp(rec['expires'],'long')}: {params_dict['msg']}"
+                        try:
+                            confirmation_id = params_dict["confirmation_id"]
+                            confirmation = await channel.fetch_message(confirmation_id)
+                            message += " " + confirmation.jump_url
+                        except Exception:
+                            pass
+
+                        await channel.send(message)
 
                     await self.bot.pg_pool.execute(
                         "DELETE FROM tmers WHERE tmer_id = $1;", rec["tmer_id"]
@@ -67,7 +73,6 @@ class Timers(commands.Cog):
         minutes: int = SlashOption(description="Minutes until the reminder", min_value=0),  # fmt: skip
         message=SlashOption(description="A message for the reminder"),
     ):
-
         if days + hours + minutes == 0:
             await interaction.send(
                 file=simpsons_error_image(
@@ -90,11 +95,13 @@ class Timers(commands.Cog):
         tfuture = timenow + tdelta
         tfuture = tfuture.replace(microsecond=0)
 
-        await create_reminder(self.bot, interaction, tfuture, message)
-
-        await interaction.send(
+        confirmation = await interaction.send(
             f"{dynamic_timestamp(timenow, 'short')}: Your reminder has been registered "
             f"and you will be reminded on {dynamic_timestamp(tfuture, 'long')}."
+        )
+        full_confirmation = await confirmation.fetch()
+        await create_reminder(
+            self.bot, interaction, tfuture, message, full_confirmation.id
         )
 
     @remindme.subcommand(
@@ -133,20 +140,25 @@ class Timers(commands.Cog):
             )
             return
 
-        await create_reminder(self.bot, interaction, tfuture, message)
-
-        await interaction.send(
+        confirmation = await interaction.send(
             f"{dynamic_timestamp(timenow, 'short')}: Your reminder has been registered "
             f"and you will be reminded on {dynamic_timestamp(tfuture, 'long')}."
         )
+        full_confirmation = await confirmation.fetch()
+        await create_reminder(
+            self.bot, interaction, tfuture, message, full_confirmation.id
+        )
 
 
-async def create_reminder(bot, interaction, tfuture, message):
-
+async def create_reminder(bot, interaction, tfuture, message, confirmation_id):
     await ensure_guild_existence(bot, interaction.guild.id)
     await get_or_insert_usr(bot, interaction.user.id, interaction.guild.id)
 
-    params_dict = {"msg": message, "channel": interaction.channel.id}
+    params_dict = {
+        "msg": message,
+        "channel": interaction.channel.id,
+        "confirmation_id": confirmation_id,
+    }
     params_json = json.dumps(params_dict)
 
     await bot.pg_pool.execute(
