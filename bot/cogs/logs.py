@@ -164,20 +164,22 @@ async def voice_embed(member, before, after):
     embed = nextcord.Embed(color=PALE_BLUE)
     embed.title = "Voice channel update"
 
+    discriminator = f"#{member.discriminator}" if member.discriminator != "0" else ""
+
     if before and after:
         embed.description = (
-            f"{member.mention} ({member.name}#{member.discriminator}) switched"
-            f" voice channels from **#{before.name}** to **#{after.name}**"
+            f"{member.mention} ({member.name}{discriminator}) switched"
+            f" voice channels from {before.mention} to {after.mention}"
         )
     elif before:
         embed.description = (
-            f"{member.mention} ({member.name}#{member.discriminator}) left"
-            f" voice channel **#{before.name}**"
+            f"{member.mention} ({member.name}{discriminator}) left"
+            f" voice channel {before.mention}"
         )
     else:
         embed.description = (
-            f"{member.mention} ({member.name}#{member.discriminator}) joined"
-            f" voice channel **#{after.name}**"
+            f"{member.mention} ({member.name}{discriminator}) joined"
+            f" voice channel {after.mention}"
         )
     embed.timestamp = nextcord.utils.utcnow()
     return embed
