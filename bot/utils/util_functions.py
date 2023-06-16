@@ -1,12 +1,12 @@
-import nextcord
-import re
-import datetime
-from pathlib import Path
 import io
-from PIL import Image, ImageDraw, ImageFont
+import re
+from datetime import datetime as dt, timedelta
+
+import nextcord
 import requests
-import json
-from settings import *
+from PIL import Image, ImageDraw, ImageFont
+
+from config.constants import *
 
 
 def get_emoji(guild, name):
@@ -26,11 +26,9 @@ def mention_role(guild, name):
 
 
 def get_channel(guild, name):
-    match = re.search(r"^<#(\d+)>$", name)
+    match = re.search(r"(\d+)", name)
     if match:
-        return nextcord.utils.get(
-            guild.text_channels + guild.threads, id=int(match.group(1))
-        )
+        return nextcord.utils.get(guild.text_channels + guild.threads, id=int(match.group(1)))
     else:
         name = name.replace("#", "")
         channel = nextcord.utils.get(guild.text_channels, name=name)
@@ -44,25 +42,17 @@ def get_user(guild, query):
         tag = None
 
     if tag:
-        users = [
-            user
-            for user in guild.members
-            if (user.name.lower() == query.lower() and user.discriminator == tag)
-        ]
-
+        users = [user for user in guild.members if (user.name.lower() == query.lower() and user.discriminator == tag)]
     else:
-        users = [
-            user
-            for user in guild.members
-            if (
-                re.search(query, user.display_name, re.I)
-                or re.search(query, user.name, re.I)
-            )
-        ]
+        users = [user for user in guild.members if re.search(query, f"{user.name}|{user.display_name}", re.I)]
 
     if len(users) == 1:
         return users[0]
     return None
+
+
+def get_category(guild, name):
+    return nextcord.utils.get(guild.categories, name=name)
 
 
 def int_to_emoji(num):
@@ -72,16 +62,16 @@ def int_to_emoji(num):
 
 def dynamic_timestamp(time, frmat):
     mod = "t" if frmat == "short" else "R" if frmat == "delta" else "f"
-    return f"<t:{int(datetime.datetime.timestamp(time))}:{mod}>"
+    return f"<t:{int(dt.timestamp(time))}:{mod}>"
 
 
 def int_to_month(num):
-    datetime_object = datetime.datetime.strptime(str(num), "%m")
+    datetime_object = dt.strptime(str(num), "%m")
     return datetime_object.strftime("%B")
 
 
 def month_to_int(month):
-    datetime_object = datetime.datetime.strptime(month, "%B")
+    datetime_object = dt.strptime(month, "%B")
     return datetime_object.month
 
 
@@ -99,20 +89,12 @@ async def get_mentioned_users(text, guild):
 
 def get_roles_by_type(guild, type_):
     try:
-        start, stop = [
-            i
-            for i in range(len(guild.roles))
-            if guild.roles[i].name.lower() == type_.lower()
-        ][0:2]
+        start, stop = [i for i in range(len(guild.roles)) if guild.roles[i].name.lower() == type_.lower()][0:2]
     except ValueError:
         return []
-    roles = guild.roles[start + 1 : stop]
+    roles = guild.roles[start + 1: stop]
     roles.sort(key=lambda role: role.name)
     return roles
-
-
-def get_local_static_path():
-    return str(Path(__file__).parent.parent.parent) + "/static"
 
 
 def id_to_mention(id, id_type="user"):
@@ -130,18 +112,6 @@ def id_to_mention(id, id_type="user"):
     return
 
 
-async def log_buttons(bot, view, channel_id, message_id, params=None):
-    view_type = view.__class__.__module__ + " " + view.__class__.__name__
-    await bot.pg_pool.execute(
-        """INSERT INTO buttons (type, channel_id, message_id, params) """
-        """VALUES ($1, $2, $3, $4);""",
-        view_type,
-        channel_id,
-        message_id,
-        json.dumps(params).replace("'", "''") if params else None,
-    )
-
-
 def simpsons_error_image(dad, son, text=None, filename="error.png"):
     dad_url = dad.display_avatar.url
     son_url = son.display_avatar.url
@@ -150,17 +120,9 @@ def simpsons_error_image(dad, son, text=None, filename="error.png"):
 
     template = Image.open(requests.get(template_url, stream=True).raw)
 
-    dad = (
-        Image.open(requests.get(dad_url, stream=True).raw)
-        .convert("RGBA")
-        .resize((300, 300))
-    )
-    son = (
-        Image.open(requests.get(son_url, stream=True).raw)
-        .convert("RGBA")
-        .resize((225, 225))
-        .rotate(-35, expand=True, fillcolor=(255, 255, 255, 0))
-    )
+    dad = Image.open(requests.get(dad_url, stream=True).raw).convert("RGBA").resize((300, 300))
+    son = Image.open(requests.get(son_url, stream=True).raw).convert("RGBA").resize((225, 225))
+    son = son.rotate(-35, expand=True, fillcolor=(255, 255, 255, 0))
 
     template.paste(dad, (310, 30), dad)
     template.paste(son, (655, 344), son)
@@ -170,8 +132,8 @@ def simpsons_error_image(dad, son, text=None, filename="error.png"):
 
         draw = ImageDraw.Draw(template)
 
-        font_path = get_local_static_path() + "/fonts/impact.ttf"
-        font = ImageFont.truetype(font=font_path, size=40)
+        font_path = LOCAL_STATIC_PATH / "fonts" / "impact.ttf"
+        font = ImageFont.truetype(font=str(font_path), size=40)
         width, height = get_text_dimensions(text, font)
 
         if width <= 370:
@@ -183,17 +145,14 @@ def simpsons_error_image(dad, son, text=None, filename="error.png"):
             draw.text((x_coord + 3, y_coord + 3), text, (0, 0, 0), font=font)
             draw.text((x_coord - 3, y_coord + 3), text, (0, 0, 0), font=font)
             draw.text((x_coord, y_coord), text, (255, 255, 255), font=font)
-
         else:
             rows = []
             num_rows = width // 280 + 1
             row_width = width / num_rows
             curr_string = ""
-            curr_width = 0
             for word in re.split(r"(\W+)", text):
                 curr_string += word
                 curr_width, _ = get_text_dimensions(curr_string, font)
-                # print(f"{curr_string} is {curr_width}")
                 if curr_width >= row_width:
                     rows.append(curr_string)
                     curr_string = ""
@@ -225,46 +184,56 @@ def get_text_dimensions(text, font):
     width = font.getmask(text).getbbox()[2]
     height = font.getmask(text).getbbox()[3] + descent
 
-    return (width, height)
-
-
-async def get_db_note(bot, key):
-    notes = await bot.pg_pool.fetch(f"SELECT * FROM notes WHERE key = '{key}'")
-    return notes[0]["value"] if notes else ""
-
-
-async def log_or_update_db_note(bot, key, value):
-    note = await get_db_note(bot, key)
-    if note:
-        await bot.pg_pool.execute(
-            f"UPDATE notes SET value = '{value}' where key = '{key}'"
-        )
-    else:
-        await bot.pg_pool.execute(
-            f"INSERT INTO notes (key,  value) VALUES ('{key}', '{value}')"
-        )
-
-
-def get_tweet_data(tweet_id):
-    request_url = (
-        f"https://api.twitter.com/2/tweets/{tweet_id}?tweet.fields=attachments"
-    )
-    tweet = requests.request(
-        "GET",
-        request_url,
-        headers={
-            "Authorization": "Bearer " + TWITTER_BEARER_TOKEN,
-            "User-Agent": "v2TweetLookupPython",
-        },
-    )
-    tweet_dict = json.loads(tweet.content.decode("utf-8"))
-    return tweet_dict["data"] if "data" in tweet_dict else {}
+    return width, height
 
 
 async def invoke_slash_command(name, self, *args):
-    slash_command = [
-        command
-        for command in self.bot.get_all_application_commands()
-        if command.name == name
-    ][0]
+    slash_command = [command for command in self.bot.get_all_application_commands() if command.name == name][0]
     await slash_command.invoke_callback(*args)
+
+
+def utcnow():
+    return nextcord.utils.utcnow()
+
+
+def role_prio(role):
+    if role.name in PRIO_ROLES:
+        return "0" + role.name
+    if role.name in ROLE_DESCRIPTIONS:
+        return "1" + role.name
+    return "2" + role.name
+
+
+def message_embed(msg, cmd, trigger_author) -> nextcord.Embed:
+    embed_titles = {"copy": "Copied message", "move": "Moved message", "link": "Message preview"}
+
+    trigger_field_titles = {"move": "Moved by", "copy": "Copied by", "link": "Linked by"}
+
+    embed = nextcord.Embed(color=PALE_BLUE)
+    embed.title = embed_titles[cmd]
+    if msg.author.display_avatar:
+        embed.set_thumbnail(url=msg.author.display_avatar.url)
+    embed.description = msg.content
+    embed.add_field(name="Channel", value=msg.channel.mention)
+    timestamp = msg.created_at + timedelta(hours=2)
+    if (utcnow() - timestamp).days > 11 * 30:
+        timestamp = timestamp.strftime("%b %d, %Y")
+    else:
+        timestamp = timestamp.strftime("%b %d, %H:%M")
+    embed.add_field(name="Sent at", value=timestamp)
+    embed.add_field(name=EMPTY, value=EMPTY)
+    embed.add_field(name="Original poster", value=msg.author.mention)
+
+    embed.add_field(name=trigger_field_titles[cmd], value=trigger_author.mention)
+
+    if cmd == "copy" or cmd == "link":
+        embed.add_field(name="Link to message", value=f"[Click here]({msg.jump_url})")
+
+    if msg.attachments:
+        embed.set_image(url=msg.attachments[0].url)
+    else:
+        link = re.search(r"(https:.*\.(jpe?g|png|gif))", msg.content)
+        if link:
+            embed.set_image(url=link.group(1))
+
+    return embed

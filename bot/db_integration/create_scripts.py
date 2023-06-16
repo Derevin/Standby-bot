@@ -1,5 +1,3 @@
-from settings import *
-
 CREATE_USER = """
 CREATE TABLE IF NOT EXISTS "usr" (
     "usr_id" BIGINT NOT NULL,
@@ -51,9 +49,7 @@ ALTER TABLE "usr" ADD IF NOT EXISTS "current_roulette_streak" integer DEFAULT 0;
 ALTER TABLE "usr" ADD IF NOT EXISTS "max_roulette_streak" integer DEFAULT 0;
 """
 
-ALTER_USER_ADD_BURGERS = (
-    'ALTER TABLE "usr" ADD IF NOT EXISTS "burgers" integer DEFAULT 0'
-)
+ALTER_USER_ADD_BURGERS = 'ALTER TABLE "usr" ADD IF NOT EXISTS "burgers" integer DEFAULT 0'
 
 ALTER_STARBOARD = """
 DO $$
@@ -67,7 +63,6 @@ END IF;
 END;
 $$;
 """
-
 
 CREATE_TMERS = """
 CREATE TABLE IF NOT EXISTS "tmers" (
@@ -108,6 +103,7 @@ CREATE TABLE IF NOT EXISTS "bdays" (
   OIDS=FALSE
 );
 """
+
 ALTER_BDAYS = """
 DO $$
 BEGIN

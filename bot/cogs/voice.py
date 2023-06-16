@@ -1,43 +1,43 @@
-import nextcord
-from nextcord.ext import commands
-from utils.util_functions import *
+from nextcord.channel import VoiceChannel
+from nextcord.ext.commands import Cog
+
+from utils import util_functions as uf
 
 
-class Voice(commands.Cog):
+class Voice(Cog):
+
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.Cog.listener()
+
+    @Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         if before.channel == after.channel:
             return
 
         if before.channel:
-            role = get_role(member.guild, before.channel.name)
+            role = uf.get_role(member.guild, before.channel.name)
             if role:
                 await member.remove_roles(role)
 
         if after.channel:
-            role = get_role(member.guild, after.channel.name)
+            role = uf.get_role(member.guild, after.channel.name)
             if not role:
-                role = await member.guild.create_role(
-                    name=after.channel.name, mentionable=True
-                )
-
+                role = await member.guild.create_role(name=after.channel.name, mentionable=True)
             await member.add_roles(role)
 
-    @commands.Cog.listener()
-    async def on_guild_channel_update(self, before, after):
 
-        if isinstance(after, nextcord.channel.VoiceChannel):
-            role = get_role(after.guild, before.name)
+    @Cog.listener()
+    async def on_guild_channel_update(self, before, after):
+        if isinstance(after, VoiceChannel):
+            role = uf.get_role(after.guild, before.name)
             if role:
                 await role.edit(name=after.name)
 
-    @commands.Cog.listener()
-    async def on_guild_channel_delete(self, channel):
 
-        role = get_role(channel.guild, channel.name)
+    @Cog.listener()
+    async def on_guild_channel_delete(self, channel):
+        role = uf.get_role(channel.guild, channel.name)
         if role:
             await role.delete()
 

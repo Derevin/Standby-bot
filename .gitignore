@@ -1,3 +1,15 @@
+#nodemon, bat file to start locally
+/bot/nodemon.json
+nodemon.json
+stbot.bat
+
+.vscode
+**/.idea
+
+#Debug file
+/bot/cogs/debug.py
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -128,13 +140,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
-#nodemon, bat file to start locally
-/bot/nodemon.json
-nodemon.json
-stbot.bat
-
-.vscode
-
-#Debug file
-/bot/cogs/debug.py

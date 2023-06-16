@@ -1,41 +1,38 @@
-import datetime
 import sys
 import traceback
 
-import nextcord
-from db.db_func import ensure_guild_existence, get_or_insert_usr
-from nextcord.ext import commands, tasks
-from settings import *
-from utils.util_functions import *
+from nextcord import RawReactionActionEvent
+from nextcord.ext.commands import Cog
+from nextcord.ext.tasks import loop
+
+from config.constants import *
+from db_integration import db_functions as db
+from utils import util_functions as uf
 
 
-class Reposts(commands.Cog):
+class Reposts(Cog):
     def __init__(self, bot):
         self.bot = bot
         self.check_reposters.start()
 
+
     def cog_unload(self):
         self.check_reposters.cancel()
 
-    @commands.Cog.listener()
+
+    @Cog.listener()
     async def on_raw_reaction_add(self, payload):
 
         guild = await self.bot.fetch_guild(GUILD_ID)
-        reemoji = get_emoji(guild, REEPOSTER_EMOJI)
-        reeposter = get_role(guild, REEPOSTER_NAME)
-        reposter_duration = datetime.timedelta(days=1)
-        ree_threshold = 4
+        reemoji = uf.get_emoji(guild, REEPOSTER_EMOJI)
+        reeposter = uf.get_role(guild, REEPOSTER_NAME)
 
-        if (
-            isinstance(payload, nextcord.RawReactionActionEvent)
-            and payload.emoji == reemoji
-        ):
+        if isinstance(payload, RawReactionActionEvent) and payload.emoji == reemoji:
             channel = self.bot.get_channel(payload.channel_id)
             message = await channel.fetch_message(payload.message_id)
+            message_age = uf.utcnow() - message.created_at
 
-            message_age = nextcord.utils.utcnow() - message.created_at
-
-            if message_age > reposter_duration / 3:
+            if message_age > REPOSTER_DURATION / 3:
                 return
 
             rees = 0
@@ -43,59 +40,37 @@ class Reposts(commands.Cog):
                 if emoji.emoji == reemoji:
                     rees = emoji.count
 
-            if rees >= ree_threshold:
-
-                await ensure_guild_existence(self.bot, message.guild.id)
-                await get_or_insert_usr(self.bot, message.author.id, message.guild.id)
+            if rees >= REE_THRESHOLD:
+                await db.ensure_guild_existence(self.bot, message.guild.id)
+                await db.get_or_insert_usr(self.bot, message.author.id, message.guild.id)
                 await message.author.add_roles(reeposter)
-
-                exists = await self.bot.pg_pool.fetch(
-                    f"SELECT * FROM tmers WHERE ttype={DB_TMER_REPOST} AND usr_id = {message.author.id}"
-                )
+                exists = await self.bot.pg_pool.fetch("SELECT * FROM tmers "
+                                                      f"WHERE ttype={DB_TMER_REPOST} AND usr_id = {message.author.id}")
 
                 if not exists:
-                    expires = message.created_at + reposter_duration
-
+                    expires = message.created_at + REPOSTER_DURATION
                     expires = expires.replace(microsecond=0, tzinfo=None)
+                    await self.bot.pg_pool.execute("INSERT INTO tmers (usr_id, expires, ttype) VALUES ($1, $2, $3);",
+                                                   message.author.id, expires, DB_TMER_REPOST)
 
-                    await self.bot.pg_pool.execute(
-                        """INSERT INTO tmers (usr_id, expires, ttype) """
-                        """VALUES ($1, $2, $3);""",
-                        message.author.id,
-                        expires,
-                        DB_TMER_REPOST,
-                    )
 
-    @tasks.loop(seconds=60)
+    @loop(seconds=60)
     async def check_reposters(self):
         try:
-            gtable = await self.bot.pg_pool.fetch(
-                f"SELECT * FROM tmers WHERE ttype={DB_TMER_REPOST}"
-            )
+            gtable = await self.bot.pg_pool.fetch(f"SELECT * FROM tmers WHERE ttype={DB_TMER_REPOST}")
             for rec in gtable:
-
-                timenow = nextcord.utils.utcnow()
-
+                timenow = uf.utcnow()
                 if timenow.replace(tzinfo=None) <= rec["expires"]:
                     continue
 
                 print(f"record expired: {rec}")
 
-                guild_id = await self.bot.pg_pool.fetchval(
-                    f"SELECT guild_id FROM usr WHERE usr_id = {rec['usr_id']}"
-                )
-
+                guild_id = await self.bot.pg_pool.fetchval(f"SELECT guild_id FROM usr WHERE usr_id = {rec['usr_id']}")
                 guild = await self.bot.fetch_guild(guild_id)
-
                 user = await guild.fetch_member(rec["usr_id"])
-
-                reeposter = get_role(guild, REEPOSTER_NAME)
-
+                reeposter = uf.get_role(guild, REEPOSTER_NAME)
                 await user.remove_roles(reeposter)
-
-                await self.bot.pg_pool.execute(
-                    "DELETE FROM tmers WHERE tmer_id = $1;", rec["tmer_id"]
-                )
+                await self.bot.pg_pool.execute(f"DELETE FROM tmers WHERE tmer_id = {rec['tmer_id']};")
         except AttributeError:  # bot hasn't loaded yet and pg_pool doesn't exist
             return
         except Exception:

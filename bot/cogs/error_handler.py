@@ -1,58 +1,45 @@
 import asyncio
 
-import nextcord
-from nextcord.ext import commands
-from settings import *
+from nextcord import Embed
+from nextcord.ext.commands import Cog, Context, errors
+
+from config.constants import *
+from utils import util_functions as uf
 
 
-def unhandled_error_embed(cont, chan, e) -> nextcord.Embed:
-    embed = nextcord.Embed(colour=SOFT_RED)
-    embed.add_field(name="Message", value=f"```{cont}```", inline=False)
-    embed.add_field(name="Trigger channel", value=chan, inline=False)
-    embed.add_field(name="Error", value=str(e), inline=False)
-    return embed
-
-
-class ErrorHandler(commands.Cog):
+class ErrorHandler(Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    async def send_help_command(self, ctx: commands.Context):
+
+    async def send_help_command(self, ctx: Context):
         if ctx.command:
             await ctx.send_help(ctx.command)
         else:
             await ctx.send_help()
 
-    @commands.Cog.listener()
-    async def on_command_error(
-        self, ctx: commands.Context, e: commands.errors.CommandError
-    ) -> None:
-        if isinstance(e, commands.errors.UserInputError):
+
+    @Cog.listener()
+    async def on_command_error(self, ctx: Context, e: errors.CommandError) -> None:
+        if isinstance(e, errors.UserInputError):
             await self.handle_user_input_error(ctx, e)
-        elif isinstance(e, commands.errors.CommandNotFound):
-            await self._sleep_and_delete(
-                await ctx.channel.send(
-                    embed=self._get_error_embed(
-                        title="Command not found", body=ctx.message.content
-                    )
-                )
-            )
+        elif isinstance(e, errors.CommandNotFound):
+            await self._sleep_and_delete(await ctx.channel.send(
+                    embed=self._get_error_embed(title="Command not found", body=ctx.message.content)))
         else:
             if ctx.guild.id == GUILD_ID:
-                channel = nextcord.utils.get(
-                    ctx.guild.text_channels, name=ERROR_CHANNEL_NAME
-                )
+                channel = uf.get_channel(ctx.guild, ERROR_CHANNEL_NAME)
                 if channel is not None:
-                    await channel.send(
-                        embed=unhandled_error_embed(ctx.message.content, ctx.channel, e)
-                    )
+                    await channel.send(embed=unhandled_error_embed(ctx.message.content, ctx.channel, e))
 
-    def _get_error_embed(self, title: str, body: str) -> nextcord.Embed:
+
+    def _get_error_embed(self, title: str, body: str) -> Embed:
         """
         Return an embed that contains the exception.
         credits: https://github.com/python-discord
         """
-        return nextcord.Embed(title=title, colour=SOFT_RED, description=body)
+        return Embed(title=title, colour=SOFT_RED, description=body)
+
 
     async def _sleep_and_delete(self, msg):
         await asyncio.sleep(20)
@@ -61,9 +48,8 @@ class ErrorHandler(commands.Cog):
         except Exception:
             print("warn: can't delete msg in _sleep_and_delete")
 
-    async def handle_user_input_error(
-        self, ctx: commands.Context, e: commands.errors.UserInputError
-    ) -> None:
+
+    async def handle_user_input_error(self, ctx: Context, e: errors.UserInputError) -> None:
         """
         Send an error message in `ctx` for UserInputError, sometimes invoking the help command too.
         * MissingRequiredArgument: send an error message with arg name and the help command
@@ -75,34 +61,38 @@ class ErrorHandler(commands.Cog):
         credits: https://github.com/python-discord
         """
 
-        if isinstance(e, commands.errors.MissingRequiredArgument):
+        if isinstance(e, errors.MissingRequiredArgument):
             embed = self._get_error_embed("Missing required argument", e.param.name)
             await ctx.send(embed=embed)
             await self.send_help_command(ctx)
-        elif isinstance(e, commands.errors.TooManyArguments):
+        elif isinstance(e, errors.TooManyArguments):
             embed = self._get_error_embed("Too many arguments", str(e))
             await ctx.send(embed=embed)
             await self.send_help_command(ctx)
-        elif isinstance(e, commands.errors.BadArgument):
+        elif isinstance(e, errors.BadArgument):
             embed = self._get_error_embed("Bad argument", str(e))
             await ctx.send(embed=embed)
             await self.send_help_command(ctx)
-        elif isinstance(e, commands.errors.BadUnionArgument):
+        elif isinstance(e, errors.BadUnionArgument):
             embed = self._get_error_embed("Bad argument", f"{e}\n{e.errors[-1]}")
             await ctx.send(embed=embed)
-        elif isinstance(e, commands.errors.ArgumentParsingError):
+        elif isinstance(e, errors.ArgumentParsingError):
             embed = self._get_error_embed("Argument parsing error", str(e))
             await ctx.send(embed=embed)
         else:
-            embed = self._get_error_embed(
-                "Input error",
-                "Something about your input seems off. Check the arguments and try again."
-                if str(e) == ""
-                else str(e),
-            )
+            embed = self._get_error_embed("Input error", "Something about your input seems off. Check "
+                                                         "the arguments and try again." if str(e) == "" else str(e))
             await ctx.send(embed=embed)
             if str(e) == "":
                 await self.send_help_command(ctx)
+
+
+def unhandled_error_embed(cont, chan, e) -> Embed:
+    embed = Embed(colour=SOFT_RED)
+    embed.add_field(name="Message", value=f"```{cont}```", inline=False)
+    embed.add_field(name="Trigger channel", value=chan, inline=False)
+    embed.add_field(name="Error", value=str(e), inline=False)
+    return embed
 
 
 def setup(bot):

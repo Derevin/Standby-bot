@@ -1,75 +1,74 @@
-import nextcord
-from nextcord.ext import commands
-from settings import *
-from utils.util_functions import *
+from nextcord import Embed, InteractionType, MessageType
+from nextcord.ext.commands import Cog
+
+from config.constants import *
+from utils import util_functions as uf
 
 
-class Logs(commands.Cog):
+class Logs(Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.Cog.listener()
+
+    @Cog.listener()
     async def on_raw_message_delete(self, payload):
         channel = self.bot.get_channel(payload.channel_id)
         if channel.name == LOGS_CHANNEL_NAME:
             return
         embed, files = await deleted_embed(payload, channel)
         if embed:
-            guild = channel.guild
-            logs = nextcord.utils.get(guild.text_channels, name=LOGS_CHANNEL_NAME)
+            logs = uf.get_channel(channel.guild, LOGS_CHANNEL_NAME)
             if logs:
                 main = await logs.send(embed=embed)
                 for file in files:
                     await logs.send(file=file, reference=main)
 
-    @commands.Cog.listener()
+
+    @Cog.listener()
     async def on_raw_message_edit(self, payload):
         embed = await edited_embed(self.bot, payload)
         if embed:
             channel = self.bot.get_channel(payload.channel_id)
-            guild = channel.guild
-            logs = nextcord.utils.get(guild.text_channels, name=LOGS_CHANNEL_NAME)
+            logs = uf.get_channel(channel.guild, LOGS_CHANNEL_NAME)
             if logs:
                 await logs.send(embed=embed)
 
-    @commands.Cog.listener()
+
+    @Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         if before.channel == after.channel:
             return
 
         embed = await voice_embed(member, before.channel, after.channel)
 
-        guild = member.guild
-        logs = nextcord.utils.get(guild.text_channels, name=LOGS_CHANNEL_NAME)
+        logs = uf.get_channel(member.guild, LOGS_CHANNEL_NAME)
         if logs:
             await logs.send(embed=embed)
 
-    @commands.Cog.listener()
+
+    @Cog.listener()
     async def on_interaction(self, interaction):
-        guild = interaction.guild
-        logs = nextcord.utils.get(guild.text_channels, name=LOGS_CHANNEL_NAME)
+        logs = uf.get_channel(interaction.guild, LOGS_CHANNEL_NAME)
 
         if logs:
-            if interaction.type == nextcord.InteractionType.application_command:
+            if interaction.type == InteractionType.application_command:
                 embed = await command_embed(interaction)
                 await logs.send(embed=embed)
 
-            elif interaction.type == nextcord.InteractionType.component:
+            elif interaction.type == InteractionType.component:
                 embed = await component_embed(interaction)
                 await logs.send(embed=embed)
             else:
-                await logs.send(
-                    f"Unknown interaction in {interaction.channel.mention}."
-                )
+                await logs.send(f"Unknown interaction in {interaction.channel.mention}.")
 
 
 async def deleted_embed(payload, channel):
-    embed = nextcord.Embed(color=SOFT_RED)
+    embed = Embed(color=SOFT_RED)
     embed.title = "Message deleted"
     files = []
     if payload.cached_message is not None:
         message = payload.cached_message
-        if message.author.bot or str(message.type) == "MessageType.pins_add":
+        if message.author.bot or message.type == MessageType.pins_add:
             return None, None
         embed.description = message.content
         if len(embed.description) > 950:
@@ -88,7 +87,7 @@ async def deleted_embed(payload, channel):
     else:
         embed.description = "[Message not found in cache]"
         embed.add_field(name="Channel", value=channel.mention)
-    embed.timestamp = nextcord.utils.utcnow()
+    embed.timestamp = uf.utcnow()
     return embed, files
 
 
@@ -99,7 +98,6 @@ async def edited_embed(bot, payload):
         after_message = after["content"]
     else:
         return None
-    attachment_url = None
 
     if before:
         author = before.author
@@ -134,7 +132,7 @@ async def edited_embed(bot, payload):
         avatar_url = author.display_avatar.url
         attachment_url = message.attachments[0].url if message.attachments else None
 
-    embed = nextcord.Embed(color=LIGHT_BLUE)
+    embed = Embed(color=LIGHT_BLUE)
     embed.title = "Message edited"
     if len(before_message) > 950:
         before_message = before_message[0:950]
@@ -155,33 +153,27 @@ async def edited_embed(bot, payload):
         embed.set_thumbnail(url=avatar_url)
     if attachment_url:
         embed.add_field(name="Attachment", value=f"[Click here]({attachment_url})")
-    embed.timestamp = nextcord.utils.utcnow()
+    embed.timestamp = uf.utcnow()
 
     return embed
 
 
 async def voice_embed(member, before, after):
-    embed = nextcord.Embed(color=PALE_BLUE)
+    embed = Embed(color=PALE_BLUE)
     embed.title = "Voice channel update"
 
     discriminator = f"#{member.discriminator}" if member.discriminator != "0" else ""
 
     if before and after:
-        embed.description = (
-            f"{member.mention} ({member.name}{discriminator}) switched"
-            f" voice channels from {before.mention} to {after.mention}"
-        )
+        embed.description = (f"{member.mention} ({member.name}{discriminator}) switched"
+                             f" voice channels from {before.mention} to {after.mention}")
     elif before:
-        embed.description = (
-            f"{member.mention} ({member.name}{discriminator}) left"
-            f" voice channel {before.mention}"
-        )
+        embed.description = (f"{member.mention} ({member.name}{discriminator}) left"
+                             f" voice channel {before.mention}")
     else:
-        embed.description = (
-            f"{member.mention} ({member.name}{discriminator}) joined"
-            f" voice channel {after.mention}"
-        )
-    embed.timestamp = nextcord.utils.utcnow()
+        embed.description = (f"{member.mention} ({member.name}{discriminator}) joined"
+                             f" voice channel {after.mention}")
+    embed.timestamp = uf.utcnow()
     return embed
 
 
@@ -199,7 +191,7 @@ async def command_embed(interaction):
 
     cmd_prefix = "/" if "Slash" in cmd_type else "Apps > "
 
-    embed = nextcord.Embed(color=VIE_PURPLE)
+    embed = Embed(color=VIE_PURPLE)
     embed.title = f"{cmd_type} triggered"
 
     try:
@@ -207,24 +199,18 @@ async def command_embed(interaction):
     except AttributeError:
         parent_name = ""
 
-    embed.add_field(
-        name="Command", value=cmd_prefix + parent_name + cmd_name, inline=False
-    )
+    embed.add_field(name="Command", value=cmd_prefix + parent_name + cmd_name, inline=False)
     embed.add_field(name="Triggered by", value=interaction.user.mention)
     embed.add_field(name="In channel", value=interaction.channel.mention)
 
     if cmd_type == "User":
-        embed.add_field(
-            name="Target user", value=id_to_mention(interaction.data["target_id"])
-        )
+        embed.add_field(name="Target user", value=uf.id_to_mention(interaction.data["target_id"]))
 
     elif cmd_type == "Message":
         message_id = interaction.data["target_id"]
         message = await interaction.channel.fetch_message(message_id)
 
-        embed.add_field(
-            name="Target messsage", value=f"[Click here]({message.jump_url})"
-        )
+        embed.add_field(name="Target messsage", value=f"[Click here]({message.jump_url})")
 
     elif "options" in interaction.data:  # Slash
         embed.add_field(name=EMPTY, value=EMPTY)
@@ -235,11 +221,11 @@ async def command_embed(interaction):
 
         for arg in arg_data:
             if arg["type"] == 6:
-                formatted_value = id_to_mention(arg["value"], "user")
+                formatted_value = uf.id_to_mention(arg["value"], "user")
             elif arg["type"] == 7:
-                formatted_value = id_to_mention(arg["value"], "channel")
+                formatted_value = uf.id_to_mention(arg["value"], "channel")
             elif arg["type"] == 8:
-                formatted_value = id_to_mention(arg["value"], "role")
+                formatted_value = uf.id_to_mention(arg["value"], "role")
             else:
                 formatted_value = arg["value"]
 
@@ -249,28 +235,22 @@ async def command_embed(interaction):
     if avatar_url:
         embed.set_thumbnail(url=avatar_url)
 
-    embed.timestamp = nextcord.utils.utcnow()
+    embed.timestamp = uf.utcnow()
 
     return embed
 
 
 async def component_embed(interaction):
-    embed = nextcord.Embed(color=VIE_PURPLE)
+    embed = Embed(color=VIE_PURPLE)
     avatar_url = interaction.user.display_avatar.url
     if avatar_url:
         embed.set_thumbnail(url=avatar_url)
     data = interaction.data
     if data["component_type"] == 2:  # Button
         embed.title = f"Button pressed"
-        labels = [
-            child.label
-            for row in interaction.message.components
-            for child in row.children
-            if child.custom_id == data["custom_id"]
-        ]
-        embed.add_field(
-            name="Button", value=labels[0] if len(labels) == 1 else "Unknown"
-        )
+        labels = [child.label for row in interaction.message.components for child in row.children if
+                child.custom_id == data["custom_id"]]
+        embed.add_field(name="Button", value=labels[0] if len(labels) == 1 else "Unknown")
         embed.add_field(name="Pressed by", value=interaction.user.mention)
         embed.add_field(name="In channel", value=interaction.channel.mention)
     elif data["component_type"] == 3:  # Select
@@ -286,11 +266,7 @@ async def component_embed(interaction):
         embed.title = f"Unknown component type {data['component_type']}"
         embed.add_field(name="Used by", value=interaction.user.mention)
         embed.add_field(name="In channel", value=interaction.channel.mention)
-    embed.add_field(
-        name="Link to message",
-        value=f"[Click here]({interaction.message.jump_url})",
-        inline=False,
-    )
+    embed.add_field(name="Link to message", value=f"[Click here]({interaction.message.jump_url})", inline=False)
 
     return embed
 

@@ -1,29 +1,25 @@
-import nextcord
-from cogs.startup import *
-from db.db_main import init_db_connection
-from nextcord.ext import commands
-from settings import *
+from nextcord import Intents
+from nextcord.ext.commands import Bot
 
-intents = nextcord.Intents.default()
-intents.members = True
-intents.presences = True
-intents.message_content = True
+from config import startup
+from config.constants import BOT_TOKEN
+from db_integration import db_functions as db
 
-bot = commands.Bot(intents=intents, case_insensitive=True)
+intents = Intents.all()
+bot = Bot(intents=intents, case_insensitive=True)
 
 
 @bot.event
 async def on_ready():
+    await startup.set_status(bot, "Have a nice day!")
 
-    await set_status(bot, "Have a nice day!")
+    await startup.log_restart_reason(bot)
 
-    await log_restart_reason(bot)
-
-    await reconnect_buttons(bot)
+    await startup.reconnect_buttons(bot)
 
 
-load_cogs(bot)
+startup.load_cogs(bot)
 
-bot.loop.run_until_complete(init_db_connection(bot))
+bot.loop.run_until_complete(db.init_connection(bot))
 
 bot.run(BOT_TOKEN)

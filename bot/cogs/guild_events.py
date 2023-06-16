@@ -1,19 +1,21 @@
-import nextcord
-from db.db_func import ensure_guild_existence
-from nextcord.ext import commands
+from nextcord.ext.commands import Cog
+
+from db_integration import db_functions as db
 
 
-class GuildEvents(commands.Cog):
+class GuildEvents(Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.Cog.listener()
-    async def on_guild_join(self, guild: nextcord.Guild):
-        await ensure_guild_existence(self.bot, guild.id)
 
-    @commands.Cog.listener()
-    async def on_guild_update(self, before: nextcord.Guild, after: nextcord.Guild):
-        await ensure_guild_existence(self.bot, after.id)
+    @Cog.listener()
+    async def on_guild_join(self, guild):
+        await db.ensure_guild_existence(self.bot, guild.id)
+
+
+    @Cog.listener()
+    async def on_guild_update(self, before, after):
+        await db.ensure_guild_existence(self.bot, after.id)
 
 
 def setup(bot):

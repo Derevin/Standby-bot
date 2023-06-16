@@ -1,23 +1,31 @@
 import asyncio
 import re
 
-import nextcord
-from nextcord import Interaction, SlashOption
-from nextcord.ext import commands
-from settings import *
-from utils.util_functions import *
+from nextcord import Embed, Interaction, SlashOption, slash_command
+from nextcord.ext.commands import Cog
+
+from config.constants import *
+from utils import util_functions as uf
 
 image_links = [GIT_STATIC_URL + f"/images/Hangman-{num}.png" for num in range(7)]
 
 
 class HangmanGame:
+
     def __init__(self):
         self.status = "Inactive"
         self.lock = asyncio.Lock()
+        self.word = None
+        self.progress = None
+        self.wrong_guesses = None
+        self.host = None
+        self.channel = None
+        self.embed = None
+
 
     def create_embed(self):
 
-        embed = nextcord.Embed(color=PALE_GREEN)
+        embed = Embed(color=PALE_GREEN)
         title = re.sub(" ", "   ", self.progress)
         title = re.sub("_", r"\_ ", title)
         title = re.sub(r"(\w)", r"\1 ", title)
@@ -30,14 +38,10 @@ class HangmanGame:
             desc = "Welcome to Void Hangman! Use `/hangman` to guess a letter or the whole word/phrase."
         embed.description = desc
         embed.set_image(url=image_links[len(self.wrong_guesses)])
-        embed.add_field(
-            name="Wrong guesses",
-            value="None"
-            if len(self.wrong_guesses) == 0
-            else ", ".join(self.wrong_guesses),
-            inline=False,
-        )
+        embed.add_field(name="Wrong guesses",
+                        value="None" if len(self.wrong_guesses) == 0 else ", ".join(self.wrong_guesses), inline=False)
         return embed
+
 
     def setup(self, word, host, channel):
 
@@ -49,21 +53,19 @@ class HangmanGame:
         self.channel = channel
         self.embed = self.create_embed()
 
+
     def check_letter(self, letter):
         letter = letter.upper()
         if letter in self.word:
             for match in re.finditer(letter, self.word):
-                self.progress = (
-                    self.progress[: match.start()]
-                    + letter
-                    + self.progress[match.start() + 1 :]
-                )
+                self.progress = (self.progress[: match.start()] + letter + self.progress[match.start() + 1:])
             self.embed = self.create_embed()
             return True
         else:
             self.wrong_guesses.append(letter)
             self.embed = self.create_embed()
             return False
+
 
     def check_word(self, word):
         word = word.upper()
@@ -75,6 +77,7 @@ class HangmanGame:
             self.wrong_guesses.append(word)
             self.embed = self.create_embed()
             return False
+
 
     def state(self):
         if len(self.wrong_guesses) == 6:
@@ -88,22 +91,19 @@ class HangmanGame:
 game = HangmanGame()
 
 
-class Hangman(commands.Cog, name="Void Hangman"):
+class Hangman(Cog, name="Void Hangman"):
     def __init__(self, bot):
         self.bot = bot
 
-    @nextcord.slash_command(description="Commands for running games of hangman")
+
+    @slash_command(description="Commands for running games of hangman")
     async def hangman(self, interaction):
         pass
 
+
     @hangman.subcommand(description="Start a game of Void Hangman")
-    async def start(
-        self,
-        interaction: Interaction,
-        phrase=SlashOption(
-            description="The word or phrase to be guessed (max 85 characters)"
-        ),
-    ):
+    async def start(self, interaction,
+                    phrase: str = SlashOption(description="The word or phrase to be guessed (max 85 characters)")):
 
         await game.lock.acquire()
 
@@ -112,45 +112,30 @@ class Hangman(commands.Cog, name="Void Hangman"):
 
         else:
             if len(phrase) > 85:
-                await interaction.send(
-                    "Phrase is too long, please try again", ephemeral=True
-                )
+                await interaction.send("Phrase is too long, please try again", ephemeral=True)
                 return
 
-            await interaction.send(
-                "Phrase accepted - game is starting!", ephemeral=True
-            )
+            await interaction.send("Phrase accepted - game is starting!", ephemeral=True)
             await interaction.channel.send("Void Hangman has begun!")
-            game.setup(
-                phrase,
-                interaction.user,
-                interaction.channel,
-            )
+            game.setup(phrase, interaction.user, interaction.channel)
             await interaction.channel.send(embed=game.embed)
             game.lock.release()
 
+
     @hangman.subcommand(description="Attempt a guess")
-    async def guess(
-        self,
-        interaction: Interaction,
-        guess=SlashOption(
-            description="Your guess - either a letter or the whole word/phrase"
-        ),
-    ):
+    async def guess(self, interaction: Interaction,
+                    guess: str = SlashOption(description="Your guess - either a letter or the whole word/phrase")):
 
         global game
 
         if game.status == "Inactive":
             await interaction.send("No active game found.", ephemeral=True)
         elif game.channel != interaction.channel:
-            await interaction.send(
-                f"You can only make guesses in the current game's channel, please head over to {game.channel.mention}.",
-                ephemeral=True,
-            )
+            await interaction.send("You can only make guesses in the current game's channel, "
+                                   f"please head over to {game.channel.mention}.", ephemeral=True)
         elif game.host == interaction.user:
             await interaction.send("Hey, no cheating!", ephemeral=True)
         else:
-
             guess = guess.upper()
 
             if guess in game.progress or guess in game.wrong_guesses:
@@ -167,38 +152,27 @@ class Hangman(commands.Cog, name="Void Hangman"):
                 if not game.check_word(guess):
                     await interaction.send(f"{guess} isn't correct, sorry.")
             else:
-                await interaction.send(
-                    "You can only guess single letters or the entire word/phrase.",
-                    ephemeral=True,
-                )
+                await interaction.send("You can only guess single letters or the entire word/phrase.", ephemeral=True)
                 return
 
             if game.state() == "Game Over":
-                await interaction.send(
-                    "Game Over - better luck next time!", embed=game.embed
-                )
+                await interaction.send("Game Over - better luck next time!", embed=game.embed)
                 game = HangmanGame()
             elif game.state() == "Game Won":
-                await interaction.send(
-                    "Winner winner chicken dinner!", embed=game.embed
-                )
+                await interaction.send("Winner winner chicken dinner!", embed=game.embed)
                 game = HangmanGame()
             else:
                 await interaction.channel.send(embed=game.embed)
 
+
     @hangman.subcommand(description="Abort the current game of Void Hangman")
-    async def abort(self, interaction: Interaction):
+    async def abort(self, interaction):
         global game
 
         if game.status != "Active":
             await interaction.send("No active game found.", ephemeral=True)
-        elif (
-            interaction.user != game.host
-            or get_role(interaction.guild, "Moderator") not in interaction.user.roles
-        ):
-            await interaction.send(
-                "Only the person who started the game can stop it.", ephemeral=True
-            )
+        elif interaction.user != game.host or uf.get_role(interaction.guild, "Moderator") not in interaction.user.roles:
+            await interaction.send("Only the person who started the game can stop it.", ephemeral=True)
         else:
             await interaction.send("Game aborted. Use `/hangman` to start a new one.")
             game = HangmanGame()
