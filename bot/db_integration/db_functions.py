@@ -1,5 +1,6 @@
 import inspect
 import json
+import re
 from datetime import datetime as dt
 
 import asyncpg
@@ -62,7 +63,7 @@ async def log_buttons(bot, view, channel_id, message_id, params=None):
 
 
 async def log(bot, message):
-    module = ".".join(inspect.stack()[1][1].split("\\")[-2:])
+    module = ".".join(re.split(r"[/\\]", inspect.stack()[1][1])[-2:])[:-3]
     func = inspect.stack()[1][3] + "()"
     try:
         await bot.pg_pool.execute("INSERT INTO logs (timestamp, module, function, message) VALUES ($1, $2, $3, $4);",
