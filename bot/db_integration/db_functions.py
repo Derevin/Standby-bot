@@ -1,9 +1,13 @@
+import inspect
 import json
+from datetime import datetime as dt
 
 import asyncpg
 
 from config.constants import NO_SSL, DATABASE_URL
 from db_integration.create_scripts import create_tables
+
+bot_start_time = dt.now()
 
 
 async def init_connection(bot):
@@ -55,3 +59,15 @@ async def log_buttons(bot, view, channel_id, message_id, params=None):
     await bot.pg_pool.execute("INSERT INTO buttons (type, channel_id, message_id, params) VALUES ($1, $2, $3, $4);",
                               view_type, channel_id, message_id,
                               json.dumps(params).replace("'", "''") if params else None)
+
+
+async def log(bot, message):
+    module = ".".join(inspect.stack()[1][1].split("\\")[-2:])
+    func = inspect.stack()[1][3] + "()"
+    try:
+        await bot.pg_pool.execute("INSERT INTO logs (timestamp, module, function, message) VALUES ($1, $2, $3, $4);",
+                                  dt.now(), module, func, message)
+    except Exception as e:
+        current_running_time = dt.now() - bot_start_time
+        if current_running_time.seconds > 0:
+            print(f"Failed to log message '{message}' to database with exception '{e}'")

@@ -9,6 +9,7 @@ from nextcord.ext.commands import Cog
 from nextcord.ext.tasks import loop
 
 from config.constants import *
+from db_integration import db_functions as db
 from utils import util_functions as uf
 
 giveaway_lock = asyncio.Lock()
@@ -185,11 +186,12 @@ class Giveaways(Cog):
         try:
             guild = await self.bot.fetch_guild(GUILD_ID)
         except Exception:
-            pass
+            await db.log(self.bot, "Guild not found")
         if guild:
             channels = await guild.fetch_channels()
             giveaway_channel = nextcord.utils.get(channels, name=GIVEAWAY_CHANNEL_NAME)
             if not giveaway_channel:
+                await db.log(self.bot, "Giveaway channel not found")
                 return
             await giveaway_lock.acquire()
             try:

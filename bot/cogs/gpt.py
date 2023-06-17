@@ -5,6 +5,7 @@ from nextcord import SlashOption, slash_command
 from nextcord.ext.commands import Cog
 
 from config.constants import OPENAI_API_KEY
+from db_integration import db_functions as db
 
 
 class GPT(Cog):
@@ -31,6 +32,7 @@ class GPT(Cog):
                     message = [message[-1]]
             await interaction.send(" ".join(message))
         except KeyError:
+            await db.log(self.bot, f"Invalid response from OpenAI API: {resp}")
             await interaction.send("No response", ephemeral=True)
 
 

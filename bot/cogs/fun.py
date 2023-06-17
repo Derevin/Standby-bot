@@ -3,8 +3,6 @@ import json
 import os
 import random
 import re
-import sys
-import traceback
 from datetime import datetime as dt
 from itertools import permutations
 
@@ -223,6 +221,7 @@ class Fun(Cog):
                 await interaction.response.send_message(link)
 
             else:
+                await db.log(self.bot, f"No matching meme found for {query=}")
                 await interaction.response.send_message(f"No match found for '{query}' - use `/meme help` "
                                                         "to see list of available memes.", ephemeral=True)
 
@@ -304,7 +303,7 @@ class Fun(Cog):
                 guild = self.bot.get_guild(GUILD_ID)
 
                 if not guild:
-                    print("no guild")
+                    await db.log(self.bot, "Guild not found")
                     return
 
                 general = await guild.fetch_channel(GENERAL_ID)
@@ -323,6 +322,7 @@ class Fun(Cog):
                     params = {"question": data["question"]["text"], "correct": [data["correctAnswer"]],
                               "wrong": data["incorrectAnswers"], }
                 except Exception:
+                    await db.log(self.bot, "Invalid response from Trivia API")
                     params = random.choice(BURGER_QUESTIONS)
 
                 answers = [*params["correct"], *params["wrong"]]
@@ -341,8 +341,8 @@ class Fun(Cog):
 
         except AttributeError:  # bot hasn't loaded yet and pg_pool doesn't exist
             return
-        except Exception:
-            traceback.print_exc(file=sys.stdout)
+        except Exception as e:
+            await db.log(self.bot, f"Unexpected exception: {e}")
             return
 
 

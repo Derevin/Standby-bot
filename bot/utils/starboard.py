@@ -40,39 +40,40 @@ async def edit_stars(message, stars):
 
 
 async def starboard_handler(bot, payload):
-    if isinstance(payload, RawReactionActionEvent):
-        if payload.emoji.name == "⭐":
-            chnl = bot.get_channel(payload.channel_id)
-            msg = await chnl.fetch_message(payload.message_id)
-            await db.get_or_insert_usr(bot, msg.author.id, payload.guild_id)
-            stars = 0
-            sb_channel = bot.get_channel(STARBOARD_ID)
-            for emoji in msg.reactions:
-                if emoji.emoji == "⭐":
-                    stars = emoji.count
+    if isinstance(payload, RawReactionActionEvent) and payload.emoji.name == "⭐":
+        chnl = bot.get_channel(payload.channel_id)
+        msg = await chnl.fetch_message(payload.message_id)
+        await db.get_or_insert_usr(bot, msg.author.id, payload.guild_id)
+        stars = 0
+        sb_channel = bot.get_channel(STARBOARD_ID)
+        for emoji in msg.reactions:
+            if emoji.emoji == "⭐":
+                stars = emoji.count
 
-            await starboard_lock.acquire()
-            try:
-                existcheck = await bot.pg_pool.fetchrow(
-                    f"SELECT sb_id FROM starboard WHERE msg_id = {payload.message_id};")
+        await starboard_lock.acquire()
+        try:
+            existcheck = await bot.pg_pool.fetchrow(
+                f"SELECT sb_id FROM starboard WHERE msg_id = {payload.message_id};")
 
-                if stars >= STAR_THRESHOLD:  # add to SB
-                    if existcheck is None:
-                        sb_msg = await sb_channel.send(embed=starboard_embed(msg, stars))
-                        await bot.pg_pool.execute("INSERT INTO starboard (msg_id, sb_id, stars, usr_id) VALUES "
-                                                  f"({payload.message_id},{sb_msg.id},{stars},{msg.author.id});")
-                    else:
-                        sb_msg = await sb_channel.fetch_message(existcheck["sb_id"])
-                        await edit_stars(sb_msg, stars)
-                        await bot.pg_pool.execute(
-                            f"UPDATE starboard SET stars = {stars} WHERE msg_id = {payload.message_id};")
+            if stars >= STAR_THRESHOLD:  # add to SB
+                if existcheck is None:
+                    sb_msg = await sb_channel.send(embed=starboard_embed(msg, stars))
+                    await bot.pg_pool.execute("INSERT INTO starboard (msg_id, sb_id, stars, usr_id) VALUES "
+                                              f"({payload.message_id},{sb_msg.id},{stars},{msg.author.id});")
                 else:
-                    if existcheck is not None:
-                        sb_msg = await sb_channel.fetch_message(existcheck["sb_id"])
-                        await sb_msg.delete()
-                        await bot.pg_pool.execute(f"DELETE FROM starboard WHERE msg_id = {payload.message_id};")
-            finally:
-                starboard_lock.release()
+                    sb_msg = await sb_channel.fetch_message(existcheck["sb_id"])
+                    await edit_stars(sb_msg, stars)
+                    await bot.pg_pool.execute(
+                        f"UPDATE starboard SET stars = {stars} WHERE msg_id = {payload.message_id};")
+            else:
+                if existcheck is not None:
+                    sb_msg = await sb_channel.fetch_message(existcheck["sb_id"])
+                    await sb_msg.delete()
+                    await bot.pg_pool.execute(f"DELETE FROM starboard WHERE msg_id = {payload.message_id};")
+        except Exception as e:
+            await db.log(bot, f"Unexpected error: {e}")
+        finally:
+            starboard_lock.release()
     elif isinstance(payload, RawReactionClearEvent):
         # if exists in starboard, do something about it, otherwise don't care
         msg = await get_starboard_msg(bot, payload.message_id)
@@ -81,6 +82,8 @@ async def starboard_handler(bot, payload):
             try:
                 await msg.delete()
                 await bot.pg_pool.execute(f"DELETE FROM starboard WHERE msg_id = {payload.message_id};")
+            except Exception as e:
+                await db.log(bot, f"Unexpected error: {e}")
             finally:
                 starboard_lock.release()
 
@@ -93,5 +96,7 @@ async def starboard_handler(bot, payload):
                 try:
                     await msg.delete()
                     await bot.pg_pool.execute(f"DELETE FROM starboard WHERE msg_id = {payload.message_id};")
+                except Exception as e:
+                    await db.log(bot, f"Unexpected error: {e}")
                 finally:
                     starboard_lock.release()

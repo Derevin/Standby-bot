@@ -1,6 +1,4 @@
 import json
-import sys
-import traceback
 from datetime import datetime as dt, timedelta
 
 from nextcord import SlashOption, slash_command
@@ -55,8 +53,8 @@ class Timers(Cog):
                     await self.bot.pg_pool.execute("DELETE FROM tmers WHERE tmer_id = $1;", rec["tmer_id"])
         except AttributeError:  # bot hasn't loaded yet and pg_pool doesn't exist
             return
-        except Exception:
-            traceback.print_exc(file=sys.stdout)
+        except Exception as e:
+            await db.log(self.bot, f"Unexpected error: {e}")
             return
 
 

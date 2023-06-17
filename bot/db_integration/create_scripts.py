@@ -136,8 +136,20 @@ CREATE TABLE IF NOT EXISTS "notes" (
 );
 """
 
+CREATE_LOGS = """
+CREATE TABLE IF NOT EXISTS "logs" (
+    "timestamp" TIMESTAMP NOT NULL,
+    "module" TEXT,
+    "function" TEXT,
+    "message" TEXT
+) WITH (
+    OIDS=FALSE
+);
+"""
+
 
 async def create_tables(con):
+    no_errors = True
     try:
         await con.execute(CREATE_USER)
         await con.execute(CREATE_STARBOARD)
@@ -147,32 +159,37 @@ async def create_tables(con):
         await con.execute(ALTER_USER_ADD_BURGERS)
         await con.execute(ALTER_USER)
         await con.execute(ALTER_STARBOARD)
-        print("successfully ran db script batch 1")
     except Exception as e:
-        print("expected create exception 1:", e)
+        print(f"Error when executing db script batch 1: {e}")
+        no_errors = False
 
     try:
         await con.execute(CREATE_TMERS)
         await con.execute(ALTER_TMERS)
-        print("successfully ran db script batch 2")
     except Exception as e:
-        print("expected create exception 2:", e)
-
+        print(f"Error when executing db script batch 2: {e}")
+        no_errors = False
     try:
         await con.execute(CREATE_BDAYS)
         await con.execute(ALTER_BDAYS)
-        print("successfully ran db script batch 3")
     except Exception as e:
-        print("expected create exception 3:", e)
-
+        print(f"Error when executing db script batch 3: {e}")
+        no_errors = False
     try:
         await con.execute(CREATE_BUTTONS)
-        print("successfully ran db script batch 4")
     except Exception as e:
-        print("expected create exception 4:", e)
-
+        print(f"Error when executing db script batch 4: {e}")
+        no_errors = False
     try:
         await con.execute(CREATE_NOTES)
-        print("successfully ran db script batch 5")
     except Exception as e:
-        print("expected create exception 5:", e)
+        print(f"Error when executing db script batch 5: {e}")
+        no_errors = False
+    try:
+        await con.execute(CREATE_LOGS)
+    except Exception as e:
+        print(f"Error when executing db script batch 6: {e}")
+        no_errors = False
+
+    if no_errors:
+        print("All db scripts executed successfully!")

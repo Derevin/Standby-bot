@@ -4,6 +4,7 @@ from nextcord import Embed
 from nextcord.ext.commands import Cog, Context, errors
 
 from config.constants import *
+from db_integration import db_functions as db
 from utils import util_functions as uf
 
 
@@ -21,11 +22,12 @@ class ErrorHandler(Cog):
 
     @Cog.listener()
     async def on_command_error(self, ctx: Context, e: errors.CommandError) -> None:
+        await db.log(self.bot, f"CommandError: {e}")
         if isinstance(e, errors.UserInputError):
             await self.handle_user_input_error(ctx, e)
         elif isinstance(e, errors.CommandNotFound):
             await self._sleep_and_delete(await ctx.channel.send(
-                    embed=self._get_error_embed(title="Command not found", body=ctx.message.content)))
+                embed=self._get_error_embed(title="Command not found", body=ctx.message.content)))
         else:
             if ctx.guild.id == GUILD_ID:
                 channel = uf.get_channel(ctx.guild, ERROR_CHANNEL_NAME)

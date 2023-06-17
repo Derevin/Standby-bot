@@ -12,6 +12,7 @@ from nextcord.ext.commands import Cog
 
 import config.startup
 from config.constants import *
+from db_integration import db_functions as db
 from utils import util_functions as uf
 
 
@@ -141,6 +142,8 @@ class Admin(Cog):
                 ping = await channel.send(user.mention)
                 await ping.delete()
                 await asyncio.sleep(2)
+            else:
+                await db.log(self.bot, f"Channel {ch} could not be found")
 
         await asyncio.sleep(45)
 
@@ -150,6 +153,8 @@ class Admin(Cog):
                 ping = await channel.send(user.mention)
                 await ping.delete()
                 await asyncio.sleep(2)
+            else:
+                await db.log(self.bot, f"Channel {ch} could not be found")
 
 
     @user_command(name="Punish", guild_ids=[GUILD_ID], default_member_permissions=MODS_AND_GUIDES)
@@ -235,7 +240,8 @@ class Admin(Cog):
     async def obit(self, interaction, channel: VALID_TEXT_CHANNEL = SlashOption(description="Channel to post in")):
         maint = uf.get_channel(interaction.guild, ERROR_CHANNEL_NAME)
         if not maint:
-            await interaction.send("Could not find maintenance channel")
+            await db.log(self.bot, "Could not find maintenance channel")
+            await interaction.send("Could not find maintenance channel", ephemeral=True)
             return
 
         async for msg in maint.history(limit=6):
@@ -326,30 +332,6 @@ class Admin(Cog):
         obj.seek(0)
 
         await interaction.send(file=nextcord.File(obj, filename="pic.png"))
-
-
-    @slash_command(description="Print a table from the database", default_member_permissions=MODS_AND_GUIDES)
-    async def printdb(self, interaction,
-                      table=SlashOption(description="Table to print", choices=["bdays", "tmers", "buttons"])):
-        try:
-            gtable = await self.bot.pg_pool.fetch(f"SELECT * FROM {table}")
-        except Exception:
-            await interaction.send(f"Table `{table}` not found.", ephemeral=True)
-            return
-        if gtable:
-            printed = 0
-            await interaction.send("Printing...", ephemeral=True)
-            for rec in gtable:
-                text = ""
-                for key, value in rec.items():
-                    text += key + ": " + str(value) + "\n"
-                await interaction.channel.send(text)
-                printed += 1
-                if printed == 20:
-                    break
-            await interaction.edit_original_message(content="Done")
-        else:
-            await interaction.send(f"Table `{table}` is empty.", ephemeral=True)
 
 
     @slash_command(description="Emoji commands", default_member_permissions=MANAGE_EMOJIS)

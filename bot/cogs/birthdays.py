@@ -27,8 +27,9 @@ class Birthdays(Cog):
     @birthday.subcommand(description="Set your birthday")
     async def set(self, interaction, month_name: str = SlashOption(name="month", description="Your birth month",
                                                                    choices=["January", "February", "March", "April",
-                                                                           "May", "June", "July", "August", "September",
-                                                                           "October", "November", "December"]),
+                                                                            "May", "June", "July", "August",
+                                                                            "September", "October", "November",
+                                                                            "December"]),
                   day: int = SlashOption(min_value=1, max_value=31, description="Your birth date")):
         month = uf.month_to_int(month_name)
         if (month in [2, 4, 6, 9, 11] and day == 31) or (month == 2 and day > 29):
@@ -42,7 +43,7 @@ class Birthdays(Cog):
 
         if exists:
             await self.bot.pg_pool.execute(
-                    f"UPDATE bdays SET month = {month}, day = {day} WHERE usr_id = {interaction.user.id}")
+                f"UPDATE bdays SET month = {month}, day = {day} WHERE usr_id = {interaction.user.id}")
         else:
             await self.bot.pg_pool.execute("INSERT INTO bdays (usr_id, month, day) VALUES ($1, $2, $3);",
                                            interaction.user.id, month, day)
@@ -93,6 +94,7 @@ class Birthdays(Cog):
         gtable = await self.bot.pg_pool.fetch(f"SELECT * FROM bdays WHERE month = {now.month} AND day = {now.day}")
 
         if not gtable:
+            await db.log(self.bot, "Could not find birthday table")
             return
 
         bday_havers = []

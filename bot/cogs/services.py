@@ -207,31 +207,32 @@ def build_leaderboard_embed(interaction, leaderboard, settings, count_col_name="
 
 
 async def urban_handler(bot, payload):
-    if isinstance(payload, RawReactionActionEvent):
-        channel = bot.get_channel(payload.channel_id)
-        try:
-            message = await channel.fetch_message(payload.message_id)
-            if (payload.user_id != BOT_ID and not payload.member.bot and message.embeds and message.embeds[0]
-                    and str(message.embeds[0].title).startswith("Page") and payload.emoji.name in ["⬅️", "➡️", "🇽"]):
-                if payload.emoji.name == "🇽":
-                    await message.clear_reaction("⬅️")
-                    await message.clear_reaction("➡️")
-                    await message.clear_reaction("🇽")
-                else:
-                    embed = message.embeds[0]
-                    title = embed.title
-                    match = re.search(r"Page (\d+)\/(\d+)", title)
-                    page, pages = int(match.group(1)), int(match.group(2))
-                    query = re.search(r"\[(.*)\]", embed.fields[0].value).group(1)
-                    user = message.guild.get_member(payload.user_id)
-                    if payload.emoji.name == "⬅️" and page > 1:
-                        embed = await urban_embed(query, page - 1)
-                    elif payload.emoji.name == "➡️" and page < pages:
-                        embed = await urban_embed(query, page + 1)
-                    await message.remove_reaction(payload.emoji, user)
-                    await message.edit(embed=embed)
-        except Exception:
-            pass
+    if not isinstance(payload, RawReactionActionEvent):
+        return
+    channel = bot.get_channel(payload.channel_id)
+    try:
+        message = await channel.fetch_message(payload.message_id)
+        if (payload.user_id != BOT_ID and not payload.member.bot and message.embeds and message.embeds[0]
+                and str(message.embeds[0].title).startswith("Page") and payload.emoji.name in ["⬅️", "➡️", "🇽"]):
+            if payload.emoji.name == "🇽":
+                await message.clear_reaction("⬅️")
+                await message.clear_reaction("➡️")
+                await message.clear_reaction("🇽")
+            else:
+                embed = message.embeds[0]
+                title = embed.title
+                match = re.search(r"Page (\d+)\/(\d+)", title)
+                page, pages = int(match.group(1)), int(match.group(2))
+                query = re.search(r"\[(.*)\]", embed.fields[0].value).group(1)
+                user = message.guild.get_member(payload.user_id)
+                if payload.emoji.name == "⬅️" and page > 1:
+                    embed = await urban_embed(query, page - 1)
+                elif payload.emoji.name == "➡️" and page < pages:
+                    embed = await urban_embed(query, page + 1)
+                await message.remove_reaction(payload.emoji, user)
+                await message.edit(embed=embed)
+    except Exception as e:
+        await db.log(bot, f"Unexpected error: {e}")
 
 
 def avatar_embed(user: Member) -> Embed:

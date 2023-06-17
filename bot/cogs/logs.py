@@ -2,6 +2,7 @@ from nextcord import Embed, InteractionType, MessageType
 from nextcord.ext.commands import Cog
 
 from config.constants import *
+from db_integration import db_functions as db
 from utils import util_functions as uf
 
 
@@ -54,12 +55,14 @@ class Logs(Cog):
             if interaction.type == InteractionType.application_command:
                 embed = await command_embed(interaction)
                 await logs.send(embed=embed)
-
             elif interaction.type == InteractionType.component:
                 embed = await component_embed(interaction)
                 await logs.send(embed=embed)
             else:
+                await db.log(self.bot, f"Unknown interaction in {interaction.channel.name} with {interaction.type=}")
                 await logs.send(f"Unknown interaction in {interaction.channel.mention}.")
+        else:
+            await db.log(self.bot, "Log channel not found")
 
 
 async def deleted_embed(payload, channel):
@@ -249,7 +252,7 @@ async def component_embed(interaction):
     if data["component_type"] == 2:  # Button
         embed.title = f"Button pressed"
         labels = [child.label for row in interaction.message.components for child in row.children if
-                child.custom_id == data["custom_id"]]
+                  child.custom_id == data["custom_id"]]
         embed.add_field(name="Button", value=labels[0] if len(labels) == 1 else "Unknown")
         embed.add_field(name="Pressed by", value=interaction.user.mention)
         embed.add_field(name="In channel", value=interaction.channel.mention)

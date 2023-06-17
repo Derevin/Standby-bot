@@ -13,6 +13,7 @@ BOT_ID = int(getenv("BOT_ID", False))
 DATABASE_URL = str(getenv("DATABASE_URL", False))
 GUILD_ID = int(getenv("GUILD_ID", False))
 STARBOARD_ID = int(getenv("STARBOARD_ID", False))
+ERROR_CHANNEL_ID = int(getenv("ERROR_CHANNEL_ID", False))
 GINNY_TRANSPARENT_URL = str(getenv("GINNY_TRANSPARENT_URL", False))
 GINNY_WHITE_URL = str(getenv("GINNY_WHITE_URL", False))
 BOT_TZ = timezone(getenv("TZ", "UTC"))
@@ -26,7 +27,6 @@ RULES_CHANNEL_NAME = "getting-started"
 ERROR_CHANNEL_NAME = "maintenance-channel"
 NO_RESPONSE_CHANNELS = ["mod-chat", RULES_CHANNEL_NAME, GIVEAWAY_CHANNEL_NAME, "alliance-mod-chat", "starboard",
                         "events", "event-submissions"]
-ERROR_CHANNEL_ID = 376031149371162635
 GENERAL_ID = 315247766739615745
 GIVEAWAYS_ID = 366906148500275200
 TICKET_CHANNEL_ID = 994974670275223673

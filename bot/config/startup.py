@@ -21,6 +21,7 @@ import nextcord
 from nextcord import Game
 
 from config.constants import *
+from db_integration import db_functions as db
 
 
 def load_cogs(bot):
@@ -36,8 +37,7 @@ async def set_status(bot, status):
 async def log_restart_reason(bot):
     channel = bot.get_channel(ERROR_CHANNEL_ID)
     if not channel:
-        channel = bot.get_channel(740944936991457431)
-    if not channel:
+        await db.log(bot, "Could not find error channel")
         return
     async with aiohttp.ClientSession() as cs:
         async with cs.get("https://api.github.com/repos/Derevin/Standby-bot/commits/main") as r:
@@ -53,8 +53,9 @@ async def log_restart_reason(bot):
                 reason = f"commit from {author} with message `{message}`. Link: <{link}>"
             else:
                 reason = "Heroku restart or crash."
-
-        await channel.send(f"Reboot complete. Caused by {reason}")
+        reboot_message = f"Reboot complete. Caused by {reason}"
+        await channel.send(reboot_message)
+        await db.log(bot, reboot_message)
 
 
 async def reconnect_buttons(bot):

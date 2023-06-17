@@ -149,39 +149,36 @@ class Rules(Cog):
 
     @loop(hours=8)
     async def kick_inactives(self):
-        guild = None
-
         try:
             guild = await self.bot.fetch_guild(GUILD_ID)
         except Exception:
-            pass
-
-        if guild is None:
+            await db.log(self.bot, f"Could not fetch guild")
             return
+
         async for member in guild.fetch_members():
             if not member.bot and uf.get_role(member.guild, "Alliance") not in member.roles and (
                     uf.get_role(member.guild, "Community") not in member.roles):
                 time = uf.utcnow() - member.joined_at
                 if time.days >= 30:
+                    discriminator = f"#{member.discriminator}" if member.discriminator != "0" else ""
                     try:
                         await member.send("Hi! You have been automatically kicked from the Vie for the Void Discord "
                                           "as you have failed to read our rules and "
                                           "unlock the full server within 30 days. If this was "
                                           f"an accident, please feel free to join us again!\n{EMPTY}\n{INVITE_LINK}")
                     except Exception:
-                        pass
+                        await db.log(self.bot, f"Failed to send kick DM to {member.name}{discriminator}")
 
-                    discriminator = f"#{member.discriminator}" if member.discriminator != "0" else ""
                     try:
                         maint = await self.bot.fetch_channel(ERROR_CHANNEL_ID)
                         await maint.send(f"{member.name}{discriminator} has been kicked due to inactivity.")
                     except Exception:
-                        pass
+                        await db.log(self.bot, f"Error channel not found")
 
                     try:
                         await member.kick()
                     except Exception as e:
-                        print(f"{member.name}{discriminator} couldn't be kicked:\n{e}")
+                        await db.log(self.bot, f"{member.name}{discriminator} couldn't be kicked: {e}")
 
 
 class StepOneView(ui.View):

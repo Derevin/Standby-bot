@@ -1,6 +1,3 @@
-import sys
-import traceback
-
 from nextcord import RawReactionActionEvent
 from nextcord.ext.commands import Cog
 from nextcord.ext.tasks import loop
@@ -73,8 +70,8 @@ class Reposts(Cog):
                 await self.bot.pg_pool.execute(f"DELETE FROM tmers WHERE tmer_id = {rec['tmer_id']};")
         except AttributeError:  # bot hasn't loaded yet and pg_pool doesn't exist
             return
-        except Exception:
-            traceback.print_exc(file=sys.stdout)
+        except Exception as e:
+            await db.log(self.bot, f"Unexpected exception: {e}")
             return
 
 
