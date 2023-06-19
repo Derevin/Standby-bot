@@ -54,7 +54,7 @@ class BingoCard:
         for pattern in patterns:
             bingo = True
             for coords in pattern:
-                if type(self.grid[coords[0]][coords[1]]) == int:
+                if type(self.grid[coords[0]][coords[1]]) is int:
                     bingo = False
                     break
             if bingo:
@@ -157,9 +157,8 @@ class Bingo(Cog, name="Void Bingo", description="Embrace your inner boomer and p
             await interaction.send("You're already in this lobby.", ephemeral=True)
         else:
             game.players.append(interaction.user)
-            await interaction.send(
-                    f"""Welcome {interaction.user.display_name}. Players currently in lobby: {len(game.players)}. """
-                    """The game host can use `/bingo` to start the game.""")
+            await interaction.send(f"Welcome {interaction.user.display_name}. Players currently in "
+                                   f"lobby: {len(game.players)}. The game host can use `/bingo` to start the game.")
 
 
     async def start(self, interaction):
@@ -205,9 +204,8 @@ async def draw(self, interaction):
             uf.get_role(interaction.guild, "Guides of the Void") not in interaction.user.roles):
         await interaction.send("Only the person who started the game can draw numbers.", ephemeral=True)
     elif game.channel != interaction.channel:
-        await interaction.send(
-                f"Numbers may only be drawn in the current game's channel, please head over to {game.channel.mention}.",
-                ephemeral=True)
+        await interaction.send(f"Numbers may only be drawn in the current game's channel, "
+                               f"please head over to {game.channel.mention}.", ephemeral=True)
     elif len(game.winners) > 0:
         await interaction.send("One or more players have Bingo, no more numbers may be drawn.", ephemeral=True)
     elif len(game.draws) == 0:
@@ -224,9 +222,8 @@ async def autodraw(self, interaction):
             uf.get_role(interaction.guild, "Guides of the Void") not in interaction.user.roles):
         await interaction.send("Only the person who started the game can draw numbers.", ephemeral=True)
     elif game.channel != interaction.channel:
-        await interaction.send(
-                f"Numbers may only be drawn in the current game's channel, please head over to {game.channel.mention}.",
-                ephemeral=True)
+        await interaction.send(f"Numbers may only be drawn in the current game's channel, "
+                               f"please head over to {game.channel.mention}.", ephemeral=True)
     elif len(game.winners) > 0:
         await interaction.send("One or more players have Bingo, no more numbers may be drawn.", ephemeral=True)
     elif len(game.draws) == 0:
@@ -259,22 +256,22 @@ async def declare(self, interaction):
 
 @slash_command(description="Play Void Bingo")
 async def bingo(self, interaction, action: str = SlashOption(choices={
-        "Create a lobby": "create",
-        "Join the lobby": "join",
-        "Start the game": "start",
-        "Stop the game": "stop",
-        "Draw a number": "draw",
-        "Toggle autodraw": "autodraw",
-        "Declare Void Bingo!": "declare"
+    "Create a lobby": "create",
+    "Join the lobby": "join",
+    "Start the game": "start",
+    "Stop the game": "stop",
+    "Draw a number": "draw",
+    "Toggle autodraw": "autodraw",
+    "Declare Void Bingo!": "declare"
 }, description="Choose the action you want to take", name="action")):
     cmd_dict = {
-            "create": self.create,
-            "join": self.join,
-            "start": self.start,
-            "stop": self.stop,
-            "draw": self.draw,
-            "autodraw": self.autodraw,
-            "declare": self.declare,
+        "create": self.create,
+        "join": self.join,
+        "start": self.start,
+        "stop": self.stop,
+        "draw": self.draw,
+        "autodraw": self.autodraw,
+        "declare": self.declare,
     }
     cmd = cmd_dict[action]
     await cmd(interaction)

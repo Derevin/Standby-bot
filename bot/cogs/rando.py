@@ -38,9 +38,7 @@ class Rando(commands.Cog):
             total = sum([sum(res) for res in results]) + sum(bonus)
             output += str(total) + "\nRolls: "
             output += str(results)[1:-1]
-            output = re.sub(r"\[", "(", output)
-            output = re.sub(r"\]", ")", output)
-            output = re.sub(r"\),", ") +", output)
+            output = output.replace("[", "(").replace("]", ")").replace("),", ") +")
             await interaction.send(output)
 
 
@@ -63,7 +61,6 @@ class Rando(commands.Cog):
         if len(options) == 1:
             await interaction.send(f"Such a tough decision. I guess I'll have to go with {options[0]}")
         else:
-            print(options)
             choice = random.choice(options)
             phrases = [f"Let's go with {choice}", f"I choose {choice}", f"God has spoken to me - it must be {choice}",
                        f"I have consulted with the spirits and they said {choice}", f"{choice} - no doubt about it",

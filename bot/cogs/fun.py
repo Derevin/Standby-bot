@@ -13,7 +13,6 @@ from PIL import Image, ImageDraw, ImageFont
 from fuzzywuzzy import fuzz
 from nextcord import ButtonStyle, Embed, Member, SlashOption, slash_command, ui, user_command
 from nextcord.ext.commands import Cog
-from nextcord.ext.tasks import loop
 from transliterate import translit
 from transliterate.base import TranslitLanguagePack, registry
 
@@ -289,7 +288,7 @@ class Fun(Cog):
         await uf.invoke_slash_command("burger", self, interaction, user)
 
 
-    @loop(minutes=1)
+    @uf.delayed_loop(minutes=1)
     async def check_burger(self):
         try:
             gtable = await self.bot.pg_pool.fetch(f"SELECT * FROM tmers WHERE ttype = {DB_TMER_BURGER}")
@@ -298,12 +297,10 @@ class Fun(Cog):
                 if timenow <= rec["expires"]:
                     continue
 
-                print(f"record expired: {rec}")
-
                 guild = self.bot.get_guild(GUILD_ID)
 
                 if not guild:
-                    await db.log(self.bot, "Guild not found")
+                    await db.log(self.bot, "Could not fetch guild")
                     return
 
                 general = await guild.fetch_channel(GENERAL_ID)
@@ -337,7 +334,7 @@ class Fun(Cog):
                                          "the burger yearns for freedom!\nTo claim it, "
                                          f"answer the following question:\n \n{params['question']}", view=view)
                 await db.log_buttons(self.bot, view, general.id, msg.id, params)
-                await self.bot.pg_pool.execute(f"""DELETE FROM tmers WHERE ttype = {DB_TMER_BURGER};""")
+                await self.bot.pg_pool.execute(f"DELETE FROM tmers WHERE ttype = {DB_TMER_BURGER};")
 
         except AttributeError:  # bot hasn't loaded yet and pg_pool doesn't exist
             return

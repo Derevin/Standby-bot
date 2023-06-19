@@ -21,10 +21,10 @@ def get_response_command(message):
         if not resp.accepts(message):
             continue
 
-        if type(resp) == RegexResponse:
+        if type(resp) is RegexResponse:
             return resp.response
 
-        if type(resp) == WednesdayResponse:
+        if type(resp) is WednesdayResponse:
             async def resp_command(bot, message):
                 if dt.now().weekday() == resp.trigger_day:
                     await message.channel.send(resp.response)

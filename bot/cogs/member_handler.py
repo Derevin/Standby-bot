@@ -35,10 +35,10 @@ async def welcome_message(member):
         rules_text = rules_ch.mention if rules_ch else f"#{RULES_CHANNEL_NAME}"
         if not general:
             return
-        message = f"""Welcome {member.mention}!
-                   Wondering why the server seems so void of channels?
-                   Please read the rules in {rules_text} to unlock the full server!
-                   https://www.youtube.com/watch?v=67h8GyNgEmA"""
+        message = (f"Welcome {member.mention}!\n"
+                   "Wondering why the server seems so void of channels?\n"
+                   f"Please read the rules in {rules_text} to unlock the full server!\n"
+                   "https://www.youtube.com/watch?v=67h8GyNgEmA")
 
         await general.send(message)
         await asyncio.sleep(30 * 60)

@@ -162,7 +162,7 @@ class Services(Cog):
             if not stats:
                 await interaction.send(f"{subject} currently {has} no {settings.stat_name.lower()}.")
             elif "Roulette" in stat:
-                await interaction.send(f"""{possessive} {settings.stat_name.lower()} is {stats[0]['total']} rounds.""")
+                await interaction.send(f"{possessive} {settings.stat_name.lower()} is {stats[0]['total']} rounds.")
             else:
                 await interaction.send(f"{subject} currently {has} {stats[0]['total']} {settings.stat_name.lower()}.")
         else:
@@ -221,7 +221,7 @@ async def urban_handler(bot, payload):
             else:
                 embed = message.embeds[0]
                 title = embed.title
-                match = re.search(r"Page (\d+)\/(\d+)", title)
+                match = re.search(r"Page (\d+)/(\d+)", title)
                 page, pages = int(match.group(1)), int(match.group(2))
                 query = re.search(r"\[(.*)\]", embed.fields[0].value).group(1)
                 user = message.guild.get_member(payload.user_id)
