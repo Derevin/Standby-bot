@@ -73,7 +73,7 @@ class MessageHandler(Cog):
             return
 
         if last_messages.get(message.channel, (None, None))[0] == message.content.lower():
-            if "<:BlobWave:" not in message.content and message.author == last_messages[message.channel][1]:
+            if "<:BlobWave:" not in message.content and message.author != last_messages[message.channel][1]:
                 await message.channel.send(message.content)
                 last_messages.pop(message.channel)
         else:
