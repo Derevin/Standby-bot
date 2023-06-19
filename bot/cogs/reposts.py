@@ -1,6 +1,5 @@
 from nextcord import RawReactionActionEvent
 from nextcord.ext.commands import Cog
-from nextcord.ext.tasks import loop
 
 from config.constants import *
 from db_integration import db_functions as db
@@ -51,7 +50,7 @@ class Reposts(Cog):
                                                    message.author.id, expires, DB_TMER_REPOST)
 
 
-    @loop(seconds=60)
+    @uf.delayed_loop(seconds=60)
     async def check_reposters(self):
         try:
             gtable = await self.bot.pg_pool.fetch(f"SELECT * FROM tmers WHERE ttype={DB_TMER_REPOST}")
@@ -59,8 +58,6 @@ class Reposts(Cog):
                 timenow = uf.utcnow()
                 if timenow.replace(tzinfo=None) <= rec["expires"]:
                     continue
-
-                print(f"record expired: {rec}")
 
                 guild_id = await self.bot.pg_pool.fetchval(f"SELECT guild_id FROM usr WHERE usr_id = {rec['usr_id']}")
                 guild = await self.bot.fetch_guild(guild_id)

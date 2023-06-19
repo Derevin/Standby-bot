@@ -1,10 +1,15 @@
+import asyncio
+import datetime
 import io
 import re
 from datetime import datetime as dt, timedelta
+from typing import Callable, Union, Sequence, Optional
 
 import nextcord
 import requests
 from PIL import Image, ImageDraw, ImageFont
+from nextcord.ext.tasks import Loop, LF
+from nextcord.utils import MISSING
 
 from config.constants import *
 
@@ -196,6 +201,10 @@ def utcnow():
     return nextcord.utils.utcnow()
 
 
+def now():
+    return dt.now(tz=BOT_TZ)
+
+
 def role_prio(role):
     if role.name in PRIO_ROLES:
         return "0" + role.name
@@ -237,3 +246,21 @@ def message_embed(msg, cmd, trigger_author) -> nextcord.Embed:
             embed.set_image(url=link.group(1))
 
     return embed
+
+
+def delayed_loop(*, seconds: float = MISSING, minutes: float = MISSING, hours: float = MISSING,
+                 time: Union[datetime.time, Sequence[datetime.time]] = MISSING, count: Optional[int] = None,
+                 reconnect: bool = True, loop: asyncio.AbstractEventLoop = MISSING, ) -> Callable[[LF], Loop[LF]]:
+    def decorator(func: LF) -> Loop[LF]:
+        inner_loop = Loop[LF](func, seconds, minutes, hours, time, count, reconnect, loop=loop)
+
+
+        @inner_loop.before_loop
+        async def impr(self):
+            await self.bot.wait_until_ready()
+
+
+        return inner_loop
+
+
+    return decorator

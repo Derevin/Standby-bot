@@ -6,7 +6,6 @@ from datetime import timedelta
 import nextcord.utils
 from nextcord import Embed, SlashOption, slash_command
 from nextcord.ext.commands import Cog
-from nextcord.ext.tasks import loop
 
 from config.constants import *
 from db_integration import db_functions as db
@@ -179,14 +178,14 @@ class Giveaways(Cog):
             await interaction.send("Number of winners successfully changed")
 
 
-    @loop(seconds=10)
+    @uf.delayed_loop(seconds=10)
     async def check_giveaways(self):
-        guild = None
-
         try:
             guild = await self.bot.fetch_guild(GUILD_ID)
         except Exception:
-            await db.log(self.bot, "Guild not found")
+            await db.log(self.bot, "Could not fetch guild")
+            return
+
         if guild:
             channels = await guild.fetch_channels()
             giveaway_channel = nextcord.utils.get(channels, name=GIVEAWAY_CHANNEL_NAME)

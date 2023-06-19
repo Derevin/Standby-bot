@@ -1,7 +1,6 @@
 import nextcord.utils
 from nextcord import SlashOption, slash_command
 from nextcord.ext.commands import Cog
-from nextcord.ext.tasks import loop
 
 from config.constants import *
 from db_integration import db_functions as db
@@ -73,7 +72,7 @@ class Birthdays(Cog):
                                    ephemeral=True)
 
 
-    @loop(hours=1)
+    @uf.delayed_loop(hours=1)
     async def check_bdays(self):
 
         now = uf.utcnow()
@@ -94,7 +93,6 @@ class Birthdays(Cog):
         gtable = await self.bot.pg_pool.fetch(f"SELECT * FROM bdays WHERE month = {now.month} AND day = {now.day}")
 
         if not gtable:
-            await db.log(self.bot, "Could not find birthday table")
             return
 
         bday_havers = []

@@ -4,7 +4,6 @@ from math import ceil
 
 from nextcord import ButtonStyle, Embed, SelectOption, SlashOption, slash_command, ui
 from nextcord.ext.commands import Cog
-from nextcord.ext.tasks import loop
 
 from config.constants import *
 from db_integration import db_functions as db
@@ -147,7 +146,7 @@ class Rules(Cog):
         await interaction.send("Rule successfully edited", ephemeral=True)
 
 
-    @loop(hours=8)
+    @uf.delayed_loop(hours=8)
     async def kick_inactives(self):
         try:
             guild = await self.bot.fetch_guild(GUILD_ID)
