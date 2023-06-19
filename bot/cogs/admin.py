@@ -203,7 +203,8 @@ class Admin(Cog):
     @slash_command(description="Clears the last X messages sent in the channel",
                    default_member_permissions=MODS_AND_GUIDES)
     async def clear(self, interaction,
-                    number: int = SlashOption(description="Number of messages to delete", min_value=1, max_value=20)):
+                    number: int = SlashOption(description="Number of messages to delete", min_value=1, max_value=20),
+                    user: Member = SlashOption(description="Only delete a certain user's messages", required=False)):
         deleted = 0
         await interaction.send(f"Working (0/{number})... Do not dismiss this message", ephemeral=True)
         response = await interaction.original_message()
@@ -211,12 +212,13 @@ class Admin(Cog):
         async for msg in interaction.channel.history(limit=25):
             if msg.id == response.id:
                 continue
-            await msg.delete()
-            deleted += 1
-            if deleted == number:
-                break
-            await interaction.edit_original_message(
-                content=f"Working ({deleted}/{number})... Do not dismiss this message")
+            if user == msg.author or user is None:
+                await msg.delete()
+                deleted += 1
+                if deleted == number:
+                    break
+                await interaction.edit_original_message(
+                    content=f"Working ({deleted}/{number})... Do not dismiss this message")
 
         await interaction.edit_original_message(
             content=f":white_check_mark: Deleted the last {deleted} messages! :white_check_mark:")
