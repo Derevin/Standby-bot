@@ -252,7 +252,8 @@ def delayed_loop(*, seconds: float = MISSING, minutes: float = MISSING, hours: f
                  time: Union[datetime.time, Sequence[datetime.time]] = MISSING, count: Optional[int] = None,
                  reconnect: bool = True, loop: asyncio.AbstractEventLoop = MISSING, ) -> Callable[[LF], Loop[LF]]:
     def decorator(func: LF) -> Loop[LF]:
-        inner_loop = Loop[LF](func, seconds, minutes, hours, time, count, reconnect, loop=loop)
+        inner_loop = Loop[LF](func, seconds=seconds, minutes=minutes, hours=hours, time=time, count=count,
+                              reconnect=reconnect, loop=loop)
 
 
         @inner_loop.before_loop
