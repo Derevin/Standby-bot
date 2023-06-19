@@ -5,8 +5,9 @@ from datetime import datetime as dt
 
 import asyncpg
 
-from config.constants import NO_SSL, DATABASE_URL
+from config.constants import NO_SSL, DATABASE_URL, YYYYMMDD_HHMMSS
 from db_integration.create_scripts import create_tables
+from utils import util_functions as uf
 
 bot_start_time = dt.now()
 
@@ -24,7 +25,6 @@ async def ensure_guild_existence(bot, gid):
     guild = await bot.pg_pool.fetch("SELECT * FROM guild WHERE guild.guild_id = $1;", gid)
 
     if not guild:
-        print(f"Adding guild {gid} to db.")
         await bot.pg_pool.execute("INSERT INTO guild (guild_id) VALUES ($1);", gid)
 
 
@@ -32,7 +32,6 @@ async def get_or_insert_usr(bot, uid, gid):
     usr = await bot.pg_pool.fetch("SELECT * FROM usr WHERE usr_id = $1 AND guild_id = $2;", uid, gid)
 
     if not usr:
-        print(f"Adding user {uid} with guild {gid} to db.")
         await bot.pg_pool.execute("INSERT INTO usr (usr_id, guild_id) VALUES ($1, $2);", uid, gid, )
 
     return usr
@@ -62,13 +61,18 @@ async def log_buttons(bot, view, channel_id, message_id, params=None):
                               json.dumps(params).replace("'", "''") if params else None)
 
 
-async def log(bot, message):
-    module = ".".join(re.split(r"[/\\]", inspect.stack()[1][1])[-2:])[:-3]
-    func = inspect.stack()[1][3] + "()"
+async def log(bot, message=None, cached_line=None):
+    if message:
+        module = ".".join(re.split(r"[/\\]", inspect.stack()[1][1])[-2:])[:-3]
+        func = inspect.stack()[1][3] + "()"
+        time = uf.now().strftime(YYYYMMDD_HHMMSS)
+    else:
+        time, module, func, message = cached_line
+        message += " [Added from cache]"
     try:
         await bot.pg_pool.execute("INSERT INTO logs (timestamp, module, function, message) VALUES ($1, $2, $3, $4);",
-                                  dt.now(), module, func, message)
+                                  time, module, func, message)
     except Exception as e:
-        current_running_time = dt.now() - bot_start_time
-        if current_running_time.seconds > 0:
-            print(f"Failed to log message '{message}' to database with exception '{e}'")
+        print(f"Failed to log message '{message}' to database with exception '{e}': adding to cache.")
+        with open("db_cache.txt", "a") as f:
+            f.write(json.dumps([time, module, func, message]) + "\n")

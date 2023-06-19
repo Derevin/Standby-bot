@@ -48,7 +48,7 @@ class ErrorHandler(Cog):
         try:
             await msg.delete()
         except Exception:
-            print("warn: can't delete msg in _sleep_and_delete")
+            await db.log(self.bot, "Can't delete message")
 
 
     async def handle_user_input_error(self, ctx: Context, e: errors.UserInputError) -> None:

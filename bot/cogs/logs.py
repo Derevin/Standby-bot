@@ -1,3 +1,6 @@
+import json
+from datetime import timedelta
+
 from nextcord import Embed, InteractionType, MessageType
 from nextcord.ext.commands import Cog
 
@@ -9,6 +12,11 @@ from utils import util_functions as uf
 class Logs(Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.check_logs.start()
+
+
+    def cog_unload(self):
+        self.check_logs.cancel()
 
 
     @Cog.listener()
@@ -63,6 +71,45 @@ class Logs(Cog):
                 await logs.send(f"Unknown interaction in {interaction.channel.mention}.")
         else:
             await db.log(self.bot, "Log channel not found")
+
+
+    @uf.delayed_loop(hours=1)
+    async def check_logs(self):
+        try:
+            with open("db_cache.txt", "r") as cache:
+                lines = [json.loads(line) for line in cache]
+            with open("db_cache.txt", "w"):  # Wipe cache
+                pass
+        except FileNotFoundError:
+            lines = []
+
+        for i, line in enumerate(lines):
+            await db.log(self.bot, cached_line=line)
+
+        now = uf.now()
+        if now.hour != 0:
+            return
+
+        yesterday = (now - timedelta(days=1)).strftime(YYYYMMDD)
+        query = f"SELECT * FROM logs WHERE timestamp LIKE '{yesterday}%'"
+        try:
+            log_table = await self.bot.pg_pool.fetch(query)
+        except AttributeError:
+            return
+        except Exception as e:
+            await db.log(self.bot, "Could not fetch yesterday's logs")
+            return
+
+        if not log_table:
+            return
+
+        maint = await self.bot.fetch_channel(ERROR_CHANNEL_ID)
+        if not maint:
+            await db.log(self.bot, "Error channel not found")
+            return
+        await maint.send(f"Error log for yesterday ({yesterday}):")
+        for line in log_table:
+            await maint.send(f"{line['timestamp']}: [{line['module']}.{line['function']}] {line['message']}")
 
 
 async def deleted_embed(payload, channel):

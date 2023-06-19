@@ -153,3 +153,5 @@ WARFRAME_MODS_URL = "https://raw.githubusercontent.com/WFCD/warframe-items/maste
 
 # Misc
 VALID_TEXT_CHANNEL = TextChannel | VoiceChannel | Thread
+YYYYMMDD = "%Y-%m-%d"
+YYYYMMDD_HHMMSS = "%Y-%m-%d %H:%M:%S"

@@ -3,7 +3,6 @@ from datetime import datetime as dt, timedelta
 
 from nextcord import SlashOption, slash_command
 from nextcord.ext.commands import Cog
-from nextcord.ext.tasks import loop
 
 from config.constants import *
 from db_integration import db_functions as db
@@ -21,7 +20,7 @@ class Timers(Cog):
         self.check_timers.cancel()
 
 
-    @loop(seconds=10)
+    @uf.delayed_loop(seconds=10)
     async def check_timers(self):
         try:
             gtable = await self.bot.pg_pool.fetch(f"SELECT * FROM tmers WHERE ttype={DB_TMER_REMINDER}")
@@ -31,10 +30,9 @@ class Timers(Cog):
                     if timenow <= rec["expires"]:
                         continue
 
-                    print(f"record expired: {rec}")
                     params_dict = json.loads(rec["params"])
                     if "msg" not in params_dict or "channel" not in params_dict:
-                        print("invalid json, deleting")
+                        await db.log(self.bot, f"Deleting invalid json: {params_dict}")
                         await self.bot.pg_pool.execute("DELETE FROM tmers WHERE tmer_id = $1;", rec["tmer_id"])
                         continue
                     channel = self.bot.get_channel(params_dict["channel"])

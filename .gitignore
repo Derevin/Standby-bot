@@ -9,6 +9,7 @@ stbot.bat
 #Debug file
 /bot/cogs/debug.py
 
+db_cache.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

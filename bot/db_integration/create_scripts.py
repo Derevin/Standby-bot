@@ -138,7 +138,7 @@ CREATE TABLE IF NOT EXISTS "notes" (
 
 CREATE_LOGS = """
 CREATE TABLE IF NOT EXISTS "logs" (
-    "timestamp" TIMESTAMP NOT NULL,
+    "timestamp" TEXT NOT NULL,
     "module" TEXT,
     "function" TEXT,
     "message" TEXT
