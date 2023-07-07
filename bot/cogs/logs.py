@@ -249,7 +249,8 @@ async def command_embed(interaction):
     except AttributeError:
         parent_name = ""
 
-    embed.add_field(name="Command", value=cmd_prefix + parent_name + cmd_name, inline=False)
+    full_command_name = cmd_prefix + parent_name + cmd_name
+    embed.add_field(name="Command", value=full_command_name, inline=False)
     embed.add_field(name="Triggered by", value=interaction.user.mention)
     embed.add_field(name="In channel", value=interaction.channel.mention)
 
@@ -277,7 +278,10 @@ async def command_embed(interaction):
             elif arg["type"] == 8:
                 formatted_value = uf.id_to_mention(arg["value"], "role")
             else:
-                formatted_value = arg["value"]
+                if full_command_name == "/prediction make" and arg["name"] == "text":
+                    formatted_value = "[REDACTED]"
+                else:
+                    formatted_value = arg["value"]
 
             embed.add_field(name=arg["name"], value=formatted_value)
 
