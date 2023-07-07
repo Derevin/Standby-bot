@@ -61,6 +61,15 @@ async def log_buttons(bot, view, channel_id, message_id, params=None):
                               json.dumps(params).replace("'", "''") if params else None)
 
 
+async def update_button_params(bot, message_id, new_params):
+    records = await bot.pg_pool.fetch(f"SELECT params FROM buttons WHERE message_id = {message_id}")
+    params = records[0]["params"]
+    params = json.loads(params)
+    params.update(new_params)
+    params = json.dumps(params).replace("'", "''") if params else '{}'
+    await bot.pg_pool.execute(f"UPDATE buttons SET params = '{params}' WHERE message_id = '{message_id}'")
+
+
 async def log(bot, message=None, cached_line=None):
     if message:
         module = ".".join(re.split(r"[/\\]", inspect.stack()[1][1])[-2:])[:-3]

@@ -62,6 +62,13 @@ all_settings = {
         stat_col_name="burgers",
         stat_embed_header="🍔",
     ),
+    "Orbs": LeaderboardSettings(
+        title="Orb leaderboard",
+        stat_name="Orbs",
+        stat_col_name="orbs",
+        stat_embed_header="🔮",
+        user_name="Oracle",
+    )
 }
 
 

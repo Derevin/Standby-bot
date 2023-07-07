@@ -343,6 +343,80 @@ class Fun(Cog):
             return
 
 
+    @slash_command(description="Make predictions", default_member_permissions=MODS_AND_GUIDES)
+    async def prediction(self, interaction):
+        pass
+
+
+    @prediction.subcommand(description="Make a prediction")
+    async def make(self, interaction, label: str = SlashOption(description="A label to identify your prediction"),
+                   text: str = SlashOption(description="The text of your prediction")):
+        predictions = await uf.get_user_predictions(self.bot, interaction.user)
+
+        if label in predictions:
+            num = len([key for key in predictions if key.startswith(label + "_")])
+            label = f"{label}_{num + 1}"
+
+        predictions[label] = {"timestamp": uf.dynamic_timestamp(uf.now(), "date and time"), "text": text}
+
+        await uf.update_user_predictions(self.bot, interaction.user, predictions)
+        await interaction.send(f"Prediction saved with label '{label}'!", ephemeral=True),
+        await interaction.channel.send(f"{interaction.user.mention} just made a prediction!")
+
+
+    @prediction.subcommand(description="Reveal a prediction")
+    async def reveal(self, interaction, label: str = SlashOption(description="Label of the prediction to reveal")):
+        predictions = await uf.get_user_predictions(self.bot, interaction.user)
+        if label in predictions:
+            params = {"owner_id": interaction.user.id, "votes_for": [], "votes_against": []}
+            view = PredictionView(bot=self.bot, **params)
+            await interaction.send(f"On {predictions[label]['timestamp']}, {interaction.user.mention} made the "
+                                   "following prediction:\n"
+                                   f"{predictions[label]['text']}\n{EMPTY}\n"
+                                   f"Does this prediction deserve an 🔮? Vote below!", view=view)
+            msg = await interaction.original_message()
+            await db.log_buttons(self.bot, view, interaction.channel.id, msg.id, params)
+            predictions.pop(label)
+            await uf.update_user_predictions(self.bot, interaction.user, predictions)
+        else:
+            await interaction.send(f"No prediction found for the label '{label}'. You can use `/prediction list` "
+                                   "to see a list of your active predictions.", ephemeral=True)
+
+
+    @prediction.subcommand(description="Check a prediction (privately)")
+    async def check(self, interaction,
+                    label: str = SlashOption(description="Label of the prediction you want to check")):
+        predictions = await uf.get_user_predictions(self.bot, interaction.user)
+        if label in predictions:
+            await interaction.send(f"Prediction '{label}' made on {predictions[label]['timestamp']}:\n"
+                                   f"{predictions[label]['text']}", ephemeral=True)
+        else:
+            await interaction.send(f"No prediction found for the label '{label}'. You can use `/prediction list` "
+                                   "to see a list of your active predictions.", ephemeral=True)
+
+
+    @prediction.subcommand(name="list", description="List your predictions (privately)")
+    async def list_(self, interaction):
+        predictions = await uf.get_user_predictions(self.bot, interaction.user)
+        if not predictions:
+            await interaction.send("You have not made any predictions!", ephemeral=True)
+        else:
+            for label, prediction in predictions.items():
+                await interaction.send(f"Prediction '{label}' made on {prediction['timestamp']}:\n"
+                                       f"{prediction['text']}", ephemeral=True)
+
+
+    @prediction.subcommand(description="Delete a prediction")
+    async def delete(self, interaction, label: str = SlashOption(description="Label of the prediction to delete")):
+        predictions = await uf.get_user_predictions(self.bot, interaction.user)
+        if label in predictions:
+            predictions.pop(label)
+            await uf.update_user_predictions(self.bot, interaction.user, predictions)
+            await interaction.send(f"Prediction '{label}' successfully deleted!", ephemeral=True)
+        else:
+            await interaction.send(f"No prediction found for the label '{label}'!")
+
+
     class VanityView(ui.View):
 
         def __init__(self, creator):
@@ -446,7 +520,7 @@ class Fun(Cog):
             else:
                 await interaction.send(
                     "You have been timed out from using this command. You will be able to use it again "
-                    f"{uf.dynamic_timestamp(expires, 'delta')}", ephemeral=True)
+                    f"{uf.dynamic_timestamp(expires, 'relative')}", ephemeral=True)
                 return
 
         await interaction.response.defer()
@@ -664,14 +738,76 @@ class BurgerView(ui.View):
                 await interaction.send(f"{self.label} is not the correct answer - better luck next time!",
                                        ephemeral=True)
                 self.view.attempted.append(interaction.user.id)
-                records = await self.bot.pg_pool.fetch(
-                    f"SELECT params from buttons WHERE message_id = {interaction.message.id}")
-                params = records[0]["params"]
-                params = json.loads(params)
-                params["attempted"].append(interaction.user.id)
-                params = json.dumps(params).replace("'", "''")
-                await self.bot.pg_pool.execute(f"UPDATE buttons SET params = '{params}' "
-                                               f"WHERE message_id = {interaction.message.id}")
+                await db.update_button_params(self.bot, interaction.message.id, {"attempted": self.view.attempted})
+
+
+class PredictionView(ui.View):
+    def __init__(self, **params):
+        super().__init__()
+        self.bot = params["bot"]
+        self.owner_id = params["owner_id"]
+        self.votes_for = params["votes_for"]
+        self.votes_against = params["votes_against"]
+
+
+    @ui.button(emoji="🔮", style=ButtonStyle.blurple)
+    async def award_orb(self, button, interaction):
+        if interaction.user.id == self.owner_id:
+            await interaction.send("You can not award orbs to your own prediction!", ephemeral=True)
+            return
+
+        if interaction.user.id in self.votes_for:
+            await interaction.send("You have already voted for this prediction!", ephemeral=True)
+            return
+
+        if interaction.user.id in self.votes_against:
+            self.votes_against.remove(interaction.user.id)
+
+        self.votes_for.append(interaction.user.id)
+        await interaction.send("Vote recorded!", ephemeral=True)
+
+        if len(self.votes_for) >= PREDICTION_VOTE_THRESHOLD:
+            await interaction.send(f"{uf.id_to_mention(self.owner_id)} has been awarded an orb!")
+            await self.bot.pg_pool.execute(f"DELETE FROM buttons WHERE message_id = {interaction.message.id}")
+            new_text = re.sub("Does this prediction.*$",
+                              f"{uf.id_to_mention(self.owner_id)} was awarded an 🔮 for this prediction!",
+                              interaction.message.content)
+            await interaction.message.edit(content=new_text, view=None)
+        else:
+            await db.update_button_params(self.bot, interaction.message.id,
+                                          {"votes_for": self.votes_for, "votes_against": self.votes_against})
+
+
+    @ui.button(emoji="❌", style=ButtonStyle.blurple)
+    async def deny_orb(self, button, interaction):
+        if interaction.user.id == self.owner_id:
+            await self.bot.pg_pool.execute(f"DELETE FROM buttons WHERE message_id = {interaction.message.id}")
+            new_text = re.sub("Use the buttons below.*$",
+                              f"{interaction.user.mention} has marked their prediction as incorrect.",
+                              interaction.message.content)
+            await interaction.message.edit(content=new_text, view=None)
+            return
+
+        if interaction.user.id in self.votes_against:
+            await interaction.send("You have already voted against this prediction!", ephemeral=True)
+            return
+
+        if interaction.user.id in self.votes_for:
+            self.votes_for.remove(interaction.user.id)
+
+        self.votes_against.append(interaction.user.id)
+        await interaction.send("Vote recorded!", ephemeral=True)
+
+        if len(self.votes_against) >= PREDICTION_VOTE_THRESHOLD:
+            await interaction.send(f"{uf.id_to_mention(self.owner_id)}'s prediction has been deemed unworthy of an 🔮!")
+            await self.bot.pg_pool.execute(f"DELETE FROM buttons WHERE message_id = {interaction.message.id}")
+            new_text = re.sub("Does this prediction.*$",
+                              f"{uf.id_to_mention(self.owner_id)} was not awarded an 🔮 for this prediction!",
+                              interaction.message.content)
+            await interaction.message.edit(content=new_text, view=None)
+        else:
+            await db.update_button_params(self.bot, interaction.message.id,
+                                          {"votes_for": self.votes_for, "votes_against": self.votes_against})
 
 
 def setup(bot):

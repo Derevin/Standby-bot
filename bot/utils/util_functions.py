@@ -1,6 +1,7 @@
 import asyncio
 import datetime
 import io
+import json
 import re
 from datetime import datetime as dt, timedelta
 from typing import Callable, Union, Sequence, Optional
@@ -66,7 +67,9 @@ def int_to_emoji(num):
 
 
 def dynamic_timestamp(time, frmat):
-    mod = "t" if frmat == "short" else "R" if frmat == "delta" else "f"
+    codes = {"short time": "t", "long time": "T", "short date": "d", "long date": "D", "date and time": "f",
+             "date and time with weekday": "F", "relative": "R"}
+    mod = codes[frmat] if frmat in codes else frmat if frmat in codes.values() else "f"
     return f"<t:{int(dt.timestamp(time))}:{mod}>"
 
 
@@ -265,3 +268,15 @@ def delayed_loop(*, seconds: float = MISSING, minutes: float = MISSING, hours: f
 
 
     return decorator
+
+
+async def get_user_predictions(bot, user) -> dict:
+    query = f"SELECT predictions FROM usr WHERE usr_id = {user.id}"
+    recs = await bot.pg_pool.fetch(query)
+    predictions = recs[0]["predictions"]
+    return json.loads(predictions) if predictions else {}
+
+
+async def update_user_predictions(bot, user, predictions):
+    query = f"UPDATE usr SET predictions = '{json.dumps(predictions)}' WHERE usr_id = {user.id}"
+    await bot.pg_pool.execute(query)

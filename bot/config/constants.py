@@ -151,6 +151,9 @@ REE_THRESHOLD = 4
 # Warframe
 WARFRAME_MODS_URL = "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/json/Mods.json"
 
+# Predictions
+PREDICTION_VOTE_THRESHOLD = 5
+
 # Misc
 VALID_TEXT_CHANNEL = TextChannel | VoiceChannel | Thread
 YYYYMMDD = "%Y-%m-%d"

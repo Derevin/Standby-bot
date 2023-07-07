@@ -51,6 +51,11 @@ ALTER TABLE "usr" ADD IF NOT EXISTS "max_roulette_streak" integer DEFAULT 0;
 
 ALTER_USER_ADD_BURGERS = 'ALTER TABLE "usr" ADD IF NOT EXISTS "burgers" integer DEFAULT 0'
 
+ALTER_USER_ADD_PREDICTIONS = """
+ALTER TABLE "usr" ADD IF NOT EXISTS "predictions" TEXT;
+ALTER TABLE "usr" ADD IF NOT EXISTS "orbs" integer DEFAULT 0;
+"""
+
 ALTER_STARBOARD = """
 DO $$
 BEGIN
@@ -159,6 +164,7 @@ async def create_tables(con):
         await con.execute(ALTER_USER_ADD_BURGERS)
         await con.execute(ALTER_USER)
         await con.execute(ALTER_STARBOARD)
+        await con.execute(ALTER_USER_ADD_PREDICTIONS)
     except Exception as e:
         print(f"Error when executing db script batch 1: {e}")
         no_errors = False
