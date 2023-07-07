@@ -37,7 +37,7 @@ class Timers(Cog):
                         continue
                     channel = self.bot.get_channel(params_dict["channel"])
                     if channel:
-                        message = (f"<@{rec['usr_id']}> {uf.dynamic_timestamp(rec['expires'], 'long')}: "
+                        message = (f"<@{rec['usr_id']}> {uf.dynamic_timestamp(rec['expires'], 'date and time')}: "
                                    f"{params_dict['msg']}")
                         try:
                             confirmation_id = params_dict["confirmation_id"]
@@ -78,9 +78,9 @@ class Timers(Cog):
         expires = now + delta
         expires = expires.replace(microsecond=0)
 
-        confirmation = await interaction.send(f"{uf.dynamic_timestamp(now, 'short')}: Your reminder has been "
+        confirmation = await interaction.send(f"{uf.dynamic_timestamp(now, 'short time')}: Your reminder has been "
                                               "registered and you will be reminded "
-                                              f"on {uf.dynamic_timestamp(expires, 'long')}.")
+                                              f"on {uf.dynamic_timestamp(expires, 'date and time')}.")
         full_confirmation = await confirmation.fetch()
         await create_reminder(self.bot, interaction, expires, message, full_confirmation.id)
 
@@ -104,9 +104,9 @@ class Timers(Cog):
                                    f"(current bot time is {now.strftime('%H:%M')}).", ephemeral=True)
             return
 
-        confirmation = await interaction.send(f"{uf.dynamic_timestamp(now, 'short')}: Your reminder has been "
+        confirmation = await interaction.send(f"{uf.dynamic_timestamp(now, 'short time')}: Your reminder has been "
                                               "registered and you will be reminded "
-                                              f"on {uf.dynamic_timestamp(expires, 'long')}.")
+                                              f"on {uf.dynamic_timestamp(expires, 'date and time')}.")
         full_confirmation = await confirmation.fetch()
         await create_reminder(self.bot, interaction, expires, message, full_confirmation.id)
 
