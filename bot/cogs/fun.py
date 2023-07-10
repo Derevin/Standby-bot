@@ -343,7 +343,7 @@ class Fun(Cog):
             return
 
 
-    @slash_command(description="Make predictions", default_member_permissions=MODS_AND_GUIDES)
+    @slash_command(description="Make predictions")
     async def prediction(self, interaction):
         pass
 
