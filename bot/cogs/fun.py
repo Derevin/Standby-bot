@@ -240,7 +240,6 @@ class Fun(Cog):
                 cyr = pre_processor_mapping[lat]
                 pre_processor_mapping[lat.capitalize()] = cyr.capitalize()
 
-
         registry.register(ExampleLanguagePack)
 
         await interaction.send(translit(text, "custom"))
@@ -355,7 +354,7 @@ class Fun(Cog):
 
         if label in predictions:
             num = len([key for key in predictions if key.startswith(label + "_")])
-            label = f"{label}_{num + 1}"
+            label = f"{label}_{num + 2}"
 
         predictions[label] = {"timestamp": uf.dynamic_timestamp(uf.now(), "date and time"), "text": text}
 
@@ -416,7 +415,6 @@ class Fun(Cog):
         else:
             await interaction.send(f"No prediction found for the label '{label}'!")
 
-
     class VanityView(ui.View):
 
         def __init__(self, creator):
@@ -435,7 +433,6 @@ class Fun(Cog):
         async def press(self, button, interaction):
             if self.creator == interaction.user and self.value:
                 self.stop()
-
 
     @slash_command(description="Pick a vanity role")
     async def vanity(self, interaction):
@@ -614,7 +611,6 @@ class Fun(Cog):
         else:
             await interaction.send(f"Nothing found in {num_digit_combinations} combinations")
 
-
     class YesOrNo(ui.View):
 
         def __init__(self, intended_user):
@@ -640,7 +636,6 @@ class Fun(Cog):
                 self.stop()
             else:
                 await interaction.send(GIT_STATIC_URL + "/images/bobby.gif", ephemeral=True)
-
 
     @user_command(name="Thank", guild_ids=[GUILD_ID])
     async def thank_context(self, interaction, user):
@@ -686,7 +681,6 @@ class BurgerView(ui.View):
 
         for index in self.ordering:
             self.add_item(self.BurgerButton(label=answers[index], bot=bot))
-
 
     class BurgerButton(ui.Button):
 
