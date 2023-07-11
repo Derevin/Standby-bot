@@ -278,5 +278,6 @@ async def get_user_predictions(bot, user) -> dict:
 
 
 async def update_user_predictions(bot, user, predictions):
-    query = f"UPDATE usr SET predictions = '{json.dumps(predictions)}' WHERE usr_id = {user.id}"
+    sql_string = json.dumps(predictions).replace("'", "''")
+    query = f"UPDATE usr SET predictions = '{sql_string}' WHERE usr_id = {user.id}"
     await bot.pg_pool.execute(query)
