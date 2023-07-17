@@ -737,7 +737,7 @@ class BurgerView(ui.View):
 
 class PredictionView(ui.View):
     def __init__(self, **params):
-        super().__init__()
+        super().__init__(timeout=None)
         self.bot = params["bot"]
         self.owner_id = params["owner_id"]
         self.votes_for = params["votes_for"]
@@ -746,7 +746,6 @@ class PredictionView(ui.View):
 
     @ui.button(emoji="🔮", style=ButtonStyle.blurple)
     async def award_orb(self, button, interaction):
-        await interaction.response.defer(ephemeral=True)
         if interaction.user.id == self.owner_id:
             await interaction.send("You can not award orbs to your own prediction!", ephemeral=True)
             return
@@ -775,7 +774,6 @@ class PredictionView(ui.View):
 
     @ui.button(emoji="❌", style=ButtonStyle.blurple)
     async def deny_orb(self, button, interaction):
-        await interaction.response.defer(ephemeral=True)
         if interaction.user.id == self.owner_id:
             await self.bot.pg_pool.execute(f"DELETE FROM buttons WHERE message_id = {interaction.message.id}")
             new_text = re.sub("Does this prediction.*$",
