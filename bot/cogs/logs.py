@@ -14,10 +14,8 @@ class Logs(Cog):
         self.bot = bot
         self.check_logs.start()
 
-
     def cog_unload(self):
         self.check_logs.cancel()
-
 
     @Cog.listener()
     async def on_raw_message_delete(self, payload):
@@ -32,7 +30,6 @@ class Logs(Cog):
                 for file in files:
                     await logs.send(file=file, reference=main)
 
-
     @Cog.listener()
     async def on_raw_message_edit(self, payload):
         embed = await edited_embed(self.bot, payload)
@@ -41,7 +38,6 @@ class Logs(Cog):
             logs = uf.get_channel(channel.guild, LOGS_CHANNEL_NAME)
             if logs:
                 await logs.send(embed=embed)
-
 
     @Cog.listener()
     async def on_voice_state_update(self, member, before, after):
@@ -53,7 +49,6 @@ class Logs(Cog):
         logs = uf.get_channel(member.guild, LOGS_CHANNEL_NAME)
         if logs:
             await logs.send(embed=embed)
-
 
     @Cog.listener()
     async def on_interaction(self, interaction):
@@ -71,7 +66,6 @@ class Logs(Cog):
                 await logs.send(f"Unknown interaction in {interaction.channel.mention}.")
         else:
             await db.log(self.bot, "Log channel not found")
-
 
     @uf.delayed_loop(hours=1)
     async def check_logs(self):
@@ -302,8 +296,15 @@ async def component_embed(interaction):
     data = interaction.data
     if data["component_type"] == 2:  # Button
         embed.title = f"Button pressed"
-        labels = [child.label for row in interaction.message.components for child in row.children if
-                  child.custom_id == data["custom_id"]]
+        labels = []
+        for row in interaction.message.components:
+            for child in row.children:
+                if child.custom_id != data["custom_id"]:
+                    continue
+                if child.label:
+                    labels.append(child.label)
+                elif child.emoji:
+                    labels.append(child.emoji)
         embed.add_field(name="Button", value=labels[0] if len(labels) == 1 else "Unknown")
         embed.add_field(name="Pressed by", value=interaction.user.mention)
         embed.add_field(name="In channel", value=interaction.channel.mention)
