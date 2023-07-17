@@ -746,6 +746,7 @@ class PredictionView(ui.View):
 
     @ui.button(emoji="🔮", style=ButtonStyle.blurple)
     async def award_orb(self, button, interaction):
+        await interaction.response.defer()
         if interaction.user.id == self.owner_id:
             await interaction.send("You can not award orbs to your own prediction!", ephemeral=True)
             return
@@ -774,6 +775,7 @@ class PredictionView(ui.View):
 
     @ui.button(emoji="❌", style=ButtonStyle.blurple)
     async def deny_orb(self, button, interaction):
+        await interaction.response.defer()
         if interaction.user.id == self.owner_id:
             await self.bot.pg_pool.execute(f"DELETE FROM buttons WHERE message_id = {interaction.message.id}")
             new_text = re.sub("Does this prediction.*$",
