@@ -776,7 +776,7 @@ class PredictionView(ui.View):
     async def deny_orb(self, button, interaction):
         if interaction.user.id == self.owner_id:
             await self.bot.pg_pool.execute(f"DELETE FROM buttons WHERE message_id = {interaction.message.id}")
-            new_text = re.sub("Use the buttons below.*$",
+            new_text = re.sub("Does this prediction.*$",
                               f"{interaction.user.mention} has marked their prediction as incorrect.",
                               interaction.message.content)
             await interaction.message.edit(content=new_text, view=None)
