@@ -370,7 +370,7 @@ class Fun(Cog):
             params = {"owner_id": interaction.user.id, "votes_for": [], "votes_against": []}
             view = PredictionView(bot=self.bot, **params)
             await interaction.send(f"On {predictions[label]['timestamp']}, {interaction.user.mention} made the "
-                                   "following prediction:\n"
+                                   f"following prediction:\n{EMPTY}\n"
                                    f"{predictions[label]['text']}\n{EMPTY}\n"
                                    f"Does this prediction deserve an 🔮? Vote below!", view=view)
             msg = await interaction.original_message()
@@ -387,7 +387,7 @@ class Fun(Cog):
                     label: str = SlashOption(description="Label of the prediction you want to check")):
         predictions = await uf.get_user_predictions(self.bot, interaction.user)
         if label in predictions:
-            await interaction.send(f"Prediction '{label}' made on {predictions[label]['timestamp']}:\n"
+            await interaction.send(f"Prediction '{label}' made on {predictions[label]['timestamp']}:\n{EMPTY}\n"
                                    f"{predictions[label]['text']}", ephemeral=True)
         else:
             await interaction.send(f"No prediction found for the label '{label}'. You can use `/prediction list` "
@@ -401,7 +401,7 @@ class Fun(Cog):
             await interaction.send("You have not made any predictions!", ephemeral=True)
         else:
             for label, prediction in predictions.items():
-                await interaction.send(f"Prediction '{label}' made on {prediction['timestamp']}:\n"
+                await interaction.send(f"Prediction '{label}' made on {prediction['timestamp']}:\n{EMPTY}\n"
                                        f"{prediction['text']}", ephemeral=True)
 
 
