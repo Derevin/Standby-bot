@@ -1,7 +1,7 @@
 import json
 from datetime import timedelta
 
-from nextcord import Embed, InteractionType, MessageType
+from nextcord import Embed, ApplicationCommandType, ApplicationCommandOptionType, InteractionType, MessageType
 from nextcord.ext.commands import Cog
 
 from config.constants import *
@@ -14,8 +14,10 @@ class Logs(Cog):
         self.bot = bot
         self.check_logs.start()
 
+
     def cog_unload(self):
         self.check_logs.cancel()
+
 
     @Cog.listener()
     async def on_raw_message_delete(self, payload):
@@ -30,6 +32,7 @@ class Logs(Cog):
                 for file in files:
                     await logs.send(file=file, reference=main)
 
+
     @Cog.listener()
     async def on_raw_message_edit(self, payload):
         embed = await edited_embed(self.bot, payload)
@@ -38,6 +41,7 @@ class Logs(Cog):
             logs = uf.get_channel(channel.guild, LOGS_CHANNEL_NAME)
             if logs:
                 await logs.send(embed=embed)
+
 
     @Cog.listener()
     async def on_voice_state_update(self, member, before, after):
@@ -49,6 +53,7 @@ class Logs(Cog):
         logs = uf.get_channel(member.guild, LOGS_CHANNEL_NAME)
         if logs:
             await logs.send(embed=embed)
+
 
     @Cog.listener()
     async def on_interaction(self, interaction):
@@ -66,6 +71,7 @@ class Logs(Cog):
                 await logs.send(f"Unknown interaction in {interaction.channel.mention}.")
         else:
             await db.log(self.bot, "Log channel not found")
+
 
     @uf.delayed_loop(hours=1)
     async def check_logs(self):
@@ -222,18 +228,21 @@ async def voice_embed(member, before, after):
 
 
 async def command_embed(interaction):
-    cmd_name = interaction.application_command.name
-    cmd_type = str(interaction.application_command.type).split(".")[-1]
-    if cmd_type == "chat_input":
+    if interaction.application_command.type == ApplicationCommandType.chat_input:
         cmd_type = "Slash command"
-    elif cmd_type == "sub_command":
+        cmd_prefix = "/"
+    elif interaction.application_command.type == ApplicationCommandOptionType.sub_command:
         cmd_type = "Slash subcommand"
-    elif cmd_type == "user_command":
+        cmd_prefix = "/"
+    elif interaction.application_command.type == ApplicationCommandType.user:
         cmd_type = "User command"
-    else:
+        cmd_prefix = "Apps > "
+    elif interaction.application_command.type == ApplicationCommandType.message:
         cmd_type = "Message command"
-
-    cmd_prefix = "/" if "Slash" in cmd_type else "Apps > "
+        cmd_prefix = "Apps > "
+    else:
+        cmd_type = "Unknown command type"
+        cmd_prefix = "?"
 
     embed = Embed(color=VIE_PURPLE)
     embed.title = f"{cmd_type} triggered"
@@ -243,15 +252,15 @@ async def command_embed(interaction):
     except AttributeError:
         parent_name = ""
 
-    full_command_name = cmd_prefix + parent_name + cmd_name
+    full_command_name = cmd_prefix + parent_name + interaction.application_command.name
     embed.add_field(name="Command", value=full_command_name, inline=False)
     embed.add_field(name="Triggered by", value=interaction.user.mention)
     embed.add_field(name="In channel", value=interaction.channel.mention)
 
-    if cmd_type == "User":
+    if cmd_type == "User command":
         embed.add_field(name="Target user", value=uf.id_to_mention(interaction.data["target_id"]))
 
-    elif cmd_type == "Message":
+    elif cmd_type == "Message command":
         message_id = interaction.data["target_id"]
         message = await interaction.channel.fetch_message(message_id)
 
