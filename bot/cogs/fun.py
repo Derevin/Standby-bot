@@ -468,9 +468,9 @@ class Fun(Cog):
         img = Image.open(requests.get(GIT_STATIC_URL + f"/images/memes/{query}.png", stream=True).raw)
         draw = ImageDraw.Draw(img)
 
-        font_path = str(LOCAL_STATIC_PATH / "fonts" / "impact.ttf")
+        font_path = LOCAL_STATIC_PATH / "fonts" / "impact.ttf"
 
-        font = ImageFont.truetype(font=font_path, size=font_size)
+        font = ImageFont.truetype(font=str(font_path), size=font_size)
         text = caption.upper()
         width, height = draw.textsize(text, font)
         x_coord = img.width / 2 - width / 2
