@@ -273,11 +273,13 @@ regex_responses.append(RegexResponse(trigger="^maybe i am an?", response=maybe_r
 
 
 async def twitter_resp(bot, message):
-    tweets = re.findall(r"https://(?:www\.)?(?:vx|fx)?twitter\.com/\w+/status/\d+", message.content)
-    fx_tweets = [re.sub(r"(fx|vx)?twitter\.com", "fxtwitter.com", tweet) for tweet in tweets]
+    tweets = re.findall(r"(https://(?:www\.)?(\w+)\.com/\w+/status/(\d+))", message.content)
     num_pics = [0]
-    for tweet in fx_tweets:
-        html = requests.get(tweet).text
+    for tweet in tweets:
+        if tweet[1] not in ["x", "twitter", "vxtwitter", "fxtwitter"]:
+            continue
+        fx_tweet = tweet[0].replace(tweet[1], "fxtwitter", 1)
+        html = requests.get(fx_tweet).text
         mosaic_link = list(set(re.findall(r"https://mosaic\.fxtwitter\.com/\w*/\d+((?:/[\w-]+)+)", html)))
         if not len(mosaic_link) == 1:
             continue
@@ -287,7 +289,8 @@ async def twitter_resp(bot, message):
         await message.add_reaction(uf.int_to_emoji(max(num_pics)))
 
 
-regex_responses.append(RegexResponse(trigger=r"https:.*(vx|fx)?twitter\.com/.*/status/\d+", response=twitter_resp))
+regex_responses.append(
+    RegexResponse(trigger=r"https:.*(((vx|fx)?twitter)|x)\.com/.*/status/\d+", response=twitter_resp))
 
 
 async def coinflip_resp(bot, message):
