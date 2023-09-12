@@ -301,7 +301,6 @@ class Fun(Cog):
                 if not guild:
                     await db.log(self.bot, "Could not fetch guild")
                     return
-
                 general = await guild.fetch_channel(GENERAL_ID)
                 user = await guild.fetch_member(rec["usr_id"])
                 burgered = uf.get_role(guild, "Burgered")
@@ -311,7 +310,6 @@ class Fun(Cog):
                         f"Multiple burgers detected: {', '.join([usr.mention for usr in burgered.members])}")
 
                 await user.remove_roles(burgered)
-
                 try:
                     response = requests.get("https://the-trivia-api.com/v2/questions?limit=1")
                     data = json.loads(response.text)[0]
@@ -327,11 +325,20 @@ class Fun(Cog):
                 params["ordering"] = [answers.index(elem) for elem in shuffled]
                 params["attempted"] = []
                 params["last_owner_id"] = user.id
-
                 view = BurgerView(bot=self.bot, **params)
-                msg = await general.send(f"After fending off the mold in {user.mention}'s fridge for a full week, "
-                                         "the burger yearns for freedom!\nTo claim it, "
-                                         f"answer the following question:\n \n{params['question']}", view=view)
+
+                recs = await self.bot.pg_pool.fetch(f"SELECT moldy_burgers FROM usr WHERE usr_id = {user.id}")
+                if not recs:
+                    count = 1
+                else:
+                    count = recs[0]["moldy_burgers"] + 1
+                await self.bot.pg_pool.execute(f"UPDATE usr SET moldy_burgers = {count} WHERE usr_id = {user.id}")
+
+                msg = await general.send(f"After its {count}{uf.ordinal_suffix(count)} bout of fending off the mold in"
+                                         f"{user.mention}'s fridge for a full week, the burger yearns for freedom!\n"
+                                         f"To claim it, answer the following question:\n \n"
+                                         f"{params['question']}",
+                                         view=view)
                 await db.log_buttons(self.bot, view, general.id, msg.id, params)
                 await self.bot.pg_pool.execute(f"DELETE FROM tmers WHERE ttype = {DB_TMER_BURGER};")
 

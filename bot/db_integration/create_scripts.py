@@ -50,6 +50,7 @@ ALTER TABLE "usr" ADD IF NOT EXISTS "max_roulette_streak" integer DEFAULT 0;
 """
 
 ALTER_USER_ADD_BURGERS = 'ALTER TABLE "usr" ADD IF NOT EXISTS "burgers" integer DEFAULT 0'
+ALTER_USER_ADD_MOLDY_BURGERS = 'ALTER TABLE "usr" ADD IF NOT EXISTS "moldy_burgers" integer DEFAULT 0'
 
 ALTER_USER_ADD_PREDICTIONS = """
 ALTER TABLE "usr" ADD IF NOT EXISTS "predictions" TEXT;
@@ -162,6 +163,7 @@ async def create_tables(con):
         await con.execute(ALTER_USER_ADD_SKULLS)
         await con.execute(ALTER_USER_ADD_ROULETTE)
         await con.execute(ALTER_USER_ADD_BURGERS)
+        await con.execute(ALTER_USER_ADD_MOLDY_BURGERS)
         await con.execute(ALTER_USER)
         await con.execute(ALTER_STARBOARD)
         await con.execute(ALTER_USER_ADD_PREDICTIONS)

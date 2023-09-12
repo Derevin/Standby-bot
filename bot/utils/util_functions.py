@@ -281,3 +281,9 @@ async def update_user_predictions(bot, user, predictions):
     sql_string = json.dumps(predictions).replace("'", "''")
     query = f"UPDATE usr SET predictions = '{sql_string}' WHERE usr_id = {user.id}"
     await bot.pg_pool.execute(query)
+
+
+def ordinal_suffix(n):
+    if 11 <= (n % 100) <= 13:
+        return 'th'
+    return ['th', 'st', 'nd', 'rd', 'th'][min(n % 10, 4)]
