@@ -281,7 +281,7 @@ async def command_embed(interaction):
             elif arg["type"] == 8:
                 formatted_value = uf.id_to_mention(arg["value"], "role")
             else:
-                if full_command_name == "/prediction make" and arg["name"] == "text":
+                if full_command_name.startswith("/prediction") and arg["name"] in ["label", "text"]:
                     formatted_value = "[REDACTED]"
                 else:
                     formatted_value = arg["value"]
