@@ -4,7 +4,7 @@ python-dotenv==1.0.0
 requests==2.31.0
 python-Levenshtein-wheels==0.13.2
 fuzzywuzzy==0.18.0
-pillow==9.5.0
+pillow==10.0.1
 transliterate==1.10.2
 nextcord==2.5.0
 pytz==2023.3
