@@ -556,10 +556,10 @@ class Fun(Cog):
             server_alltime_max = await self.bot.pg_pool.fetch("SELECT MAX(max_roulette_streak) from usr")
             server_alltime_max = server_alltime_max[0]["max"]
 
-            await self.bot.pg_pool.execute(f"UPDATE usr SET current_roulette_streak = current_roulette_streak + 1,"
+            await self.bot.pg_pool.execute("UPDATE usr SET current_roulette_streak = current_roulette_streak + 1,"
                                            "max_roulette_streak = "
                                            "GREATEST(current_roulette_streak + 1, max_roulette_streak) "
-                                           "WHERE usr_id = {interaction.user.id}")
+                                           f"WHERE usr_id = {interaction.user.id}")
             current_streak += 1
 
             plural_suffix = "s" if current_streak > 1 else ""
