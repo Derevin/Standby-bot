@@ -334,7 +334,7 @@ class Fun(Cog):
                     count = recs[0]["moldy_burgers"] + 1
                 await self.bot.pg_pool.execute(f"UPDATE usr SET moldy_burgers = {count} WHERE usr_id = {user.id}")
 
-                msg = await general.send(f"After its {count}{uf.ordinal_suffix(count)} bout of fending off the mold in"
+                msg = await general.send(f"After its {count}{uf.ordinal_suffix(count)} bout of fending off the mold in "
                                          f"{user.mention}'s fridge for a full week, the burger yearns for freedom!\n"
                                          f"To claim it, answer the following question:\n \n"
                                          f"{params['question']}",
