@@ -25,18 +25,18 @@ def get_response_command(message):
             return resp.response
 
         if type(resp) is WednesdayResponse:
-            async def resp_command(bot, message):
+            async def resp_command(bot, msg):
                 if dt.now().weekday() == resp.trigger_day:
-                    await message.channel.send(resp.response)
+                    await msg.channel.send(resp.response)
                     scream = 10 * resp.a
                     if resp.a != resp.a.upper():
                         scream += 10 * resp.a.upper()
                     scream += "**" + 5 * resp.a.upper() + "**"
                     if resp.a == "א":
                         scream = scream[:-2] + "ה**"
-                    await message.channel.send(scream)
+                    await msg.channel.send(scream)
                 else:
-                    await message.channel.send(resp.wrong_day_response)
+                    await msg.channel.send(resp.wrong_day_response)
 
 
             return resp_command

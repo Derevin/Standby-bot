@@ -816,6 +816,13 @@ regex_responses.append(
                   accepts=lambda message: message.mentions))
 
 
+async def so_true_resp(bot, message):
+    await message.channel.send(GIT_STATIC_URL + "/videos/so_true.mov")
+
+
+regex_responses.append(RegexResponse(trigger="^.{0,4}so true.{0,4}$", response=so_true_resp))
+
+
 @dataclass(kw_only=True)
 class WednesdayResponse(RegexResponse):
     wrong_day_response: str
