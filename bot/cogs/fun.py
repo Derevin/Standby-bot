@@ -675,6 +675,65 @@ class Fun(Cog):
                 await interaction.send(embed=embed)
 
 
+    @slash_command(description="Movie rating features")
+    async def movie(self, interaction):
+        pass
+
+
+    @movie.subcommand(description="Rate a movie")
+    async def rate(self, interaction, title, rating: int = SlashOption(
+        description="Your rating",
+        choices={"1 (Horrible)": 1, "2 (Bad)": 2, "3 (Decent)": 3, "4 (Good)": 4, "5 (Great)": 5}),
+                   review=SlashOption(description="Review or comment (optional)", required=False)):
+
+        exists = await self.bot.pg_pool.fetch(
+            f"SELECT * FROM movies Where usr_id = '{interaction.user.id}' AND title = '{title}'")
+        if exists:
+            await self.bot.pg_pool.execute(
+                f"UPDATE movies SET rating = {rating}, review = '{review}' "
+                f"WHERE usr_id = {interaction.user.id} AND title = '{title}'")
+            msg = f"{interaction.user.mention} has updated their rating of {title}!\nNew rating: {rating}/5"
+            if review:
+                msg += f"\nNew review: {review}"
+            await interaction.send(msg)
+        else:
+            await self.bot.pg_pool.execute(
+                "INSERT INTO movies (usr_id, title, rating, review) VALUES ($1, $2, $3, $4);",
+                interaction.user.id, title, rating,
+                review)
+            msg = f"{interaction.user.mention} has rated {title}!\nRating: {rating}/5"
+            if review:
+                msg += f"\nReview: {review}"
+            await interaction.send(msg)
+
+
+    @movie.subcommand(description="Check a movie's average score")
+    async def score(self, interaction, title):
+        ratings = await self.bot.pg_pool.fetch(
+            f"SELECT COUNT(rating) AS count, ROUND(AVG(rating), 1) AS score FROM movies WHERE title = '{title}'")
+        count, score = ratings[0]
+        if count == 0:
+            await interaction.send(f"{title} has not been rated yet.")
+        else:
+            await interaction.send(f"{title} currently has an average score of {score} based off {count} rating(s).")
+
+
+    @movie.subcommand(description="Read all reviews for a movie")
+    async def reviews(self, interaction, title):
+        recs = await self.bot.pg_pool.fetch(
+            f"SELECT usr_id, rating, review FROM movies WHERE title = '{title}'")
+        if not recs:
+            await interaction.send(f"{title} has not been rated yet.")
+            return
+
+        for rec in recs:
+            await interaction.send(f"Reviews currently on file for {title}:")
+            msg = f"{uf.id_to_mention(rec['usr_id'])} rated it {rec['rating']}/5."
+            if rec["review"]:
+                msg = msg[:-1] + f" with the review:\n{rec['review']}"
+            await interaction.send(msg)
+
+
 class BurgerView(ui.View):
 
     def __init__(self, **params):

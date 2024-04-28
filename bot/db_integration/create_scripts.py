@@ -153,6 +153,17 @@ CREATE TABLE IF NOT EXISTS "logs" (
 );
 """
 
+CREATE_MOVIES = """
+CREATE TABLE IF NOT EXISTS "movies" (
+    "usr_id" BIGINT NOT NULL,
+    "title" TEXT NOT NULL,
+    "rating" INTEGER NOT NULL,
+    "review" TEXT
+) WITH (
+    OIDS=FALSE
+);
+"""
+
 
 async def create_tables(con):
     no_errors = True
@@ -197,6 +208,11 @@ async def create_tables(con):
         await con.execute(CREATE_LOGS)
     except Exception as e:
         print(f"Error when executing db script batch 6: {e}")
+        no_errors = False
+    try:
+        await con.execute(CREATE_MOVIES)
+    except Exception as e:
+        print(f"Error when executing db script batch 7: {e}")
         no_errors = False
 
     if no_errors:
